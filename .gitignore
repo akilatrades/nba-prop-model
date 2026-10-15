@@ -7,3 +7,4 @@ data/hoopr/
 /data/player_games.parquet
 /data/games.parquet
 /data/retrieval.json
+/outputs/**/predictions.parquet
