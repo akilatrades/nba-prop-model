@@ -28,6 +28,12 @@ SERIES = {
     "KXNBAAST": "assists",
     "KXNBA3PT": "threes",
 }
+# Yes/no markets on combinations of stats, used in the correlation test.
+COMBO_SERIES = {
+    "KXNBA2D": "double_double",
+    "KXNBA3D": "triple_double",
+}
+ALL_SERIES = {**SERIES, **COMBO_SERIES}
 FIELDS = [
     "ticker",
     "event_ticker",
@@ -157,6 +163,33 @@ def candles(ticker, start_ts, end_ts, period=60, historical=True):
             }
         )
     return rows
+
+
+def trades(ticker, min_ts, max_ts, historical=True):
+    """Every trade print for a market between two Unix times."""
+    path = "/historical/trades" if historical else "/markets/trades"
+    rows, cursor = [], ""
+    while True:
+        params = {"ticker": ticker, "min_ts": int(min_ts), "max_ts": int(max_ts)}
+        params["limit"] = 1000
+        if cursor:
+            params["cursor"] = cursor
+        page = get_json(path, params) or {}
+        for t in page.get("trades", []):
+            rows.append(
+                {
+                    "ticker": t.get("ticker", ticker),
+                    "created_time": t.get("created_time"),
+                    "yes_price": _number(t.get("yes_price_dollars")),
+                    "count": _number(t.get("count_fp")),
+                    "taker_outcome_side": t.get("taker_outcome_side")
+                    or t.get("taker_side"),
+                    "is_block_trade": bool(t.get("is_block_trade", False)),
+                }
+            )
+        cursor = page.get("cursor") or ""
+        if not cursor or not page.get("trades"):
+            return rows
 
 
 def _number(value):

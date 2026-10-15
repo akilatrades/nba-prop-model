@@ -33,7 +33,7 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from nba_model.kalshi import (
-    SERIES,
+    ALL_SERIES,
     candles,
     fetch_markets,
     parse,
@@ -75,7 +75,7 @@ def save(frame, path):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--series", required=True, choices=sorted(SERIES))
+    parser.add_argument("--series", required=True, choices=sorted(ALL_SERIES))
     parser.add_argument("--start", default="2025-10-01")
     parser.add_argument("--end", default="2026-06-30")
     parser.add_argument("--minutes", type=float, default=320)

@@ -1,0 +1,106 @@
+name: research data
+# Data for the three ideas in RESEARCH_LOG.md (2026-10-15): Kalshi trade prints
+# before tip-off (limit-order test), double-double and triple-double markets
+# (correlation test), and a probe of ESPN's stored sportsbook prop lines.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/backfill_trades.py"
+      - "scripts/probe_espn_props.py"
+      - ".github/workflows/research-data.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: research-data
+  cancel-in-progress: false
+jobs:
+  trades:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    strategy:
+      fail-fast: false
+      matrix:
+        series: [KXNBAPTS, KXNBAREB, KXNBAAST, KXNBA3PT]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pandas numpy pyarrow
+      - run: python scripts/backfill_trades.py --series ${{ matrix.series }} --minutes 300
+      - uses: actions/upload-artifact@v4
+        with:
+          name: history-trades-${{ matrix.series }}
+          path: data/kalshi_history/trades*${{ matrix.series }}*
+          if-no-files-found: ignore
+          retention-days: 7
+  combos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    strategy:
+      fail-fast: false
+      matrix:
+        series: [KXNBA2D, KXNBA3D]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pandas numpy pyarrow
+      - run: >-
+          python scripts/backfill_kalshi.py --series ${{ matrix.series }}
+          --minutes 300 --workers 16
+      - uses: actions/upload-artifact@v4
+        with:
+          name: history-combo-${{ matrix.series }}
+          path: data/kalshi_history/*${{ matrix.series }}*
+          if-no-files-found: ignore
+          retention-days: 7
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scripts/probe_espn_props.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: probe
+          path: outputs/probes/
+          retention-days: 7
+  commit:
+    needs: [trades, combos, probe]
+    if: always()
+    runs-on: ubuntu-latest
+    concurrency:
+      group: repo-writes
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: history-*
+          path: data/kalshi_history
+          merge-multiple: true
+      - uses: actions/download-artifact@v4
+        with:
+          name: probe
+          path: outputs/probes
+        continue-on-error: true
+      - name: Commit data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p data/kalshi_history outputs/probes
+          git add -A data/kalshi_history outputs/probes
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Research data: trades, combo markets, ESPN probe"
+          git pull --rebase
+          git push
