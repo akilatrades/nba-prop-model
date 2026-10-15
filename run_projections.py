@@ -7,8 +7,10 @@ models on every completed game with a betting line, and price each market's
 line.
 
 Writes outputs/projections/ladders/<UTC timestamp>.csv and
-outputs/projections/latest.csv. Edges are for paper trading only until the
-market test in RESEARCH_LOG.md has been run and passed.
+outputs/projections/latest.csv, adds the positions the 2026-27 rule takes
+to the paper ledger (outputs/paper/ledger.csv), and writes the day's bet card
+(outputs/bets/latest.md). The rule is unproven: it came from looking at
+2025-26 after the pre-registered test failed, and is being paper traded.
 
 Run from the repository root: python run_projections.py
 """
@@ -16,7 +18,6 @@ Run from the repository root: python run_projections.py
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
 
 from nba_model.evaluate import FIRST_TRAIN_SEASON
@@ -25,8 +26,19 @@ from nba_model.kalshi import fee_per_contract, normalize_name, parse, snapshot
 from nba_model.live import injuries, scoreboard, upcoming_rows
 from nba_model.marginals import STATS, StatModel
 from nba_model.market import espn_team
+from nba_model.paper import (
+    LEDGER_COLUMNS,
+    START_BANKROLL,
+    bankroll,
+    eastern_day,
+    empty_ledger,
+    new_positions,
+)
+from nba_model.strategy import MONEY_SEASON_TYPES
 
 OUT = Path("outputs/projections")
+LEDGER = Path("outputs/paper/ledger.csv")
+BETS = Path("outputs/bets")
 
 
 def player_ids(players):
@@ -43,7 +55,7 @@ def match_open_markets(markets, schedule, players):
     m["team_espn"] = m.team.map(espn_team)
     games = schedule.assign(
         game_date=schedule.tip_utc.dt.tz_convert("America/New_York").dt.date
-    )[["game_id", "game_date", "home", "away", "tip_utc"]].rename(
+    )[["game_id", "game_date", "home", "away", "tip_utc", "season_type"]].rename(
         columns={"home": "home_espn", "away": "away_espn"}
     )
     m = m.merge(games, on=["game_date", "home_espn", "away_espn"], how="inner")
@@ -52,7 +64,7 @@ def match_open_markets(markets, schedule, players):
     return m
 
 
-def price_markets(players, games, schedule, markets, report):
+def price_markets(players, games, schedule, markets, report, now=None):
     """Model price for each open market on a scheduled game, with edges vs Kalshi."""
     matched = match_open_markets(markets, schedule, players)
     listed = (
@@ -95,9 +107,11 @@ def price_markets(players, games, schedule, markets, report):
     yes_cost, no_cost = priced.yes_ask_dollars, 1 - priced.yes_bid_dollars
     priced["edge_yes"] = priced.p_model - yes_cost - fee_per_contract(yes_cost)
     priced["edge_no"] = (1 - priced.p_model) - no_cost - fee_per_contract(no_cost)
-    priced["paper_side"] = np.select(
-        [priced.edge_yes >= 0.05, priced.edge_no >= 0.05], ["yes", "no"], default=""
-    )
+    now = pd.Timestamp(now) if now is not None else pd.Timestamp.now(tz="UTC")
+    priced["hours_to_tip"] = (priced.tip_utc - now).dt.total_seconds() / 3600
+    status = report.dropna(subset=["player_id"]).drop_duplicates("player_id")
+    status = status.set_index(status.player_id.astype("int64")).status
+    priced["injury_status"] = priced.player_id.map(status).fillna("")
     priced = priced[COLUMNS].sort_values(["tip_utc", "event_ticker", "player", "stat"])
     return priced, matched
 
@@ -117,8 +131,12 @@ COLUMNS = [
     "yes_ask_dollars",
     "edge_yes",
     "edge_no",
-    "paper_side",
+    "hours_to_tip",
+    "injury_status",
     "teammates_out_minutes",
+    "game_id",
+    "player_id",
+    "season_type",
 ]
 
 
@@ -137,7 +155,9 @@ def main():
     if schedule.empty or markets.empty:
         print(f"Nothing to price: {len(schedule)} games, {len(markets)} markets")
         return
-    priced, matched = price_markets(players, games, schedule, markets, injuries())
+    priced, matched = price_markets(
+        players, games, schedule, markets, injuries(), now=now
+    )
     folder = OUT / "ladders"
     folder.mkdir(parents=True, exist_ok=True)
     path = folder / f"{now:%Y-%m-%dT%H%MZ}.csv"
@@ -148,6 +168,65 @@ def main():
         f"Priced {len(priced)} of {len(markets)} open markets for "
         f"{len(schedule)} games ({unpriced} with no player match); saved {path}"
     )
+    ledger = pd.read_csv(LEDGER) if LEDGER.exists() else empty_ledger()
+    ledger["day"] = ledger.day.astype(str)
+    added = new_positions(priced, ledger, now)
+    added["day"] = added.day.astype(str)
+    ledger = pd.concat([ledger, added], ignore_index=True)[LEDGER_COLUMNS]
+    LEDGER.parent.mkdir(parents=True, exist_ok=True)
+    ledger.to_csv(LEDGER, index=False)
+    write_bet_card(ledger, now)
+    print(f"Paper positions added: {len(added)}")
+
+
+HEADER = (
+    "| Tip-off (ET) | Player | Bet | Price | Model | Edge | Contracts | Risk | Mode |"
+)
+
+
+def mode(season_type):
+    """Regular season: paper. Play-in and playoffs: the 2027 playoff test."""
+    return "playoff test" if season_type in MONEY_SEASON_TYPES else "paper"
+
+
+def write_bet_card(ledger, now):
+    """Today's paper positions as a readable page (outputs/bets/latest.md)."""
+    today = str(eastern_day(pd.Series([now])).iloc[0])
+    day = ledger[ledger.day.astype(str) >= today].copy()
+    lines = [
+        f"# Bet card, {today}",
+        "",
+        (
+            "**Unproven rule.** In 2025-26 it broke even in the regular season and "
+            "made its money in the playoffs, a finding made after the fact (see "
+            "RESEARCH_LOG.md). Regular-season positions are paper only. "
+            f"Paper bankroll: ${bankroll(ledger, START_BANKROLL):,.2f}."
+        ),
+        "",
+    ]
+    if day.empty:
+        lines.append("No positions yet today.")
+    else:
+        lines += [
+            HEADER,
+            "|---|---|---|---:|---:|---:|---:|---:|---|",
+        ]
+        day["tip"] = pd.to_datetime(day.tip_utc, utc=True).dt.tz_convert(
+            "America/New_York"
+        )
+        for r in day.sort_values(["tip", "player"]).itertuples():
+            threshold = int(float(r.line) + 0.5)
+            bet = f"{r.side.upper()} {threshold}+ {r.stat}"
+            model = float(r.p_model) if r.side == "yes" else 1 - float(r.p_model)
+            lines.append(
+                f"| {r.tip:%a %-I:%M %p} | {r.player} | {bet} | {100 * float(r.cost):.0f}¢ "
+                f"| {100 * model:.0f}% | {100 * float(r.edge):.0f}¢ | {int(r.contracts)} "
+                f"| ${float(r.risked):.2f} | {mode(r.season_type)} |"
+            )
+    BETS.mkdir(parents=True, exist_ok=True)
+    text = "\n".join(lines) + "\n"
+    (BETS / "latest.md").write_text(text)
+    (BETS / f"{today}.md").write_text(text)
 
 
 if __name__ == "__main__":

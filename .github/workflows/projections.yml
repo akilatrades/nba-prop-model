@@ -1,10 +1,14 @@
 name: projections
-# Model probabilities for every open Kalshi NBA prop: after the afternoon
-# injury report and again shortly before the first evening tip-offs (UTC).
+# Settles paper positions, prices every open Kalshi NBA prop and adds the
+# rule's paper positions. Four runs a day (UTC) so each game is seen at least
+# once 2 to 6 hours before tip-off: noon-to-3pm ET weekend games by the
+# first two, 7-8pm ET games by the third, late games by the fourth.
 on:
   schedule:
-    - cron: "10 21 * * *"
-    - cron: "35 23 * * *"
+    - cron: "30 12 * * *"
+    - cron: "30 15 * * *"
+    - cron: "30 18 * * *"
+    - cron: "30 21 * * *"
   workflow_dispatch:
 permissions:
   contents: write
@@ -21,6 +25,7 @@ jobs:
           python-version: "3.12"
       - run: pip install -r requirements.txt
       - run: python fetch_data.py
+      - run: python run_paper.py
       - name: Run projections (errors shown as an annotation)
         run: |
           set -o pipefail
@@ -32,8 +37,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          mkdir -p outputs/projections
-          git add -A outputs/projections
+          mkdir -p outputs/projections outputs/paper outputs/bets
+          git add -A outputs/projections outputs/paper outputs/bets
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "Projections"
           git pull --rebase

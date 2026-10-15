@@ -223,3 +223,68 @@ trading rule from this work is recommended for money.
 makes before each game, at the end of January 2027 and again after the
 Finals; plus the same rule priced at the morning snapshot. Any change to the
 model before then is logged here with its date.
+
+## 2026-10-15: Exploratory findings and the rule for 2026-27
+
+Everything in this entry was found after the market test failed, on the same
+2025-26 markets. It is in-sample and is recorded so the choices can be
+checked; it proves nothing until 2026-27 confirms it
+(`run_strategy_backtest.py`, `outputs/strategy/`).
+
+**Where the money went.** Priced at the mid, with no spread or fee, the
+model's picks made +2.4¢ per contract (t 3.9). Buying at the ask and paying
+the fee cost 3.3¢ on average. By spread at tip-off: 1¢ spread +2.1¢ per
+contract (3,884 trades), 2¢ +0.7¢, 3–4¢ −1.6¢, 5¢ or more −5.5¢. With
+spreads of 2¢ or less, prices taken 2, 4 and 6 hours before tip-off gave
++2.3¢, +1.9¢ and +2.8¢ (t 2.7, 2.1, 3.1), and +2.1¢ to +2.4¢ with the
+teammates-out features switched off
+([grid](outputs/strategy/exploratory_grid.csv)).
+
+**The rule** (`nba_model/strategy.py`): price taken 2–6 hours before tip-off;
+spread of 2¢ or less; the model's edge at least 5¢ after the fee; one line
+per player, stat and game; live, skip anyone on the injury report. Staking:
+1% of the bankroll per position, at most $25 or 100 contracts, at most 30%
+of the bankroll per day.
+
+**Replayed on 2025-26** with two looks per game (5 and 2 hours before
+tip-off, about what the live schedule gives): 3,928 positions, +1.9¢ per
+contract (t 2.3), 6.2% per dollar risked.
+
+**But it all came from the playoffs.** Regular season: 2,493 positions,
++0.02¢ per contract (t 0.03), 0.1% per dollar. Play-in and playoffs: 1,435
+positions in 91 games, +5.1¢ per contract (t 3.6), 16.7% per dollar, 85% of
+them on the "no" side. A $500 bankroll at these stakes went to $390 by early
+January, $509 by April 10, and $2,618 by the Finals.
+
+$500 bankroll, 2,000 resampled seasons (whole days resampled with
+replacement):
+
+| Part of season | Edge assumed | Median end | 1 in 10 ends below | Chance of a loss | Typical worst drawdown |
+|---|---|---:|---:|---:|---:|
+| Regular season | as in 2025-26 (none) | $496 | $235 | 50% | 46% |
+| Play-in and playoffs | as in 2025-26 | $2,907 | $1,494 | 0% | 17% |
+| Play-in and playoffs | half of 2025-26 | $1,233 | $610 | 5% | 28% |
+| Play-in and playoffs | none | $513 | $251 | 48% | 44% |
+
+The playoff result is one postseason, found by splitting the season after
+seeing it, with a rule also chosen on that season. Half the edge is the
+planning case, and no edge is entirely possible.
+
+**Forward test for 2026-27 (fixed now, before any 2026-27 price exists).**
+The projections workflow runs four times a day and adds the rule's positions
+to `outputs/paper/ledger.csv`, sized from a $500 paper bankroll, settled from
+Kalshi's own settlement of each market.
+
+1. *Regular season* (to the end of the 2026-27 regular season): the rule
+   passes if its positions return more than zero per dollar with
+   game-clustered t of at least 2.0 on profit per contract. Paper only; the
+   expectation from 2025-26 is about zero.
+2. *Play-in and playoffs 2027*: the same test on those positions alone. This
+   is the real test of the playoff finding. Whether to use money is the
+   account holder's decision; the evidence for it is the in-sample result
+   above and nothing else.
+3. The rule and model are not changed during the season. Bug fixes are
+   logged here with their date.
+
+The original market test at tip-off (Test A and B) is also rerun on 2026-27
+as planned.

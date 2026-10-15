@@ -1,0 +1,298 @@
+{
+  "model": {
+    "rule": {
+      "trades": 3928,
+      "cents_per_contract": 1.8764855142566186,
+      "t": 2.3354930981370994,
+      "cents_at_mid_before_costs": 4.10030549898167,
+      "avg_cost_cents": 41.748217922606926,
+      "before_feb_cents": 2.009748101265822,
+      "from_feb_cents": 1.8546501925925927,
+      "share_yes": 0.3105906313645621,
+      "return_per_dollar_pct": 6.176577355542065
+    },
+    "replay_500": {
+      "end": 2618.059999999999,
+      "profit": 2118.06,
+      "max_drawdown_pct": 29.03135016808695,
+      "worst_day": -209.62999999999997,
+      "days": 169,
+      "trades": 3928,
+      "contracts": 74617
+    },
+    "bootstrap_500": {
+      "as_in_2025_26": {
+        "return_per_dollar_pct": 6.176577355542065,
+        "median_end": 2906.8299999999995,
+        "p10_end": 987.0569999999998,
+        "p90_end": 5813.735000000002,
+        "chance_of_loss": 0.02,
+        "chance_down_half": 0.001,
+        "median_max_drawdown_pct": 35.48426362274846
+      },
+      "half_the_edge": {
+        "return_per_dollar_pct": 3.0882886777710326,
+        "median_end": 1127.1687229571253,
+        "p10_end": 378.4490716123549,
+        "p90_end": 3267.1767989370655,
+        "chance_of_loss": 0.176,
+        "chance_down_half": 0.0405,
+        "median_max_drawdown_pct": 47.199224519752185
+      },
+      "no_edge_after_costs": {
+        "return_per_dollar_pct": 0.0,
+        "median_end": 447.4328500210852,
+        "p10_end": 151.98487811267628,
+        "p90_end": 1421.2387299721654,
+        "chance_of_loss": 0.5525,
+        "chance_down_half": 0.2435,
+        "median_max_drawdown_pct": 61.45451393014868
+      },
+      "model_no_better_than_market": {
+        "return_per_dollar_pct": -6.282197544581243,
+        "median_end": 83.61947219447964,
+        "p10_end": 43.619659571563865,
+        "p90_end": 225.60747658836726,
+        "chance_of_loss": 0.9885,
+        "chance_down_half": 0.9215,
+        "median_max_drawdown_pct": 87.2766445474978
+      }
+    },
+    "by_part_of_season": {
+      "regular_season": {
+        "rule": {
+          "trades": 2493,
+          "cents_per_contract": 0.024812635379061105,
+          "t": 0.026605530738413565,
+          "cents_at_mid_before_costs": 2.273766546329723,
+          "avg_cost_cents": 43.186923385479346,
+          "before_feb_cents": 2.009748101265822,
+          "from_feb_cents": -0.5409962886597939,
+          "share_yes": 0.4047332531087044,
+          "return_per_dollar_pct": 0.10679902753482681
+        },
+        "replay_500": {
+          "end": 494.2099999999999,
+          "profit": -5.790000000000042,
+          "max_drawdown_pct": 29.03135016808695,
+          "worst_day": -93.21000000000001,
+          "days": 122,
+          "trades": 2493,
+          "contracts": 32551
+        },
+        "as_in_2025_26": {
+          "median_end": 496.3299999999999,
+          "p10_end": 235.32700000000008,
+          "p90_end": 1115.8430000000003,
+          "chance_of_loss": 0.5025,
+          "median_max_drawdown_pct": 45.69844492508215
+        },
+        "half_the_edge": {
+          "median_end": 491.3732513791807,
+          "p10_end": 232.55665217988278,
+          "p90_end": 1098.3503072889087,
+          "chance_of_loss": 0.51,
+          "median_max_drawdown_pct": 45.9161689265966
+        },
+        "no_edge_after_costs": {
+          "median_end": 485.6224793034877,
+          "p10_end": 230.2505855985261,
+          "p90_end": 1083.5057159738633,
+          "chance_of_loss": 0.5175,
+          "median_max_drawdown_pct": 46.194637683400856
+        }
+      },
+      "play_in_and_playoffs": {
+        "rule": {
+          "trades": 1435,
+          "cents_per_contract": 5.093363902439024,
+          "t": 3.5472603152594444,
+          "cents_at_mid_before_costs": 7.2735191637630665,
+          "avg_cost_cents": 39.24878048780488,
+          "before_feb_cents": NaN,
+          "from_feb_cents": 5.093363902439024,
+          "share_yes": 0.1470383275261324,
+          "return_per_dollar_pct": 16.72149538461666
+        },
+        "replay_500": {
+          "end": 2618.3899999999994,
+          "profit": 2118.3899999999994,
+          "max_drawdown_pct": 14.346643590060584,
+          "worst_day": -209.63000000000002,
+          "days": 47,
+          "trades": 1435,
+          "contracts": 42151
+        },
+        "as_in_2025_26": {
+          "median_end": 2907.12,
+          "p10_end": 1493.509,
+          "p90_end": 4894.637,
+          "chance_of_loss": 0.0005,
+          "median_max_drawdown_pct": 16.87227086511066
+        },
+        "half_the_edge": {
+          "median_end": 1233.173258823772,
+          "p10_end": 609.6405294235004,
+          "p90_end": 2559.6290811623635,
+          "chance_of_loss": 0.048,
+          "median_max_drawdown_pct": 27.60994713344602
+        },
+        "no_edge_after_costs": {
+          "median_end": 512.5251145546856,
+          "p10_end": 250.92974024117402,
+          "p90_end": 1085.5007745923253,
+          "chance_of_loss": 0.4845,
+          "median_max_drawdown_pct": 43.833848182555315
+        }
+      }
+    }
+  },
+  "no_teammates": {
+    "rule": {
+      "trades": 3800,
+      "cents_per_contract": 1.9467695526315787,
+      "t": 2.4163575178657095,
+      "cents_at_mid_before_costs": 4.16421052631579,
+      "avg_cost_cents": 41.465,
+      "before_feb_cents": 3.5730839430894306,
+      "from_feb_cents": 1.7048872430471578,
+      "share_yes": 0.26763157894736844,
+      "return_per_dollar_pct": 7.145143616451725
+    },
+    "replay_500": {
+      "end": 2908.090000000001,
+      "profit": 2408.0899999999997,
+      "max_drawdown_pct": 25.946000000000012,
+      "worst_day": -244.55999999999997,
+      "days": 171,
+      "trades": 3800,
+      "contracts": 105795
+    },
+    "bootstrap_500": {
+      "as_in_2025_26": {
+        "return_per_dollar_pct": 7.145143616451725,
+        "median_end": 2903.535,
+        "p10_end": 1087.8220000000001,
+        "p90_end": 5625.818000000001,
+        "chance_of_loss": 0.0135,
+        "chance_down_half": 0.0005,
+        "median_max_drawdown_pct": 33.26873345558781
+      },
+      "half_the_edge": {
+        "return_per_dollar_pct": 3.5725718082258626,
+        "median_end": 1078.3102060686033,
+        "p10_end": 377.8188355233054,
+        "p90_end": 2860.657901810906,
+        "chance_of_loss": 0.172,
+        "chance_down_half": 0.04,
+        "median_max_drawdown_pct": 46.221568980661615
+      },
+      "no_edge_after_costs": {
+        "return_per_dollar_pct": 0.0,
+        "median_end": 383.90479133138695,
+        "p10_end": 137.8754991672132,
+        "p90_end": 1093.6089252614975,
+        "chance_of_loss": 0.6315,
+        "chance_down_half": 0.3005,
+        "median_max_drawdown_pct": 63.563845221732265
+      },
+      "model_no_better_than_market": {
+        "return_per_dollar_pct": -6.298713867018312,
+        "median_end": 77.71866054757997,
+        "p10_end": 41.99398022967024,
+        "p90_end": 184.07832921220154,
+        "chance_of_loss": 0.996,
+        "chance_down_half": 0.946,
+        "median_max_drawdown_pct": 88.02113863796943
+      }
+    },
+    "by_part_of_season": {
+      "regular_season": {
+        "rule": {
+          "trades": 2317,
+          "cents_per_contract": 0.9412499784203712,
+          "t": 0.9788932507347036,
+          "cents_at_mid_before_costs": 3.1877427708243413,
+          "avg_cost_cents": 43.20673284419508,
+          "before_feb_cents": 3.5730839430894306,
+          "from_feb_cents": 0.23173638356164356,
+          "share_yes": 0.36642209753992233,
+          "return_per_dollar_pct": 4.258567739107474
+        },
+        "replay_500": {
+          "end": 999.1099999999998,
+          "profit": 499.1099999999999,
+          "max_drawdown_pct": 25.946000000000012,
+          "worst_day": -139.23000000000005,
+          "days": 124,
+          "trades": 2317,
+          "contracts": 47197
+        },
+        "as_in_2025_26": {
+          "median_end": 1007.8399999999998,
+          "p10_end": 471.34500000000025,
+          "p90_end": 2094.3440000000005,
+          "chance_of_loss": 0.118,
+          "median_max_drawdown_pct": 31.588034432923052
+        },
+        "half_the_edge": {
+          "median_end": 675.3685393242625,
+          "p10_end": 320.2548260113155,
+          "p90_end": 1446.967797299412,
+          "chance_of_loss": 0.3095,
+          "median_max_drawdown_pct": 38.34392504958516
+        },
+        "no_edge_after_costs": {
+          "median_end": 449.7372957211439,
+          "p10_end": 218.24389082703453,
+          "p90_end": 984.4194504388578,
+          "chance_of_loss": 0.568,
+          "median_max_drawdown_pct": 46.88528924509829
+        }
+      },
+      "play_in_and_playoffs": {
+        "rule": {
+          "trades": 1483,
+          "cents_per_contract": 3.51776675657451,
+          "t": 2.491063300557213,
+          "cents_at_mid_before_costs": 5.689817936614969,
+          "avg_cost_cents": 38.74376264329062,
+          "before_feb_cents": NaN,
+          "from_feb_cents": 3.51776675657451,
+          "share_yes": 0.11328388401888065,
+          "return_per_dollar_pct": 11.655053466624771
+        },
+        "replay_500": {
+          "end": 1502.5499999999995,
+          "profit": 1002.55,
+          "max_drawdown_pct": 20.01761356378868,
+          "worst_day": -162.11000000000004,
+          "days": 47,
+          "trades": 1483,
+          "contracts": 31422
+        },
+        "as_in_2025_26": {
+          "median_end": 1571.0099999999998,
+          "p10_end": 745.0900000000003,
+          "p90_end": 3219.9290000000005,
+          "chance_of_loss": 0.0185,
+          "median_max_drawdown_pct": 23.926418043661748
+        },
+        "half_the_edge": {
+          "median_end": 835.205093656805,
+          "p10_end": 399.34343021254597,
+          "p90_end": 1805.9836732776062,
+          "chance_of_loss": 0.187,
+          "median_max_drawdown_pct": 33.56545584614832
+        },
+        "no_edge_after_costs": {
+          "median_end": 443.8054947257615,
+          "p10_end": 215.61479797471617,
+          "p90_end": 959.8274430418351,
+          "chance_of_loss": 0.574,
+          "median_max_drawdown_pct": 48.18978601840307
+        }
+      }
+    }
+  }
+}

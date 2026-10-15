@@ -16,11 +16,19 @@ after fees) lost 0.9 cents per contract over 12,495 trades. It fails the
 pre-registered test. The model is a calibrated pricing tool, not a proven
 money-maker.
 
+**After the test,** the losses turned out to come from trading cost: the
+model's picks beat the mid price by 2.4 cents but crossing the spread and
+paying the fee cost 3.3. A rule that trades only tight markets, hours before
+tip-off, would have broken even in the 2025-26 regular season and made money
+in the playoffs. That was found after the fact, so it is being paper traded
+through 2026-27 ([Phase 4](#phase-4-the-2026-27-rule-paper-traded)).
+
 | Phase | What it adds | Status |
 |---|---|---|
 | 1 | A full range of outcomes for each player stat, from minutes, per-minute rates, the betting line, the opponent and teammates who are out; walk-forward backtest | Done |
 | 2 | Test against Kalshi's 2025-26 prices at tip-off, after fees, with the rule fixed in advance | Done |
 | 3 | Live: Kalshi price log and model prices for every open prop, from opening night | Running |
+| 4 | A cost-aware trading rule, paper traded through 2026-27 with a $500 paper bankroll | Running |
 
 ## Phase 1: the model
 
@@ -130,6 +138,50 @@ the model with the market (weights refit each month on earlier months) and
 trading the blend lost 2.1¢ per contract. Nothing found here is a basis for
 trading money.
 
+## Phase 4: the 2026-27 rule, paper traded
+
+Everything in this section was found after the market test failed, on the
+same season, so it is a hypothesis, not a result
+([log](RESEARCH_LOG.md), [code](run_strategy_backtest.py),
+[results](outputs/strategy/results.json)).
+
+**Where the money went.** Priced at the mid, the model's picks made 2.4¢
+per contract; buying at the ask and paying the fee cost 3.3¢. Markets with a
+1¢ spread made money after fees (+2.1¢ per contract); markets with spreads
+of 5¢ or more lost 5.5¢. Prices a few hours before tip-off were softer than
+prices at tip-off, which already reflect lineup news.
+
+**The rule** ([`strategy.py`](nba_model/strategy.py)): take the price 2–6
+hours before tip-off; trade only markets with a spread of 2¢ or less; buy the
+side the model rates at least 5¢ better than its cost after the fee; one
+line per player, stat and game; skip anyone on the injury report. Stake 1% of
+the bankroll per position (about $5 on $500), at most 30% of it per day.
+
+**Replayed on 2025-26:** 3,928 positions, +1.9¢ per contract (t 2.3). But
+the regular season broke even (+0.02¢ per contract over 2,493 positions);
+all of the profit came in the play-in and playoffs (+5.1¢ per contract,
+t 3.6, 1,435 positions in 91 games). Starting from $500:
+
+| Part of season | Edge assumed | Median end | 1 in 10 ends below | Chance of a loss |
+|---|---|---:|---:|---:|
+| Regular season | as in 2025-26 (none) | $496 | $235 | 50% |
+| Play-in and playoffs | as in 2025-26 | $2,907 | $1,494 | 0% |
+| Play-in and playoffs | half of 2025-26 | $1,233 | $610 | 5% |
+| Play-in and playoffs | none | $513 | $251 | 48% |
+
+Ranges come from resampling 2025-26's trading days 2,000 times. The real
+2025-26 path went from $500 to $390 by early January, $509 by April and
+$2,618 by the Finals.
+
+**What runs now.** Four times a day the projections workflow settles
+yesterday's positions from Kalshi's own results, prices every open prop,
+and adds the rule's positions to a paper ledger:
+[today's bet card](outputs/bets/latest.md),
+[scorecard](outputs/paper/scorecard.md),
+[ledger](outputs/paper/ledger.csv). Regular-season positions are marked
+paper; play-in and playoff positions are marked as the 2027 playoff test. The
+pass criteria were committed before the season (RESEARCH_LOG.md).
+
 ## Live use
 
 Three scheduled workflows run during the season:
@@ -137,13 +189,15 @@ Three scheduled workflows run during the season:
 - [`kalshi.yml`](.github/workflows/kalshi.yml) saves every open Kalshi NBA
   prop market each morning and before each evening's tip-offs
   ([`log_kalshi.py`](log_kalshi.py)), into `data/kalshi/`.
-- [`projections.yml`](.github/workflows/projections.yml) refreshes the box
-  scores, reads ESPN's schedule, lines and injury report (Out and Doubtful
-  players sit), refits the models and prices every open Kalshi prop
+- [`projections.yml`](.github/workflows/projections.yml), four times a day:
+  refreshes the box scores, settles paper positions
+  ([`run_paper.py`](run_paper.py)), reads ESPN's schedule, lines and injury
+  report (Out and Doubtful players sit), refits the models from scratch on
+  every completed game and prices every open Kalshi prop
   ([`run_projections.py`](run_projections.py)). Output:
   [`outputs/projections/latest.csv`](outputs/projections/) with the model's
   expected value and probability, Kalshi's bid and ask, and the edge on each
-  side after fees.
+  side after fees, plus the bet card and paper ledger.
 - [`backfill.yml`](.github/workflows/backfill.yml) downloaded the settled
   2025-26 markets and their hourly prices for the market test
   ([`scripts/backfill_kalshi.py`](scripts/backfill_kalshi.py)).
@@ -155,6 +209,7 @@ pip install -r requirements.txt
 python fetch_data.py               # box scores, schedules and lines (about 10 MB)
 python run_backtest.py             # development seasons; --holdout for 2025-26
 python run_market_test.py          # needs data/kalshi_history/ from the backfill
+python run_strategy_backtest.py    # Phase 4 rule replayed on 2025-26, $500 bankroll
 pytest                             # unit tests on synthetic games, no data needed
 ```
 
@@ -170,7 +225,12 @@ including the market test as written before any price was seen.
 - The model does not know tonight's starting lineups or minutes limits
   announced shortly before tip-off. The market does.
 - Hourly Kalshi candles give the best bid and ask, not the size behind them.
-- One season of Kalshi prices is a short record for a small edge.
+- One season of Kalshi prices is a short record for a small edge, and the
+  Phase 4 rule was chosen on that same season.
+- Kalshi settles markets on players who sit at a value it sets, not at the
+  price paid; about 4% of 2025-26 markets settled that way. The rule skips
+  anyone on the injury report, and the paper ledger records the real
+  settlement when it happens.
 
 ## AI use
 
