@@ -656,3 +656,44 @@ reported with the full edge, half of it, and none.
 
 **Reported, not tested:** results by year, hour, bracket type (tails or
 ranges) and price level.
+
+## 2026-10-15: Results: Miami daily high fails
+
+Run once as written above (`weather/run_test.py`,
+[results](weather/out/results.json)), test dates 2024-05-01 to 2026-10-14.
+Recomputed with separate code: identical. One forecast probability rebuilt
+by hand from the raw forecasts: identical.
+
+| | Forecast family | On-the-day family |
+|---|---:|---:|
+| Candles (markets, dates) | 73,550 (4,431, 829) | 16,354 (3,324, 820) |
+| Test A: model t (market t) | 7.8 (16.5) | 7.9 (23.8) |
+| Brier: model / market mid | 0.139 / 0.131 | 0.183 / 0.131 |
+| Test B taker: positions, ¢ per contract (t) | 3,011, −0.6 (−0.8) | 2,743, −4.2 (−6.3) |
+| B: first half / second half / last 12 months ¢ | +0.4 / −1.7 / −2.3 | −5.1 / −3.4 / −4.1 |
+| Test C resting: fills, ¢ per contract (t) | 21,955, +0.6 (0.8) | 10,177, +0.8 (1.4) |
+| C: first half / second half / last 12 months ¢ | +1.9 / +0.1 / −1.1 | +3.7 / −1.4 / −1.6 |
+| Passes | A only | A only |
+
+The model carries some information the price does not (Test A), as in the
+NBA test, but the market is the better forecaster at every horizon (lower
+Brier score), and no trading rule clears its costs. What edge there was is
+gone: the forecast family made money in 2024 (taker +2.4¢, resting +5.8¢ per
+contract) and lost in 2025 and 2026. On the day, the market moves faster than
+hourly airport reports: by the afternoon its Brier score is less than half
+the model's, and once the high is settled the quotes disappear (only 22-57
+two-sided candles an hour after 6 p.m. local time over the whole period). The
+pre-registered on-the-day model also lumps every morning gap above 3 F
+together, which made it worse than the forecast alone before noon.
+
+**$500.** No rule passed, so there is no bootstrap. Replaying the last 12
+months as they happened with the $500 settings: taker forecast rule $500 to
+$93, taker on-the-day $12, resting forecast $2, resting on-the-day $2
+([replay](weather/out/replay_500.json)). The losses per dollar are much
+larger than per contract because equal-dollar stakes buy many contracts of
+the cheap brackets, which the model overrates: positions at 10¢ or less lost
+about 60% per dollar.
+
+Not used: the National Blend of Models text forecasts (download stopped).
+The market's Brier advantage at every horizon suggests its traders already
+use forecasts at least that good and real-time five-minute observations.

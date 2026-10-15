@@ -1,0 +1,22 @@
+{
+ "taker_forecast": {
+  "last_12m_end": 93.43,
+  "last_12m_positions": 1051,
+  "since_2024_05_end": 48.28
+ },
+ "taker_on_the_day": {
+  "last_12m_end": 12.17,
+  "last_12m_positions": 785,
+  "since_2024_05_end": 2.03
+ },
+ "resting_forecast": {
+  "last_12m_end": 2.31,
+  "last_12m_positions": 1764,
+  "since_2024_05_end": 5.71
+ },
+ "resting_on_the_day": {
+  "last_12m_end": 1.97,
+  "last_12m_positions": 1236,
+  "since_2024_05_end": 1.98
+ }
+}
