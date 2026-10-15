@@ -17,7 +17,13 @@ import numpy as np
 import pandas as pd
 
 from nba_model.evaluate import monthly_models
-from nba_model.kalshi import SERIES, fee_per_contract, normalize_name
+from nba_model.kalshi import (
+    SERIES,
+    SETTLED_FIELDS,
+    fee_per_contract,
+    normalize_name,
+    parse,
+)
 
 # Kalshi team codes that differ from ESPN's.
 KALSHI_TO_ESPN = {
@@ -52,6 +58,8 @@ def load_history(folder):
         if c.exists():
             candles.append(pd.read_parquet(c))
     markets = pd.concat(markets, ignore_index=True) if markets else pd.DataFrame()
+    if len(markets):  # re-parse the raw fields with the current parser
+        markets = parse(markets[["series", *SETTLED_FIELDS]])
     candles = pd.concat(candles, ignore_index=True) if candles else pd.DataFrame()
     return markets, candles
 

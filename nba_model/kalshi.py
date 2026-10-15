@@ -181,7 +181,11 @@ def parse(snapshot_frame):
     """Add player, team, stat, line, game date and prices to raw market rows."""
     frame = snapshot_frame.copy()
     frame["stat"] = frame.series.map(SERIES)
-    frame["player"] = frame.title.str.split(":").str[0].str.strip()
+    # Titles were "Anthony Edwards records 40+ points" until January 2026 and
+    # "Anthony Edwards: 40+ points" after; the yes subtitle is always
+    # "Anthony Edwards: 40+".
+    name = frame.yes_sub_title.fillna(frame.title).str.split(":").str[0]
+    frame["player"] = name.str.replace(r" records .*$", "", regex=True).str.strip()
     frame["player_key"] = frame.player.map(normalize_name)
     plus = frame.yes_sub_title.str.extract(r"(\d+)\+$")[0].astype(float)
     frame["line"] = pd.to_numeric(frame.floor_strike, errors="coerce").fillna(

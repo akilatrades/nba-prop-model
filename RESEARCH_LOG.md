@@ -145,3 +145,23 @@ points in every band, with a slight lean high between 20% and 50%
 ([calibration](outputs/backtest/holdout/calibration.csv)). The gain over a
 player's recent average is smaller for heavy-minute players, the ones Kalshi
 lists, than for the whole league (about 0.5–0.9% against 1.6–2.3%).
+
+## 2026-10-15: Kalshi download and matching (before the market test)
+
+The backfill finished in one run: 80,582 settled markets for 2025-26 games
+(points 23,562, rebounds 22,656, assists 17,745, threes 16,619), from
+2025-11-18 (Kalshi's first NBA player props) to the Finals, and hourly candles
+for the 67,513 that settled yes or no and traded.
+
+Matching markets to box scores used tickers, titles, dates and teams only.
+It found that Kalshi's titles read "Anthony Edwards records 40+ points" until
+January 2026 and "Anthony Edwards: 40+ points" after, so the parser now takes
+the player's name from the yes subtitle, which never changed format. After
+that fix 78,130 of the 80,413 markets on regular-season, play-in and playoff
+games match a player in that game's box score, and 77,234 are on players the
+model prices. Most of the rest are players who were inactive and missing from
+the box score; checking the settlement type (not the result) of the
+unmatched markets showed all but 11 were settled at a fixed value, which the
+test excludes anyway. No prices, yes/no results or volumes were looked at.
+
+The market test runs next, once, with the frozen model.

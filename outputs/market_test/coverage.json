@@ -1,0 +1,23 @@
+{
+  "markets_listed": 80582,
+  "by_series": {
+    "KXNBAPTS": 23562,
+    "KXNBAREB": 22656,
+    "KXNBAAST": 17745,
+    "KXNBA3PT": 16619
+  },
+  "game_found": 80413,
+  "regular_playin_playoffs": 80413,
+  "player_found": 78130,
+  "model_can_price": 77234,
+  "unmatched_team_codes": [
+    "CHI",
+    "DAL",
+    "DEN",
+    "GSW",
+    "MEM",
+    "MIA",
+    "MIL",
+    "MIN"
+  ]
+}

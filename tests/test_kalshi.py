@@ -109,3 +109,11 @@ def test_fee_is_largest_at_even_odds():
     assert fee_per_contract(0.5) == pytest.approx(0.0175)
     assert fee_per_contract(0.1) == pytest.approx(0.0063)
     assert fee_per_contract(0.9) == pytest.approx(fee_per_contract(0.1))
+
+
+def test_parse_reads_player_from_old_title_format():
+    old = raw_market(
+        title="Anthony Edwards records 40+ points", yes_sub_title="Anthony Edwards: 40+"
+    )
+    frame = parse(settled_frame([old], "KXNBAPTS"))
+    assert frame.player.iloc[0] == "Anthony Edwards"
