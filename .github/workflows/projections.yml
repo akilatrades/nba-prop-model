@@ -37,8 +37,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          mkdir -p outputs/projections outputs/paper outputs/bets
-          git add -A outputs/projections outputs/paper outputs/bets
+          mkdir -p outputs/projections outputs/paper outputs/bets outputs/paper_maker
+          git add -A outputs/projections outputs/paper outputs/bets outputs/paper_maker
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "Projections"
           git pull --rebase

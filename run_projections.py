@@ -34,10 +34,14 @@ from nba_model.paper import (
     empty_ledger,
     new_positions,
 )
+from nba_model.paper_maker import COLUMNS as MAKER_COLUMNS
+from nba_model.paper_maker import RULES, post_orders
+from nba_model.paper_maker import empty_ledger as maker_ledger
 from nba_model.strategy import MONEY_SEASON_TYPES
 
 OUT = Path("outputs/projections")
 LEDGER = Path("outputs/paper/ledger.csv")
+MAKER_LEDGER = Path("outputs/paper_maker/orders.csv")
 BETS = Path("outputs/bets")
 
 
@@ -177,6 +181,14 @@ def main():
     ledger.to_csv(LEDGER, index=False)
     write_bet_card(ledger, now)
     print(f"Paper positions added: {len(added)}")
+    makers = pd.read_csv(MAKER_LEDGER) if MAKER_LEDGER.exists() else maker_ledger()
+    makers["day"] = makers.day.astype(str)
+    for rule in RULES:
+        posted = post_orders(priced, makers, now, rule)
+        makers = pd.concat([makers, posted], ignore_index=True)[MAKER_COLUMNS]
+        print(f"Paper resting orders posted ({rule}): {len(posted)}")
+    MAKER_LEDGER.parent.mkdir(parents=True, exist_ok=True)
+    makers.to_csv(MAKER_LEDGER, index=False)
 
 
 HEADER = (
