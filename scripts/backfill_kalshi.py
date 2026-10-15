@@ -24,6 +24,7 @@ Usage: python scripts/backfill_kalshi.py --series KXNBAPTS --minutes 320
 import argparse
 import sys
 import time
+import traceback
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
@@ -99,7 +100,7 @@ def main():
     todo = todo[~todo.ticker.isin(finished | no_candles)]
     print(f"{len(todo)} markets still need candles ({len(finished)} done)")
     if todo.empty:
-        print("complete")
+        annotate("notice", f"{args.series}: complete, {len(finished)} markets")
         return
 
     occurrence = pd.to_datetime(todo.occurrence_datetime, utc=True)
@@ -147,9 +148,23 @@ def main():
         save(combined.drop_duplicates(["ticker", "end_ts"]), candle_path)
     empty_path.write_text("\n".join(sorted(no_candles)) + ("\n" if no_candles else ""))
     remaining = len(todo) - fetched
-    print(f"fetched {fetched}, failed {failed}, remaining {remaining}")
-    print("complete" if remaining == 0 and failed == 0 else "incomplete: run again")
+    status = "complete" if remaining == 0 and failed == 0 else "incomplete: run again"
+    annotate(
+        "notice",
+        f"{args.series}: fetched {fetched}, failed {failed}, "
+        f"remaining {remaining}, {len(finished)} done before; {status}",
+    )
+
+
+def annotate(level, message):
+    """Print a GitHub Actions annotation (readable through the API) and the text."""
+    print(message)
+    print(f"::{level}::" + message.replace("%", "%25").replace("\n", "%0A"))
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception:  # noqa: BLE001 - report any failure as an annotation
+        annotate("error", traceback.format_exc()[-3000:])
+        sys.exit(1)
