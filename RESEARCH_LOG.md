@@ -85,3 +85,45 @@ Results by stat are reported but are not used to pick a winner after the fact.
 **Known limits.** Hourly candles give the top of the book, not its depth, so
 size at those prices is not known. A pass would justify paper trading, not
 money.
+
+## 2026-10-15: Development results; model frozen
+
+**Model** (`nba_model/features.py`, `nba_model/marginals.py`): for each stat a
+Poisson regression on expected minutes (recent minutes, minutes last game,
+share of starts, team games missed, teammates out or back, back-to-back,
+playoffs, home, size of the spread), the player's per-minute rate shrunk
+toward his position, his recent average, the team's implied points, what the
+opponent allows relative to the league, and the share of that stat belonging
+to regulars who are out or returning. The spread of outcomes is the
+empirical distribution of actual ÷ expected by band of expected value,
+separately for players averaging under 20, 20–30 and 30+ minutes.
+
+**Development backtest**, 2021-22 to 2024-25, refit before every month on all
+earlier games (99,833 player-games per stat; regulars who played, with 5+
+earlier games and 10+ recent minutes):
+
+| Stat | Typical miss, model vs recent average | Brier improvement | Log loss improvement | Players averaging 26+ minutes: Brier improvement |
+|---|---|---|---|---|
+| Points | 4.72 vs 4.83 | 2.1% | 2.3% | 1.3% |
+| Rebounds | 1.94 vs 1.98 | 1.9% | 2.0% | 0.6% |
+| Assists | 1.36 vs 1.39 | 2.6% | 2.8% | 1.5% |
+| Threes | 0.91 vs 0.93 | 1.9% | 2.0% | 1.4% |
+
+Predicted and actual rates agree to within 0.3 percentage points in every
+probability band ([calibration](outputs/backtest/development/calibration.csv)).
+
+Choices made while looking at these seasons: keeping the outcome spread by
+minutes tier (it fixed a 1-point underestimate of low lines for heavy-minute
+players), counting only regulars (15+ minutes) as teammates out or back,
+and a five-game half-life for recent form (three and eight games were tried;
+neither was clearly better). A bug in the games-missed count was found by a
+unit test and fixed; it barely changed the results.
+
+**Frozen.** The model used for the holdout season and the market test is
+commit `ce26c24`. Changes after this point will be logged and the holdout
+results reported for the frozen version.
+
+**Clarification to the market test, written before any price is examined:**
+the model prices players with at least 5 earlier games and 10+ recent minutes
+(as in the backtest), so Kalshi markets on other players (mostly rookies in
+their first games) are excluded and counted.
