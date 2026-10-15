@@ -8,13 +8,14 @@ Run from the repository root: python scripts/verify_market_test.py
 """
 
 import json
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
 from scipy.optimize import minimize
 
 frame = pd.read_csv("outputs/market_test/priced_markets.csv.gz", low_memory=False)
-reported = json.loads(open("outputs/market_test/results.json").read())["at_tip"]
+reported = json.loads(Path("outputs/market_test/results.json").read_text())["at_tip"]
 
 
 def fee(price):
