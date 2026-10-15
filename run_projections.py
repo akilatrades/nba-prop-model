@@ -55,9 +55,11 @@ def match_open_markets(markets, schedule, players):
 def price_markets(players, games, schedule, markets, report):
     """Model price for each open market on a scheduled game, with edges vs Kalshi."""
     matched = match_open_markets(markets, schedule, players)
-    listed = matched.rename(columns={"team_espn": "team"})[
-        ["game_id", "team", "player_id"]
-    ].drop_duplicates()
+    listed = (
+        matched[["game_id", "team_espn", "player_id"]]
+        .rename(columns={"team_espn": "team"})
+        .drop_duplicates()
+    )
     upcoming = upcoming_rows(players, schedule, report, listed)
     all_games = pd.concat(
         [games[~games.game_id.isin(schedule.game_id)], schedule], ignore_index=True
