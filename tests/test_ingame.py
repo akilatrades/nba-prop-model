@@ -99,7 +99,8 @@ def test_lineups_from_substitutions():
     # Q1 start until subbed out at 6:00; back on for Q2 (seen before any sub)
     assert iv[1] == [(0.0, 360.0), (720.0, 1440.0)]
     assert iv[2][0] == (360.0, 720.0)  # in at 6:00 to end of Q1
-    assert minutes_until(iv[1], 1000.0) == (6.0, False)
+    assert minutes_until(iv[1], 600.0) == (6.0, False)
+    assert minutes_until(iv[1], 1000.0) == pytest.approx((6.0 + 280 / 60, True))
 
 
 def test_game_state_counts_stats_and_fouls_by_wallclock():
