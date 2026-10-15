@@ -515,3 +515,54 @@ that updates on the live game state price them better than the market?
 - **Known limits:** a real trader sees plays seconds to minutes after they
   happen, and broadcast viewers may move prices first; hourly candles show
   the best bid and ask at that instant only.
+
+## 2026-10-15: Results: in-game test, and liquidity rewards
+
+### In-game: passed, but the edge is speed
+
+Run once as written above (`run_ingame.py`,
+[results](outputs/ingame/results.json)). The state rebuilt from play-by-play
+matches the box scores (stats exactly; minutes within about 0.8), and the
+in-game model fitted on 2023-24 alone was calibrated on 2024-25 within half
+a point at every tested line ([calibration](outputs/ingame/calibration_2024_25.csv)).
+
+- 47,570 in-game snapshots of 30,529 markets in 985 games.
+- **Test A: passed.** Model weight 0.79 (t 36.5) against the market mid's
+  0.34; Brier score 0.168 for the model against 0.192 for the mid (in-game
+  spreads are wide, median 11¢ on the trades, so the mid is a rough price).
+- **Test B: passed.** 4,978 trades, **+4.2¢ per contract (t 6.3)**; regular
+  season +3.6¢ (t 4.2); playoffs +5.4¢; before February +8.1¢, from February
+  +3.8¢. Recomputed with separate code: identical. Game states spot-checked
+  against the raw play-by-play: identical.
+
+Reported checks. The same test with the game state taken from before the
+quote, as if the trader's feed were late:
+
+| State known | ¢ per contract | t | Regular season ¢ |
+|---|---:|---:|---:|
+| at the quote | +4.2 | 6.3 | +3.6 |
+| 1 minute late | +3.2 | 4.6 | +2.5 |
+| 3 minutes late | +2.2 | 3.1 | +1.1 |
+| 5 minutes late | +0.3 | 0.5 | −0.9 |
+
+The model's information advantage (Test A) is the same at every delay; the
+profit is not. Most of it comes from quotes that have not yet caught up with
+the game, and it is gone if the trader is five minutes behind. By part of
+the game: first half +3.8¢, third quarter +4.5¢, fourth quarter +7.0¢ (where
+spreads are widest, median 25¢, and volume thinnest). On court +4.3¢, on the
+bench +4.2¢.
+
+Limits: hourly candles show the book at one instant, not its depth; the
+median hourly volume in these markets was about 360 contracts. Doing this
+live needs a program that reads plays and Kalshi's order book within seconds.
+
+### Liquidity rewards: almost none on NBA props
+
+Kalshi's public list of incentive programs (325,341 programs, all statuses)
+has only 8 on NBA player props, all on points, all ended, $800 in total.
+The rewards go to other markets: daily temperature highs (Miami alone
+$866,800 over all programs), Rotten Tomatoes scores, 15-minute crypto
+prices, tennis, elections, AAA gasoline prices, and NFL fantasy-points
+ladders ($124,800). Open now: YouTube views, Rotten Tomatoes, headlines,
+AAA gasoline (monthly and New Jersey weekly), crypto. A daily job keeps
+`outputs/incentives/` current.

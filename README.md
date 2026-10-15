@@ -30,6 +30,7 @@ through 2026-27 ([Phase 4](#phase-4-the-2026-27-rule-paper-traded)).
 | 3 | Live: Kalshi price log and model prices for every open prop, from opening night | Running |
 | 4 | A cost-aware trading rule, paper traded through 2026-27 with a $500 paper bankroll | Running |
 | 5 | Three other edges: limit orders (passed), sportsbook lines (no free data), correlation (failed) | Done |
+| 6 | "No" seller and model-side resting orders paper traded; in-game trading tested (passed, speed-dependent); reward programs checked | Paper trading from opening night |
 
 ## Phase 1: the model
 
@@ -216,6 +217,45 @@ day), resampling 2025-26's days 2,000 times:
 It needs a program placing and cancelling about 80 orders a day through
 Kalshi's API; the simulation cannot know how other traders would have
 reacted to those orders. [Independent recomputation](scripts/verify_maker.py)
+
+## Phase 6: the "no" seller, trading during games, and rewards
+
+Three follow-ups, each with its rules committed before it was run
+([log](RESEARCH_LOG.md)).
+
+**The "no" seller (exploratory, now paper traded).** Posting "no" one cent
+inside the ask on every market, with no model, made +2.8¢ per filled
+contract on 2025-26 (t 5.3); "yes" everywhere lost. Kalshi's prop traders
+mostly buy "yes", and selling them "no" pays. With the model vetoing orders
+it rates below zero, on every line: +2.9¢ (t 6.1). This was found after the
+fact, so from opening night two resting-order rules are paper traded from
+separate $500 paper bankrolls, filled from Kalshi's public trade prints
+([scorecard](outputs/paper_maker/scorecard.md),
+[orders](outputs/paper_maker/orders.csv)).
+
+**Trading during games (passed, but it is about speed).** An in-game model
+built from ESPN play-by-play (points, rebounds, assists and threes so far,
+minutes on court rebuilt from substitutions, fouls, score, time left),
+fitted on earlier seasons, priced 47,570 live Kalshi quotes in 2025-26.
+Trading where it disagreed by 5¢ after fees: **+4.2¢ per contract over 4,978
+trades (t 6.3)**, +3.6¢ in the regular season
+([results](outputs/ingame/results.json), [code](run_ingame.py)). The profit
+depends on seeing plays quickly:
+
+| Game state known | ¢ per contract | t |
+|---|---:|---:|
+| at the quote | +4.2 | 6.3 |
+| 1 minute late | +3.2 | 4.6 |
+| 3 minutes late | +2.2 | 3.1 |
+| 5 minutes late | +0.3 | 0.5 |
+
+Running it live needs a program that reads plays and Kalshi's order book
+within seconds; in-game spreads are wide (median 11¢) and thin.
+
+**Liquidity rewards: not on NBA props.** Of 325,341 Kalshi reward programs,
+8 were on NBA player props ($800 in total). The money is on weather,
+Rotten Tomatoes, crypto, tennis, elections, gasoline prices and NFL fantasy
+points ([summary](outputs/incentives/summary.json), checked daily).
 
 ## Live use
 
