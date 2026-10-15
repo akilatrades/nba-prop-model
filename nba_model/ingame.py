@@ -41,8 +41,9 @@ COLUMNS = [
 
 def load_pbp(path):
     p = pd.read_parquet(path, columns=COLUMNS)
-    p["ts"] = pd.to_datetime(p.wallclock, utc=True, errors="coerce")
-    p["ts"] = (p.ts.astype("int64") // 10**9).where(p.ts.notna())
+    stamp = pd.to_datetime(p.wallclock, utc=True, errors="coerce")
+    epoch = pd.Timestamp("1970-01-01", tz="UTC")
+    p["ts"] = (stamp - epoch) // pd.Timedelta(seconds=1)  # Unix seconds, any unit
     period = p.period_number
     left = p.clock_minutes * 60 + p.clock_seconds
     length = np.where(period <= 4, 720.0, 300.0)
