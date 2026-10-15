@@ -560,9 +560,99 @@ live needs a program that reads plays and Kalshi's order book within seconds.
 
 Kalshi's public list of incentive programs (325,341 programs, all statuses)
 has only 8 on NBA player props, all on points, all ended, $800 in total.
-The rewards go to other markets: daily temperature highs (Miami alone
-$866,800 over all programs), Rotten Tomatoes scores, 15-minute crypto
+The rewards go to other markets: hourly temperature markets (Miami's hourly
+series alone $866,800 over all programs; corrected 2026-10-15, first written
+as the daily high), Rotten Tomatoes scores, 15-minute crypto
 prices, tennis, elections, AAA gasoline prices, and NFL fantasy-points
 ladders ($124,800). Open now: YouTube views, Rotten Tomatoes, headlines,
 AAA gasoline (monthly and New Jersey weekly), crypto. A daily job keeps
 `outputs/incentives/` current.
+
+## 2026-10-15: Miami daily high (weather), fixed before any price is looked at
+
+A side question from Akila: what would $500 make trading Kalshi's Miami
+temperature markets? Same method as the NBA tests: model from public data,
+rules written here first, then one run against past prices.
+
+**Market.** Kalshi's KXHIGHMIA, "Highest temperature in Miami": six brackets
+a day (four two-degree ranges and two tails), settled on the official high in
+the National Weather Service climate report for Miami International Airport
+(lately "according to The Weather Company", same number). Downloaded: 7,510
+settled markets for 1,252 days (2023-05-11 to 2026-10-14), hourly candles and
+2.38 million trade prints. Kalshi's results match the official highs (Iowa
+Environmental Mesonet archive) on 7,458 of 7,462 markets.
+
+**Weather data (looked at; prices not).** Every METAR from the airport since
+2021 and Open-Meteo's saved forecasts from earlier runs (from January 2024)
+for five models (GFS, ECMWF, ICON, GEM, NBM). The National Blend of Models
+text forecasts were requested from IEM but the download was too slow and was
+stopped; they are not used. Two facts from the observations: the highest
+hourly reading is usually a degree below the official high (equal on 32% of
+days, one below on 54%), while the six-hour maximum the airport reports at
+11:53, 17:53 and 23:53 UTC matches it on about 96% of days. By 01:00 UTC
+(9 p.m. EDT) the day's high is almost always known; the markets close at
+05:00 UTC.
+
+**Forecast model** (`weather/forecast.py`, frozen at this commit). For date D,
+each model's forecast high is its highest hourly temperature for 12:00-23:00
+UTC on D from runs about one day earlier ("day 1", complete by 02:00 UTC on
+D) or two days earlier ("day 2"). A model more than 5 F from the median of
+the models that day is dropped (NBM's saved values have broken stretches).
+Each is corrected by its mean error over the previous 60 days with a
+published high (D - 61 to D - 2), the corrected values are averaged, and the
+high is normal around that average with 1.2 times the root-mean-square of the
+average's past errors (at least 0.8 F), rounded to a whole degree. Chosen on
+2024 dates (March to December) by log score among windows of 30, 60 and 90
+days and single models against the average; the factor 1.2 because the plain
+spread was too narrow there. Mean absolute error about 1.2-1.4 F.
+
+**On-the-day model.** At a decision time on D: the highest whole degree known
+so far (the larger of the rounded six-hour maximum reports and the rounded
+highest hourly reading, METARs used only 10 minutes after they are taken),
+which of the two set it, the hour, and the day 1 forecast minus that value
+(bins at -1, 0, 1, 2, 3 F). The high minus that value has an empirical
+distribution by hour, source and bin, from all earlier days (refit monthly,
+days up to two days before the month), smoothed toward the hour's overall
+distribution (weight 3 days). The final probability is 98% this and 2% the
+forecast-only one (on 2024 dates the table alone was too sure at both ends).
+
+**Prices.** Hourly candles (best bid and ask at the close of each hour) with
+a two-sided quote, 0 < bid < ask < 1. Hour h is counted from 05:00 UTC on D.
+
+- *Forecast family:* candles from the market's opening (about 14:00 UTC on
+  D - 1) up to h = 8 (13:00 UTC on D). Day 2 forecast before 02:00 UTC on D,
+  day 1 from then on. No observations.
+- *On-the-day family:* candles from h = 9 to h = 23 (14:00 UTC on D to 04:00
+  UTC on D + 1), on-the-day model.
+- *Test dates:* 2024-05-01 to 2026-10-14 (forecasts start in 2024).
+
+**Tests, each family separately.**
+
+- **Test A (information):** logistic regression of the outcome on logit(mid)
+  and logit(model) over all candles, standard errors clustered by date.
+  Passes if the model's t is at least 2.0.
+- **Test B (taker):** for each market, at the first candle in the family
+  where the model rates a side at least 5 cents better than its price after
+  the taker fee (yes at the ask, no at 1 - bid; fee 0.07 x P x (1 - P)), buy
+  that side; one position per market per family. Passes if the mean profit
+  per contract is positive with t at least 2.0 (clustered by date), and
+  positive in each half of the test dates (split at the median date) and in
+  the last 12 months (2025-10-15 to 2026-10-14).
+- **Test C (resting orders):** at every candle in the family where the
+  model's edge after the maker fee (25% of the taker fee, as in the NBA test)
+  is at least 3 cents on the side it favours, a buy order rests for one hour
+  at one cent above that side's best bid (at the bid when the spread is one
+  cent). It fills from the trade prints in the following hour with the same
+  price-priority rules as the NBA test (`nba_model/maker.py`). Each filled
+  order is one observation (profit per contract); same pass criteria as B.
+
+**$500 simulation** for each rule that passes, with the NBA settings: 1% of
+the bankroll per position, at most 30% of it committed per day, at most $25
+and 100 contracts per order, Kalshi's fee rounded up to the cent per order;
+taker orders also capped at the contracts traded in that market in the hour
+after the decision, resting orders at the contracts traded through their
+price. Days are resampled from the last 12 months (2,000 one-year paths);
+reported with the full edge, half of it, and none.
+
+**Reported, not tested:** results by year, hour, bracket type (tails or
+ranges) and price level.
