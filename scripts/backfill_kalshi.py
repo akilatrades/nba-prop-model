@@ -9,8 +9,8 @@ yes or no and traded at least once. Markets settled at a fixed value
 get no candles.
 
 Kalshi's occurrence time for these markets is a scheduled time near the end
-of the game, so the window runs from WINDOW_BEFORE hours before it to one
-hour after; it always contains tip-off.
+of the game (close time when it is missing), so the window runs from
+WINDOW_BEFORE hours before it to one hour after; it always contains tip-off.
 
 The run is resumable: tickers already in the candle file are skipped, and it
 stops cleanly after --minutes, saving what it has. It prints counts only.
@@ -59,6 +59,10 @@ def needs_candles(markets):
     return markets[markets.result.isin(["yes", "no"]) & (volume > 0)]
 
 
+def to_utc(column):
+    return pd.to_datetime(column, utc=True, format="ISO8601", errors="coerce")
+
+
 def seconds(timestamp):
     return int(timestamp.timestamp())
 
@@ -103,7 +107,9 @@ def main():
         annotate("notice", f"{args.series}: complete, {len(finished)} markets")
         return
 
-    occurrence = pd.to_datetime(todo.occurrence_datetime, utc=True)
+    # Occurrence time when listed, otherwise close time (both are after tip-off).
+    occurrence = to_utc(todo.occurrence_datetime).fillna(to_utc(todo.close_time))
+    todo, occurrence = todo[occurrence.notna()], occurrence[occurrence.notna()]
     jobs = list(
         zip(
             todo.ticker,
