@@ -1,0 +1,105 @@
+{
+ "legs_priced": 57111,
+ "legs_qualifying": 2430,
+ "qualifying_singles": {
+  "hit_rate": 0.7781893004115227,
+  "model_q": 0.851169485885946,
+  "avg_cost": 0.7796378600823045,
+  "return_per_dollar": -0.016611889258213223,
+  "t": -1.5408246643926127
+ },
+ "nightly_2_leg": {
+  "parlays": 151,
+  "dates": 151,
+  "hit_rate": 0.7218543046357616,
+  "model_joint": 0.8713912874989633,
+  "price_joint": 0.7543304635761591,
+  "return_per_dollar": -0.07036519300813471,
+  "t": -1.460425022614478,
+  "first_half": -0.06095988946030998,
+  "second_half": -0.07656649205065649,
+  "regular_season": -0.09745710117216354,
+  "passes": false,
+  "same_legs_as_singles": {
+   "legs": 302,
+   "hit_rate": 0.8543046357615894,
+   "model_q": 0.9325310242630391,
+   "avg_cost": 0.8671854304635761,
+   "return_per_dollar": -0.026773736925346507,
+   "t": -1.2047866416175508
+  }
+ },
+ "all_2_leg_combinations": {
+  "parlays": 18038,
+  "dates": 151,
+  "hit_rate": 0.5974609158443286,
+  "model_joint": 0.7198045645479157,
+  "price_joint": 0.6030918893447167,
+  "return_per_dollar": -0.03909353968981546,
+  "t": -1.5071764436253783,
+  "first_half": -0.02394463658003873,
+  "second_half": -0.041013529970890916,
+  "regular_season": -0.05804196609963263,
+  "passes": false
+ },
+ "nightly_3_leg": {
+  "parlays": 127,
+  "dates": 127,
+  "hit_rate": 0.5984251968503937,
+  "model_joint": 0.7864245667496427,
+  "price_joint": 0.6301556299212598,
+  "return_per_dollar": -0.09791641952271139,
+  "t": -1.439919463676712,
+  "first_half": -0.08977803898318691,
+  "second_half": -0.1033777012005502,
+  "regular_season": -0.12192908440184685,
+  "passes": false,
+  "same_legs_as_singles": {
+   "legs": 381,
+   "hit_rate": 0.84251968503937,
+   "model_q": 0.9212902665171953,
+   "avg_cost": 0.8550656167979002,
+   "return_per_dollar": -0.02413010137766489,
+   "t": -1.1262926924141705
+  }
+ },
+ "all_3_leg_combinations": {
+  "parlays": 98547,
+  "dates": 127,
+  "hit_rate": 0.4571118349619978,
+  "model_joint": 0.6046113740378518,
+  "price_joint": 0.4633738700518535,
+  "return_per_dollar": -0.05863769700904279,
+  "t": -1.2081405052589707,
+  "first_half": 0.02941012818216091,
+  "second_half": -0.0633279096011247,
+  "regular_season": -0.07930689532580588,
+  "passes": false
+ },
+ "same_game_pairs": {
+  "opponents": {
+   "pairs": 67355,
+   "both_hit": 0.7738252542498701,
+   "model_product": 0.7815614982656404,
+   "price_product": 0.7394335739737213,
+   "residual_covariance": 0.00013366287477428753,
+   "t": 0.31399058656947026
+  },
+  "same player": {
+   "pairs": 16839,
+   "both_hit": 0.759071203753192,
+   "model_product": 0.7675064050279535,
+   "price_product": 0.7220914825702238,
+   "residual_covariance": 0.004442615182459057,
+   "t": 4.533121493384593
+  },
+  "teammates": {
+   "pairs": 61111,
+   "both_hit": 0.7770777765050482,
+   "model_product": 0.7846269256965862,
+   "price_product": 0.749374773772316,
+   "residual_covariance": 0.00027903659872531887,
+   "t": 0.5545627628984279
+  }
+ }
+}
