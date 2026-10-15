@@ -481,3 +481,37 @@ season:** profit per filled contract above zero with game-clustered t of at
 least 2.0, and positive both before and from 2027-02-01. A checkpoint on
 2027-01-31 is reported but decides nothing. No rule changes during the
 season; bug fixes are logged here with their dates.
+
+## 2026-10-15: In-game test, fixed before it is run
+
+Kalshi's prop markets keep trading during games. The question: does a model
+that updates on the live game state price them better than the market?
+
+- **Game state** from ESPN play-by-play (sportsdataverse hoopR), which
+  timestamps every play: each player's points, rebounds, assists and threes
+  so far, minutes on court so far (lineups rebuilt from substitutions),
+  personal fouls, whether he is on the court, the score margin and the game
+  time left.
+- **In-game model:** the stat still to come, as a Poisson regression on the
+  pre-game expected value (the frozen walk-forward model), game time left,
+  minutes so far against his usual share, fouls, being on court, margin and
+  the stat so far; the spread of outcomes as before (empirical, by band of
+  expected value). Fitted on 2023-24 and 2024-25 games only (states every
+  six game minutes). Calibration on 2024-25 is checked with a model fitted on
+  2023-24 alone before anything touches Kalshi prices.
+- **Prices:** every hourly Kalshi candle that closes while the game is in
+  progress (more than five minutes after the first play and before the last),
+  for the 57,111 priced 2025-26 markets, with a two-sided quote, the line not
+  yet reached and the player not fouled out. The state is taken from plays
+  stamped at or before the candle's close.
+- **Test A:** logistic regression of the outcome on logit(mid) and
+  logit(in-game model), standard errors clustered by game; passes if the
+  model's t is at least 2.0.
+- **Test B:** buy the side the in-game model rates at least 5¢ better than
+  the ask (yes) or 1 − bid (no) after the taker fee; one position per player,
+  stat and game, at the first in-game snapshot where one qualifies, largest
+  edge. Same pass criteria as the other tests (t ≥ 2.0 clustered by game;
+  positive in the regular season alone; positive before and from February).
+- **Known limits:** a real trader sees plays seconds to minutes after they
+  happen, and broadcast viewers may move prices first; hourly candles show
+  the best bid and ask at that instant only.
