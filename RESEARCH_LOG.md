@@ -609,3 +609,39 @@ same-game parlay price would have to include.
 
 **$500.** If a rule passes: 2% of the bankroll per parlay, one a night,
 nights resampled 2,000 times; with the full edge, half and none.
+
+### Results, P1 (run once as written)
+
+[Results](outputs/parlays/results.json); recomputed with separate code:
+identical.
+
+- 2,430 qualifying legs: the model said they would hit 85% of the time; they
+  hit 77.8%, about what they cost (78¢). As singles: −1.7% per dollar (t −1.5).
+- **Nightly 2-leg parlay** (151 nights): model 87%, price 75.4%, hit 72.2%;
+  **−7.0% per dollar** (t −1.5). The same legs as singles: −2.7%.
+- **Nightly 3-leg parlay** (127 nights): model 79%, price 63%, hit 59.8%;
+  **−9.8% per dollar** (t −1.4). The same legs as singles: −2.4%.
+- Every 2-leg and 3-leg combination: −3.9% and −5.9% per dollar.
+- Both fail. The model is overconfident exactly where it disagrees most with
+  the market, and a parlay multiplies that. These are best-case prices (no
+  combo margin).
+- Same-game pairs (reported): two legs of the same player hit together a bit
+  more often than their probabilities imply (residual covariance +0.004,
+  t 4.5, 16,839 pairs); teammates and opponents show nothing (t 0.6, 0.3).
+
+### Test P3, Kalshi's own NBA combos (fixed before their prices are downloaded)
+
+Kalshi sells same-game parlays as combo markets (series KXMVENBASINGLEGAME;
+quoted on request by market makers). The probe found them public, with each
+combo's legs, result and trade prints.
+
+- **Sample:** settled combos (yes or no) from the 2025-26 season and playoffs
+  whose trades were downloaded (a fixed random sample of the traded ones).
+- **Question:** do combo takers overpay? For each trade, the taker's side
+  (yes or no) and price; return per dollar = payout / price − 1, before fees.
+  Primary measure: dollar-weighted return of takers, t clustered by game.
+  Takers overpay if it is negative with t ≤ −2.0, in both halves of the
+  season (before and from 2026-02-01).
+- **Reported:** by number of legs and by side; and the quoted price against
+  the product of the legs' prices (for legs in the four prop series, from the
+  hourly candle at or before the trade), which is the margin the quote adds.
