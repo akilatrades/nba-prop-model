@@ -14,6 +14,7 @@ import pandas as pd
 
 ESPN = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba"
 OUT_STATUSES = {"out", "doubtful"}
+SEASON_TYPES = {2: "regular", 3: "playoffs", 5: "play-in"}  # ESPN season types
 
 
 def get_json(url):
@@ -43,6 +44,9 @@ def home_spread_from(details, home, away):
 def parse_scoreboard(payload, season):
     rows = []
     for event in payload.get("events", []):
+        kind = SEASON_TYPES.get((event.get("season") or {}).get("type", 2))
+        if kind is None:
+            continue  # preseason and exhibitions
         competition = event["competitions"][0]
         teams = {
             c["homeAway"]: c["team"]["abbreviation"] for c in competition["competitors"]
@@ -52,7 +56,7 @@ def parse_scoreboard(payload, season):
             {
                 "game_id": int(event["id"]),
                 "season": season,
-                "season_type": "regular",
+                "season_type": kind,
                 "tip_utc": pd.Timestamp(event["date"]).tz_convert("UTC"),
                 "home": teams.get("home"),
                 "away": teams.get("away"),

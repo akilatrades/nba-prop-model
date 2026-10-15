@@ -18,11 +18,13 @@ def test_home_spread_from_details():
     assert pd.isna(home_spread_from(None, "DET", "BOS"))
 
 
-def test_parse_scoreboard():
+def test_parse_scoreboard_skips_preseason():
     payload = {
         "events": [
+            {"id": "1", "season": {"type": 1}, "competitions": []},
             {
                 "id": "401909088",
+                "season": {"type": 2},
                 "date": "2026-10-20T23:00Z",
                 "competitions": [
                     {
@@ -34,10 +36,11 @@ def test_parse_scoreboard():
                         "odds": [{"details": "DET -1.5", "overUnder": 221.5}],
                     }
                 ],
-            }
+            },
         ]
     }
     games = parse_scoreboard(payload, 2027)
+    assert len(games) == 1
     game = games.iloc[0]
     assert game.game_id == 401909088
     assert (game.home, game.away) == ("DET", "BOS")
