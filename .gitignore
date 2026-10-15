@@ -8,3 +8,4 @@ data/hoopr/
 /data/games.parquet
 /data/retrieval.json
 /outputs/**/predictions.parquet
+/data/pbp/
