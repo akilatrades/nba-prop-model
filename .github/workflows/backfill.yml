@@ -24,11 +24,17 @@ jobs:
         series: [KXNBAPTS, KXNBAREB, KXNBAAST, KXNBA3PT]
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main  # latest progress, even when queued behind an earlier run
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - run: pip install pandas numpy pyarrow
-      - run: python scripts/backfill_kalshi.py --series ${{ matrix.series }} --minutes 320
+      # Kalshi's historical candles take about two seconds per request, so
+      # more workers are needed to use the 10-per-second request budget.
+      - run: >-
+          python scripts/backfill_kalshi.py --series ${{ matrix.series }}
+          --minutes 320 --workers 16
       - uses: actions/upload-artifact@v4
         with:
           name: history-${{ matrix.series }}
