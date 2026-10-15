@@ -1,0 +1,25 @@
+{
+  "seasons": [
+    2026
+  ],
+  "predictions": 535731,
+  "player_games": 25511,
+  "data_retrieval": {
+    "retrieved": "2026-10-15T16:23:30+00:00",
+    "source": "local copy of https://raw.githubusercontent.com/sportsdataverse/hoopR-nba-data/main",
+    "seasons": [
+      2018,
+      2027
+    ],
+    "last_completed_game": "2026-06-14 00:30:00+00:00",
+    "rows": {
+      "player_games": 299169,
+      "games": 12810
+    },
+    "games_with_lines": 7941,
+    "sha256": {
+      "player_games.parquet": "5b01c86578604c7e4c86def4312791409e4869c3e1946d62b60b85a1fc64d69f",
+      "games.parquet": "143f124992c432ee219ffc572fcc0bac61ff6c0203308d7019579ee87d949b15"
+    }
+  }
+}

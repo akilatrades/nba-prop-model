@@ -1,0 +1,5 @@
+stat,label,player_games,mae,mae_naive,brier,brier_naive,brier_improvement_pct,log_loss,log_loss_naive,log_loss_improvement_pct,at_or_below_q10,at_or_below_q50,at_or_below_q90
+points,Points,10855,5.5233,5.5741,0.1182,0.1192,0.8265,0.3697,0.3725,0.7663,0.0981,0.4988,0.9039
+rebounds,Rebounds,10855,2.0767,2.1074,0.1219,0.123,0.8286,0.378,0.381,0.7877,0.0972,0.5024,0.9078
+assists,Assists,10855,1.6741,1.6877,0.1111,0.1117,0.4856,0.3469,0.3489,0.5893,0.1234,0.4924,0.9031
+threes,Threes made,10855,1.1063,1.1143,0.1394,0.1406,0.9163,0.428,0.4316,0.8317,0.2744,0.5482,0.9103

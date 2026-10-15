@@ -127,3 +127,21 @@ results reported for the frozen version.
 the model prices players with at least 5 earlier games and 10+ recent minutes
 (as in the backtest), so Kalshi markets on other players (mostly rookies in
 their first games) are excluded and counted.
+
+## 2026-10-15: Holdout season (2025-26), box scores only
+
+The frozen model (`ce26c24`), refit before each month, run once on the
+2025-26 regular season, play-in and playoffs (25,511 player-games per stat):
+
+| Stat | Typical miss, model vs recent average | Brier improvement | Players averaging 26+ minutes: Brier improvement |
+|---|---|---|---|
+| Points | 4.70 vs 4.80 | 2.0% | 0.8% |
+| Rebounds | 1.92 vs 1.96 | 2.3% | 0.8% |
+| Assists | 1.38 vs 1.41 | 2.0% | 0.5% |
+| Threes | 0.93 vs 0.94 | 1.6% | 0.9% |
+
+Calibration held: predicted and actual rates agree to within 0.6 percentage
+points in every band, with a slight lean high between 20% and 50%
+([calibration](outputs/backtest/holdout/calibration.csv)). The gain over a
+player's recent average is smaller for heavy-minute players, the ones Kalshi
+lists, than for the whole league (about 0.5–0.9% against 1.6–2.3%).
