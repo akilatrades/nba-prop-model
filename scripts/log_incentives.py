@@ -35,11 +35,17 @@ def all_programs():
             return pd.DataFrame(rows)
 
 
+def ends(programs):
+    return pd.to_datetime(
+        programs.end_date, utc=True, format="ISO8601", errors="coerce"
+    )
+
+
 def by_series(programs, top=25):
     """Total period rewards in dollars by series, largest first."""
     if programs.empty:
         return {}
-    dollars = pd.to_numeric(programs.period_reward) / 10000
+    dollars = pd.to_numeric(programs.period_reward, errors="coerce") / 10000
     series = programs.market_ticker.str.split("-").str[0]
     totals = dollars.groupby(series).sum().sort_values(ascending=False).head(top)
     return {k: round(float(v), 2) for k, v in totals.items()}
@@ -58,7 +64,9 @@ def main():
     else:
         nba = programs[programs.market_ticker.str.startswith("KXNBA")].copy()
         nba["series"] = nba.market_ticker.str.split("-").str[0]
-        nba["reward_dollars"] = pd.to_numeric(nba.period_reward) / 10000
+        nba["reward_dollars"] = (
+            pd.to_numeric(nba.period_reward, errors="coerce") / 10000
+        )
         path = OUT / "nba_programs.csv"
         if path.exists():
             nba = pd.concat([pd.read_csv(path), nba]).drop_duplicates("id", keep="last")
@@ -83,7 +91,7 @@ def main():
                 else None,
                 "types": programs.incentive_type.value_counts().to_dict(),
                 "reward_dollars_by_series_open_now": by_series(
-                    programs[pd.to_datetime(programs.end_date, utc=True) > now]
+                    programs[ends(programs) > pd.Timestamp(now)]
                 ),
                 "reward_dollars_by_series_all_time": by_series(programs),
                 "all_series_with_programs_top": programs.market_ticker.str.split("-")
@@ -105,4 +113,12 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    import traceback
+
+    try:
+        main()
+    except Exception:  # noqa: BLE001 - report any failure as an annotation
+        text = traceback.format_exc()[-3000:]
+        print(text)
+        print("::error::" + text.replace("%", "%25").replace("\n", "%0A"))
+        sys.exit(1)
