@@ -426,3 +426,58 @@ liquidity rather than take it. Resting orders on the model's side, mostly
 offering "no" just inside the ask, made money in both halves of the season
 and in the regular season on its own. It is the one approach so far that
 passed a test fixed before its data was seen.
+
+## 2026-10-15: The "no" seller, and the live paper tests for 2026-27
+
+**Exploratory, after idea 1 passed (same 2025-26 data, in-sample).** Resting
+"no" orders with no model at all (one per player, stat and game, on the
+lowest line) made +2.8¢ per filled contract (8,409 fills, t 5.3); "yes"
+orders everywhere lost 2.0¢ (t −1.8). Kalshi's prop traders mostly buy
+"yes", and selling them "no" one cent inside the ask paid. Variants tried:
+
+| No-side orders on | Model veto | Fills | ¢ per contract | t | Regular season ¢ |
+|---|---|---:|---:|---:|---:|
+| lowest line per player and stat | none | 8,409 | +2.79 | 5.3 | +2.79 |
+| every line | none | 33,475 | +1.65 | 4.1 | +1.35 |
+| lowest line | skip if model edge < −3¢ | 7,271 | +3.17 | 5.7 | +3.03 |
+| every line | skip if model edge < −3¢ | 26,449 | +2.32 | 5.3 | +1.96 |
+| lowest line | skip if model edge < 0 | 6,277 | +3.55 | 6.0 | +3.54 |
+| every line | skip if model edge < 0 | 21,373 | +2.88 | 6.1 | +2.45 |
+
+Fills in the last 30 minutes before tip-off made the most (+7.2¢); cancelling
+30 minutes early cut profit by about a fifth, so orders stay up to tip-off.
+
+**Chosen for 2026-27: every line, skipping any order the model rates below
+zero.** It is the most diversified (most fills, smallest worst day) and the
+veto is the model's only job. These figures are in-sample and are not
+evidence; the 2026-27 season is.
+
+### Live paper tests, fixed before opening night (2026-10-20)
+
+Two resting-order rules are paper traded from separate $500 paper
+bankrolls, alongside the taker rule already running:
+
+1. **Model side (idea 1, as tested):** on the side the model favours, one
+   cent above that side's bid when the spread is 2¢ or more, else at the
+   bid; only if the model's edge after the maker fee is at least 3¢; one
+   order per player, stat and game, the largest edge.
+2. **"No" seller:** a "no" order on every line, one cent above the "no"
+   bid when the spread is 2¢ or more, else at the bid; skipped if the
+   model's probability of "no", minus the order price and the maker fee, is
+   below zero.
+
+Both: orders are posted by the first projection run 2 to 6 hours before
+tip-off and cancelled at tip-off; players on the injury report are skipped;
+each order is sized at 1% of that rule's paper bankroll (whole contracts, at
+most $25 or 100 contracts), and a day's orders together reserve at most 30%
+of it. An order fills with as many contracts as traded through its price
+between posting and tip-off, read from Kalshi's public trade prints with the
+same rules as the backtest. Filled positions are settled from Kalshi's
+settlement. Maker fee assumed at a quarter of the taker fee until Kalshi's
+schedule for these series is confirmed.
+
+**Pass criteria for each rule, judged at the end of the 2026-27 regular
+season:** profit per filled contract above zero with game-clustered t of at
+least 2.0, and positive both before and from 2027-02-01. A checkpoint on
+2027-01-31 is reported but decides nothing. No rule changes during the
+season; bug fixes are logged here with their dates.
