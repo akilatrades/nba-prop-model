@@ -1,0 +1,35 @@
+name: kalshi combos
+# Probe and download of Kalshi's NBA combo (parlay) markets (RESEARCH_LOG.md).
+on:
+  push:
+    branches: [main]
+    paths: ["scripts/probe_kalshi_combos.py", "scripts/backfill_combos.py", ".github/workflows/combos.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: repo-writes
+  cancel-in-progress: false
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pandas numpy pyarrow
+      - run: python scripts/probe_kalshi_combos.py
+      - name: Commit
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A outputs/probes
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Probe: Kalshi combo markets"
+          git pull --rebase
+          git push
