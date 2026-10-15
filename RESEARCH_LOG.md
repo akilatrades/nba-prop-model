@@ -645,3 +645,38 @@ combo's legs, result and trade prints.
 - **Reported:** by number of legs and by side; and the quoted price against
   the product of the legs' prices (for legs in the four prop series, from the
   hourly candle at or before the trade), which is the margin the quote adds.
+
+## 2026-10-15: Where the resting-order profit comes from (decomposition, in-sample)
+
+Same 2025-26 data as idea 1, no new rules; this is diagnosis, not a test
+(`outputs/decompose/`). Resting "no" orders on every line (one cent inside
+the ask, up to tip-off), with and without the model veto, and the mirror
+"yes" orders.
+
+- **The market mid is not biased.** At tip-off the mid averaged 44.3% and
+  "yes" happened 45.6%; by price decile the mid is calibrated within about
+  two points everywhere. There is no static "retail overpays for yes" in the
+  mid, and no longshot premium to harvest: "no" orders made about the same
+  (+1.4 to +2.4¢) at every price level from 10¢ to 90¢, and the lines far
+  above a player's average (+2.7¢) were only a little better than the rest.
+- **The flow is asymmetric.** Resting "no" orders made +1.65¢ (33,475 fills,
+  t 4.1) with no model at all; resting "yes" orders lost 2.0¢ (t −3.2). The
+  people who hit a resting "no" (yes buyers paying near the ask) are
+  uninformed; the people who hit a resting "yes" (yes sellers) are informed.
+  So the edge is spread capture from one side of the book, with adverse
+  selection on the other.
+- **The model's job is to avoid the informed fills.** Profit rises with the
+  model's edge: orders the model rated below −5¢ lost 1-2¢; from 0 to 3¢
+  made +1.9¢; 3 to 10¢ made +3.4-3.6¢; above 10¢ +3.1¢. With the veto
+  (edge ≥ 0) the result is +2.93¢ in both halves of the season (H1 4,287
+  fills, H2 16,354), positive in all four stats (rebounds weakest, +1.6¢) and
+  in every price band (+2.0 to +3.4¢). Orders two hours before tip made
+  +4.5¢ (2,416 fills) against +1.4¢ at five hours.
+- **Capacity is not the limit** at this bankroll: millions of contracts
+  traded through these prices over the season.
+
+Conclusion: the strategy already chosen for the paper test (sell "no" on
+every line, resting inside the ask, skipping orders the model rates below
+zero) is the right shape. It is a liquidity-provision strategy with a model
+filter, not a forecasting one. Picking winners is not the edge; neither is
+hunting outliers.
