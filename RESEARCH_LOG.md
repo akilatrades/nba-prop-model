@@ -288,3 +288,68 @@ Kalshi's own settlement of each market.
 
 The original market test at tip-off (Test A and B) is also rerun on 2026-27
 as planned.
+
+## 2026-10-15: Three new ideas, tests fixed before their data is downloaded
+
+The first approach (out-predict the price and pay the spread) failed. Three
+different sources of edge are tested on 2025-26. Each test below is written
+before the data it needs is downloaded: Kalshi's trade history (idea 1),
+sportsbook prop lines (idea 2) and double-double and triple-double markets
+(idea 3). Ideas 1 and 3 reuse 2025-26 prop prices and results that have
+already been seen; this is stated, not hidden.
+
+Common pass criteria for a trading test: profit per contract above zero with
+game-clustered t of at least 2.0; positive in the regular season on its own;
+positive both before and from 2026-02-01. Positions are one per player, stat
+and game (the line with the largest edge), placed at the first of two looks:
+the last hourly candle ending at least 5 hours before tip-off, then at least
+2 hours before.
+
+### Idea 1: be the maker (limit orders)
+
+- **Universe:** the 57,111 markets priced in the market test.
+- **Order:** on the side the model favours, rest a buy order one cent above
+  that side's best bid when the spread is at least 2 cents (then the order
+  is alone at the best price), or at the bid when the spread is 1 cent (then
+  it joins a queue of unknown size). Placed only if the model's probability
+  for that side, minus the order price, minus the maker fee is at least
+  3 cents. Cancelled at tip-off.
+- **Fill:** from Kalshi's trade prints between placement and tip-off. A
+  resting yes order at price q fills if a taker sells yes (taker outcome side
+  "no") at a yes price below q, or at q when the order improved the bid; a
+  joined order needs a print strictly through its price. No order fills more
+  than the contracts that traded.
+- **Fee:** primary, a maker fee of a quarter of the taker fee
+  (0.0175 × P × (1 − P)); also reported with no maker fee.
+- **Reported:** fill rate, and adverse selection: profit on filled orders
+  against what the same orders would have made had they all filled.
+
+### Idea 2: copy the sportsbooks
+
+ESPN's public odds API is probed for stored DraftKings player-prop lines on
+2025-26 games. If they exist for most games: the book's over/under is turned
+into a no-vig probability at its line, moved to each Kalshi line using the
+model's distribution shape (the model's expected value is shifted until it
+matches the book at the book's line), and compared with Kalshi's price at
+the last candle before tip-off (the book's stored line is taken to be its
+closing line, so earlier Kalshi prices would see the future). Buy the side
+where the book-based probability beats cost plus fee by 3 cents or more.
+If no free history exists, this idea cannot be tested without buying data,
+and that decision is the account holder's.
+
+### Idea 3: structure and correlation
+
+- **Ladder arbitrage:** for every player, stat, game and hourly candle,
+  check whether buying yes on a lower line and no on a higher line costs
+  less than $1 after taker fees. That pair pays at least $1 whatever happens.
+  Counted, with the first opportunity per player, stat and game priced.
+- **Double-doubles:** a fair price for "at least two of points, rebounds,
+  assists of 10 or more", with each probability taken from Kalshi's own
+  10+ market for that player and stat at the same hour (its mid price), or
+  the model when Kalshi has no such market, and the three combined with a
+  Gaussian copula whose correlations are fitted on 2021-22 to 2024-25 model
+  predictions and results (before any double-double price is downloaded).
+  Buy the side where this fair price beats cost plus taker fee by 5 cents.
+  Same pass criteria. Also reported: Brier scores of Kalshi's double-double
+  price, the fair price, and the price assuming independence.
+- **Triple-doubles:** the same, reported only (they are rare).
