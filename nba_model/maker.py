@@ -97,3 +97,58 @@ def settle_orders(placed, filled_contracts, fee_share=0.25):
     p["pnl_if_filled"] = won - p.price - maker_fee(p.price, fee_share)
     p["pnl_no_fee"] = won - p.price
     return p
+
+
+def maker_days(settled):
+    """Per-day arrays for the bankroll simulation: price, traded, value."""
+    s = settled.sort_values("tip_utc")
+    day = pd.to_datetime(s.tip_utc, utc=True).dt.tz_convert("America/New_York").dt.date
+    price = s.price.to_numpy(float)
+    traded = s.filled_contracts.to_numpy(float)
+    value = np.where(s.side.to_numpy() == "yes", s.over, 1 - s.over).astype(float)
+    groups = day.groupby(day.to_numpy()).indices
+    return [(d, price[i], traded[i], value[i]) for d, i in groups.items()]
+
+
+def simulate_maker(
+    days,
+    bankroll=500.0,
+    stake=0.01,
+    day_cap=0.30,
+    fee_share=0.25,
+    roi_shift=0.0,
+    max_dollars=25.0,
+    max_contracts=100,
+):
+    """Replay resting orders with a bankroll.
+
+    Every order reserves its full cost while it rests, so a day's orders
+    together reserve at most ``day_cap`` of the bankroll (each is scaled down
+    if needed). An order fills only as many contracts as traded through its
+    price. ``roi_shift`` changes the return per dollar of every filled
+    contract.
+    """
+    rows = []
+    for day, price, traded, value in days:
+        start = bankroll
+        scale = min(1.0, day_cap / (stake * len(price)))
+        budget = np.minimum(stake * start * scale, max_dollars)
+        size = np.minimum(np.floor(budget / price + 1e-9), max_contracts)
+        filled = np.minimum(size, np.floor(traded))
+        raw = 100 * fee_share * 0.07 * filled * price * (1 - price)
+        fee = np.ceil(np.round(raw, 6)) / 100
+        profit = float(np.sum(filled * (value + roi_shift * price - price) - fee))
+        bankroll = start + profit
+        rows.append(
+            {
+                "day": day,
+                "orders": int((size >= 1).sum()),
+                "filled_orders": int((filled >= 1).sum()),
+                "contracts": int(filled.sum()),
+                "profit": profit,
+                "bankroll": bankroll,
+            }
+        )
+        if bankroll <= 1:
+            break
+    return pd.DataFrame(rows)

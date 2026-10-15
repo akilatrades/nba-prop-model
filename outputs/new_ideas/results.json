@@ -1,0 +1,243 @@
+{
+  "idea1_maker": {
+    "maker_fee_quarter": {
+      "orders": 14516,
+      "fill_rate": 0.31282722513089006,
+      "filled": {
+        "positions": 4541,
+        "games": 854,
+        "cents_per_contract": 3.0956793712838584,
+        "t": 4.063359476993717,
+        "regular_season_cents": 2.5761576719176005,
+        "regular_season_t": 3.0400242380080122,
+        "playoffs_cents": 4.478696411290323,
+        "before_feb_cents": 2.3453983131923466,
+        "from_feb_cents": 3.305665022547915
+      },
+      "all_orders_as_if_filled": {
+        "positions": 14516,
+        "games": 1053,
+        "cents_per_contract": 11.27638206634059,
+        "t": 21.053874318315273,
+        "regular_season_cents": 12.446020381292572,
+        "regular_season_t": 20.89832896376782,
+        "playoffs_cents": 5.594337661420501,
+        "before_feb_cents": 18.76548656928008,
+        "from_feb_cents": 8.372385138623327
+      },
+      "unfilled_orders_as_if_filled": {
+        "positions": 9975,
+        "games": 1047,
+        "cents_per_contract": 15.00054957894737,
+        "t": 22.904763027428416,
+        "regular_season_cents": 16.175036840448666,
+        "regular_season_t": 22.597348038952596,
+        "playoffs_cents": 6.711781239903068,
+        "before_feb_cents": 24.08874730656219,
+        "from_feb_cents": 10.973184179687498
+      },
+      "fill_rate_by_side": {
+        "no": 0.5873391510131637,
+        "yes": 0.0735009671179884
+      },
+      "fill_rate_improved_vs_joined": {
+        "False": 0.3350867964229353,
+        "True": 0.30947284978200557
+      },
+      "passes": true
+    },
+    "no_maker_fee": {
+      "orders": 14650,
+      "fill_rate": 0.31679180887372016,
+      "filled": {
+        "positions": 4641,
+        "games": 858,
+        "cents_per_contract": 3.6630036630036633,
+        "t": 4.778891974690855,
+        "regular_season_cents": 3.175303523837726,
+        "regular_season_t": 3.72243003398162,
+        "playoffs_cents": 4.9659810126582276,
+        "before_feb_cents": 2.950445986124876,
+        "from_feb_cents": 3.8609581497797363
+      },
+      "all_orders_as_if_filled": {
+        "positions": 14650,
+        "games": 1053,
+        "cents_per_contract": 11.495290102389077,
+        "t": 21.67140218764371,
+        "regular_season_cents": 12.65638911788953,
+        "regular_season_t": 21.421065385180704,
+        "playoffs_cents": 5.906349206349207,
+        "before_feb_cents": 18.904283965728276,
+        "from_feb_cents": 8.630572645527685
+      },
+      "unfilled_orders_as_if_filled": {
+        "positions": 10009,
+        "games": 1047,
+        "cents_per_contract": 15.126985712858426,
+        "t": 23.228795630944326,
+        "regular_season_cents": 16.314292242659654,
+        "regular_season_t": 22.91212307028639,
+        "playoffs_cents": 6.852707006369426,
+        "before_feb_cents": 24.137516254876466,
+        "from_feb_cents": 11.129236982547239
+      },
+      "fill_rate_by_side": {
+        "no": 0.5912344777209642,
+        "yes": 0.07610506085842408
+      },
+      "fill_rate_improved_vs_joined": {
+        "False": 0.33930399181166837,
+        "True": 0.31332703213610585
+      },
+      "passes": true
+    },
+    "robustness": {
+      "yes_side": {
+        "positions": 570,
+        "games": 362,
+        "cents_per_contract": 0.1305335087719297,
+        "t": 0.06925858619511578,
+        "regular_season_cents": -0.058912633262259616,
+        "regular_season_t": -0.028556584556527653,
+        "playoffs_cents": 1.0102388613861384,
+        "before_feb_cents": -1.4487864341085277,
+        "from_feb_cents": 0.5925114512471655
+      },
+      "no_side": {
+        "positions": 3971,
+        "games": 795,
+        "cents_per_contract": 3.521298394610929,
+        "t": 4.2463098646788255,
+        "regular_season_cents": 3.0125446680790957,
+        "regular_season_t": 3.195374035028196,
+        "playoffs_cents": 4.7862593722563656,
+        "before_feb_cents": 2.911891174768519,
+        "from_feb_cents": 3.690763421306727
+      },
+      "return_per_dollar_pct": 10.779999313339966,
+      "every_fill_needs_a_trade_through": {
+        "positions": 3795,
+        "games": 810,
+        "cents_per_contract": 3.0035116600790515,
+        "t": 3.625615522561533,
+        "regular_season_cents": 2.3528850261878036,
+        "regular_season_t": 2.4785087465255495,
+        "playoffs_cents": 4.553533934937612,
+        "before_feb_cents": 2.4903582161125306,
+        "from_feb_cents": 3.1366965233986064
+      },
+      "model_without_teammates_out": {
+        "positions": 4514,
+        "games": 875,
+        "cents_per_contract": 3.7604812250775366,
+        "t": 4.966848403164461,
+        "regular_season_cents": 3.636404941231055,
+        "regular_season_t": 4.18327243314748,
+        "playoffs_cents": 4.073626131928181,
+        "before_feb_cents": 3.7184867110453648,
+        "from_feb_cents": 3.7726476357142866
+      }
+    },
+    "bankroll_500": {
+      "replay": {
+        "end": 2143.3200000000006,
+        "profit": 1643.3200000000004,
+        "max_drawdown_pct": 13.000549534697264,
+        "worst_day": -101.13000000000002,
+        "days": 184,
+        "trades": 14516,
+        "contracts": 43795
+      },
+      "filled_orders": 4533,
+      "as_in_2025_26": {
+        "median_end": 2009.8449999999998,
+        "p10_end": 1202.5779999999995,
+        "p90_end": 3199.328000000001,
+        "chance_of_loss": 0.0,
+        "median_max_drawdown_pct": 14.990208630751617
+      },
+      "half_the_edge": {
+        "median_end": 952.9857579640163,
+        "p10_end": 549.821692608806,
+        "p90_end": 1549.050784282596,
+        "chance_of_loss": 0.0605,
+        "median_max_drawdown_pct": 22.69349284875964
+      },
+      "no_edge": {
+        "median_end": 445.0369353247993,
+        "p10_end": 269.5969757224595,
+        "p90_end": 774.7503329923014,
+        "chance_of_loss": 0.613,
+        "median_max_drawdown_pct": 39.22401035923576
+      }
+    }
+  },
+  "idea2_sportsbooks": {
+    "games_with_kalshi_props": 1072,
+    "of_which_espn_stores_book_props": 176,
+    "by_book": {
+      "DraftKings": 100,
+      "ESPN BET": 76
+    },
+    "status": "not testable: stored lines cover too few games and do not say which price is the over and which the under"
+  },
+  "idea3_ladder_arbitrage": {
+    "snapshots_with_two_or_more_lines": 116307,
+    "snapshots_with_arbitrage": 6,
+    "player_stat_games_with_arbitrage": 5,
+    "profit_per_pair_first_opportunity_cents": 0.2262200000000036
+  },
+  "idea3_combos": {
+    "KXNBA2D": {
+      "accuracy": {
+        "markets": 3607,
+        "share_of_inputs_from_kalshi": 0.3718905472636816,
+        "outcome_rate": 0.2062655946770169,
+        "kalshi_mid_rate": 0.2180773495980039,
+        "fair_rate": 0.21884962029555,
+        "independent_rate": 0.2069919753609161,
+        "brier_kalshi_mid": 0.13307551289159966,
+        "brier_fair": 0.13273869984785658,
+        "brier_independent": 0.1329664409455675
+      },
+      "trades": {
+        "positions": 243,
+        "games": 202,
+        "cents_per_contract": -1.6892954732510286,
+        "t": -0.6645074646321616,
+        "regular_season_cents": -1.7346911764705886,
+        "regular_season_t": -0.6798231040022962,
+        "playoffs_cents": 0.47154000000000085,
+        "before_feb_cents": -6.731548717948718,
+        "from_feb_cents": 0.6943151515151522
+      },
+      "passes": false
+    },
+    "KXNBA3D": {
+      "accuracy": {
+        "markets": 697,
+        "share_of_inputs_from_kalshi": 0.4617458712504213,
+        "outcome_rate": 0.07173601147776183,
+        "kalshi_mid_rate": 0.10050932568149212,
+        "fair_rate": 0.07666004481374282,
+        "independent_rate": 0.057392514083610076,
+        "brier_kalshi_mid": 0.05689451219512195,
+        "brier_fair": 0.05266326533196519,
+        "brier_independent": 0.05273765708191922
+      },
+      "trades": {
+        "positions": 16,
+        "games": 16,
+        "cents_per_contract": -6.022725000000001,
+        "t": -0.517005883457319,
+        "regular_season_cents": -2.9742400000000013,
+        "regular_season_t": -0.24744958937331538,
+        "playoffs_cents": -51.74999999999999,
+        "before_feb_cents": 0.25504999999999767,
+        "from_feb_cents": -8.115316666666669
+      },
+      "passes": "report only"
+    }
+  }
+}

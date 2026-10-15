@@ -353,3 +353,76 @@ and that decision is the account holder's.
   Same pass criteria. Also reported: Brier scores of Kalshi's double-double
   price, the fair price, and the price assuming independence.
 - **Triple-doubles:** the same, reported only (they are rare).
+
+## 2026-10-15: Results for the three new ideas
+
+Run once each as written above (`run_new_ideas.py`,
+[results](outputs/new_ideas/results.json)). Data downloaded after the tests
+were committed: 657,723 Kalshi trade prints in the six hours before tip-off,
+4,879 double-double and 1,171 triple-double markets, and ESPN's stored
+sportsbook props for every 2025-26 game.
+
+### Idea 1, be the maker: passed
+
+14,516 resting orders; 31% filled (59% of orders on the "no" side, 7% on
+the "yes" side). Filled orders, with a maker fee of a quarter of the taker
+fee: **+3.1¢ per contract, t 4.1**, 4,541 fills in 854 games. Regular season
++2.6¢ (t 3.0); playoffs +4.5¢; before February +2.3¢; from February +3.3¢.
+All criteria pass. With no maker fee: +3.7¢ (t 4.8).
+
+Adverse selection is large: had every order filled it would have made
++11.3¢ per contract; the orders that did not fill would have made +15.0¢.
+Orders fill mostly when the market moves against them, but the ones that
+fill still made money.
+
+Reported checks: every fill requiring a trade through the price, +3.0¢
+(t 3.6); the model without the teammates-out features, +3.8¢ (t 5.0); "no"
+orders +3.5¢ (t 4.2), "yes" orders +0.1¢ (t 0.1). Return per dollar on
+filled orders 10.8%. Recomputed with separate code
+(`scripts/verify_maker.py`): identical.
+
+$500 bankroll (each order reserves its cost while it rests; 1% per order,
+day's orders capped at 30% of the bankroll, fills limited to the contracts
+that traded through): the 2025-26 replay ends at $2,143 with a 13% worst
+drawdown. Resampling days 2,000 times: median $2,010 (1 in 10 below
+$1,203); with half the edge, median $953 (1 in 10 below $550, 6% chance of a
+loss); with no edge, median $445 (61% chance of a loss).
+
+Limits: the simulation cannot know how other traders would have reacted to
+these orders; an order alone at a new best price is assumed first in line;
+the maker fee for these series is assumed, not confirmed; and about 80
+orders a day must be placed and cancelled at tip-off, which needs a program
+using a Kalshi API key.
+
+### Idea 2, copy the sportsbooks: not testable for free
+
+ESPN stores sportsbook props for 176 of the 1,072 games with Kalshi props
+(ESPN BET for 76 games in November, DraftKings for 100, mostly playoffs).
+The stored rows do not say which price is the over and which the under (in
+ESPN BET's data the order is unrelated to the result), and the stored times
+are morning lines, not closing lines. The pre-registered test needs most
+games, so it was not run. Testing it needs a paid historical prop feed, or
+logging sportsbook lines from now on.
+
+### Idea 3, structure and correlation: failed
+
+- **Ladder arbitrage:** 6 of 116,307 hourly snapshots with two or more lines
+  had a riskless pair after fees, worth 0.2¢ on average. Kalshi keeps its
+  ladders consistent.
+- **Double-doubles:** the correlations are real (treating the stats as
+  independent underprices double-doubles by about a tenth), but Kalshi
+  already prices them: Brier score of Kalshi's mid 0.1331, the correlated
+  fair price 0.1327, independence 0.1330 (3,607 markets). The rule made 243
+  trades at −1.7¢ per contract (t −0.7). Failed.
+- **Triple-doubles (reported only):** Kalshi's mid averaged 10.1% against
+  7.2% happening and a fair price of 7.7% (697 markets); its Brier score was
+  worse than the fair price's (0.0569 against 0.0527). Only 16 trades
+  cleared the 5¢ edge, so this is an observation, not a result.
+
+### What this means
+
+The model's edge is real but small; the way to keep it is to provide
+liquidity rather than take it. Resting orders on the model's side, mostly
+offering "no" just inside the ask, made money in both halves of the season
+and in the regular season on its own. It is the one approach so far that
+passed a test fixed before its data was seen.

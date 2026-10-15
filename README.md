@@ -29,6 +29,7 @@ through 2026-27 ([Phase 4](#phase-4-the-2026-27-rule-paper-traded)).
 | 2 | Test against Kalshi's 2025-26 prices at tip-off, after fees, with the rule fixed in advance | Done |
 | 3 | Live: Kalshi price log and model prices for every open prop, from opening night | Running |
 | 4 | A cost-aware trading rule, paper traded through 2026-27 with a $500 paper bankroll | Running |
+| 5 | Three other edges: limit orders (passed), sportsbook lines (no free data), correlation (failed) | Done |
 
 ## Phase 1: the model
 
@@ -181,6 +182,40 @@ and adds the rule's positions to a paper ledger:
 [ledger](outputs/paper/ledger.csv). Regular-season positions are marked
 paper; play-in and playoff positions are marked as the 2027 playoff test. The
 pass criteria were committed before the season (RESEARCH_LOG.md).
+
+## Phase 5: three other ways to make money
+
+The first approach (out-predict the price, then pay the spread) failed, so
+three different sources of edge were tested on 2025-26, each with its rules
+committed before its data was downloaded
+([log](RESEARCH_LOG.md), [code](run_new_ideas.py),
+[results](outputs/new_ideas/results.json)).
+
+| Idea | What it does | Result |
+|---|---|---|
+| **1. Be the maker** | Rest a limit order on the model's side, one cent inside the spread, cancel at tip-off; fills read from Kalshi's trade prints | **Passed.** 4,541 fills, +3.1¢ per contract after a maker fee (t 4.1); regular season +2.6¢ (t 3.0) |
+| 2. Copy the sportsbooks | Bet Kalshi back toward the sportsbook line | Not testable for free: ESPN stores book props for only 176 of 1,072 games, without over/under labels |
+| 3. Structure and correlation | Ladder arbitrage; double-doubles priced from Kalshi's own markets plus fitted correlations | Failed. Ladders are consistent; Kalshi already prices the correlation |
+
+Idea 1 works because the model's information is worth about 2–4¢ a
+contract, which is less than the cost of crossing the spread but more than
+nothing once you collect the spread instead. Most fills are on the "no"
+side: offering "no" just inside the ask, to traders buying "yes". Orders fill
+mostly when the market moves against them (had all of them filled they would
+have made 11¢ a contract), but the fills still made money.
+
+Starting from $500 (1% per order, at most 30% of the bankroll resting per
+day), resampling 2025-26's days 2,000 times:
+
+| Edge assumed | Median end of season | 1 in 10 ends below | Chance of a loss |
+|---|---:|---:|---:|
+| As in 2025-26 | $2,010 | $1,203 | 0% |
+| Half of 2025-26 | $953 | $550 | 6% |
+| None | $445 | $270 | 61% |
+
+It needs a program placing and cancelling about 80 orders a day through
+Kalshi's API; the simulation cannot know how other traders would have
+reacted to those orders. [Independent recomputation](scripts/verify_maker.py)
 
 ## Live use
 

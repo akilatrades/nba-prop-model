@@ -28,9 +28,15 @@ from nba_model.kalshi import (
     fee_per_contract,
     parse,
 )
-from nba_model.maker import fills, first_orders, settle_orders
+from nba_model.maker import (
+    fills,
+    first_orders,
+    maker_days,
+    settle_orders,
+    simulate_maker,
+)
 from nba_model.market import clustered_mean_t, load_history, match_markets, price_at_tip
-from nba_model.strategy import one_per_player, qualifying, settle
+from nba_model.strategy import one_per_player, qualifying, settle, summarize_path
 
 HISTORY = Path("data/kalshi_history")
 OUT = Path("outputs/new_ideas")
@@ -120,7 +126,80 @@ def idea_maker(priced, candles):
         out[label] = result
         if share == 0.25:
             settled.to_csv(OUT / "maker_orders.csv.gz", index=False)
+            main = settled
+    out["robustness"] = maker_robustness(main, looks, trades, priced)
+    out["bankroll_500"] = maker_bankroll(main)
     return out
+
+
+def maker_robustness(settled, looks, trades, priced):
+    """Reported checks, not part of the pass/fail decision."""
+    f = settled[settled.filled]
+    checks = {
+        "yes_side": summary(f[f.side == "yes"], "pnl_if_filled"),
+        "no_side": summary(f[f.side == "no"], "pnl_if_filled"),
+        "return_per_dollar_pct": 100 * float((f.pnl_if_filled / f.price).mean()),
+    }
+    placed = settled.drop(columns=["filled_contracts", "filled"]).copy()
+    placed["improved"] = False
+    s2 = settle_orders(placed, fills(placed, trades))
+    checks["every_fill_needs_a_trade_through"] = summary(s2, "pnl_if_filled", s2.filled)
+    no_team = [(h, q.assign(p_model=q.p_no_teammates)) for h, q in looks]
+    p3 = first_orders(no_team)
+    s3 = settle_orders(p3, fills(p3, trades))
+    checks["model_without_teammates_out"] = summary(s3, "pnl_if_filled", s3.filled)
+    return checks
+
+
+def maker_bankroll(settled, paths=2000):
+    days = maker_days(settled)
+    f = settled[settled.filled]
+    roi = float((f.pnl_if_filled / f.price).mean())
+    replay = simulate_maker(days)
+    out = {
+        "replay": summarize_path(replay.rename(columns={"orders": "trades"}), 500.0),
+        "filled_orders": int(replay.filled_orders.sum()),
+    }
+    rng = np.random.default_rng(0)
+    for name, shift in [
+        ("as_in_2025_26", 0.0),
+        ("half_the_edge", -roi / 2),
+        ("no_edge", -roi),
+    ]:
+        ends, drawdowns = [], []
+        for _ in range(paths):
+            pick = rng.integers(0, len(days), len(days))
+            season = [(i, *days[j][1:]) for i, j in enumerate(pick)]
+            path = simulate_maker(season, roi_shift=shift)
+            summary_ = summarize_path(path.rename(columns={"orders": "trades"}), 500.0)
+            ends.append(summary_["end"])
+            drawdowns.append(summary_["max_drawdown_pct"])
+        ends = np.array(ends)
+        out[name] = {
+            "median_end": float(np.median(ends)),
+            "p10_end": float(np.quantile(ends, 0.1)),
+            "p90_end": float(np.quantile(ends, 0.9)),
+            "chance_of_loss": float((ends < 500).mean()),
+            "median_max_drawdown_pct": float(np.median(drawdowns)),
+        }
+    return out
+
+
+def idea_sportsbooks(priced):
+    """Whether ESPN's stored sportsbook props are enough to run the test."""
+    path = Path("data/espn_props/props_2026.parquet")
+    if not path.exists():
+        return {"status": "no data"}
+    props = pd.read_parquet(path, columns=["game_id", "provider_name"])
+    kalshi_games = set(priced.game_id.astype(int))
+    overlap = props[props.game_id.isin(kalshi_games)]
+    return {
+        "games_with_kalshi_props": len(kalshi_games),
+        "of_which_espn_stores_book_props": int(overlap.game_id.nunique()),
+        "by_book": overlap.groupby("provider_name").game_id.nunique().to_dict(),
+        "status": "not testable: stored lines cover too few games and do not say "
+        "which price is the over and which the under",
+    }
 
 
 def idea_ladder_arbitrage(markets, candles, players):
@@ -281,6 +360,7 @@ def main():
     results = {}
     if any((HISTORY / f"trades_{s}.parquet").exists() for s in SERIES):
         results["idea1_maker"] = idea_maker(priced, candles)
+    results["idea2_sportsbooks"] = idea_sportsbooks(priced)
     results["idea3_ladder_arbitrage"] = idea_ladder_arbitrage(markets, candles, players)
     results["idea3_combos"] = idea_combos(priced, candles, players, rhos, holdout)
     text = json.dumps(results, indent=2, default=_plain)
