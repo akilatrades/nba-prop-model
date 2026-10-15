@@ -123,3 +123,39 @@ def load_metars():
     out = out.sort_values("valid").reset_index(drop=True)
     out["date"] = (out.valid - pd.Timedelta(hours=5)).dt.date
     return out
+
+
+# --- What was known at a decision time --------------------------------------
+
+LATENCY = pd.Timedelta(minutes=10)  # a METAR is used only 10 minutes after it is taken
+
+
+def obs_states(metars, times, latency=LATENCY):
+    """Observations known at each decision time, for the climate day it falls in.
+
+    ``times`` is a frame with ``date`` (climate day) and ``ts`` (decision time,
+    UTC). Returns, per row: ``mh`` the highest METAR temperature so far (F,
+    tenths), ``m6`` the highest 6-hour maximum reported so far for this day
+    (the 11:53, 17:53 and 23:53 UTC reports; the 05:53 one mostly covers the
+    previous day and is left out), ``last`` the latest temperature, and
+    ``n_obs``.
+    """
+    by_day = {d: g for d, g in metars.groupby("date")}
+    out = []
+    for date, ts in zip(times.date, times.ts):
+        g = by_day.get(date)
+        start = climate_day_start(date)
+        row = {"mh": np.nan, "m6": np.nan, "last": np.nan, "n_obs": 0}
+        if g is not None:
+            seen = g[(g.valid >= start) & (g.valid <= ts - latency)]
+            if len(seen):
+                row["mh"] = seen.temp_f.max()
+                row["last"] = seen.temp_f.iloc[-1]
+                row["n_obs"] = len(seen)
+                six = seen.max6_f[
+                    seen.valid >= start + pd.Timedelta(hours=5, minutes=30)
+                ]
+                if six.notna().any():
+                    row["m6"] = six.max()
+        out.append(row)
+    return pd.DataFrame(out, index=times.index)
