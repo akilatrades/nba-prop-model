@@ -15,6 +15,19 @@ import pandas as pd
 ESPN = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba"
 OUT_STATUSES = {"out", "doubtful"}
 SEASON_TYPES = {2: "regular", 3: "playoffs", 5: "play-in"}  # ESPN season types
+SCHEDULE_COLUMNS = [
+    "game_id",
+    "season",
+    "season_type",
+    "tip_utc",
+    "home",
+    "away",
+    "home_score",
+    "away_score",
+    "completed",
+    "home_spread",
+    "total",
+]
 
 
 def get_json(url):
@@ -69,7 +82,7 @@ def parse_scoreboard(payload, season):
                 "total": float(odds["overUnder"]) if odds.get("overUnder") else np.nan,
             }
         )
-    return pd.DataFrame(rows)
+    return pd.DataFrame(rows, columns=SCHEDULE_COLUMNS)
 
 
 def scoreboard(date, season):

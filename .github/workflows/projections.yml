@@ -21,7 +21,13 @@ jobs:
           python-version: "3.12"
       - run: pip install -r requirements.txt
       - run: python fetch_data.py
-      - run: python run_projections.py
+      - name: Run projections (errors shown as an annotation)
+        run: |
+          set -o pipefail
+          python run_projections.py 2>&1 | tee run.log || {
+            echo "::error::$(tail -c 3000 run.log | sed ':a;N;$!ba;s/%/%25/g;s/\n/%0A/g')"
+            exit 1
+          }
       - name: Commit projections
         run: |
           git config user.name "github-actions[bot]"

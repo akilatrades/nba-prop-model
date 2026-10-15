@@ -39,6 +39,7 @@ def test_parse_scoreboard_skips_preseason():
             },
         ]
     }
+    assert parse_scoreboard({"events": []}, 2027).completed.empty
     games = parse_scoreboard(payload, 2027)
     assert len(games) == 1
     game = games.iloc[0]

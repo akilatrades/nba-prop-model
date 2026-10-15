@@ -52,23 +52,9 @@ def match_open_markets(markets, schedule, players):
     return m
 
 
-def main():
-    now = datetime.now(UTC)
-    players = pd.read_parquet("data/player_games.parquet")
-    games = pd.read_parquet("data/games.parquet")
-    season = now.year + 1 if now.month >= 8 else now.year
-    eastern = pd.Timestamp(now).tz_convert("America/New_York")
-    days = [eastern.date(), (eastern + timedelta(days=1)).date()]
-    schedule = pd.concat(
-        [scoreboard(f"{d:%Y%m%d}", season) for d in days], ignore_index=True
-    )
-    schedule = schedule[~schedule.completed & (schedule.tip_utc > now)]
-    markets = parse(snapshot(now=now))
-    if schedule.empty or markets.empty:
-        print(f"Nothing to price: {len(schedule)} games, {len(markets)} markets")
-        return
+def price_markets(players, games, schedule, markets, report):
+    """Model price for each open market on a scheduled game, with edges vs Kalshi."""
     matched = match_open_markets(markets, schedule, players)
-    report = injuries()
     listed = matched.rename(columns={"team_espn": "team"})[
         ["game_id", "team", "player_id"]
     ].drop_duplicates()
@@ -85,7 +71,6 @@ def main():
     target = eligible[eligible.game_id.isin(schedule.game_id)].set_index(
         ["game_id", "player_id"]
     )
-
     out = []
     for stat, spec in STATS.items():
         model = StatModel(spec).fit(train)
@@ -102,6 +87,8 @@ def main():
         ask["p_model"] = model.prob_over(feats, ask.line.to_numpy(float), mean)
         ask["teammates_out_minutes"] = feats.vacated_share_minutes.to_numpy() * 240
         out.append(ask)
+    if not out:
+        return pd.DataFrame(columns=COLUMNS), matched
     priced = pd.concat(out, ignore_index=True)
     yes_cost, no_cost = priced.yes_ask_dollars, 1 - priced.yes_bid_dollars
     priced["edge_yes"] = priced.p_model - yes_cost - fee_per_contract(yes_cost)
@@ -109,25 +96,46 @@ def main():
     priced["paper_side"] = np.select(
         [priced.edge_yes >= 0.05, priced.edge_no >= 0.05], ["yes", "no"], default=""
     )
-    columns = [
-        "snapshot_utc",
-        "tip_utc",
-        "event_ticker",
-        "ticker",
-        "player",
-        "team",
-        "stat",
-        "line",
-        "model_mean",
-        "p_model",
-        "yes_bid_dollars",
-        "yes_ask_dollars",
-        "edge_yes",
-        "edge_no",
-        "paper_side",
-        "teammates_out_minutes",
-    ]
-    priced = priced[columns].sort_values(["tip_utc", "event_ticker", "player", "stat"])
+    priced = priced[COLUMNS].sort_values(["tip_utc", "event_ticker", "player", "stat"])
+    return priced, matched
+
+
+COLUMNS = [
+    "snapshot_utc",
+    "tip_utc",
+    "event_ticker",
+    "ticker",
+    "player",
+    "team",
+    "stat",
+    "line",
+    "model_mean",
+    "p_model",
+    "yes_bid_dollars",
+    "yes_ask_dollars",
+    "edge_yes",
+    "edge_no",
+    "paper_side",
+    "teammates_out_minutes",
+]
+
+
+def main():
+    now = datetime.now(UTC)
+    players = pd.read_parquet("data/player_games.parquet")
+    games = pd.read_parquet("data/games.parquet")
+    season = now.year + 1 if now.month >= 8 else now.year
+    eastern = pd.Timestamp(now).tz_convert("America/New_York")
+    days = [eastern.date(), (eastern + timedelta(days=1)).date()]
+    schedule = pd.concat(
+        [scoreboard(f"{d:%Y%m%d}", season) for d in days], ignore_index=True
+    )
+    schedule = schedule[~schedule.completed & (schedule.tip_utc > now)]
+    markets = parse(snapshot(now=now))
+    if schedule.empty or markets.empty:
+        print(f"Nothing to price: {len(schedule)} games, {len(markets)} markets")
+        return
+    priced, matched = price_markets(players, games, schedule, markets, injuries())
     folder = OUT / "ladders"
     folder.mkdir(parents=True, exist_ok=True)
     path = folder / f"{now:%Y-%m-%dT%H%MZ}.csv"

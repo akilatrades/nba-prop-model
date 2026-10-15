@@ -18,6 +18,9 @@ OUT = Path("data/kalshi")
 def main():
     now = datetime.now(UTC)
     frame = snapshot(now=now)
+    if frame.empty:
+        print("No open NBA prop markets; nothing saved")
+        return
     season = now.year + 1 if now.month >= 8 else now.year
     folder = OUT / str(season)
     folder.mkdir(parents=True, exist_ok=True)
