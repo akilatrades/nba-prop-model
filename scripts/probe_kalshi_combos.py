@@ -85,7 +85,10 @@ def main():
         errors += errors2
     report["collections_count"] = len(collections)
     report["collection_errors"] = errors
-    report["collection_samples"] = collections[:5]
+    report["collection_samples"] = [
+        {k: (v[:3] if isinstance(v, list) else v) for k, v in c.items()}
+        for c in collections[:3]
+    ]
     report["collection_series"] = Counter(
         str(c.get("series_ticker")) for c in collections
     ).most_common(40)
@@ -140,7 +143,7 @@ def main():
                     {"series_ticker": s["ticker"], "limit": 1000},
                 ),
             ]:
-                markets, errors = pages(path, params, "markets", 3)
+                markets, errors = pages(path, params, "markets", 20)
                 report.setdefault("by_series", {})[f"{s['ticker']}:{label}"] = {
                     "count_first_pages": len(markets),
                     "errors": errors,
@@ -170,7 +173,7 @@ def main():
                 }
     report["trades"] = trades_report
     (OUT / "kalshi_combos.json").write_text(
-        json.dumps(report, indent=1, default=str)[:900000] + "\n"
+        json.dumps(report, indent=1, default=str) + "\n"
     )
     annotate(
         "notice",
