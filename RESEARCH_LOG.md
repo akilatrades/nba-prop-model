@@ -566,3 +566,46 @@ prices, tennis, elections, AAA gasoline prices, and NFL fantasy-points
 ladders ($124,800). Open now: YouTube views, Rotten Tomatoes, headlines,
 AAA gasoline (monthly and New Jersey weekly), crypto. A daily job keeps
 `outputs/incentives/` current.
+
+## 2026-10-15: Parlays, fixed before they are run
+
+Akila's question: does combining two or three high-probability plays into a
+parlay make more money? A parlay pays only if every leg hits, and its fair
+price is the product of the legs' probabilities (if they are independent),
+so it compounds whatever edge or cost each leg has. It can only help if the
+legs have an edge or if their correlation is priced wrong.
+
+Caveat: this uses the same 2025-26 prices as the market test, whose taker
+results are already known (buying single legs at the ask did not pay), so it
+is not a blind test of new data.
+
+**Legs.** The 2025-26 markets of the market test, priced from the last hourly
+candle at or before tip-off with a two-sided quote, and the frozen model. A
+leg is the side the model favours; q is the model's probability for that
+side, c its cost (the ask for yes, 1 - bid for no). A leg qualifies when
+q >= 0.70 ("high percentage") and q - c - fee(c) >= 0.03 (value after the
+taker fee 0.07 x c x (1 - c)). At most one leg per player and game (the one
+with the highest q).
+
+**Test P1, nightly parlays across games.** On each date, keep each game's
+best qualifying leg (highest q, then largest edge), rank those by q, and
+form one 2-leg parlay from the top two and one 3-leg parlay from the top
+three (dates with too few games are skipped). The parlay is priced at the
+product of the legs' costs, the best a buyer could do (it equals buying the
+legs and rolling the winnings; a real combo price adds a margin), with the
+fee 0.07 x P x (1 - P) on the combined price P, and pays $1 if every leg
+hits. Return per dollar staked = payout / (P + fee) - 1, one parlay per date,
+so dates are independent. Each of the 2- and 3-leg rules passes if its mean
+return per dollar is positive with t >= 2.0, positive in both halves (before
+and from 2026-02-01) and positive in the regular season alone. Compared with
+staking the same legs as single bets.
+
+**Reported, not tested.** Every 2- and 3-leg combination of qualifying legs
+from different games on the same date (t clustered by date); hit rates
+against the model's and the price's implied rates; and, for pairs of legs in
+the same game (same player, teammates, opponents), how often both hit
+against the product of their probabilities, which is the correlation a
+same-game parlay price would have to include.
+
+**$500.** If a rule passes: 2% of the bankroll per parlay, one a night,
+nights resampled 2,000 times; with the full edge, half and none.
