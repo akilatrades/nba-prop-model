@@ -50,6 +50,7 @@ jobs:
           path: weather/data
       - run: python weather/download.py ${{ matrix.part }} --minutes 300
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: weather-${{ matrix.part }}
           path: weather/data/kalshi_*
@@ -61,7 +62,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        part: [forecasts, obs]
+        part: [openmeteo, mos, obs]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -72,6 +73,7 @@ jobs:
       - run: pip install pandas numpy pyarrow
       - run: python weather/download.py ${{ matrix.part }}
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: weather-${{ matrix.part }}
           path: |

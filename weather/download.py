@@ -17,10 +17,11 @@ Each part runs in its own GitHub Actions job and writes to weather/data:
 Candles and trades are resumable and stop cleanly after --minutes. Prices
 are not looked at here. Prints counts and request errors only.
 
-Usage: python weather/download.py markets|candles|trades|forecasts|obs
+Usage: python weather/download.py markets|candles|trades|openmeteo|mos|obs
 """
 
 import argparse
+import http.client
 import io
 import json
 import sys
@@ -97,9 +98,9 @@ def fetch(url, retries=4, timeout=120):
             body = error.read(400).decode("utf-8", "replace")
             if error.code in (400, 404) or attempt == retries - 1:
                 raise ValueError(f"HTTP {error.code}: {body}") from error
-        except (OSError, TimeoutError):
+        except (OSError, TimeoutError, http.client.HTTPException) as error:
             if attempt == retries - 1:
-                raise
+                raise ValueError(f"{type(error).__name__}: {error}") from error
         time.sleep(5 * (attempt + 1))
     raise ValueError("unreachable")
 
@@ -300,12 +301,12 @@ def iem_mos(end):
     """NBM (NBS) and GFS (GFS) MOS text forecasts for KMIA, every run."""
     notes, frames = {}, []
     for model in ["NBS", "GFS"]:
-        got = 0
+        got, failures = 0, 0
         first_error = None
         start = pd.Timestamp(FIRST_DAY)
         stop_all = pd.Timestamp(end) + pd.Timedelta(days=1)
         while start < stop_all:
-            stop = min(start + pd.DateOffset(months=1), stop_all)
+            stop = min(start + pd.Timedelta(days=5), stop_all)
             params = {
                 "station": "KMIA",
                 "model": model,
@@ -324,10 +325,15 @@ def iem_mos(end):
                     frames.append(f)
                     got += len(f)
             except (OSError, ValueError) as error:
+                failures += 1
                 first_error = first_error or f"{start.date()}: {str(error)[:200]}"
             start = stop
-            time.sleep(1)
-        notes[model] = {"rows": got, "first_error": first_error}
+            time.sleep(0.5)
+        notes[model] = {
+            "rows": got,
+            "failed_chunks": failures,
+            "first_error": first_error,
+        }
     if frames:
         frame = pd.concat(frames, ignore_index=True)
         save(
@@ -338,11 +344,11 @@ def iem_mos(end):
     return notes
 
 
-def get_forecasts():
+def get_forecasts(part):
     end = pd.Timestamp.now(tz="UTC").date().isoformat()
-    notes = {"open_meteo": open_meteo(end), "iem_mos": iem_mos(end)}
-    (OUT / "forecast_notes.json").write_text(json.dumps(notes, indent=1) + "\n")
-    annotate("notice", "forecasts: " + json.dumps(notes)[:3500])
+    notes = open_meteo(end) if part == "openmeteo" else iem_mos(end)
+    (OUT / f"{part}_notes.json").write_text(json.dumps(notes, indent=1) + "\n")
+    annotate("notice", f"{part}: " + json.dumps(notes)[:3500])
 
 
 # --- Observations --------------------------------------------------------------
@@ -419,7 +425,7 @@ def get_obs():
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "part", choices=["markets", "candles", "trades", "forecasts", "obs"]
+        "part", choices=["markets", "candles", "trades", "openmeteo", "mos", "obs"]
     )
     parser.add_argument("--minutes", type=float, default=300)
     parser.add_argument("--workers", type=int, default=8)
@@ -431,8 +437,8 @@ def main():
         get_candles(args.minutes, args.workers)
     elif args.part == "trades":
         get_trades(args.minutes, args.workers)
-    elif args.part == "forecasts":
-        get_forecasts()
+    elif args.part in ("openmeteo", "mos"):
+        get_forecasts(args.part)
     else:
         get_obs()
 
