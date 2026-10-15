@@ -107,7 +107,8 @@ def post_orders(priced, ledger, now, rule, start=START_BANKROLL):
     mine = ledger[ledger.rule == rule]
     if rule == "model_side":
         taken = set(zip(mine.game_id, mine.player_id, mine.stat))
-        o = o[[k not in taken for k in zip(o.game_id, o.player_id, o.stat)]]
+        keep = [k not in taken for k in zip(o.game_id, o.player_id, o.stat)]
+        o = o[np.array(keep, dtype=bool)]
     else:
         o = o[~o.ticker.isin(set(mine.ticker))]
     if o.empty:

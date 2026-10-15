@@ -103,8 +103,12 @@ def calibration(models, states):
     return pd.DataFrame(out)
 
 
-def live_snapshots(priced, candles, pbp, pre):
-    """Kalshi quotes during games, with the game state at the quote's time."""
+def live_snapshots(priced, candles, pbp, pre, lag=0):
+    """Kalshi quotes during games, with the game state at the quote's time.
+
+    ``lag`` seconds: use the state as it was that long before the quote, to
+    see how much the result depends on knowing plays the instant they happen.
+    """
     c = candles.merge(priced[["ticker", "game_id", "player_id", "stat"]], on="ticker")
     bounds = pbp.dropna(subset=["ts"]).groupby("game_id").ts.agg(["min", "max"])
     c = c.merge(bounds, left_on="game_id", right_index=True)
@@ -114,10 +118,12 @@ def live_snapshots(priced, candles, pbp, pre):
     for gid, group in c.groupby("game_id"):
         game = pbp[pbp.game_id == gid].dropna(subset=["ts"])
         roster = list(group.player_id.unique())
-        st = game_states(game, roster, sorted(group.end_ts.unique()), by="ts")
+        times = [t - lag for t in sorted(group.end_ts.unique())]
+        st = game_states(game, roster, times, by="ts")
         if not st.empty:
             states.append(st.assign(game_id=gid))
-    states = pd.concat(states, ignore_index=True).rename(columns={"time": "end_ts"})
+    states = pd.concat(states, ignore_index=True)
+    states["end_ts"] = states.pop("time") + lag
     snap = c.merge(states, on=["game_id", "player_id", "end_ts"])
     return snap.merge(pre, on=["game_id", "player_id"])
 
@@ -128,6 +134,62 @@ def download_pbp(seasons=(2024, 2025, 2026)):
         path = PBP / f"play_by_play_{season}.parquet"
         if not path.exists():
             urllib.request.urlretrieve(PBP_URL.format(season=season), path)
+
+
+def price_snapshots(snap, meta, models):
+    snap = snap.merge(meta.drop(columns=["game_id", "player_id", "stat"]), on="ticker")
+    threshold = snap.line + 0.5
+    parts = []
+    for stat in STATS:
+        part = snap[snap.stat == stat].copy()
+        rows = with_pregame_mean(part, stat)
+        part["p_model"] = models[stat].prob_at_least(rows, threshold.loc[part.index])
+        part["reached"] = part[f"{stat}_so_far"] >= threshold.loc[part.index]
+        parts.append(part)
+    snap = pd.concat(parts)
+    snap = snap[~snap.reached & (snap.fouls_so_far < 6)].copy()
+    snap["mid"] = (snap.yes_bid + snap.yes_ask) / 2
+    return snap
+
+
+def first_trades(snap):
+    taken, trades = set(), []
+    for _, group in snap.sort_values("end_ts").groupby("end_ts", sort=True):
+        t = one_per_player(qualifying(group, max_spread=1.0, min_edge=0.05))
+        keep = [k not in taken for k in zip(t.game_id, t.player_id, t.stat)]
+        t = t[np.array(keep, dtype=bool)]
+        taken.update(zip(t.game_id, t.player_id, t.stat))
+        trades.append(t)
+    return settle(pd.concat(trades, ignore_index=True))
+
+
+def trade_summary(t):
+    if len(t) < 2:
+        return {"trades": len(t)}
+    mean, tt = clustered_mean_t(t.pnl, t.game_id)
+    regular = t[t.season_type == "regular"]
+    reg_mean, reg_t = (
+        clustered_mean_t(regular.pnl, regular.game_id)
+        if len(regular) > 1
+        else (np.nan, np.nan)
+    )
+    tip = pd.to_datetime(t.tip_utc, utc=True)
+    return {
+        "trades": len(t),
+        "games": int(t.game_id.nunique()),
+        "cents_per_contract": 100 * mean,
+        "t": tt,
+        "regular_season_cents": 100 * reg_mean,
+        "regular_season_t": reg_t,
+        "playoffs_cents": 100 * t.loc[t.season_type != "regular", "pnl"].mean(),
+        "before_feb_cents": 100 * t.loc[tip < SPLIT, "pnl"].mean(),
+        "from_feb_cents": 100 * t.loc[tip >= SPLIT, "pnl"].mean(),
+        "share_yes": float((t.side == "yes").mean()),
+        "median_spread_cents": 100 * float((t.yes_ask - t.yes_bid).median()),
+        "median_hour_volume": float(pd.to_numeric(t.volume, errors="coerce").median())
+        if "volume" in t
+        else None,
+    }
 
 
 def main():
@@ -152,53 +214,18 @@ def main():
     priced["tip_utc"] = pd.to_datetime(priced.tip_utc, utc=True)
     _, candles = load_history(Path("data/kalshi_history"))
     pbp = load_pbp(PBP / "play_by_play_2026.parquet")
-    snap = live_snapshots(priced, candles, pbp, pregame(hold))
+    pre = pregame(hold)
     meta = priced.drop(
         columns=["yes_bid", "yes_ask", "end_ts", "price", "volume", "mid"]
     )
-    snap = snap.merge(meta.drop(columns=["game_id", "player_id", "stat"]), on="ticker")
-    threshold = snap.line + 0.5
-    parts = []
-    for stat in STATS:
-        part = snap[snap.stat == stat].copy()
-        rows = with_pregame_mean(part, stat)
-        part["p_model"] = models[stat].prob_at_least(rows, threshold.loc[part.index])
-        part["reached"] = part[f"{stat}_so_far"] >= threshold.loc[part.index]
-        parts.append(part)
-    snap = pd.concat(parts)
-    snap = snap[~snap.reached & (snap.fouls_so_far < 6)].copy()
-    snap["mid"] = (snap.yes_bid + snap.yes_ask) / 2
+    snap = price_snapshots(live_snapshots(priced, candles, pbp, pre), meta, models)
     snap.to_parquet(OUT / "snapshots.parquet", index=False)
-
     results = {"snapshots": len(snap), "markets": int(snap.ticker.nunique())}
     results["test_a"] = test_a(snap)
     results["brier_market_mid"] = float(((snap.mid - snap.over) ** 2).mean())
     results["brier_model"] = float(((snap.p_model - snap.over) ** 2).mean())
-    first = snap.sort_values("end_ts")
-    taken, trades = set(), []
-    for end_ts, group in first.groupby("end_ts", sort=True):
-        t = one_per_player(qualifying(group, max_spread=1.0, min_edge=0.05))
-        t = t[[k not in taken for k in zip(t.game_id, t.player_id, t.stat)]]
-        taken.update(zip(t.game_id, t.player_id, t.stat))
-        trades.append(t)
-    t = settle(pd.concat(trades, ignore_index=True))
-    mean, tt = clustered_mean_t(t.pnl, t.game_id)
-    regular = t[t.season_type == "regular"]
-    reg_mean, reg_t = clustered_mean_t(regular.pnl, regular.game_id)
-    tip = pd.to_datetime(t.tip_utc, utc=True)
-    results["test_b"] = {
-        "trades": len(t),
-        "games": int(t.game_id.nunique()),
-        "cents_per_contract": 100 * mean,
-        "t": tt,
-        "regular_season_cents": 100 * reg_mean,
-        "regular_season_t": reg_t,
-        "playoffs_cents": 100 * t.loc[t.season_type != "regular", "pnl"].mean(),
-        "before_feb_cents": 100 * t.loc[tip < SPLIT, "pnl"].mean(),
-        "from_feb_cents": 100 * t.loc[tip >= SPLIT, "pnl"].mean(),
-        "share_yes": float((t.side == "yes").mean()),
-        "median_spread_cents": 100 * float((t.yes_ask - t.yes_bid).median()),
-    }
+    t = first_trades(snap)
+    results["test_b"] = trade_summary(t)
     b = results["test_b"]
     results["test_b_passes"] = bool(
         b["cents_per_contract"] > 0
@@ -207,6 +234,27 @@ def main():
         and b["before_feb_cents"] > 0
         and b["from_feb_cents"] > 0
     )
+    robustness = {}
+    for lag in (60, 180, 300):
+        lagged = price_snapshots(
+            live_snapshots(priced, candles, pbp, pre, lag), meta, models
+        )
+        robustness[f"state_{lag}s_before_quote"] = {
+            "test_a_model_t": test_a(lagged)["t_model"],
+            "trades": trade_summary(first_trades(lagged)),
+        }
+    t["left_min"] = (2880 - t.elapsed) / 60
+    for label, part in [
+        ("first_half", t[t.left_min > 24]),
+        ("third_quarter", t[(t.left_min <= 24) & (t.left_min > 12)]),
+        ("fourth_quarter", t[t.left_min <= 12]),
+        ("spread_under_6c", t[(t.yes_ask - t.yes_bid) < 0.055]),
+        ("spread_6c_plus", t[(t.yes_ask - t.yes_bid) >= 0.055]),
+        ("player_on_court", t[t.on_court.astype(bool)]),
+        ("player_on_bench", t[~t.on_court.astype(bool)]),
+    ]:
+        robustness[label] = trade_summary(part)
+    results["robustness"] = robustness
     t.to_csv(OUT / "trades.csv.gz", index=False)
     text = json.dumps(results, indent=2, default=_plain)
     (OUT / "results.json").write_text(text + "\n")

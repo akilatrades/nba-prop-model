@@ -62,7 +62,7 @@ def first_orders(quotes_by_hours, **kwargs):
     for hours, quotes in quotes_by_hours:
         o = one_per_player(orders(quotes, **kwargs))
         keys = list(zip(o.game_id, o.player_id, o.stat))
-        o = o[[k not in taken for k in keys]]
+        o = o[np.array([k not in taken for k in keys], dtype=bool)]
         taken.update(zip(o.game_id, o.player_id, o.stat))
         out.append(o.assign(hours_before=hours))
     return pd.concat(out, ignore_index=True)

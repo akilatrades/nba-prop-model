@@ -99,7 +99,7 @@ def historical_trades(priced, quotes_at):
         q["mid"] = (q.yes_bid + q.yes_ask) / 2
         t = one_per_player(qualifying(q))
         key = list(zip(t.game_id, t.player_id, t.stat))
-        t = t[[k not in taken for k in key]]
+        t = t[np.array([k not in taken for k in key], dtype=bool)]
         taken.update(zip(t.game_id, t.player_id, t.stat))
         out.append(t.assign(hours_before=hours))
     return settle(pd.concat(out, ignore_index=True))

@@ -82,7 +82,11 @@ def new_positions(priced, ledger, now, start=START_BANKROLL):
     f = f[f.hours_to_tip.between(lo, hi) & f.injury_status.fillna("").eq("")]
     t = one_per_player(qualifying(f))
     taken = set(zip(ledger.game_id, ledger.player_id, ledger.stat))
-    t = t[[k not in taken for k in zip(t.game_id, t.player_id, t.stat)]]
+    t = t[
+        np.array(
+            [k not in taken for k in zip(t.game_id, t.player_id, t.stat)], dtype=bool
+        )
+    ]
     if t.empty:
         return empty_ledger()
     t = t.sort_values("edge", ascending=False).copy()

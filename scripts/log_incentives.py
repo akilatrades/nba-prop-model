@@ -35,6 +35,16 @@ def all_programs():
             return pd.DataFrame(rows)
 
 
+def by_series(programs, top=25):
+    """Total period rewards in dollars by series, largest first."""
+    if programs.empty:
+        return {}
+    dollars = pd.to_numeric(programs.period_reward) / 10000
+    series = programs.market_ticker.str.split("-").str[0]
+    totals = dollars.groupby(series).sum().sort_values(ascending=False).head(top)
+    return {k: round(float(v), 2) for k, v in totals.items()}
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     programs = all_programs()
@@ -72,6 +82,10 @@ def main():
                 if len(props)
                 else None,
                 "types": programs.incentive_type.value_counts().to_dict(),
+                "reward_dollars_by_series_open_now": by_series(
+                    programs[pd.to_datetime(programs.end_date, utc=True) > now]
+                ),
+                "reward_dollars_by_series_all_time": by_series(programs),
                 "all_series_with_programs_top": programs.market_ticker.str.split("-")
                 .str[0]
                 .value_counts()

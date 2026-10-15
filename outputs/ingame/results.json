@@ -1,0 +1,181 @@
+{
+  "snapshots": 47570,
+  "markets": 30529,
+  "test_a": {
+    "markets": 47570,
+    "games": 985,
+    "coef_market": 0.33545425153707453,
+    "t_market": 13.340440344112274,
+    "coef_model": 0.7902242394750948,
+    "t_model": 36.54578759242998,
+    "passes": true
+  },
+  "brier_market_mid": 0.19185292936724826,
+  "brier_model": 0.16830475032686001,
+  "test_b": {
+    "trades": 4978,
+    "games": 796,
+    "cents_per_contract": 4.238301044596223,
+    "t": 6.292789130335431,
+    "regular_season_cents": 3.56585525982256,
+    "regular_season_t": 4.208439668045269,
+    "playoffs_cents": 5.403086388583973,
+    "before_feb_cents": 8.133051660516603,
+    "from_feb_cents": 3.7624320559062214,
+    "share_yes": 0.2103254319003616,
+    "median_spread_cents": 10.999999999999998,
+    "median_hour_volume": 359.33500000000004
+  },
+  "test_b_passes": true,
+  "robustness": {
+    "state_60s_before_quote": {
+      "test_a_model_t": 37.51782688958029,
+      "trades": {
+        "trades": 4964,
+        "games": 792,
+        "cents_per_contract": 3.148904734085414,
+        "t": 4.599474537964975,
+        "regular_season_cents": 2.50979522906793,
+        "regular_season_t": 2.9601769562043323,
+        "playoffs_cents": 4.2732969427459695,
+        "before_feb_cents": 7.145053124999999,
+        "from_feb_cents": 2.65707108597285,
+        "share_yes": 0.20487510072522158,
+        "median_spread_cents": 10.999999999999998,
+        "median_hour_volume": 358.5
+      }
+    },
+    "state_180s_before_quote": {
+      "test_a_model_t": 37.20256680314341,
+      "trades": {
+        "trades": 5047,
+        "games": 797,
+        "cents_per_contract": 2.173610303150386,
+        "t": 3.1098862658217103,
+        "regular_season_cents": 1.0984396546407642,
+        "regular_season_t": 1.2630611815876926,
+        "playoffs_cents": 4.106414301552106,
+        "before_feb_cents": 4.455103832116787,
+        "from_feb_cents": 1.8957133362969545,
+        "share_yes": 0.2173568456508817,
+        "median_spread_cents": 10.999999999999998,
+        "median_hour_volume": 370.0
+      }
+    },
+    "state_300s_before_quote": {
+      "test_a_model_t": 37.1297943196321,
+      "trades": {
+        "trades": 5229,
+        "games": 802,
+        "cents_per_contract": 0.3339986613119139,
+        "t": 0.49888506403086974,
+        "regular_season_cents": -0.8824748531139842,
+        "regular_season_t": -1.060024404379913,
+        "playoffs_cents": 2.6029717260273966,
+        "before_feb_cents": 2.739849649122806,
+        "from_feb_cents": 0.039657587465120936,
+        "share_yes": 0.23541786192388603,
+        "median_spread_cents": 10.999999999999998,
+        "median_hour_volume": 375.0
+      }
+    },
+    "first_half": {
+      "trades": 3664,
+      "games": 733,
+      "cents_per_contract": 3.791972434497816,
+      "t": 4.695641138422883,
+      "regular_season_cents": 2.7786832017543857,
+      "regular_season_t": 2.680436544844595,
+      "playoffs_cents": 5.461263945086705,
+      "before_feb_cents": 9.102250243902438,
+      "from_feb_cents": 3.1228839582052856,
+      "share_yes": 0.23771834061135372,
+      "median_spread_cents": 9.000000000000002,
+      "median_hour_volume": 427.575
+    },
+    "third_quarter": {
+      "trades": 787,
+      "games": 278,
+      "cents_per_contract": 4.500017280813213,
+      "t": 2.871073683735176,
+      "regular_season_cents": 3.1952115720524006,
+      "regular_season_t": 1.4513273348205553,
+      "playoffs_cents": 6.316433738601823,
+      "before_feb_cents": 1.282349295774646,
+      "from_feb_cents": 4.8190877094972056,
+      "share_yes": 0.17789072426937738,
+      "median_spread_cents": 10.000000000000004,
+      "median_hour_volume": 324.85
+    },
+    "fourth_quarter": {
+      "trades": 527,
+      "games": 262,
+      "cents_per_contract": 6.95059203036053,
+      "t": 3.881668567446241,
+      "regular_season_cents": 8.265633014354066,
+      "regular_season_t": 4.098268883573489,
+      "playoffs_cents": 1.9075908256880745,
+      "before_feb_cents": 9.59253442622951,
+      "from_feb_cents": 6.604758369098711,
+      "share_yes": 0.0683111954459203,
+      "median_spread_cents": 25.0,
+      "median_hour_volume": 139.0
+    },
+    "spread_under_6c": {
+      "trades": 1494,
+      "games": 421,
+      "cents_per_contract": 4.888655421686746,
+      "t": 4.1353676334371565,
+      "regular_season_cents": 3.2957013005780342,
+      "regular_season_t": 1.8854148425868777,
+      "playoffs_cents": 6.263124563591021,
+      "before_feb_cents": 10.029002499999997,
+      "from_feb_cents": 4.597829561527581,
+      "share_yes": 0.20481927710843373,
+      "median_spread_cents": 2.0000000000000018,
+      "median_hour_volume": 784.575
+    },
+    "spread_6c_plus": {
+      "trades": 3484,
+      "games": 773,
+      "cents_per_contract": 3.9594177382319162,
+      "t": 5.010776099243858,
+      "regular_season_cents": 3.6417264204545448,
+      "regular_season_t": 3.8365791683683907,
+      "playoffs_cents": 4.726860294117646,
+      "before_feb_cents": 7.804748484848485,
+      "from_feb_cents": 3.3715478491065514,
+      "share_yes": 0.2126865671641791,
+      "median_spread_cents": 17.000000000000004,
+      "median_hour_volume": 253.0
+    },
+    "player_on_court": {
+      "trades": 2805,
+      "games": 672,
+      "cents_per_contract": 4.264029518716577,
+      "t": 4.54778476269706,
+      "regular_season_cents": 3.342593484262838,
+      "regular_season_t": 2.8522206554239524,
+      "playoffs_cents": 5.9428229376257535,
+      "before_feb_cents": 8.102186687306501,
+      "from_feb_cents": 3.764543311845286,
+      "share_yes": 0.2110516934046346,
+      "median_spread_cents": 12.0,
+      "median_hour_volume": 348.0
+    },
+    "player_on_bench": {
+      "trades": 2173,
+      "games": 588,
+      "cents_per_contract": 4.205089645651173,
+      "t": 4.4076545403871785,
+      "regular_season_cents": 3.866470185873605,
+      "regular_season_t": 3.065297529800854,
+      "playoffs_cents": 4.755141787439612,
+      "before_feb_cents": 8.178573972602738,
+      "from_feb_cents": 3.759750307062435,
+      "share_yes": 0.20938794293603313,
+      "median_spread_cents": 8.999999999999996,
+      "median_hour_volume": 379.0
+    }
+  }
+}

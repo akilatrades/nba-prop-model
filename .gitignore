@@ -9,3 +9,4 @@ data/hoopr/
 /data/retrieval.json
 /outputs/**/predictions.parquet
 /data/pbp/
+/outputs/ingame/snapshots.parquet

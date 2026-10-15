@@ -331,7 +331,12 @@ def idea_combos(priced, candles, players, rhos, holdout):
         taken, trades = set(), []
         for hours, x in looks:
             t = one_per_player(qualifying(x, max_spread=1.0, min_edge=0.05))
-            t = t[[k not in taken for k in zip(t.game_id, t.player_id, t.stat)]]
+            t = t[
+                np.array(
+                    [k not in taken for k in zip(t.game_id, t.player_id, t.stat)],
+                    dtype=bool,
+                )
+            ]
             taken.update(zip(t.game_id, t.player_id, t.stat))
             trades.append(t.assign(hours_before=hours))
         t = settle(pd.concat(trades, ignore_index=True))
