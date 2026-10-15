@@ -165,3 +165,61 @@ unmatched markets showed all but 11 were settled at a fixed value, which the
 test excludes anyway. No prices, yes/no results or volumes were looked at.
 
 The market test runs next, once, with the frozen model.
+
+## 2026-10-15: Market test results (run once, frozen model `ce26c24`)
+
+**Sample:** 57,111 markets in 1,072 games that settled yes or no, on players
+the model prices, with a two-sided quote at the last hourly candle before
+tip-off. Kalshi's settlement agreed with the box score in 99.98% of markets.
+
+**Test A: passed.** Logistic regression of the outcome on logit(mid) and
+logit(model), standard errors clustered by game: market 0.560 (t 17.9),
+model 0.436 (t 13.8). It passed for each stat on its own as well (model t
+5.3 for points, 9.0 rebounds, 7.4 assists, 10.3 threes). Brier score: market
+mid 0.1805, model 0.1812.
+
+**Test B: failed.** 12,495 trades, −0.93¢ per contract after fees, t −1.49.
+Criterion 1 fails (mean below zero), criterion 2 fails (before February
+−3.35¢, t −2.50; February on −0.35¢, t −0.50), criterion 3 fails (0.08
+threshold: 6,933 trades, −0.93¢, t −1.13).
+
+Reported, not used for the decision:
+
+| Variant | Trades | ¢ per contract | t |
+|---|---:|---:|---:|
+| Fees rounded up to the cent | 12,495 | −1.35 | −2.17 |
+| Prices two hours before tip-off | 11,817 | −0.38 | −0.61 |
+| Without the teammates-out features | 12,130 | −0.76 | −1.23 |
+| Points | 4,807 | −2.00 | −2.33 |
+| Rebounds | 3,195 | −1.41 | −1.20 |
+| Assists | 2,960 | −0.25 | −0.21 |
+| Threes | 1,533 | +2.15 | +1.44 |
+| Markets with volume below the median | 4,183 | −1.06 | −1.20 |
+| Markets with volume at or above the median | 8,312 | −0.86 | −1.11 |
+
+The positive threes figure is one of four stats, not significant, and found
+after the fact; it is not a result.
+
+**Diagnostics, after the test.** Buying every yes at the ask lost 3.4¢ per
+contract and every no 6.0¢ (median spread 4¢, average fee 1.2¢), so the
+model's side selection was worth something, but less than the cost of
+trading. Realised P&L did not rise with the model's claimed edge: claimed
+6.4¢, 9.7¢, 15.0¢ and 25.3¢ realised −0.9¢, −0.9¢, −1.3¢ and +0.4¢. Across
+probability bands outcomes happened about 1.3 points more often than the mid
+price implied (t 3.9), but not by enough to cover the cost of buying yes.
+
+**Exploratory, not pre-registered:** a blend of model and market, with
+weights refit each month on earlier months only (the model's weight fell
+from 0.81 in December to 0.43 by the Finals), traded with the same rule,
+lost 2.1¢ per contract (6,551 trades, t −2.57). The blend's Brier score
+(0.17889) beat the mid's (0.17910) by 0.1%.
+
+**Conclusion.** The model holds real information the tip-off price lacks,
+but on Kalshi's NBA props it is worth less than the spread and fee. No
+trading rule from this work is recommended for money.
+
+**Forward test for 2026-27 (fixed now).** The same Test A and Test B, run on
+2026-27 markets from the logged snapshots and the projections the model
+makes before each game, at the end of January 2027 and again after the
+Finals; plus the same rule priced at the morning snapshot. Any change to the
+model before then is logged here with its date.

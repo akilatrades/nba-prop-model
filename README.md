@@ -7,7 +7,14 @@ tested against a full season of Kalshi prices with the betting rule written
 down before any price was downloaded. A sister project to my
 [NFL parlay model](https://github.com/akilatrades/nfl-parlay-model).
 
-<!-- MARKET RESULT -->
+**Result: the model knows something Kalshi's price doesn't, but not enough
+to pay the spread and fees.** On 57,111 Kalshi prop markets from the 2025-26
+season, combining the model with the price at tip-off predicts outcomes
+better than the price alone (t = 13.8). But the betting rule fixed in
+advance (buy whichever side the model rates 5 cents better than the ask,
+after fees) lost 0.9 cents per contract over 12,495 trades. It fails the
+pre-registered test. The model is a calibrated pricing tool, not a proven
+money-maker.
 
 | Phase | What it adds | Status |
 |---|---|---|
@@ -73,7 +80,55 @@ development seasons (2021-22 to 2024-25) gave the same picture:
 5. **Backtest** ([`evaluate.py`](nba_model/evaluate.py)): refit before every
    calendar month on all earlier games, scored on the month it has not seen.
 
-<!-- MARKET SECTION -->
+## Phase 2: the market test
+
+Kalshi publishes hourly bid and ask history for every settled market, so the
+model could be tested against a full season of real prices: every points,
+rebounds, assists and threes market from Kalshi's first NBA props
+(2025-11-18) through the Finals. The rules were committed to
+[`RESEARCH_LOG.md`](RESEARCH_LOG.md) before the prices were downloaded, the
+model was frozen (commit `ce26c24`), and the test was run once
+([`run_market_test.py`](run_market_test.py)).
+
+**Sample:** markets that settled yes or no (markets on players who sat are
+settled at a fixed value and excluded), priced at the last hourly quote
+before tip-off, with a two-sided quote: 57,111 markets in 1,072 games.
+
+**Test A, does the model add information? Passed.** In a logistic regression
+of the outcome on both the market's mid price and the model's probability
+(log-odds; standard errors clustered by game), the model's weight is 0.44
+(t = 13.8) next to the market's 0.56 (t = 17.9). Alone, the market is
+slightly more accurate (Brier score 0.1805 against the model's 0.1812).
+
+**Test B, does it make money? Failed.**
+
+| Rule | Trades | Profit per contract, after fees | t |
+|---|---:|---:|---:|
+| Model's side when its edge is 5¢+ after fees (pre-registered) | 12,495 | −0.9¢ | −1.5 |
+| same, games before February | 2,395 | −3.4¢ | −2.5 |
+| same, February to the Finals | 10,100 | −0.4¢ | −0.5 |
+| same, 8¢ threshold | 6,933 | −0.9¢ | −1.1 |
+| same, fees rounded up per contract | 12,495 | −1.4¢ | −2.2 |
+| same, prices two hours before tip-off | 11,817 | −0.4¢ | −0.6 |
+| same, without the teammates-out features | 12,130 | −0.8¢ | −1.2 |
+| *For comparison: buy every yes at the ask* | 57,111 | −3.4¢ | |
+| *For comparison: buy every no at 1 − bid* | 57,111 | −6.0¢ | |
+
+The model picks better sides than chance: its trades lost 0.9¢ where buying
+everything lost 3.4–6.0¢. But a round trip through the median 4¢ spread plus
+Kalshi's fee costs more than the model's edge. The trades it was most
+confident in did no better than the rest: claimed edges of 6¢, 10¢ and 15¢
+all realised about −1¢. A likely reason: when the model disagrees most with
+the price at tip-off, the price reflects news the model does not have, such
+as starting lineups. [Results](outputs/market_test/results.json) ·
+[trades](outputs/market_test/trades.csv.gz) ·
+[every priced market](outputs/market_test/priced_markets.csv.gz) ·
+[independent recomputation](scripts/verify_market_test.py)
+
+One exploratory check, run after the test and not pre-registered: blending
+the model with the market (weights refit each month on earlier months) and
+trading the blend lost 2.1¢ per contract. Nothing found here is a basis for
+trading money.
 
 ## Live use
 
