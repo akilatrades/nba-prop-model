@@ -2,12 +2,11 @@ name: backfill Kalshi history
 # Downloads settled 2025-26 Kalshi NBA prop markets and their hourly prices
 # around each game, one job per stat. Resumable: each run continues where
 # the last stopped, and a run with nothing left to fetch finishes in seconds.
+# Complete as of 2026-10-15; run by hand if it ever needs repeating.
 on:
   push:
     branches: [main]
     paths: ["scripts/backfill_kalshi.py", ".github/workflows/backfill.yml"]
-  schedule:
-    - cron: "17 */6 * * *"
   workflow_dispatch:
 permissions:
   contents: write
