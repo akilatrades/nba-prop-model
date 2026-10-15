@@ -1,9 +1,10 @@
 name: kalshi combos
-# Probe and download of Kalshi's NBA combo (parlay) markets (RESEARCH_LOG.md).
+# Kalshi's NBA same-game combo (parlay) markets and a sample of their trades
+# (RESEARCH_LOG.md, parlays). The probe (scripts/probe_kalshi_combos.py) ran once.
 on:
   push:
     branches: [main]
-    paths: ["scripts/probe_kalshi_combos.py", "scripts/backfill_combos.py", ".github/workflows/combos.yml"]
+    paths: ["scripts/backfill_combos.py", ".github/workflows/combos.yml"]
   workflow_dispatch:
 permissions:
   contents: write
@@ -11,9 +12,9 @@ concurrency:
   group: repo-writes
   cancel-in-progress: false
 jobs:
-  probe:
+  combos:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
         with:
@@ -22,14 +23,15 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install pandas numpy pyarrow
-      - run: python scripts/probe_kalshi_combos.py
+      - run: python scripts/backfill_combos.py --minutes 40 --workers 8
       - name: Commit
         if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A outputs/probes
+          rm -f data/kalshi_history/*.tmp
+          git add -A data/kalshi_history/combos_*
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m "Probe: Kalshi combo markets"
+          git commit -m "Kalshi NBA combo markets and trades"
           git pull --rebase
           git push
