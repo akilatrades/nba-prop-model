@@ -1,0 +1,21 @@
+name: tests
+on:
+  push:
+    paths-ignore: ["data/**", "outputs/**"]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.11', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install -r requirements.txt ruff==0.11.13
+      - run: ruff check . && ruff format --check .
+      - run: pytest

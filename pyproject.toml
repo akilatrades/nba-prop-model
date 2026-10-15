@@ -1,0 +1,13 @@
+[project]
+name = "nba-prop-model"
+version = "0.1.0"
+description = "NBA player-prop pricing model, tested against Kalshi prices"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [{name = "Akila Juan"}]
+keywords = ["sports-betting", "player-props", "prediction-markets", "kalshi", "nba", "python"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-q"
