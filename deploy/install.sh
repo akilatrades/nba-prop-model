@@ -25,6 +25,9 @@ KALSHI_KEY_ID=paste-key-id-here
 KALSHI_PRIVATE_KEY=paste-private-key-here
 ODDS_API_KEY=paste-odds-key-here
 DRY_BANKROLL=250
+# Optional: a GitHub fine-grained token (Contents: read and write on this repo)
+# so the machine can push its trade log to outputs/live for review.
+GIT_TOKEN=
 ENV
   chmod 600 /etc/market-maker.env
   echo ">> Edit /etc/market-maker.env with your keys:  nano /etc/market-maker.env"
@@ -38,9 +41,11 @@ cd /home/trader/sports-market-maker
 set -a; source /etc/market-maker.env; set +a
 git pull -q --rebase origin main || true
 .venv/bin/python -m live.nba_trade >> /home/trader/trader.log 2>&1
-git add -A outputs/live >/dev/null 2>&1 || true
-git -c user.name=trader -c user.email=trader@market-maker commit -qm "Trade run $(date -u +%Y-%m-%dT%H:%MZ) (${TRADE_MODE}, ${KALSHI_ENV})" >/dev/null 2>&1 || true
-git push -q origin main >/dev/null 2>&1 || true
+if [ -n "${GIT_TOKEN:-}" ]; then
+  git add -A outputs/live >/dev/null 2>&1 || true
+  git -c user.name=trader -c user.email=trader@market-maker commit -qm "Trade run $(date -u +%Y-%m-%dT%H:%MZ) (${TRADE_MODE}, ${KALSHI_ENV})" >/dev/null 2>&1 || true
+  git push -q "https://x-access-token:${GIT_TOKEN}@github.com/akilatrades/sports-market-maker.git" HEAD:main >/dev/null 2>&1 || true
+fi
 RUN
 chmod 755 /home/trader/run.sh
 chown trader:trader /home/trader/run.sh
