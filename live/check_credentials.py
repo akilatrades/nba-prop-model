@@ -11,7 +11,22 @@ from kalshi.trading import TradingClient, TradingError
 
 
 def main():
-    client = TradingClient(dry_run=True)
+    import os
+
+    key_id = os.environ.get("KALSHI_KEY_ID", "")
+    pem = os.environ.get("KALSHI_PRIVATE_KEY", "")
+    print(
+        f"key id length {len(key_id)}, private key length {len(pem)}, "
+        f"starts with BEGIN: {pem.lstrip().startswith('-----BEGIN')}, "
+        f"lines: {pem.count(chr(10)) + 1}"
+    )
+    try:
+        client = TradingClient(dry_run=True)
+    except Exception as error:  # noqa: BLE001 - report, without the key material
+        print(
+            f"::error::could not load credentials: {type(error).__name__}: {str(error)[:300]}"
+        )
+        sys.exit(1)
     if not client.can_sign:
         print(
             "::error::credentials missing: KALSHI_KEY_ID or KALSHI_PRIVATE_KEY is empty"
