@@ -1,11 +1,14 @@
 {
   "KXITFMATCH": {
-    "orders": 33,
+    "orders": 51,
     "vetoed": 0,
-    "open": 33,
-    "fill_rate": null,
-    "fills_settled": 0,
-    "bankroll": 500.0
+    "open": 30,
+    "fill_rate": 0.7142857142857143,
+    "fills_settled": 15,
+    "bankroll": 456.2,
+    "cents_per_contract": -8.29,
+    "t": -2.45,
+    "profit_dollars": -43.8
   },
   "KXNASCARRACE": {
     "orders": 0,
@@ -47,5 +50,5 @@
     "fills_settled": 0,
     "bankroll": 500.0
   },
-  "updated_utc": "2026-10-16T10:29+00:00"
+  "updated_utc": "2026-10-16T12:35+00:00"
 }
