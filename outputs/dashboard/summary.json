@@ -1,0 +1,295 @@
+{
+ "updated_utc": "2026-10-16T17:24+00:00",
+ "paper": {
+  "ledgers": [
+   {
+    "ledger": "KXNASCARRACE",
+    "orders": 0,
+    "open": 0,
+    "fill_rate": null,
+    "fills": 0,
+    "contracts": 0,
+    "profit": 0.0,
+    "cents_per_contract": null,
+    "bankroll": 500.0,
+    "group": "other markets (model-free unless +model)"
+   },
+   {
+    "ledger": "KXLIGAMXSPREAD",
+    "orders": 0,
+    "open": 0,
+    "fill_rate": null,
+    "fills": 0,
+    "contracts": 0,
+    "profit": 0.0,
+    "cents_per_contract": null,
+    "bankroll": 500.0,
+    "group": "other markets (model-free unless +model)"
+   },
+   {
+    "ledger": "KXNFLANYTD",
+    "orders": 0,
+    "open": 0,
+    "fill_rate": null,
+    "fills": 0,
+    "contracts": 0,
+    "profit": 0.0,
+    "cents_per_contract": null,
+    "bankroll": 500.0,
+    "group": "other markets (model-free unless +model)"
+   },
+   {
+    "ledger": "KXNFLRECYDS",
+    "orders": 0,
+    "open": 0,
+    "fill_rate": null,
+    "fills": 0,
+    "contracts": 0,
+    "profit": 0.0,
+    "cents_per_contract": null,
+    "bankroll": 500.0,
+    "group": "other markets (model-free unless +model)"
+   },
+   {
+    "ledger": "KXNFLANYTD+model",
+    "orders": 0,
+    "open": 0,
+    "fill_rate": null,
+    "fills": 0,
+    "contracts": 0,
+    "profit": 0.0,
+    "cents_per_contract": null,
+    "bankroll": 500.0,
+    "group": "other markets (model-free unless +model)"
+   },
+   {
+    "ledger": "KXNFLRECYDS+model",
+    "orders": 0,
+    "open": 0,
+    "fill_rate": null,
+    "fills": 0,
+    "contracts": 0,
+    "profit": 0.0,
+    "cents_per_contract": null,
+    "bankroll": 500.0,
+    "group": "other markets (model-free unless +model)"
+   },
+   {
+    "ledger": "KXITFMATCH",
+    "orders": 63,
+    "open": 30,
+    "fill_rate": 0.8181818181818182,
+    "fills": 27,
+    "contracts": 650,
+    "profit": -65.88,
+    "cents_per_contract": -10.14,
+    "bankroll": 434.12,
+    "group": "other markets (model-free unless +model)"
+   },
+   {
+    "ledger": "KXLALIGASPREAD",
+    "orders": 4,
+    "open": 4,
+    "fill_rate": null,
+    "fills": 0,
+    "contracts": 0,
+    "profit": 0.0,
+    "cents_per_contract": null,
+    "bankroll": 500.0,
+    "group": "other markets (model-free unless +model)"
+   },
+   {
+    "ledger": "NBA model_side",
+    "orders": 0,
+    "open": 0,
+    "fill_rate": null,
+    "fills": 0,
+    "contracts": 0,
+    "profit": 0.0,
+    "cents_per_contract": null,
+    "bankroll": 500.0,
+    "group": "NBA props"
+   },
+   {
+    "ledger": "NBA no_seller",
+    "orders": 0,
+    "open": 0,
+    "fill_rate": null,
+    "fills": 0,
+    "contracts": 0,
+    "profit": 0.0,
+    "cents_per_contract": null,
+    "bankroll": 500.0,
+    "group": "NBA props"
+   },
+   {
+    "ledger": "NBA no_seller_late",
+    "orders": 0,
+    "open": 0,
+    "fill_rate": null,
+    "fills": 0,
+    "contracts": 0,
+    "profit": 0.0,
+    "cents_per_contract": null,
+    "bankroll": 500.0,
+    "group": "NBA props"
+   },
+   {
+    "ledger": "NBA no_seller_edge_sized",
+    "orders": 0,
+    "open": 0,
+    "fill_rate": null,
+    "fills": 0,
+    "contracts": 0,
+    "profit": 0.0,
+    "cents_per_contract": null,
+    "bankroll": 500.0,
+    "group": "NBA props"
+   },
+   {
+    "ledger": "NBA no_seller_veto2",
+    "orders": 0,
+    "open": 0,
+    "fill_rate": null,
+    "fills": 0,
+    "contracts": 0,
+    "profit": 0.0,
+    "cents_per_contract": null,
+    "bankroll": 500.0,
+    "group": "NBA props"
+   },
+   {
+    "ledger": "NBA no_seller_stat_veto",
+    "orders": 0,
+    "open": 0,
+    "fill_rate": null,
+    "fills": 0,
+    "contracts": 0,
+    "profit": 0.0,
+    "cents_per_contract": null,
+    "bankroll": 500.0,
+    "group": "NBA props"
+   }
+  ],
+  "daily": [
+   {
+    "ledger": "KXITFMATCH",
+    "day": "2026-10-16",
+    "profit": -65.88,
+    "fills": 27
+   }
+  ],
+  "total_profit": -65.88,
+  "total_fills": 27,
+  "best": "KXITFMATCH",
+  "worst": "KXITFMATCH"
+ },
+ "live": {},
+ "scan_top": [
+  {
+   "series": "KXNASCARRACE",
+   "fills": 940,
+   "cents": 4.0,
+   "t": 3.62,
+   "passes": true
+  },
+  {
+   "series": "KXWCSOA",
+   "fills": 1409,
+   "cents": 6.34,
+   "t": 3.08,
+   "passes": true
+  },
+  {
+   "series": "KXWC1HSPREAD",
+   "fills": 525,
+   "cents": 4.87,
+   "t": 2.57,
+   "passes": true
+  },
+  {
+   "series": "KXWNBA1HTOTAL",
+   "fills": 675,
+   "cents": 8.81,
+   "t": 2.55,
+   "passes": true
+  },
+  {
+   "series": "KXITFMATCH",
+   "fills": 1168,
+   "cents": 4.62,
+   "t": 2.51,
+   "passes": true
+  },
+  {
+   "series": "KXWCAST",
+   "fills": 1159,
+   "cents": 3.69,
+   "t": 2.32,
+   "passes": true
+  },
+  {
+   "series": "KXLALIGASPREAD",
+   "fills": 835,
+   "cents": 4.31,
+   "t": 2.29,
+   "passes": true
+  },
+  {
+   "series": "KXNFLANYTD",
+   "fills": 2255,
+   "cents": 2.98,
+   "t": 2.25,
+   "passes": true
+  },
+  {
+   "series": "KXLIGAMXSPREAD",
+   "fills": 938,
+   "cents": 4.65,
+   "t": 2.21,
+   "passes": true
+  },
+  {
+   "series": "KXNCAAWBGAME",
+   "fills": 2236,
+   "cents": 2.87,
+   "t": 2.1,
+   "passes": true
+  },
+  {
+   "series": "KXLIGUE1GAME",
+   "fills": 1008,
+   "cents": 2.76,
+   "t": 1.99,
+   "passes": false
+  },
+  {
+   "series": "KXMLBF5SPREAD",
+   "fills": 565,
+   "cents": 4.69,
+   "t": 1.93,
+   "passes": false
+  },
+  {
+   "series": "KXNCAAMBTOTAL",
+   "fills": 678,
+   "cents": 5.67,
+   "t": 1.91,
+   "passes": false
+  },
+  {
+   "series": "KXWTAMATCH",
+   "fills": 1063,
+   "cents": 3.93,
+   "t": 1.91,
+   "passes": false
+  },
+  {
+   "series": "KXBOXING",
+   "fills": 1123,
+   "cents": 1.32,
+   "t": 1.88,
+   "passes": false
+  }
+ ]
+}

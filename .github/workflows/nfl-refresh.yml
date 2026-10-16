@@ -21,11 +21,12 @@ jobs:
       - run: python -m live.fetch_nfl_data
       - run: python -m live.nfl_projections
       - run: python -m live.nfl_compare
+      - run: python -m live.summarize
       - name: Commit results
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/nfl outputs/nfl
+          git add -A data/nfl outputs/nfl outputs/dashboard
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "NFL refresh"
           git pull --rebase

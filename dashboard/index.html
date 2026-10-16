@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Market Maker Desk</title>
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a trading desk blotter. Summary strip, then ledgers, then the day chart and the scan. */
+:root {
+  --bg: #f6f5f1; --panel: #ffffff; --fg: #15171a; --muted: #5f6570; --line: #e1dfd7;
+  --accent: #2a78d6; --accent-2: #eb6834; --good: #1a7f4b; --bad: #c0392b; --warn: #b7791f;
+  --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141517; --panel: #1d1f23; --fg: #ebe9e2; --muted: #a2a7b0; --line: #2d3036;
+    --accent: #3987e5; --accent-2: #d95926; --good: #3cb371; --bad: #e66767; --warn: #d9a441;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141517; --panel: #1d1f23; --fg: #ebe9e2; --muted: #a2a7b0; --line: #2d3036;
+  --accent: #3987e5; --accent-2: #d95926; --good: #3cb371; --bad: #e66767; --warn: #d9a441;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg); color: var(--fg); font: 15px/1.45 var(--sans);
+  padding-block: 20px 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1100px; margin: 0 auto; display: grid; gap: 22px; }
+header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; }
+h1 { font-size: 22px; font-weight: 600; margin: 0; letter-spacing: -0.01em; }
+h2 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 10px; }
+.stamp { color: var(--muted); font-size: 13px; font-family: var(--mono); }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+.tile { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 14px 16px; min-width: 0; }
+.tile .label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.tile .value { font-family: var(--mono); font-size: 26px; font-weight: 500; margin-top: 4px; font-variant-numeric: tabular-nums; }
+.tile .sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.pos { color: var(--good); } .neg { color: var(--bad); } .flat { color: var(--muted); }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 16px; min-width: 0; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+@media (max-width: 760px) { .two { grid-template-columns: 1fr; } }
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { padding: 7px 10px; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { font-size: 12px; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
+th:first-child, td:first-child { text-align: left; }
+td.num { font-family: var(--mono); font-size: 13.5px; }
+tr.group td { background: var(--bg); color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; text-align: left; }
+.pill { display: inline-block; font-size: 11px; padding: 1px 7px; border-radius: 10px; border: 1px solid var(--line); color: var(--muted); font-family: var(--mono); }
+.pill.live { border-color: var(--good); color: var(--good); }
+.pill.dry { border-color: var(--warn); color: var(--warn); }
+.pill.pass { border-color: var(--good); color: var(--good); }
+svg { width: 100%; height: auto; display: block; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: var(--muted); margin-top: 8px; }
+.legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; background: var(--c); }
+.note { color: var(--muted); font-size: 13px; margin: 8px 0 0; }
+.err { color: var(--bad); }
+a { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Market Maker Desk</h1>
+    <div class="stamp" id="stamp">loading…</div>
+  </header>
+
+  <section class="tiles" id="tiles"></section>
+
+  <section class="panel">
+    <h2>Paper ledgers, $500 each</h2>
+    <div class="scroll"><table id="ledgers"></table></div>
+    <p class="note">Fills are read from Kalshi's public trade prints; a ledger "wins" only when the market settles its way. ¢/contract is profit per filled contract after the maker fee. Pass criteria are in the research log.</p>
+  </section>
+
+  <div class="two">
+    <section class="panel">
+      <h2>Daily profit, all paper ledgers</h2>
+      <div id="chart"></div>
+      <div class="legend" id="legend"></div>
+    </section>
+    <section class="panel">
+      <h2>Live trader</h2>
+      <div id="live"></div>
+    </section>
+  </div>
+
+  <section class="panel">
+    <h2>Market scan: where the "no" seller paid, no model (top 15 by t)</h2>
+    <div class="scroll"><table id="scan"></table></div>
+    <p class="note">Sample of up to 1,200 markets per series from the last 400 days. Passing means positive in both halves with t ≥ 2 and "yes" not significantly positive. Roughly one series in forty passes by chance.</p>
+  </section>
+
+  <p class="note">Data: <a href="../outputs/dashboard/summary.json">summary.json</a>, rebuilt by every scheduled job. Repository: <a href="https://github.com/akilatrades/sports-market-maker">akilatrades/sports-market-maker</a>.</p>
+</div>
+
+<script>
+const COLORS = ["#2a78d6","#eb6834","#1baf7a","#eda100","#e87ba4","#008300","#6250d6","#e34948"];
+const money = v => (v == null ? "—" : (v < 0 ? "−$" : "$") + Math.abs(v).toFixed(2));
+const cents = v => (v == null ? "—" : (v > 0 ? "+" : v < 0 ? "−" : "") + Math.abs(v).toFixed(2) + "¢");
+const pct = v => (v == null ? "—" : Math.round(v * 100) + "%");
+const cls = v => (v == null || v === 0 ? "flat" : v > 0 ? "pos" : "neg");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function tiles(s) {
+  const p = s.paper, live = s.live || {};
+  const liveMode = live.mode ? `${live.mode}${live.env ? " · " + live.env : ""}` : "not run yet";
+  const items = [
+    {label: "Paper profit, all ledgers", value: money(p.total_profit), cls: cls(p.total_profit), sub: `${p.total_fills} fills settled`},
+    {label: "Best ledger", value: p.best || "—", sub: "by ¢ per contract, 5+ fills", small: true},
+    {label: "Worst ledger", value: p.worst || "—", sub: "by ¢ per contract, 5+ fills", small: true},
+    {label: "Live trader", value: liveMode, sub: live.run_utc ? `last run ${live.run_utc.slice(0,16).replace("T"," ")} UTC` : "waits for NBA markets", small: true},
+    {label: "Realized, real account", value: money(live.realized_total ?? 0), cls: cls(live.realized_total ?? 0), sub: live.dollars_resting != null ? `$${live.dollars_resting} resting` : "nothing live yet"},
+  ];
+  document.getElementById("tiles").innerHTML = items.map(t =>
+    `<div class="tile"><div class="label">${esc(t.label)}</div><div class="value ${t.cls||""}" style="${t.small?"font-size:17px;font-family:var(--sans);font-weight:600":""}">${esc(t.value)}</div><div class="sub">${esc(t.sub)}</div></div>`).join("");
+}
+
+function ledgerTable(s) {
+  const rows = s.paper.ledgers;
+  const groups = [...new Set(rows.map(r => r.group))];
+  let html = `<thead><tr><th>Ledger</th><th>Orders</th><th>Open</th><th>Fill rate</th><th>Fills</th><th>Contracts</th><th>¢/contract</th><th>Profit</th><th>Bankroll</th></tr></thead><tbody>`;
+  for (const g of groups) {
+    html += `<tr class="group"><td colspan="9">${esc(g)}</td></tr>`;
+    for (const r of rows.filter(r => r.group === g)) {
+      html += `<tr><td>${esc(r.ledger)}</td><td class="num">${r.orders}</td><td class="num">${r.open}</td><td class="num">${pct(r.fill_rate)}</td><td class="num">${r.fills}</td><td class="num">${r.contracts}</td><td class="num ${cls(r.cents_per_contract)}">${cents(r.cents_per_contract)}</td><td class="num ${cls(r.profit)}">${money(r.profit)}</td><td class="num">${money(r.bankroll)}</td></tr>`;
+    }
+  }
+  document.getElementById("ledgers").innerHTML = html + "</tbody>";
+}
+
+function chart(s) {
+  const daily = s.paper.daily;
+  const el = document.getElementById("chart");
+  if (!daily.length) { el.innerHTML = `<p class="note">No settled fills yet.</p>`; return; }
+  const days = [...new Set(daily.map(d => d.day))].sort();
+  const ledgers = [...new Set(daily.map(d => d.ledger))];
+  const byKey = {}; daily.forEach(d => byKey[d.ledger + "|" + d.day] = d.profit);
+  const W = 560, H = 260, m = {t: 14, r: 10, b: 36, l: 54};
+  const iw = W - m.l - m.r, ih = H - m.t - m.b;
+  const totals = days.map(day => ({pos: ledgers.reduce((a,l) => a + Math.max(byKey[l+"|"+day]||0,0),0), neg: ledgers.reduce((a,l) => a + Math.min(byKey[l+"|"+day]||0,0),0)}));
+  const maxV = Math.max(1, ...totals.map(t => t.pos)), minV = Math.min(-1, ...totals.map(t => t.neg));
+  const y = v => m.t + (maxV - v) / (maxV - minV) * ih;
+  const bw = Math.min(40, iw / days.length * 0.6), step = iw / days.length;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Daily profit by ledger">`;
+  const ticks = 4;
+  for (let i = 0; i <= ticks; i++) { const v = minV + (maxV - minV) * i / ticks; svg += `<line x1="${m.l}" x2="${W-m.r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${m.l-6}" y="${y(v)+4}" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--mono)">${v>=0?"":"−"}$${Math.abs(v).toFixed(0)}</text>`; }
+  svg += `<line x1="${m.l}" x2="${W-m.r}" y1="${y(0)}" y2="${y(0)}" stroke="var(--fg)" stroke-width="1"/>`;
+  days.forEach((day, i) => {
+    let up = 0, down = 0;
+    const x = m.l + step * i + (step - bw) / 2;
+    ledgers.forEach((l, li) => {
+      const v = byKey[l+"|"+day] || 0; if (!v) return;
+      const color = COLORS[li % COLORS.length];
+      if (v > 0) { svg += `<rect x="${x}" y="${y(up+v)}" width="${bw}" height="${Math.max(1,y(up)-y(up+v)-1)}" fill="${color}"><title>${esc(l)} ${day}: ${money(v)}</title></rect>`; up += v; }
+      else { svg += `<rect x="${x}" y="${y(down)+1}" width="${bw}" height="${Math.max(1,y(down+v)-y(down)-1)}" fill="${color}"><title>${esc(l)} ${day}: ${money(v)}</title></rect>`; down += v; }
+    });
+    svg += `<text x="${x+bw/2}" y="${H-m.b+16}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="var(--mono)">${day.slice(5)}</text>`;
+  });
+  el.innerHTML = svg + "</svg>";
+  document.getElementById("legend").innerHTML = ledgers.map((l, i) => `<span style="--c:${COLORS[i % COLORS.length]}">${esc(l)}</span>`).join("");
+}
+
+function livePanel(s) {
+  const live = s.live || {};
+  const el = document.getElementById("live");
+  if (!live.run_utc) { el.innerHTML = `<p class="note">The trader has not had anything to price yet. It runs every 5 minutes on the server and every 15 on GitHub, in <span class="pill dry">dry run</span>, and will start logging orders when NBA props are listed (opening night 2026-10-20).</p>`; return; }
+  const status = live.orders_by_status || {};
+  let html = `<p><span class="pill ${live.mode === "live" ? "live" : "dry"}">${esc(live.mode)}</span> <span class="pill">${esc(live.env || "")}</span> &nbsp; bankroll ${money(live.bankroll)}</p>`;
+  html += `<div class="scroll"><table><thead><tr><th>Last run</th><th>Candidates</th><th>Placed</th><th>Rejected</th><th>Open $</th></tr></thead><tbody><tr><td>${esc((live.run_utc||"").slice(0,16).replace("T"," "))}</td><td class="num">${live.candidates ?? "—"}</td><td class="num">${live.placed ?? "—"}</td><td class="num">${live.rejected ?? "—"}</td><td class="num">${money(live.open_exposure)}</td></tr></tbody></table></div>`;
+  if (Object.keys(status).length) html += `<p class="note">Orders by status: ${Object.entries(status).map(([k,v]) => `${esc(k)} ${v}`).join(" · ")}</p>`;
+  if (live.rejections && Object.keys(live.rejections).length) html += `<p class="note">Rejections: ${Object.entries(live.rejections).map(([k,v]) => `${esc(k)} (${v})`).join("; ")}</p>`;
+  if (live.realized_by_day) html += `<div class="scroll"><table><thead><tr><th>Day</th><th>Realized</th></tr></thead><tbody>${Object.entries(live.realized_by_day).slice(-10).map(([d,v]) => `<tr><td>${esc(d)}</td><td class="num ${cls(v)}">${money(v)}</td></tr>`).join("")}</tbody></table></div>`;
+  el.innerHTML = html;
+}
+
+function scanTable(s) {
+  const rows = s.scan_top || [];
+  let html = `<thead><tr><th>Series</th><th>Fills</th><th>¢/contract</th><th>t</th><th>Passed</th></tr></thead><tbody>`;
+  for (const r of rows) html += `<tr><td>${esc(r.series)}</td><td class="num">${r.fills}</td><td class="num ${cls(r.cents)}">${cents(r.cents)}</td><td class="num">${r.t.toFixed(1)}</td><td>${r.passes ? '<span class="pill pass">pass</span>' : ""}</td></tr>`;
+  document.getElementById("scan").innerHTML = html + "</tbody>";
+}
+
+fetch("../outputs/dashboard/summary.json", {cache: "no-store"}).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }).then(s => {
+  document.getElementById("stamp").textContent = "updated " + s.updated_utc.slice(0,16).replace("T"," ") + " UTC";
+  tiles(s); ledgerTable(s); chart(s); livePanel(s); scanTable(s);
+}).catch(e => { document.getElementById("stamp").innerHTML = `<span class="err">could not load summary.json (${esc(e.message)})</span>`; });
+</script>
+</body>
+</html>
