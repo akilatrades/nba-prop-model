@@ -15,7 +15,7 @@ from pathlib import Path
 import pandas as pd
 
 from kalshi.api import get_json, trades
-from kalshi.paper_props import RULES, check_fills
+from kalshi.paper_props import ALL_RULES, check_fills
 from kalshi.paper_props import scorecard as maker_scorecard
 from kalshi.paper_props import settle as maker_settle
 from markets.nba.paper import scorecard, settle
@@ -46,7 +46,7 @@ def resting_orders(now):
     ledger = check_fills(ledger, fetch_trades, int(now.timestamp()))
     ledger = maker_settle(ledger, fetch_market)
     ledger.to_csv(MAKER_LEDGER, index=False)
-    cards = {rule: maker_scorecard(ledger, rule) for rule in RULES}
+    cards = {rule: maker_scorecard(ledger, rule) for rule in ALL_RULES}
     cards["updated_utc"] = now.isoformat(timespec="minutes")
     folder = MAKER_LEDGER.parent
     (folder / "scorecard.json").write_text(json.dumps(cards, indent=2) + "\n")
@@ -54,17 +54,19 @@ def resting_orders(now):
         "# Resting-order paper tests, 2026-27",
         "",
         (
-            "Two rules from RESEARCH_LOG.md (2026-10-15), each from a $500 paper "
-            "bankroll. Fills are read from Kalshi's public trade prints."
+            "v1 rules (RESEARCH_LOG.md, 2026-10-15) and v2 variants (2026-10-16), each "
+            "from a $500 paper bankroll. Fills are read from Kalshi's public trade prints."
         ),
         "",
-        '| Measure | Model side | "No" seller |',
-        "|---|---:|---:|",
+        "| Measure | " + " | ".join(ALL_RULES) + " |",
+        "|---|" + "---:|" * len(ALL_RULES),
     ]
-    keys = dict.fromkeys(k for rule in RULES for k in cards[rule])
+    keys = dict.fromkeys(k for rule in ALL_RULES for k in cards[rule])
     for key in keys:
-        values = [cards[rule].get(key, "") for rule in RULES]
-        lines.append(f"| {key.replace('_', ' ')} | {values[0]} | {values[1]} |")
+        values = [cards[rule].get(key, "") for rule in ALL_RULES]
+        lines.append(
+            f"| {key.replace('_', ' ')} | " + " | ".join(str(v) for v in values) + " |"
+        )
     (folder / "scorecard.md").write_text("\n".join(lines) + "\n")
     print(json.dumps(cards, indent=2))
 

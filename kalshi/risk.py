@@ -13,6 +13,8 @@ Limits (dollars unless noted), read from ``RiskLimits``:
   resting is cancelled. A manual off switch.
 - ``max_orders_per_run``: a sanity cap; a bug that generates 5,000 orders
   stops here.
+- ``max_per_team``: total cost on one team's players (their props move together
+  in a blowout or an overtime game).
 - ``max_orders_per_game``: how many separate lines we will sit on in one
   game. Every "no" order in a game wins on the same quiet night and loses on
   the same shootout, so this caps the correlated exposure.
@@ -31,6 +33,7 @@ class RiskLimits:
     daily_loss_stop: float = 25.0
     max_orders_per_run: int = 150
     max_orders_per_game: int = 6
+    max_per_team: float = 15.0
     kill_file: Path = Path("outputs/live/KILL")
 
 
@@ -43,17 +46,20 @@ class Exposure:
     open_total: float
     realized_today: float
     orders_by_game: dict = None
+    by_team: dict = None
 
     def __post_init__(self):
         if self.orders_by_game is None:
             self.orders_by_game = {}
+        if self.by_team is None:
+            self.by_team = {}
 
 
 class Rejected(Exception):
     pass
 
 
-def check(order_cost, day, game, limits, exposure, placed_this_run):
+def check(order_cost, day, game, limits, exposure, placed_this_run, team=None):
     """Raise ``Rejected`` with the reason, or return None if the order may go."""
     if limits.kill_file.exists():
         raise Rejected("kill file present")
@@ -73,10 +79,17 @@ def check(order_cost, day, game, limits, exposure, placed_this_run):
         raise Rejected(f"open exposure cap ${limits.max_open:.2f} reached")
     if exposure.orders_by_game.get(game, 0) >= limits.max_orders_per_game:
         raise Rejected(f"{limits.max_orders_per_game} orders already in game {game}")
+    if (
+        team
+        and exposure.by_team.get(team, 0.0) + order_cost > limits.max_per_team + 1e-9
+    ):
+        raise Rejected(f"team cap ${limits.max_per_team:.2f} reached for {team}")
 
 
-def commit(exposure, order_cost, day, game):
+def commit(exposure, order_cost, day, game, team=None):
     exposure.by_day[day] = exposure.by_day.get(day, 0.0) + order_cost
     exposure.by_game[game] = exposure.by_game.get(game, 0.0) + order_cost
     exposure.open_total += order_cost
     exposure.orders_by_game[game] = exposure.orders_by_game.get(game, 0) + 1
+    if team:
+        exposure.by_team[team] = exposure.by_team.get(team, 0.0) + order_cost

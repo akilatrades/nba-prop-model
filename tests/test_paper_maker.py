@@ -93,3 +93,62 @@ def test_unfilled_orders_close_at_zero():
     ledger = post_orders(pd.DataFrame([market()]), empty_ledger(), NOW, "no_seller")
     out = check_fills(ledger, lambda *a: [], int(TIP.timestamp()) + 60)
     assert out.status.iloc[0] == "unfilled" and out.profit.iloc[0] == 0
+
+
+def test_v2_rules_differ_from_v1():
+    import pandas as pd
+
+    from kalshi.paper_props import V2_RULES, candidate_orders, stake_fraction
+
+    rows = []
+    for i, (hours, p, stat) in enumerate(
+        [
+            (4.0, 0.30, "points"),
+            (1.0, 0.30, "points"),
+            (4.0, 0.44, "rebounds"),
+            (4.0, 0.44, "points"),
+        ]
+    ):
+        rows.append(
+            {
+                "ticker": f"T{i}",
+                "game_id": 1,
+                "player_id": i,
+                "player": f"P{i}",
+                "team": "AAA",
+                "stat": stat,
+                "line": 9.5,
+                "yes_bid_dollars": 0.40,
+                "yes_ask_dollars": 0.45,
+                "p_model": p,
+                "tip_utc": "2026-10-21T00:00:00Z",
+                "injury_status": "",
+                "hours_to_tip": hours,
+            }
+        )
+    priced = pd.DataFrame(rows)
+    # no at 0.56: edge = 0.44 - 0.56 ... use p=0.30 -> 0.70-0.56-fee ≈ 0.136; p=0.44 -> 0.56-0.56-fee < 0
+    v1 = candidate_orders(priced, "no_seller")
+    assert set(v1.ticker) == {"T0"}  # T1 outside the 2-6 h window; T2, T3 vetoed
+    late = candidate_orders(priced, "no_seller_late")
+    assert set(late.ticker) == {"T1"}
+    # a marginal order (edge just above zero) passes v1 but not veto2
+    priced.loc[3, "p_model"] = 0.43  # edge about +0.0057
+    assert "T3" in set(candidate_orders(priced, "no_seller").ticker)
+    assert "T3" not in set(candidate_orders(priced, "no_seller_veto2").ticker)
+    # the stat veto only bites rebounds
+    priced.loc[2, "p_model"] = 0.43
+    sv = candidate_orders(priced, "no_seller_stat_veto")
+    assert "T3" in set(sv.ticker) and "T2" not in set(sv.ticker)
+    assert (
+        stake_fraction(0.0, "edge") == 0.005 and stake_fraction(0.05, "edge") == 0.015
+    )
+    assert (
+        stake_fraction(0.10, "edge") == 0.015 and stake_fraction(0.10, "flat") == 0.01
+    )
+    assert set(V2_RULES) == {
+        "no_seller_late",
+        "no_seller_edge_sized",
+        "no_seller_veto2",
+        "no_seller_stat_veto",
+    }

@@ -30,6 +30,33 @@ from kalshi.strategy import (
 )
 
 RULES = ("model_side", "no_seller")
+
+# v2 variants of the "no" seller (RESEARCH_LOG.md, 2026-10-16), each its own
+# $500 paper bankroll, run beside v1 and judged against it in February:
+#   late:       posted only in the last 2 hours before tip-off (0.5 to 2 h)
+#   edge_sized: stake scales with the model's edge (0.5% to 1.5%)
+#   veto2:      skipped unless the model's edge is at least 2 cents
+#   stat_veto:  rebounds need 2 cents of edge; other stats zero
+V2_RULES = {
+    "no_seller_late": {"window": (0.5, 2.0), "min_edge": 0.0, "sizing": "flat"},
+    "no_seller_edge_sized": {"window": WINDOW_HOURS, "min_edge": 0.0, "sizing": "edge"},
+    "no_seller_veto2": {"window": WINDOW_HOURS, "min_edge": 0.02, "sizing": "flat"},
+    "no_seller_stat_veto": {
+        "window": WINDOW_HOURS,
+        "min_edge": {"rebounds": 0.02},
+        "sizing": "flat",
+    },
+}
+ALL_RULES = RULES + tuple(V2_RULES)
+
+
+def stake_fraction(edge, sizing):
+    """Flat 1%, or 0.5% to 1.5% rising with the model's edge (full at 5 cents)."""
+    if sizing != "edge":
+        return STAKE
+    return 0.5 * STAKE + min(max(float(edge), 0.0), 0.05) / 0.05 * STAKE
+
+
 START_BANKROLL = 500.0
 FEE_SHARE = 0.25
 COLUMNS = [
@@ -82,10 +109,13 @@ def bankroll(ledger, rule, start=START_BANKROLL):
 
 def candidate_orders(priced, rule):
     """Orders a rule would post from one run's prices (before sizing)."""
+    spec = V2_RULES.get(
+        rule, {"window": WINDOW_HOURS, "min_edge": 0.0, "sizing": "flat"}
+    )
     q = priced.rename(
         columns={"yes_bid_dollars": "yes_bid", "yes_ask_dollars": "yes_ask"}
     ).copy()
-    lo, hi = WINDOW_HOURS
+    lo, hi = spec["window"]
     q = q[q.hours_to_tip.between(lo, hi) & q.injury_status.fillna("").eq("")]
     if q.empty:
         return q
@@ -96,7 +126,12 @@ def candidate_orders(priced, rule):
     )
     o["p_model"] = o.p_real
     o["edge"] = (1 - o.p_model) - o.price - maker_fee(o.price, FEE_SHARE)
-    return o[o.edge >= 0]
+    threshold = spec["min_edge"]
+    if isinstance(threshold, dict):
+        need = o.stat.map(threshold).fillna(0.0)
+    else:
+        need = threshold
+    return o[o.edge >= need]
 
 
 def post_orders(priced, ledger, now, rule, start=START_BANKROLL):
@@ -120,8 +155,9 @@ def post_orders(priced, ledger, now, rule, start=START_BANKROLL):
     for day, group in o.groupby("day"):
         reserved = float(pd.to_numeric(mine.loc[mine.day == day, "reserved"]).sum())
         room = max(DAY_CAP * bank - reserved, 0.0)
+        sizing = V2_RULES.get(rule, {}).get("sizing", "flat")
         for r in group.itertuples():
-            budget = min(STAKE * bank, room, MAX_ORDER_DOLLARS)
+            budget = min(stake_fraction(r.edge, sizing) * bank, room, MAX_ORDER_DOLLARS)
             n = min(math.floor(budget / r.price + 1e-9), MAX_CONTRACTS)
             if n < 1:
                 continue

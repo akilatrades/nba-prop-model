@@ -21,8 +21,8 @@ from pathlib import Path
 import pandas as pd
 
 from kalshi.api import fee_per_contract, snapshot
+from kalshi.paper_props import ALL_RULES, post_orders
 from kalshi.paper_props import COLUMNS as MAKER_COLUMNS
-from kalshi.paper_props import RULES, post_orders
 from kalshi.paper_props import empty_ledger as maker_ledger
 from kalshi.strategy import MONEY_SEASON_TYPES
 from markets.nba.evaluate import FIRST_TRAIN_SEASON
@@ -184,7 +184,7 @@ def main():
     print(f"Paper positions added: {len(added)}")
     makers = pd.read_csv(MAKER_LEDGER) if MAKER_LEDGER.exists() else maker_ledger()
     makers["day"] = makers.day.astype(str)
-    for rule in RULES:
+    for rule in ALL_RULES:
         posted = post_orders(priced, makers, now, rule)
         makers = pd.concat([makers, posted], ignore_index=True)[MAKER_COLUMNS]
         print(f"Paper resting orders posted ({rule}): {len(posted)}")

@@ -864,3 +864,36 @@ few quotes in that window and are reported with their counts. Results merge
 into the same table; a series' newest scan wins. Same caution as before: at
 t ≥ 2 about one series in forty passes by chance, so passing series are
 candidates for paper tests, not conclusions.
+
+## 2026-10-16: v2 of the "no" seller, fixed before opening night
+
+v1 (2026-10-15) runs unchanged through the season as the reference. Each
+v2 change below runs beside it as its own $500 paper ledger from opening
+night, in `outputs/paper_maker/`, and is judged against v1 at the
+2027-01-31 checkpoint on profit per filled contract (clustered t) and on
+profit per dollar staked. A variant replaces v1 for the second half only
+if it beats it on both out of sample. Evidence for each is from the
+2025-26 decomposition (2026-10-15).
+
+| Ledger | Change from v1 | Why |
+|---|---|---|
+| `no_seller_late` | Posted only 0.5 to 2 hours before tip-off | Orders 2 h before tip made +4.5¢ against +1.4¢ at 5 h; the last 30 minutes +7.2¢ |
+| `no_seller_edge_sized` | Stake 0.5% to 1.5% of the bankroll, rising with the model's edge (full at 5¢) | Profit per contract rose from +1.9¢ (edge 0-3¢) to +3.5¢ (3-10¢) |
+| `no_seller_veto2` | Skip unless the model's edge is at least 2¢ | Same gradient; trades fills for quality |
+| `no_seller_stat_veto` | Rebounds need 2¢ of edge, other stats 0 | Rebounds were the weakest stat (+1.6¢ against +3-4¢) |
+
+**Live trader (`live/nba_trade.py`), added before any real order:** fresh
+exchange quotes before posting; a per-team cap ($15) beside the per-game
+cap ($25) and a cap of six lines per game; players whose ESPN injury entry
+changed in the last six hours, or who are Out, are skipped (the market
+knows the news before the model does); realized P&L for the daily loss stop
+comes from the account's settlements; after every run the ledger's resting
+orders are reconciled with the exchange's and any unknown order is flagged.
+
+**Market selection.** Winner markets come off the list when their two-week
+paper tests end: ITF tennis (2026-10-30) and NASCAR (2026-10-30), unless
+they are positive with t ≥ 2 by then. The edge is in prop markets ("does X
+happen"); winner markets ("A beats B") lost in the scan and are losing live.
+
+**Not yet done, needs a purchase:** a sportsbook-line veto (live odds feed,
+about $40 a month). To be pre-registered when the feed is in hand.

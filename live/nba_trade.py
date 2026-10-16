@@ -29,6 +29,7 @@ from kalshi.risk import Exposure, Rejected, RiskLimits, check, commit
 from kalshi.strategy import DAY_CAP, STAKE
 from kalshi.trading import Order, TradingClient, TradingError
 from markets.nba.kalshi import SERIES
+from markets.nba.live import injuries
 
 LATEST = Path("outputs/projections/latest.csv")
 OUT = Path("outputs/live")
@@ -42,6 +43,7 @@ ORDER_COLUMNS = [
     "env",
     "day",
     "game_id",
+    "team",
     "player",
     "stat",
     "line",
@@ -81,8 +83,18 @@ def exposure_from(ledger, today):
                 pd.to_numeric(st.loc[st.day == today, "profit"]).fillna(0).sum()
             )
     counts = live.groupby("game_id").size().to_dict() if len(live) else {}
+    by_team = (
+        live.groupby("team").cost.sum().to_dict()
+        if len(live) and "team" in live
+        else {}
+    )
     return Exposure(
-        by_day, by_game, float(live.cost.sum()) if len(live) else 0.0, realized, counts
+        by_day,
+        by_game,
+        float(live.cost.sum()) if len(live) else 0.0,
+        realized,
+        counts,
+        by_team,
     )
 
 
@@ -121,6 +133,33 @@ def settlement_frame(raw):
         eastern_day
     )
     return st
+
+
+def drop_fresh_injury_news(candidates, now, hours=6):
+    """Skip players whose injury-report entry changed in the last ``hours``.
+
+    The model priced the market from the last projection run; a status that
+    changed since then is exactly the news a sharp would be trading on.
+    """
+    try:
+        report = injuries()
+    except (OSError, ValueError) as error:
+        print(f"Injury report unavailable ({error}); no injury filter this run")
+        return candidates
+    if report.empty or "updated" not in report:
+        return candidates
+    updated = pd.to_datetime(report.updated, utc=True, errors="coerce")
+    recent = report[updated >= pd.Timestamp(now) - pd.Timedelta(hours=hours)]
+    flagged = set(recent.player_id.dropna().astype("int64"))
+    listed = set(report.player_id.dropna().astype("int64"))
+    keep = ~candidates.player_id.astype("int64").isin(
+        flagged
+        | (listed & set(report.loc[report.out, "player_id"].dropna().astype("int64")))
+    )
+    dropped = int((~keep).sum())
+    if dropped:
+        print(f"Injury filter: {dropped} candidates dropped (fresh or Out status)")
+    return candidates[keep]
 
 
 def reconcile(ledger, client):
@@ -173,6 +212,7 @@ def main():
     if candidates.empty:
         print("No candidate orders in the window")
         return
+    candidates = drop_fresh_injury_news(candidates, now)
     candidates = candidates.sort_values("edge", ascending=False)
     # Skip markets we already have an order in (any status but rejected).
     have = (
@@ -206,6 +246,7 @@ def main():
             "env": client.env,
             "day": day,
             "game_id": int(r.game_id),
+            "team": r.team,
             "player": r.player,
             "stat": r.stat,
             "line": r.line,
@@ -221,7 +262,9 @@ def main():
         if n < 1:
             continue
         try:
-            check(row["cost"], day, row["game_id"], limits, exposure, placed)
+            check(
+                row["cost"], day, row["game_id"], limits, exposure, placed, team=r.team
+            )
             order = Order(
                 ticker=r.ticker,
                 side=r.side,
@@ -236,7 +279,7 @@ def main():
                 status="placed" if mode == "live" else "dry",
                 rejected_reason="",
             )
-            commit(exposure, row["cost"], day, row["game_id"])
+            commit(exposure, row["cost"], day, row["game_id"], team=r.team)
             placed += 1
         except (Rejected, TradingError) as error:
             row.update(

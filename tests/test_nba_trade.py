@@ -94,6 +94,21 @@ def test_trader_places_sized_orders_and_reconciles(tmp_path, monkeypatch):
     priced.to_csv(latest, index=False)
     monkeypatch.setattr(nba_trade, "LATEST", latest)
     monkeypatch.setattr(nba_trade, "refresh_quotes", lambda frame, now: frame)
+    monkeypatch.setattr(
+        nba_trade,
+        "injuries",
+        lambda: pd.DataFrame(
+            columns=[
+                "team",
+                "player_id",
+                "player",
+                "status",
+                "comment",
+                "updated",
+                "out",
+            ]
+        ),
+    )
     fake = FakeClient(resting_unknown=True)
     monkeypatch.setattr(nba_trade, "TradingClient", lambda dry_run: fake)
     monkeypatch.setenv("TRADE_MODE", "live")
@@ -144,6 +159,21 @@ def test_orders_per_game_cap(tmp_path, monkeypatch):
     priced.to_csv(latest, index=False)
     monkeypatch.setattr(nba_trade, "LATEST", latest)
     monkeypatch.setattr(nba_trade, "refresh_quotes", lambda frame, now: frame)
+    monkeypatch.setattr(
+        nba_trade,
+        "injuries",
+        lambda: pd.DataFrame(
+            columns=[
+                "team",
+                "player_id",
+                "player",
+                "status",
+                "comment",
+                "updated",
+                "out",
+            ]
+        ),
+    )
     fake = FakeClient()
     monkeypatch.setattr(nba_trade, "TradingClient", lambda dry_run: fake)
     monkeypatch.setattr(
@@ -163,3 +193,25 @@ def test_orders_per_game_cap(tmp_path, monkeypatch):
     assert (
         ledger.rejected_reason.fillna("").str.contains("orders already in game")
     ).sum() == 1
+
+
+def test_fresh_injury_news_drops_candidate():
+    now = pd.Timestamp("2026-10-21T20:00:00Z")
+    cands = pd.DataFrame({"player_id": [10, 11, 12], "edge": [0.1, 0.1, 0.1]})
+    report = pd.DataFrame(
+        {
+            "team": ["AAA", "BBB"],
+            "player_id": [10, 12],
+            "player": ["a", "c"],
+            "status": ["Questionable", "Day-To-Day"],
+            "comment": ["", ""],
+            "updated": [
+                (now - pd.Timedelta(hours=1)).isoformat(),
+                (now - pd.Timedelta(days=3)).isoformat(),
+            ],
+            "out": [False, False],
+        }
+    )
+    nba_trade.injuries = lambda: report
+    kept = nba_trade.drop_fresh_injury_news(cands, now)
+    assert set(kept.player_id) == {11, 12}  # 10 is fresh news; 12 is old and not Out
