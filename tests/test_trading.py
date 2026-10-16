@@ -108,3 +108,22 @@ def test_pem_normalization_repairs_pasted_keys():
     load_private_key(one_line)
     load_private_key(escaped)
     load_private_key("  " + text + "\n\n")
+
+
+def test_ed25519_body_only_key():
+    import base64 as b64
+
+    from cryptography.hazmat.primitives.asymmetric import ed25519 as ed
+
+    from kalshi.trading import load_private_key
+
+    key = ed.Ed25519PrivateKey.generate()
+    der = key.private_bytes(
+        serialization.Encoding.DER,
+        serialization.PrivateFormat.PKCS8,
+        serialization.NoEncryption(),
+    )
+    body = b64.b64encode(der).decode()  # what a bare paste looks like
+    loaded = load_private_key(body)
+    sig = sign(loaded, "1", "GET", "/trade-api/v2/portfolio/balance")
+    key.public_key().verify(b64.b64decode(sig), b"1GET/trade-api/v2/portfolio/balance")

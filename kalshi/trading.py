@@ -26,7 +26,7 @@ import uuid
 from dataclasses import dataclass, field
 
 from cryptography.hazmat.primitives import hashes, serialization
-from cryptography.hazmat.primitives.asymmetric import padding
+from cryptography.hazmat.primitives.asymmetric import ed25519, padding
 
 BASES = {
     "prod": "https://api.elections.kalshi.com",
@@ -42,10 +42,16 @@ class TradingError(RuntimeError):
 def normalize_pem(pem):
     """Repair a PEM pasted into a secret: literal "\\n", lost line breaks, stray spaces."""
     text = pem.strip().replace("\\n", "\n").replace("\r", "")
-    match = re.search(r"-----BEGIN ([A-Z ]+)-----(.*?)-----END \1-----", text, re.DOTALL)
-    if not match:
+    match = re.search(
+        r"-----BEGIN ([A-Z ]+)-----(.*?)-----END \1-----", text, re.DOTALL
+    )
+    if match:
+        label, body = match.group(1), re.sub(r"\s+", "", match.group(2))
+    elif re.fullmatch(r"[A-Za-z0-9+/=\s]+", text):
+        # Only the base64 body was pasted: assume an unencrypted PKCS#8 key.
+        label, body = "PRIVATE KEY", re.sub(r"\s+", "", text)
+    else:
         return text
-    label, body = match.group(1), re.sub(r"\s+", "", match.group(2))
     lines = [body[i : i + 64] for i in range(0, len(body), 64)]
     return (
         f"-----BEGIN {label}-----\n" + "\n".join(lines) + f"\n-----END {label}-----\n"
@@ -59,14 +65,18 @@ def load_private_key(pem):
 
 
 def sign(private_key, timestamp_ms, method, path):
+    """RSA keys sign with PSS-SHA256; Ed25519 keys sign the message directly."""
     message = f"{timestamp_ms}{method.upper()}{path}".encode()
-    signature = private_key.sign(
-        message,
-        padding.PSS(
-            mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.DIGEST_LENGTH
-        ),
-        hashes.SHA256(),
-    )
+    if isinstance(private_key, ed25519.Ed25519PrivateKey):
+        signature = private_key.sign(message)
+    else:
+        signature = private_key.sign(
+            message,
+            padding.PSS(
+                mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.DIGEST_LENGTH
+            ),
+            hashes.SHA256(),
+        )
     return base64.b64encode(signature).decode()
 
 
