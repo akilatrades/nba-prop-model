@@ -21,19 +21,62 @@ What made money was the other side of the book. The people who buy "yes" on
 a player prop at the asking price are uninformed and pay the spread; the
 people who sell "yes" into a bid are informed. A resting "no" order one cent
 inside the ask, on every line, made +1.65¢ a contract with no model at all
-(33,475 fills). The model's job is to keep the sharps out: skipping orders it
-rates as losers raised that to **+2.9¢ a contract (t 6.1), positive in both
-halves of the season, in all four stats and at every price level.** Buying
-"yes" the same way lost 2.0¢.
+(33,475 fills). Buying "yes" the same way lost 2.0¢.
 
-A scan of 274 Kalshi sports series with the same model-free rule found the
-pattern in player props and a handful of other markets (NFL anytime
-touchdown, ITF tennis, NASCAR, soccer spreads) and its opposite in
-game-winner markets, where both sides are a team and the sharps are present.
+![Resting "no" orders made money at every price level; resting "yes" orders lost](docs/figures/no_vs_yes_by_price.svg)
 
-Kalshi's own same-game combos (parlays) are the extreme case: buyers lost 9%
-per dollar on $1.4M of trades, 19% on five or more legs. That edge belongs to
-the quoting market makers, and is noted as the destination, not pursued.
+The model's job is to keep the sharps out. Profit rises with the model's
+opinion of the order: skipping the ones it rates below zero raised the result
+to **+2.9¢ a contract (t 6.1), positive in both halves of the season, in all
+four stats and at every price level.**
+
+![Profit per contract by the model's edge on the order](docs/figures/profit_by_model_edge.svg)
+
+## The research, test by test
+
+Every test below was written into [RESEARCH_LOG.md](RESEARCH_LOG.md) before
+its data was downloaded, run once, and recomputed with separate code. One
+season of Kalshi prices (2025-26) unless stated.
+
+| Test | Question | Result | Verdict |
+|---|---|---|---|
+| NBA model backtest (2021-2025, holdout 2025-26) | Can a model price NBA props? | Calibrated within 0.6 points on the holdout season; beats a recent-average baseline | Passed |
+| Market test A | Does the model know anything the price doesn't? | Yes: t = 13.8 alongside the price, 57,111 markets | Passed |
+| Market test B (taker) | Buy the model's picks at the ask, 5¢ edge | 12,495 trades, **−0.9¢** a contract | Failed |
+| Phase 4 (taker, tight spreads, 2-6 h before tip) | Cheaper execution? | +1.9¢ overall but +0.02¢ in the regular season; all of it in the playoffs | Not trusted; paper only |
+| Idea 1: resting orders on the model's side | Earn the spread instead of paying it | 4,541 fills, **+3.1¢** (t 4.1); regular season +2.6¢ | Passed |
+| Idea 2: copy the sportsbooks | Use closing lines as the filter | Not testable: 176 of 1,072 games had stored lines | No result |
+| Idea 3: ladder arbitrage, double-doubles | Structural mispricing | 6 riskless pairs in 116,307 snapshots; double-doubles −1.7¢ | Failed |
+| The "no" seller (exploratory, then pre-registered live) | Sell "yes" to retail on every line, model as veto | 21,373 fills, **+2.9¢** (t 6.1); +1.65¢ with no model | Live paper test 2026-27 |
+| In-game | Trade on play-by-play during games | **+4.2¢** (t 6.3) at the quote; +0.3¢ five minutes late | Passed, but needs a real-time feed; not run |
+| Parlays from model picks | 2- and 3-leg parlays of high-probability legs | **−7% and −10%** per dollar; the same legs singly −2.5% | Failed |
+| Kalshi NBA combos | Do parlay buyers overpay? | **−9% per dollar** for buyers (t −2.5), −19% on 5+ legs; $1.4M sample | Edge belongs to the quoting makers |
+| Miami daily high (weather) | Does the method transfer? | Market forecasts better than public models; every rule lost | Failed |
+| Market scan, 274 Kalshi sports series | Where else does the "no" seller work? | Props mostly pay; big-league game winners lose; 10 series passed | Candidates, paper-tested |
+| Liquidity rewards | Does Kalshi pay makers here? | 8 programs on NBA props, $800 total | No |
+
+![Resting "no" orders across Kalshi series: props pay, big-league winners lose](docs/figures/scan_props_vs_winners.svg)
+
+The scan is the clearest statement of the mechanism. In a prop market
+("does Jokić score 25?") the "yes" side is what fans buy, so selling it pays.
+In a winner market ("do the Lakers beat the Celtics?") both sides are a team,
+the flow is two-sided and the sharps are present, so selling "no" is just
+backing the underdog at full stake. The passing winner markets (ITF tennis,
+NASCAR, WTA) are long-shot fields where the edge, if real, is the
+favourite-longshot bias rather than spread capture, and the first days of
+live paper trading in ITF are going against it.
+
+## Simulations, if the edge holds
+
+Replays of the 2025-26 NBA "no" seller with the staking rule (1% of the
+bankroll per order, 30% a day, half the traded flow): **$500 to about
+$2,600**, **$5,000 to about $24,000**, **$25,000 to about $73,000**, where
+flow rather than capital becomes the limit. Adding sports with the same edge
+raises the end and cuts the drawdown (five sports from $25,000: median
+$116,000, worst drawdown 2%). All in-sample and one season; the live ledgers
+are the test.
+
+![Bankroll replay, $500 and $5,000 starts](docs/figures/bankroll_replay.svg)
 
 ## What runs
 
@@ -52,15 +95,6 @@ positions settle from Kalshi's results. Scorecards:
 `outputs/paper_maker/` (NBA, from opening night 2026-10-20),
 [`outputs/paper_markets/`](outputs/paper_markets/) (everything else).
 Pass criteria are fixed in the log; nothing is traded with money.
-
-## Simulations, if the edge holds
-
-Replays of the 2025-26 NBA orders with the staking rule (1% of the bankroll
-per order, 30% a day, half the traded flow): $500 to about $2,600 over a
-season; $5,000 to about $24,000; $25,000 to about $73,000, where flow rather
-than capital becomes the limit. Adding sports with the same edge raises the
-end and cuts the drawdown (five sports from $25,000: median $116,000, worst
-drawdown 2%). All in-sample and one season; the live ledgers are the test.
 
 ## Layout
 
@@ -90,16 +124,6 @@ python -m live.fetch_nfl_data && python -m live.nfl_projections   # NFL week lad
 
 Kalshi downloads run in GitHub Actions (`research/backfill_*.py`,
 `research/scan_markets.py`); the shell here cannot reach Kalshi.
-
-## What failed
-
-- Buying model picks at the ask (NBA, −0.9¢/contract; weather, −2 to −4¢).
-- Parlays built from the model's high-probability picks (−7% to −10% per dollar).
-- Ladder arbitrage (6 chances in 116,307 snapshots) and double-doubles priced
-  with a copula (Kalshi already prices the correlation).
-- In-game trading passed (+4.2¢) but only within a minute of the play; it needs
-  a real-time feed and is not run.
-- Miami daily-high temperature: the market forecasts better than public models.
 
 ## Limitations
 
