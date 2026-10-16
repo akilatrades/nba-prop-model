@@ -87,14 +87,17 @@ class Order:
     ticker: str
     side: str  # "yes" or "no"
     count: int
-    price_cents: int  # price of the side bought
+    price_cents: int  # price of the side bought or sold
     expiration_ts: int | None = None  # Unix seconds; None rests until cancelled
     post_only: bool = True
     client_order_id: str = field(default_factory=lambda: str(uuid.uuid4()))
+    action: str = "buy"  # "sell" closes contracts we hold (the early exit)
 
     def validate(self):
         if self.side not in ("yes", "no"):
             raise TradingError(f"bad side {self.side!r}")
+        if self.action not in ("buy", "sell"):
+            raise TradingError(f"bad action {self.action!r}")
         if not isinstance(self.count, int) or self.count < 1:
             raise TradingError(f"bad count {self.count!r}")
         if not isinstance(self.price_cents, int) or not 1 <= self.price_cents <= 99:
@@ -107,7 +110,7 @@ class Order:
         body = {
             "ticker": self.ticker,
             "client_order_id": self.client_order_id,
-            "action": "buy",
+            "action": self.action,
             "side": self.side,
             "type": "limit",
             "count": self.count,

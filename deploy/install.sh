@@ -21,6 +21,9 @@ if [ ! -f /etc/market-maker.env ]; then
   cat > /etc/market-maker.env <<'ENV'
 TRADE_MODE=dry
 KALSHI_ENV=demo
+# Which "no" seller variant to trade: no_seller (v1) or no_seller_bookline
+# once its historical test passes (RESEARCH_LOG.md, 2026-10-16).
+TRADE_RULE=no_seller
 KALSHI_KEY_ID=paste-key-id-here
 KALSHI_PRIVATE_KEY=paste-private-key-here
 ODDS_API_KEY=paste-odds-key-here
@@ -44,6 +47,7 @@ mkdir -p outputs/live
 .venv/bin/python -m live.nba_trade >> /home/trader/trader.log 2>&1
 if [ -n "${GIT_TOKEN:-}" ]; then
   git add -A outputs/live >/dev/null 2>&1 || true
+  git diff --cached --quiet && exit 0
   git -c user.name=trader -c user.email=trader@market-maker commit -qm "Trade run $(date -u +%Y-%m-%dT%H:%MZ) (${TRADE_MODE}, ${KALSHI_ENV})" >/dev/null 2>&1 || true
   git push -q "https://x-access-token:${GIT_TOKEN}@github.com/akilatrades/sports-market-maker.git" HEAD:main >/dev/null 2>&1 || true
 fi
@@ -51,7 +55,8 @@ RUN
 chmod 755 /home/trader/run.sh
 chown trader:trader /home/trader/run.sh
 
-# Every 5 minutes, 11am to midnight ET (15:00-04:59 UTC), as a systemd timer.
+# Every minute, 11am to midnight ET (15:00-04:59 UTC), as a systemd timer.
+# A pass takes a few seconds; systemd does not start one while another runs.
 cat > /etc/systemd/system/market-maker.service <<'UNIT'
 [Unit]
 Description=Sports market maker: one trading pass
@@ -63,10 +68,11 @@ ExecStart=/home/trader/run.sh
 UNIT
 cat > /etc/systemd/system/market-maker.timer <<'UNIT'
 [Unit]
-Description=Run the market maker every 5 minutes during NBA hours
+Description=Run the market maker every minute during NBA hours
 [Timer]
-OnCalendar=*-*-* 15..23:00/5
-OnCalendar=*-*-* 00..04:00/5
+OnCalendar=*-*-* 15..23:*:00
+OnCalendar=*-*-* 00..04:*:00
+AccuracySec=5s
 Persistent=true
 [Install]
 WantedBy=timers.target

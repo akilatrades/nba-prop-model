@@ -21,6 +21,7 @@ from pathlib import Path
 import pandas as pd
 
 from kalshi.api import fee_per_contract, snapshot
+from kalshi.books import attach_latest
 from kalshi.paper_props import ALL_RULES, post_orders
 from kalshi.paper_props import COLUMNS as MAKER_COLUMNS
 from kalshi.paper_props import empty_ledger as maker_ledger
@@ -163,6 +164,7 @@ def main():
     priced, matched = price_markets(
         players, games, schedule, markets, injuries(), now=now
     )
+    priced = attach_latest(priced)
     folder = OUT / "ladders"
     folder.mkdir(parents=True, exist_ok=True)
     path = folder / f"{now:%Y-%m-%dT%H%MZ}.csv"

@@ -45,7 +45,7 @@ season of Kalshi prices (2025-26) unless stated.
 | Market test B (taker) | Buy the model's picks at the ask, 5¢ edge | 12,495 trades, **−0.9¢** a contract | Failed |
 | Phase 4 (taker, tight spreads, 2-6 h before tip) | Cheaper execution? | +1.9¢ overall but +0.02¢ in the regular season; all of it in the playoffs | Not trusted; paper only |
 | Idea 1: resting orders on the model's side | Earn the spread instead of paying it | 4,541 fills, **+3.1¢** (t 4.1); regular season +2.6¢ | Passed |
-| Idea 2: copy the sportsbooks | Use closing lines as the filter | Not testable: 176 of 1,072 games had stored lines | No result |
+| Idea 2: copy the sportsbooks | Use closing lines as the filter | Not testable then: 176 of 1,072 games had stored lines. Re-run with a paid odds feed, see below | No result |
 | Idea 3: ladder arbitrage, double-doubles | Structural mispricing | 6 riskless pairs in 116,307 snapshots; double-doubles −1.7¢ | Failed |
 | The "no" seller (exploratory, then pre-registered live) | Sell "yes" to retail on every line, model as veto | 21,373 fills, **+2.9¢** (t 6.1); +1.65¢ with no model | Live paper test 2026-27 |
 | In-game | Trade on play-by-play during games | **+4.2¢** (t 6.3) at the quote; +0.3¢ five minutes late | Passed, but needs a real-time feed; not run |
@@ -54,6 +54,7 @@ season of Kalshi prices (2025-26) unless stated.
 | Miami daily high (weather) | Does the method transfer? | Market forecasts better than public models; every rule lost | Failed |
 | Market scan, 274 Kalshi sports series | Where else does the "no" seller work? | Props mostly pay; big-league game winners lose; 10 series passed | Candidates, paper-tested |
 | Liquidity rewards | Does Kalshi pay makers here? | 8 programs on NBA props, $800 total | No |
+| Sportsbook-line veto (pre-registered 2026-10-16) | Are the books a better veto than the model? | 150 sampled 2025-26 games, books' lines at the moment each order was posted; pass if ≥ 1¢ better with t ≥ 2 | Pending: `outputs/bookline/` |
 
 ![Resting "no" orders across Kalshi series: props pay, big-league winners lose](docs/figures/scan_props_vs_winners.svg)
 
@@ -83,18 +84,23 @@ are the test.
 | Job | What it does | Since |
 |---|---|---|
 | NBA "no" seller | Resting "no" on every NBA prop line 2-6 h before tip-off, skipped when the NBA model rates it below zero; $500 paper bankroll | 2026-10-20 |
+| NBA "no" seller, v2 variants | Five variants beside v1, each $500: last 2 hours only; sized by edge; 2¢ veto; rebounds veto; sportsbook-line veto (the books' de-vigged probability decides on lines they quote) | 2026-10-20 |
 | NBA model side | The model's favoured side when its edge after fees is 3¢ or more; $500 | 2026-10-20 |
 | NBA taker (control) | Buy at the ask when the model's edge is 5¢ or more, tight spreads only | 2026-10-20 |
 | NFL "no" seller, model veto | Anytime touchdown and receiving yards, NFL model as veto; $500 each | 2026-10-16 |
 | Model-free "no" seller | ITF tennis, NASCAR, Liga MX and La Liga spreads, NFL anytime TD and receiving yards; $500 each, as the control | 2026-10-16 |
 | Price logs | Kalshi NBA and NFL prop snapshots before games | 2026-10 |
+| Book lines | Sportsbooks' NBA prop lines (de-vigged consensus only) six times a day | 2026-10-16 |
+| Live trader (dry run) | `live/nba_trade.py`: the "no" seller's real orders, sized from the account, through the risk limits; every 15 minutes on GitHub and every minute on a small server. Cancels resting orders on new injury news; rests an exit when a position has moved 6¢ our way. Places nothing until switched to live by hand | 2026-10-16 |
 
 Fills are read from Kalshi's public trade prints with price priority (an
 order fills only with contracts that traded through its price), and
 positions settle from Kalshi's results. Scorecards:
 `outputs/paper_maker/` (NBA, from opening night 2026-10-20),
 [`outputs/paper_markets/`](outputs/paper_markets/) (everything else).
-Pass criteria are fixed in the log; nothing is traded with money.
+Pass criteria are fixed in the log; nothing is traded with money until the
+dry run and a demo-account run have shown real fills matching the paper
+ledger's assumptions.
 
 ## Layout
 
@@ -133,6 +139,9 @@ Kalshi downloads run in GitHub Actions (`research/backfill_*.py`,
   conservative but the flow share is a guess (half, from here on).
 - Scanned markets were chosen because they passed; expect less.
 - Kalshi's maker fee is assumed at a quarter of the taker fee.
+- Paper fills assume every print through our price was ours. Real fills
+  face a queue and adverse selection (informed buyers sweep first); the gap
+  between paper and real fill rates is reported monthly once the trader runs.
 
 ## AI use
 

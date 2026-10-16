@@ -46,6 +46,16 @@ V2_RULES = {
         "min_edge": {"rebounds": 0.02},
         "sizing": "flat",
     },
+    # bookline: on lines the sportsbooks quote, the books' de-vigged
+    # probability is the bouncer (sell "no" only if the "yes" ask is above it,
+    # after the maker fee); lines the books do not quote fall back to the
+    # model veto, as in v1. Needs p_book on the priced frame (kalshi/books.py).
+    "no_seller_bookline": {
+        "window": WINDOW_HOURS,
+        "min_edge": 0.0,
+        "sizing": "flat",
+        "book": True,
+    },
 }
 ALL_RULES = RULES + tuple(V2_RULES)
 
@@ -87,6 +97,8 @@ COLUMNS = [
     "settlement_value",
     "fee",
     "profit",
+    "p_book",
+    "book_n",
 ]
 
 
@@ -131,6 +143,16 @@ def candidate_orders(priced, rule):
         need = o.stat.map(threshold).fillna(0.0)
     else:
         need = threshold
+    if spec.get("book"):
+        p_book = pd.to_numeric(o.get("p_book"), errors="coerce")
+        if p_book is None or not isinstance(p_book, pd.Series):
+            p_book = pd.Series(np.nan, index=o.index)
+        covered = p_book.notna()
+        book_edge = (1 - p_book) - o.price - maker_fee(o.price, FEE_SHARE)
+        # On covered lines the book decides and its edge is recorded as the
+        # order's edge; on the rest the model decides, as in v1.
+        o["edge"] = np.where(covered, book_edge, o.edge)
+        return o[(covered & (book_edge >= need)) | (~covered & (o.edge >= need))]
     return o[o.edge >= need]
 
 
@@ -187,6 +209,12 @@ def post_orders(priced, ledger, now, rule, start=START_BANKROLL):
                     "contracts": n,
                     "reserved": round(n * float(r.price), 2),
                     "status": "resting",
+                    "p_book": round(float(r.p_book), 4)
+                    if hasattr(r, "p_book") and pd.notna(r.p_book)
+                    else np.nan,
+                    "book_n": int(r.book_n)
+                    if hasattr(r, "book_n") and pd.notna(r.book_n)
+                    else 0,
                 }
             )
     return pd.DataFrame(rows, columns=COLUMNS)

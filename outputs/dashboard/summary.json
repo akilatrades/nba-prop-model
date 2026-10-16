@@ -1,5 +1,5 @@
 {
- "updated_utc": "2026-10-16T17:24+00:00",
+ "updated_utc": "2026-10-16T18:51+00:00",
  "paper": {
   "ledgers": [
    {
@@ -169,6 +169,18 @@
     "cents_per_contract": null,
     "bankroll": 500.0,
     "group": "NBA props"
+   },
+   {
+    "ledger": "NBA no_seller_bookline",
+    "orders": 0,
+    "open": 0,
+    "fill_rate": null,
+    "fills": 0,
+    "contracts": 0,
+    "profit": 0.0,
+    "cents_per_contract": null,
+    "bankroll": 500.0,
+    "group": "NBA props"
    }
   ],
   "daily": [
@@ -184,7 +196,15 @@
   "best": "KXITFMATCH",
   "worst": "KXITFMATCH"
  },
- "live": {},
+ "live": {
+  "exits": {
+   "orders": 0,
+   "contracts": 0,
+   "expected_gain": 0.0,
+   "scored": 0,
+   "hold_would_have_made": null
+  }
+ },
  "scan_top": [
   {
    "series": "KXNASCARRACE",

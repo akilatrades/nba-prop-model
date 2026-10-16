@@ -10,3 +10,4 @@ data/hoopr/
 /outputs/**/predictions.parquet
 /data/pbp/
 /outputs/ingame/snapshots.parquet
+/data/books/

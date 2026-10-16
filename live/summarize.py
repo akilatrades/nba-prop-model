@@ -126,6 +126,26 @@ def main():
             for k, v in st.groupby("day").profit.sum().items()
         }
         live["realized_total"] = round(float(_num(st.profit).sum()), 2)
+    p = Path("outputs/live/exits.csv")
+    if p.exists():
+        ex = pd.read_csv(p)
+        scored = ex[ex.result.notna()] if "result" in ex else ex.iloc[0:0]
+        live["exits"] = {
+            "orders": int(len(ex)),
+            "contracts": int(_num(ex.contracts).sum()),
+            "expected_gain": round(float(_num(ex.expected_gain).sum()), 2),
+            "scored": int(len(scored)),
+            "hold_would_have_made": round(
+                float(
+                    (
+                        _num(scored.hold_profit_per_contract) * _num(scored.contracts)
+                    ).sum()
+                ),
+                2,
+            )
+            if len(scored)
+            else None,
+        }
     scan = []
     p = Path("outputs/scan/table.csv")
     if p.exists():

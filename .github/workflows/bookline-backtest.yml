@@ -1,0 +1,46 @@
+name: bookline backtest
+# Historical test of the sportsbook-line veto (RESEARCH_LOG.md, 2026-10-16):
+# pulls the books' lines as they stood when each 2025-26 "no" order was
+# posted, for 150 sampled games, and scores the pre-registered variants.
+# Spends about 12,000 Odds API credits; only the derived consensus table is
+# committed (the feed's terms do not allow redistributing raw odds). Manual only.
+on:
+  workflow_dispatch:
+    inputs:
+      command:
+        description: fetch (spends credits) or score (offline)
+        default: fetch
+permissions:
+  contents: write
+concurrency:
+  group: repo-writes
+  cancel-in-progress: false
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Run
+        run: |
+          set -o pipefail
+          python -m research.bookline_backtest ${{ inputs.command }} 2>&1 | tee run.log || {
+            echo "::error::$(tail -c 3000 run.log | sed ':a;N;$!ba;s/%/%25/g;s/\n/%0A/g')"
+            exit 1
+          }
+          echo "::notice::$(tr '\n' ' ' < outputs/bookline/results.json | cut -c1-3500)"
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A outputs/bookline
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Bookline backtest: $(date -u +%Y-%m-%dT%H:%MZ)"
+          git pull --rebase
+          git push

@@ -11,6 +11,14 @@ Modes, from the environment:
 
     TRADE_MODE=dry   (default) build and log orders; place nothing
     TRADE_MODE=live  place orders; KALSHI_ENV picks demo or prod
+    TRADE_RULE       which "no" seller variant to trade (default no_seller;
+                     no_seller_bookline once its historical test passes)
+
+Each run also (RESEARCH_LOG.md, 2026-10-16): cancels resting orders on
+players whose injury-report entry changed since the order was placed or who
+are now Out or Doubtful; and, in live mode, rests a sell order on any "no"
+position whose market has moved at least EXIT_GAIN in our favour (the
+early exit), logged in outputs/live/exits.csv.
 
 Run from the repository root: python -m live.nba_trade
 """
@@ -23,8 +31,9 @@ from pathlib import Path
 
 import pandas as pd
 
-from kalshi.api import snapshot
-from kalshi.paper_props import candidate_orders
+from kalshi.api import fetch_market, snapshot
+from kalshi.books import attach_latest
+from kalshi.paper_props import ALL_RULES, candidate_orders
 from kalshi.risk import Exposure, Rejected, RiskLimits, check, commit
 from kalshi.strategy import DAY_CAP, STAKE
 from kalshi.trading import Order, TradingClient, TradingError
@@ -36,14 +45,19 @@ OUT = Path("outputs/live")
 ORDERS = OUT / "orders.csv"
 FILLS = OUT / "fills.csv"
 SETTLEMENTS = OUT / "settlements.csv"
-RULE = "no_seller"
+EXITS = OUT / "exits.csv"
+DEFAULT_RULE = "no_seller"
+EXIT_GAIN = 0.06  # "yes" ask at least this far below the level we sold at
+MIN_HOURS_TO_TIP = 0.25  # no new order inside 15 minutes of tip-off
 ORDER_COLUMNS = [
     "run_utc",
     "mode",
     "env",
+    "rule",
     "day",
     "game_id",
     "team",
+    "player_id",
     "player",
     "stat",
     "line",
@@ -53,12 +67,31 @@ ORDER_COLUMNS = [
     "contracts",
     "cost",
     "p_model",
+    "p_book",
     "edge",
     "expiration_utc",
     "order_id",
     "client_order_id",
     "status",
     "rejected_reason",
+]
+EXIT_COLUMNS = [
+    "run_utc",
+    "mode",
+    "env",
+    "day",
+    "ticker",
+    "contracts",
+    "entry_no_price",
+    "exit_no_price",
+    "yes_ask_at_exit",
+    "expected_gain",
+    "expiration_utc",
+    "order_id",
+    "client_order_id",
+    "status",
+    "result",
+    "hold_profit_per_contract",
 ]
 
 
@@ -165,6 +198,190 @@ def drop_fresh_injury_news(candidates, now, hours=6):
     return candidates[keep]
 
 
+def cancel_on_injury(ledger, client, now, report=None):
+    """Cancel resting orders on players with new injury news.
+
+    An order placed before a player's report entry changed, or on a player now
+    Out or Doubtful, is cancelled: the market knows the news before the model
+    does, and a resting "no" on a scratched starter's teammate is the kind of
+    order a sharp sweeps. Returns the ledger with those rows marked
+    ``cancelled`` and the reason, plus the number cancelled.
+    """
+    if not len(ledger):
+        return ledger, 0
+    if report is None:
+        try:
+            report = injuries()
+        except (OSError, ValueError) as error:
+            print(f"Injury report unavailable ({error}); no cancels this run")
+            return ledger, 0
+    if report.empty:
+        return ledger, 0
+    ledger = ledger.copy()
+    rep = report.dropna(subset=["player_id"]).copy()
+    rep["player_id"] = rep.player_id.astype("int64")
+    rep["updated"] = pd.to_datetime(rep.get("updated"), utc=True, errors="coerce")
+    rep["status_l"] = (
+        rep.get("status", pd.Series("", index=rep.index)).fillna("").str.lower()
+    )
+    rep = rep.sort_values("updated").drop_duplicates("player_id", keep="last")
+    rep = rep.set_index("player_id")
+    resting = ledger.status.isin(["placed", "resting", "dry"])
+    cancelled = 0
+    for i in ledger.index[resting]:
+        pid = ledger.at[i, "player_id"]
+        if pd.isna(pid) or int(pid) not in rep.index:
+            continue
+        entry = rep.loc[int(pid)]
+        placed = pd.to_datetime(ledger.at[i, "run_utc"], utc=True, errors="coerce")
+        out = bool(entry.get("out", False)) or entry.status_l in {"out", "doubtful"}
+        changed = (
+            pd.notna(entry.updated) and pd.notna(placed) and entry.updated > placed
+        )
+        if not (out or changed):
+            continue
+        reason = "injury: " + (entry.status_l or "entry changed")
+        try:
+            client.cancel(str(ledger.at[i, "order_id"]))
+        except TradingError as error:
+            print(f"Cancel failed for {ledger.at[i, 'ticker']}: {error}")
+            continue
+        ledger.at[i, "status"] = "cancelled"
+        ledger.at[i, "rejected_reason"] = reason
+        cancelled += 1
+    if cancelled:
+        print(f"Injury cancels: {cancelled} resting orders pulled")
+    return ledger, cancelled
+
+
+def entry_prices(fills):
+    """Average "no" price paid per ticker from the account's fills."""
+    if fills is None or not len(fills):
+        return {}
+    f = fills.copy()
+    if not {"side", "no_price", "count", "ticker"} <= set(f.columns):
+        return {}
+    action = f["action"] if "action" in f else pd.Series("buy", index=f.index)
+    f = f[(f.side == "no") & (action.fillna("buy") == "buy")]
+    if f.empty:
+        return {}
+    f["no_price"] = pd.to_numeric(f.no_price, errors="coerce") / 100
+    f["count"] = pd.to_numeric(f["count"], errors="coerce")
+    g = f.groupby("ticker").apply(
+        lambda d: float((d.no_price * d["count"]).sum() / d["count"].sum())
+    )
+    return g.to_dict()
+
+
+def exit_orders(positions, quotes, entries, resting_sells, now, min_gain=EXIT_GAIN):
+    """Sell orders for "no" positions whose market has moved our way.
+
+    ``positions``: Kalshi market positions (market_ticker, position; negative
+    is "no" contracts). ``quotes``: frame with ticker, yes_bid, yes_ask,
+    tip_utc. ``entries``: ticker -> average "no" price paid.
+    ``resting_sells``: ticker -> contracts already resting to sell.
+
+    The exit rests 1 cent inside the "no" bid (post-only, maker), expiring at
+    tip-off, when the "yes" ask has fallen at least ``min_gain`` below the
+    level we sold at (yes level = 1 - entry no price).
+    """
+    q = quotes.set_index("ticker") if len(quotes) else quotes
+    out = []
+    for p in positions:
+        ticker = p.get("market_ticker") or p.get("ticker")
+        held = -int(p.get("position", 0) or 0)  # "no" contracts
+        if held <= 0 or ticker not in getattr(q, "index", []):
+            continue
+        entry = entries.get(ticker)
+        if entry is None:
+            continue
+        yes_bid, yes_ask = (
+            float(q.at[ticker, "yes_bid"]),
+            float(q.at[ticker, "yes_ask"]),
+        )
+        if not (0 < yes_bid < yes_ask < 1):
+            continue
+        level = 1 - entry
+        if yes_ask > level - min_gain + 1e-9:
+            continue
+        no_bid = 1 - yes_ask
+        no_ask = 1 - yes_bid
+        price = no_bid + 0.01 if no_ask - no_bid >= 0.02 - 1e-9 else no_bid
+        free = held - int(resting_sells.get(ticker, 0))
+        if free <= 0:
+            continue
+        tip = pd.Timestamp(q.at[ticker, "tip_utc"])
+        out.append(
+            {
+                "ticker": ticker,
+                "contracts": free,
+                "entry_no_price": round(entry, 4),
+                "exit_no_price": round(price, 2),
+                "yes_ask_at_exit": round(yes_ask, 2),
+                "expected_gain": round((price - entry) * free, 2),
+                "expiration_utc": tip.isoformat(),
+                "expiration_ts": int(tip.timestamp()) if pd.notna(tip) else None,
+            }
+        )
+    return out
+
+
+def place_exits(client, candidates, now, mode):
+    rows = []
+    for c in candidates:
+        row = {
+            "run_utc": now.isoformat(timespec="minutes"),
+            "mode": mode,
+            "env": client.env,
+            "day": eastern_day(now),
+            **{k: v for k, v in c.items() if k != "expiration_ts"},
+        }
+        try:
+            order = Order(
+                ticker=c["ticker"],
+                side="no",
+                count=int(c["contracts"]),
+                price_cents=round(c["exit_no_price"] * 100),
+                expiration_ts=c["expiration_ts"],
+                action="sell",
+            )
+            result = client.place(order)
+            row.update(
+                order_id=result.get("order_id"),
+                client_order_id=order.client_order_id,
+                status="placed" if mode == "live" else "dry",
+            )
+        except TradingError as error:
+            row.update(order_id="", client_order_id="", status=f"rejected: {error}")
+        rows.append(row)
+    return pd.DataFrame(rows, columns=EXIT_COLUMNS)
+
+
+def score_exits(exits, fetch=fetch_market):
+    """Fill in each exit's market result and what holding would have made."""
+    if not len(exits):
+        return exits
+    exits = exits.copy()
+    exits["result"] = exits.result.astype(object)
+    exits["hold_profit_per_contract"] = pd.to_numeric(
+        exits.hold_profit_per_contract, errors="coerce"
+    )
+    for i in exits.index[exits.result.isna() | (exits.result.astype(str) == "")]:
+        try:
+            market = fetch(exits.at[i, "ticker"])
+        except (OSError, ValueError):
+            continue
+        result = (market or {}).get("result")
+        if result not in {"yes", "no"}:
+            continue
+        exits.at[i, "result"] = result
+        entry = float(exits.at[i, "entry_no_price"])
+        exits.at[i, "hold_profit_per_contract"] = round(
+            (1.0 if result == "no" else 0.0) - entry, 4
+        )
+    return exits
+
+
 def reconcile(ledger, client):
     """Compare the ledger's resting orders with the exchange's; flag any difference."""
     exchange = {o["order_id"]: o for o in client.orders("resting")}
@@ -188,6 +405,9 @@ def reconcile(ledger, client):
 def main():
     now = datetime.now(UTC)
     mode = os.environ.get("TRADE_MODE", "dry")
+    rule = os.environ.get("TRADE_RULE", DEFAULT_RULE)
+    if rule not in ALL_RULES:
+        raise TradingError(f"TRADE_RULE {rule!r} is not one of {ALL_RULES}")
     summary_extra = {}
     client = TradingClient(dry_run=(mode != "live"))
     OUT.mkdir(parents=True, exist_ok=True)
@@ -195,6 +415,9 @@ def main():
     ledger = (
         pd.read_csv(ORDERS) if ORDERS.exists() else pd.DataFrame(columns=ORDER_COLUMNS)
     )
+    for column in ORDER_COLUMNS:
+        if column not in ledger:
+            ledger[column] = pd.NA
 
     if limits.kill_file.exists():
         print("KILL file present: cancelling everything, placing nothing")
@@ -211,7 +434,12 @@ def main():
         priced.tip_utc - pd.Timestamp(now)
     ).dt.total_seconds() / 3600
     priced = refresh_quotes(priced, now)
-    candidates = candidate_orders(priced, RULE)
+    priced = attach_latest(priced)
+    ledger, cancelled = cancel_on_injury(ledger, client, now)
+    if cancelled:
+        ledger.to_csv(ORDERS, index=False)
+    candidates = candidate_orders(priced, rule)
+    candidates = candidates[candidates.hours_to_tip >= MIN_HOURS_TO_TIP]
     if candidates.empty:
         print("No candidate orders in the window")
         return
@@ -247,9 +475,11 @@ def main():
             "run_utc": now.isoformat(timespec="minutes"),
             "mode": mode,
             "env": client.env,
+            "rule": rule,
             "day": day,
             "game_id": int(r.game_id),
             "team": r.team,
+            "player_id": int(r.player_id),
             "player": r.player,
             "stat": r.stat,
             "line": r.line,
@@ -259,6 +489,9 @@ def main():
             "contracts": n,
             "cost": round(n * float(r.price), 2),
             "p_model": round(float(r.p_model), 4),
+            "p_book": round(float(r.p_book), 4)
+            if hasattr(r, "p_book") and pd.notna(r.p_book)
+            else pd.NA,
             "edge": round(float(r.edge), 4),
             "expiration_utc": pd.Timestamp(r.tip_utc).isoformat(),
         }
@@ -321,6 +554,34 @@ def main():
                     for k, v in report.items()
                 }
             }
+            # Early exits on "no" positions that have moved our way.
+            exits = (
+                pd.read_csv(EXITS)
+                if EXITS.exists()
+                else pd.DataFrame(columns=EXIT_COLUMNS)
+            )
+            resting_sells = {}
+            for o in exchange.values():
+                if o.get("action") == "sell" and o.get("side") == "no":
+                    t = o.get("ticker")
+                    resting_sells[t] = resting_sells.get(t, 0) + int(
+                        o.get("remaining_count", o.get("count", 0)) or 0
+                    )
+            quotes = priced.rename(
+                columns={"yes_bid_dollars": "yes_bid", "yes_ask_dollars": "yes_ask"}
+            )[["ticker", "yes_bid", "yes_ask", "tip_utc"]]
+            wanted = exit_orders(
+                client.positions(),
+                quotes,
+                entry_prices(pd.read_csv(FILLS) if FILLS.exists() else None),
+                resting_sells,
+                now,
+            )
+            new_exits = place_exits(client, wanted, now, mode)
+            exits = pd.concat([exits, new_exits], ignore_index=True)[EXIT_COLUMNS]
+            exits = score_exits(exits)
+            exits.to_csv(EXITS, index=False)
+            summary_extra["exits_placed"] = int(len(new_exits))
             resting = set(exchange)
             placed_mask = ledger.status.isin(["placed", "resting"])
             ledger.loc[placed_mask & ~ledger.order_id.isin(resting), "status"] = "done"
@@ -335,7 +596,9 @@ def main():
         "run_utc": now.isoformat(timespec="minutes"),
         "mode": mode,
         "env": client.env,
+        "rule": rule,
         "bankroll": round(bank, 2),
+        "injury_cancels": cancelled,
         "candidates": len(candidates),
         "placed": placed,
         "rejected": int((new.status == "rejected").sum()),
@@ -355,7 +618,8 @@ def write_scorecard(ledger, now):
     lines = [
         "# Live trader",
         "",
-        f'Updated {now:%Y-%m-%d %H:%M} UTC. Risk limits: kalshi/risk.py. Rule: the NBA "no" seller.',
+        f"Updated {now:%Y-%m-%d %H:%M} UTC. Risk limits: kalshi/risk.py. "
+        f"Rule: {os.environ.get('TRADE_RULE', DEFAULT_RULE)}.",
         "",
         "| Status | Orders | Dollars |",
         "|---|---:|---:|",

@@ -1,0 +1,1 @@
+run_utc,mode,env,day,ticker,contracts,entry_no_price,exit_no_price,yes_ask_at_exit,expected_gain,expiration_utc,order_id,client_order_id,status,result,hold_profit_per_contract

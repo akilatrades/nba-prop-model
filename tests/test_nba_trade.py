@@ -56,6 +56,13 @@ class FakeClient:
     def cancel_all(self, ticker=None):
         return []
 
+    def positions(self):
+        return []
+
+    def cancel(self, order_id):
+        self.cancelled = getattr(self, "cancelled", []) + [order_id]
+        return {"order_id": order_id}
+
 
 def priced_frame(tip):
     rows = []
@@ -215,3 +222,133 @@ def test_fresh_injury_news_drops_candidate():
     nba_trade.injuries = lambda: report
     kept = nba_trade.drop_fresh_injury_news(cands, now)
     assert set(kept.player_id) == {11, 12}  # 10 is fresh news; 12 is old and not Out
+
+
+def test_injury_cancels_pull_resting_orders_on_changed_entries():
+    ledger = pd.DataFrame(
+        [
+            {
+                "ticker": "A",
+                "player_id": 1,
+                "order_id": "o1",
+                "status": "resting",
+                "run_utc": "2026-10-21T20:00+00:00",
+                "rejected_reason": "",
+            },
+            {
+                "ticker": "B",
+                "player_id": 2,
+                "order_id": "o2",
+                "status": "resting",
+                "run_utc": "2026-10-21T20:00+00:00",
+                "rejected_reason": "",
+            },
+            {
+                "ticker": "C",
+                "player_id": 3,
+                "order_id": "o3",
+                "status": "resting",
+                "run_utc": "2026-10-21T20:00+00:00",
+                "rejected_reason": "",
+            },
+            {
+                "ticker": "D",
+                "player_id": 1,
+                "order_id": "o4",
+                "status": "done",
+                "run_utc": "2026-10-21T20:00+00:00",
+                "rejected_reason": "",
+            },
+        ]
+    )
+    report = pd.DataFrame(
+        [
+            # entry changed after the order: cancel
+            {
+                "player_id": 1,
+                "status": "Questionable",
+                "updated": "2026-10-21T21:00Z",
+                "out": False,
+            },
+            # old entry, still questionable: leave it
+            {
+                "player_id": 2,
+                "status": "Questionable",
+                "updated": "2026-10-20T12:00Z",
+                "out": False,
+            },
+            # old entry but now Out: cancel
+            {
+                "player_id": 3,
+                "status": "Out",
+                "updated": "2026-10-20T12:00Z",
+                "out": True,
+            },
+        ]
+    )
+    fake = FakeClient()
+    out, n = nba_trade.cancel_on_injury(
+        ledger, fake, pd.Timestamp("2026-10-21T22:00Z"), report
+    )
+    assert n == 2
+    assert out.set_index("ticker").status.to_dict() == {
+        "A": "cancelled",
+        "B": "resting",
+        "C": "cancelled",
+        "D": "done",
+    }
+    assert set(fake.cancelled) == {"o1", "o3"}
+    assert out.set_index("ticker").rejected_reason["C"] == "injury: out"
+
+
+def test_early_exit_orders():
+    tip = pd.Timestamp("2026-10-22T00:00Z")
+    quotes = pd.DataFrame(
+        {
+            "ticker": ["A", "B", "C"],
+            "yes_bid": [0.30, 0.40, 0.30],
+            "yes_ask": [0.33, 0.44, 0.31],
+            "tip_utc": [tip, tip, tip],
+        }
+    )
+    # We sold "no" at 0.55 (yes level 0.45) in A, B and C.
+    entries = {"A": 0.55, "B": 0.55, "C": 0.55}
+    positions = [
+        {"market_ticker": "A", "position": -10},  # yes ask 0.33 <= 0.39: exit
+        {"market_ticker": "B", "position": -10},  # yes ask 0.44: not yet
+        {"market_ticker": "C", "position": -10},  # 1-cent spread: at the bid
+        {"market_ticker": "Z", "position": 5},  # a yes position: ignored
+    ]
+    out = nba_trade.exit_orders(
+        positions, quotes, entries, {"A": 4}, pd.Timestamp("2026-10-21T20:00Z")
+    )
+    by = {o["ticker"]: o for o in out}
+    assert set(by) == {"A", "C"}
+    assert by["A"]["contracts"] == 6  # 4 already resting to sell
+    assert by["A"]["exit_no_price"] == 0.68  # no bid 0.67 + 1 cent
+    assert abs(by["A"]["expected_gain"] - 6 * (0.68 - 0.55)) < 1e-9
+    assert by["C"]["exit_no_price"] == 0.69  # spread 1 cent: sit at the no bid
+    fake = FakeClient()
+    placed = nba_trade.place_exits(
+        fake, out, pd.Timestamp("2026-10-21T20:00Z").to_pydatetime(), "live"
+    )
+    assert len(fake.placed) == 2 and all(
+        o.action == "sell" and o.side == "no" for o in fake.placed
+    )
+    assert set(placed.status) == {"placed"}
+    scored = nba_trade.score_exits(placed, fetch=lambda t: {"result": "no"})
+    assert (scored.hold_profit_per_contract.round(2) == 0.45).all()
+
+
+def test_entry_prices_average_no_fills():
+    fills = pd.DataFrame(
+        {
+            "ticker": ["A", "A", "B"],
+            "side": ["no", "no", "yes"],
+            "action": ["buy", "buy", "buy"],
+            "no_price": [50, 60, 40],
+            "count": [1, 3, 2],
+        }
+    )
+    e = nba_trade.entry_prices(fills)
+    assert abs(e["A"] - 0.575) < 1e-9 and "B" not in e

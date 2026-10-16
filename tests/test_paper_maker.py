@@ -151,4 +151,38 @@ def test_v2_rules_differ_from_v1():
         "no_seller_edge_sized",
         "no_seller_veto2",
         "no_seller_stat_veto",
+        "no_seller_bookline",
     }
+
+
+def test_bookline_rule_uses_the_book_where_quoted_and_the_model_elsewhere():
+    import numpy as np
+
+    # Three lines, all with the same quote (no at 0.56 + fee ~ 0.564 cost):
+    #   T0: book says p(over) 0.30 -> book edge +0.14, model says 0.60 (would veto)
+    #   T1: book says p(over) 0.60 -> book edge negative, model says 0.30 (would pass)
+    #   T2: no book quote, model 0.30 -> v1 rule, passes
+    priced = pd.DataFrame(
+        [
+            market(ticker="T0", player_id=1, p_model=0.60, p_book=0.30, book_n=3),
+            market(ticker="T1", player_id=2, p_model=0.30, p_book=0.60, book_n=2),
+            market(ticker="T2", player_id=3, p_model=0.30, p_book=np.nan, book_n=0),
+        ]
+    )
+    out = candidate_orders(priced, "no_seller_bookline")
+    assert set(out.ticker) == {"T0", "T2"}
+    # the book's edge is recorded for the covered line
+    t0 = out[out.ticker == "T0"].iloc[0]
+    assert (
+        abs(t0.edge - (0.70 - t0.price - 0.25 * 0.07 * t0.price * (1 - t0.price)))
+        < 1e-9
+    )
+    # v1 on the same frame ignores the book entirely
+    assert set(candidate_orders(priced, "no_seller").ticker) == {"T1", "T2"}
+    # a frame without a p_book column falls back to v1 behaviour
+    plain = priced.drop(columns=["p_book", "book_n"])
+    assert set(candidate_orders(plain, "no_seller_bookline").ticker) == {"T1", "T2"}
+    # the ledger carries the book columns
+    ledger = post_orders(priced, empty_ledger(), NOW, "no_seller_bookline")
+    assert ledger.loc[ledger.ticker == "T0", "book_n"].iloc[0] == 3
+    assert ledger.loc[ledger.ticker == "T2", "p_book"].isna().all()
