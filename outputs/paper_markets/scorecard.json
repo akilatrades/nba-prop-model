@@ -1,0 +1,38 @@
+{
+  "KXITFMATCH": {
+    "orders": 33,
+    "open": 33,
+    "fill_rate": null,
+    "fills_settled": 0,
+    "bankroll": 500.0
+  },
+  "KXNASCARRACE": {
+    "orders": 0,
+    "open": 0,
+    "fill_rate": null,
+    "fills_settled": 0,
+    "bankroll": 500.0
+  },
+  "KXLIGAMXSPREAD": {
+    "orders": 0,
+    "open": 0,
+    "fill_rate": null,
+    "fills_settled": 0,
+    "bankroll": 500.0
+  },
+  "KXLALIGASPREAD": {
+    "orders": 0,
+    "open": 0,
+    "fill_rate": null,
+    "fills_settled": 0,
+    "bankroll": 500.0
+  },
+  "KXNFLANYTD": {
+    "orders": 0,
+    "open": 0,
+    "fill_rate": null,
+    "fills_settled": 0,
+    "bankroll": 500.0
+  },
+  "updated_utc": "2026-10-16T09:47+00:00"
+}
