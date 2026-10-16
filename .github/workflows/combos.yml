@@ -14,7 +14,7 @@ concurrency:
 jobs:
   combos:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 300
     steps:
       - uses: actions/checkout@v4
         with:
@@ -23,7 +23,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install pandas numpy pyarrow
-      - run: python scripts/backfill_combos.py --minutes 40 --workers 8
+      - run: python scripts/backfill_combos.py --minutes 240 --workers 8 --sample 30000
       - name: Commit
         if: always()
         run: |
@@ -31,6 +31,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           rm -f data/kalshi_history/*.tmp
           git add -A data/kalshi_history/combos_*
+          du -sh data/kalshi_history/combos_* || true
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "Kalshi NBA combo markets and trades"
           git pull --rebase

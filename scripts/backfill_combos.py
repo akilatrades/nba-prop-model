@@ -68,6 +68,18 @@ def list_markets():
             rows.append(row)
         print(f"{source}: {len(got)}")
     frame = pd.DataFrame(rows).drop_duplicates("ticker", keep="last")
+    volume = pd.to_numeric(frame.volume_fp, errors="coerce").fillna(0)
+    counts = {
+        "listed": len(frame),
+        "by_source": frame.source.value_counts().to_dict(),
+        "by_legs": frame.n_legs.value_counts().sort_index().to_dict(),
+        "traded_settled": int(((volume > 0) & frame.result.isin(["yes", "no"])).sum()),
+    }
+    (OUT / "combos_counts.json").write_text(
+        json.dumps(counts, indent=1, default=str) + "\n"
+    )
+    # Only combos that traded and settled are kept (the full list is 1.8 million rows).
+    frame = frame[(volume > 0) & frame.result.isin(["yes", "no"])]
     save(frame, OUT / "combos_markets.parquet")
     return frame
 
