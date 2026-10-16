@@ -2,7 +2,7 @@
 the over at each Kalshi line (RESEARCH_LOG.md, 2026-10-16, "sportsbook-line
 veto").
 
-Current odds: ``nba_props(key)`` pulls every US book's main and alternate
+Current odds: ``props(key, sport)`` pulls every US book's main and alternate
 lines for the next games. Historical odds: ``historical_event_odds`` returns
 the feed's snapshot at or just before a timestamp. ``consensus`` turns raw
 quotes into one probability per player, stat and line (vig removed within
@@ -39,6 +39,17 @@ MARKETS = {
     "player_rebounds_alternate": "rebounds",
     "player_assists_alternate": "assists",
     "player_threes_alternate": "threes",
+}
+# NFL: receiving yards is quoted both sides and can be de-vigged; anytime
+# touchdown is quoted "Yes" only, so it has no book probability here.
+NFL_SPORT = "americanfootball_nfl"
+NFL_MARKETS = {
+    "player_reception_yds": "receiving_yards",
+    "player_reception_yds_alternate": "receiving_yards",
+}
+SPORTS = {
+    "nba": (SPORT, MARKETS, "nba_latest.csv"),
+    "nfl": (NFL_SPORT, NFL_MARKETS, "nfl_latest.csv"),
 }
 # Full team names as the feed gives them -> Kalshi's three-letter codes.
 TEAMS = {
@@ -265,7 +276,7 @@ def attach(priced, book):
     return p
 
 
-LATEST = Path("outputs/books/latest.csv")
+LATEST = Path("outputs/books/nba_latest.csv")
 
 
 def attach_latest(priced, path=LATEST, max_age_hours=4):
@@ -293,9 +304,10 @@ def attach_latest(priced, path=LATEST, max_age_hours=4):
 # --- convenience ------------------------------------------------------------------
 
 
-def nba_props(key, max_events=None, hours_ahead=36):
-    """Current lines for upcoming NBA games (8 credits per game)."""
-    listed, usage = events(key)
+def props(key, sport="nba", max_events=None, hours_ahead=36):
+    """Current lines for upcoming games of one sport (1 credit per market per game)."""
+    sport_key, markets, _ = SPORTS[sport]
+    listed, usage = events(key, sport=sport_key)
     now = pd.Timestamp.now(tz="UTC")
     frames = []
     for event in listed:
@@ -304,8 +316,8 @@ def nba_props(key, max_events=None, hours_ahead=36):
             hours=hours_ahead
         ):
             continue
-        odds, usage = event_odds(key, event["id"])
-        frames.append(parse_event(odds))
+        odds, usage = event_odds(key, event["id"], sport=sport_key, markets=markets)
+        frames.append(parse_event(odds, markets=markets))
         if max_events and len(frames) >= max_events:
             break
     lines = (

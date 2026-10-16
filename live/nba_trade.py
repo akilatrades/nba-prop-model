@@ -13,6 +13,8 @@ Modes, from the environment:
     TRADE_MODE=live  place orders; KALSHI_ENV picks demo or prod
     TRADE_RULE       which "no" seller variant to trade (default no_seller;
                      no_seller_bookline once its historical test passes)
+    TRADE_MARKET     nba (default) or nfl (live/nfl_trade.py builds the
+                     priced frame; ledgers in outputs/live/nfl/)
 
 Each run also (RESEARCH_LOG.md, 2026-10-16): cancels resting orders on
 players whose injury-report entry changed since the order was placed or who
@@ -46,6 +48,46 @@ ORDERS = OUT / "orders.csv"
 FILLS = OUT / "fills.csv"
 SETTLEMENTS = OUT / "settlements.csv"
 EXITS = OUT / "exits.csv"
+MARKET_DIRS = {"nba": Path("outputs/live"), "nfl": Path("outputs/live/nfl")}
+MARKET_PREFIXES = {"nba": ("KXNBA",), "nfl": ("KXNFL",)}
+
+
+def configure(market):
+    """Point the ledger paths at this market's folder (NBA keeps outputs/live)."""
+    global OUT, ORDERS, FILLS, SETTLEMENTS, EXITS
+    if market not in MARKET_DIRS:
+        raise TradingError(
+            f"TRADE_MARKET {market!r} is not one of {sorted(MARKET_DIRS)}"
+        )
+    OUT = MARKET_DIRS[market]
+    ORDERS, FILLS = OUT / "orders.csv", OUT / "fills.csv"
+    SETTLEMENTS, EXITS = OUT / "settlements.csv", OUT / "exits.csv"
+
+
+def only_market(frame, market):
+    """Rows of an account-wide frame (fills, settlements) for this market's tickers."""
+    if frame is None or not len(frame) or "ticker" not in frame:
+        return frame
+    return frame[frame.ticker.astype(str).str.startswith(MARKET_PREFIXES[market])]
+
+
+def other_open_exposure(market):
+    """Dollars resting or filled in the other markets' ledgers (one account)."""
+    total = 0.0
+    for name, folder in MARKET_DIRS.items():
+        if name == market:
+            continue
+        path = folder / "orders.csv"
+        if path.exists():
+            o = pd.read_csv(path)
+            if len(o):
+                live = o[o.status.isin(["placed", "resting", "filled"])]
+                total += float(
+                    pd.to_numeric(live.cost, errors="coerce").fillna(0).sum()
+                )
+    return total
+
+
 DEFAULT_RULE = "no_seller"
 EXIT_GAIN = 0.06  # "yes" ask at least this far below the level we sold at
 MIN_HOURS_TO_TIP = 0.25  # no new order inside 15 minutes of tip-off
@@ -99,8 +141,20 @@ def eastern_day(ts):
     return pd.Timestamp(ts).tz_convert("America/New_York").date().isoformat()
 
 
-def exposure_from(ledger, today):
-    """Dollars committed by day and game from orders not known to be done."""
+def game_key(value):
+    """NBA games are ESPN integer ids; NFL games are the event's date-and-teams code."""
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return str(value)
+
+
+def exposure_from(ledger, today, extra_open=0.0):
+    """Dollars committed by day and game from orders not known to be done.
+
+    ``extra_open`` adds what other markets' ledgers have open in the same
+    account, so the open-exposure cap holds across markets.
+    """
     live = (
         ledger[ledger.status.isin(["placed", "resting", "filled"])]
         if len(ledger)
@@ -124,7 +178,7 @@ def exposure_from(ledger, today):
     return Exposure(
         by_day,
         by_game,
-        float(live.cost.sum()) if len(live) else 0.0,
+        (float(live.cost.sum()) if len(live) else 0.0) + float(extra_open),
         realized,
         counts,
         by_team,
@@ -382,9 +436,18 @@ def score_exits(exits, fetch=fetch_market):
     return exits
 
 
-def reconcile(ledger, client):
-    """Compare the ledger's resting orders with the exchange's; flag any difference."""
-    exchange = {o["order_id"]: o for o in client.orders("resting")}
+def reconcile(ledger, client, market="nba"):
+    """Compare the ledger's resting orders with the exchange's; flag any difference.
+
+    Only this market's tickers are compared: the account also carries the
+    other markets' orders, which live in their own ledgers.
+    """
+    exchange = {
+        o["order_id"]: o
+        for o in client.orders("resting")
+        if str(o.get("ticker", "")).startswith(MARKET_PREFIXES[market])
+        or "ticker" not in o
+    }
     mine = ledger[ledger.status.isin(["placed", "resting"])]
     ours = set(mine.order_id.dropna().astype(str))
     unknown = sorted(set(exchange) - ours)
@@ -406,8 +469,11 @@ def main():
     now = datetime.now(UTC)
     mode = os.environ.get("TRADE_MODE", "dry")
     rule = os.environ.get("TRADE_RULE", DEFAULT_RULE)
+    market = os.environ.get("TRADE_MARKET", "nba")
     if rule not in ALL_RULES:
         raise TradingError(f"TRADE_RULE {rule!r} is not one of {ALL_RULES}")
+    if market != "nba":
+        configure(market)
     summary_extra = {}
     client = TradingClient(dry_run=(mode != "live"))
     OUT.mkdir(parents=True, exist_ok=True)
@@ -425,25 +491,35 @@ def main():
             print(json.dumps(client.cancel_all()))
         return
 
-    if not LATEST.exists():
-        print("No priced markets yet")
-        return
-    priced = pd.read_csv(LATEST, low_memory=False)
-    priced["tip_utc"] = pd.to_datetime(priced.tip_utc, utc=True)
-    priced["hours_to_tip"] = (
-        priced.tip_utc - pd.Timestamp(now)
-    ).dt.total_seconds() / 3600
-    priced = refresh_quotes(priced, now)
-    priced = attach_latest(priced)
-    ledger, cancelled = cancel_on_injury(ledger, client, now)
-    if cancelled:
-        ledger.to_csv(ORDERS, index=False)
+    cancelled = 0
+    if market == "nfl":
+        from live.nfl_trade import candidates as nfl_candidates
+
+        priced = nfl_candidates(now)
+        if priced.empty:
+            print("No priced markets yet")
+            return
+    else:
+        if not LATEST.exists():
+            print("No priced markets yet")
+            return
+        priced = pd.read_csv(LATEST, low_memory=False)
+        priced["tip_utc"] = pd.to_datetime(priced.tip_utc, utc=True)
+        priced["hours_to_tip"] = (
+            priced.tip_utc - pd.Timestamp(now)
+        ).dt.total_seconds() / 3600
+        priced = refresh_quotes(priced, now)
+        priced = attach_latest(priced)
+        ledger, cancelled = cancel_on_injury(ledger, client, now)
+        if cancelled:
+            ledger.to_csv(ORDERS, index=False)
     candidates = candidate_orders(priced, rule)
     candidates = candidates[candidates.hours_to_tip >= MIN_HOURS_TO_TIP]
     if candidates.empty:
         print("No candidate orders in the window")
         return
-    candidates = drop_fresh_injury_news(candidates, now)
+    if market == "nba":
+        candidates = drop_fresh_injury_news(candidates, now)
     candidates = candidates.sort_values("edge", ascending=False)
     # Skip markets we already have an order in (any status but rejected).
     have = (
@@ -464,7 +540,7 @@ def main():
         print(f"Could not read balance: {error}")
         return
     today = eastern_day(now)
-    exposure = exposure_from(ledger, today)
+    exposure = exposure_from(ledger, today, other_open_exposure(market))
     rows, placed = [], 0
     for r in candidates.itertuples():
         day = eastern_day(r.tip_utc)
@@ -477,7 +553,7 @@ def main():
             "env": client.env,
             "rule": rule,
             "day": day,
-            "game_id": int(r.game_id),
+            "game_id": game_key(r.game_id),
             "team": r.team,
             "player_id": int(r.player_id),
             "player": r.player,
@@ -532,7 +608,10 @@ def main():
     # Record fills and the current state of resting orders.
     if client.can_sign:
         try:
-            fills = pd.DataFrame(client.fills(min_ts=int(now.timestamp()) - 3 * 86400))
+            fills = only_market(
+                pd.DataFrame(client.fills(min_ts=int(now.timestamp()) - 3 * 86400)),
+                market,
+            )
             if len(fills):
                 fills["day"] = pd.to_datetime(
                     fills.created_time, utc=True, format="ISO8601"
@@ -542,12 +621,15 @@ def main():
                 if "trade_id" in fills:
                     fills = fills.drop_duplicates("trade_id")
                 fills.to_csv(FILLS, index=False)
-            settled = settlement_frame(
-                client.settlements(min_ts=int(now.timestamp()) - 30 * 86400)
+            settled = only_market(
+                settlement_frame(
+                    client.settlements(min_ts=int(now.timestamp()) - 30 * 86400)
+                ),
+                market,
             )
             if len(settled):
                 settled.to_csv(SETTLEMENTS, index=False)
-            report, exchange = reconcile(ledger, client)
+            report, exchange = reconcile(ledger, client, market)
             summary_extra = {
                 "reconcile": {
                     k: (v if not isinstance(v, list) else len(v))
@@ -597,6 +679,7 @@ def main():
         "mode": mode,
         "env": client.env,
         "rule": rule,
+        "market": market,
         "bankroll": round(bank, 2),
         "injury_cancels": cancelled,
         "candidates": len(candidates),

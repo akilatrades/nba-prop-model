@@ -91,7 +91,7 @@ are the test.
 | Model-free "no" seller | ITF tennis, NASCAR, Liga MX and La Liga spreads, NFL anytime TD and receiving yards; $500 each, as the control | 2026-10-16 |
 | Price logs | Kalshi NBA and NFL prop snapshots before games | 2026-10 |
 | Book lines | Sportsbooks' NBA prop lines (de-vigged consensus only) six times a day | 2026-10-16 |
-| Live trader (dry run) | `live/nba_trade.py`: the "no" seller's real orders, sized from the account, through the risk limits; every 15 minutes on GitHub and every minute on a small server. Cancels resting orders on new injury news; rests an exit when a position has moved 6¢ our way. Places nothing until switched to live by hand | 2026-10-16 |
+| Live trader (dry run) | `live/nba_trade.py`: the "no" seller's real orders on NBA props (from opening night) and NFL anytime-TD and receiving-yards props (from 2026-10-18, `TRADE_MARKET=nfl`), sized from the account, through the risk limits; every 15 minutes on GitHub and every minute on a small server. Cancels resting orders on new injury news; rests an exit when a position has moved 6¢ our way. Places nothing until switched to live by hand | 2026-10-16 |
 
 Fills are read from Kalshi's public trade prints with price priority (an
 order fills only with contracts that traded through its price), and

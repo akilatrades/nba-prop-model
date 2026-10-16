@@ -201,19 +201,24 @@ function chart(s) {
   document.getElementById("legend").innerHTML = ledgers.map((l, i) => `<span style="--c:${COLORS[i % COLORS.length]}">${esc(name(l))}</span>`).join("");
 }
 
-function livePanel(s) {
-  const live = s.live || {};
-  const el = document.getElementById("live");
-  if (!live.run_utc) { el.innerHTML = `<p class="note">The trader has not had anything to price yet. It runs every minute on the server and every 15 on GitHub, in <span class="pill dry">dry run</span>, and will start logging orders when NBA props are listed (opening night 2026-10-20).</p>`; return; }
+function liveBlock(live, label) {
+  if (!live.run_utc) return `<p class="note"><strong>${esc(label)}</strong>: nothing to price yet.</p>`;
   const status = live.orders_by_status || {};
-  let html = `<p><span class="pill ${live.mode === "live" ? "live" : "dry"}">${esc(live.mode)}</span> <span class="pill">${esc(live.env || "")}</span> ${live.rule ? `<span class="pill">${esc(name("NBA " + live.rule))}</span>` : ""} &nbsp; bankroll ${money(live.bankroll)}</p>`;
+  let html = `<p><strong>${esc(label)}</strong> &nbsp; <span class="pill ${live.mode === "live" ? "live" : "dry"}">${esc(live.mode)}</span> <span class="pill">${esc(live.env || "")}</span> ${live.rule ? `<span class="pill">${esc(name("NBA " + live.rule).replace("NBA props, ", ""))}</span>` : ""} &nbsp; bankroll ${money(live.bankroll)}</p>`;
   html += `<div class="scroll"><table><thead><tr><th>Last run</th><th>Candidates</th><th>Placed</th><th>Rejected</th><th>Open $</th></tr></thead><tbody><tr><td>${esc((live.run_utc||"").slice(0,16).replace("T"," "))}</td><td class="num">${live.candidates ?? "—"}</td><td class="num">${live.placed ?? "—"}</td><td class="num">${live.rejected ?? "—"}</td><td class="num">${money(live.open_exposure)}</td></tr></tbody></table></div>`;
   if (Object.keys(status).length) html += `<p class="note">Orders by status: ${Object.entries(status).map(([k,v]) => `${esc(k)} ${v}`).join(" · ")}</p>`;
   if (live.rejections && Object.keys(live.rejections).length) html += `<p class="note">Rejections: ${Object.entries(live.rejections).map(([k,v]) => `${esc(k)} (${v})`).join("; ")}</p>`;
   if (live.injury_cancels) html += `<p class="note">Injury cancels this run: ${live.injury_cancels}</p>`;
   if (live.exits && live.exits.orders) html += `<p class="note">Early exits: ${live.exits.orders} orders, ${live.exits.contracts} contracts, expected gain ${money(live.exits.expected_gain)}${live.exits.scored ? `; holding the ${live.exits.scored} scored would have made ${money(live.exits.hold_would_have_made)}` : ""}</p>`;
   if (live.realized_by_day) html += `<div class="scroll"><table><thead><tr><th>Day</th><th>Realized</th></tr></thead><tbody>${Object.entries(live.realized_by_day).slice(-10).map(([d,v]) => `<tr><td>${esc(d)}</td><td class="num ${cls(v)}">${money(v)}</td></tr>`).join("")}</tbody></table></div>`;
-  el.innerHTML = html;
+  return html;
+}
+
+function livePanel(s) {
+  const el = document.getElementById("live");
+  const nba = s.live || {}, nfl = s.live_nfl || {};
+  if (!nba.run_utc && !nfl.run_utc) { el.innerHTML = `<p class="note">The trader has not had anything to price yet. It runs every minute on the server and every 15 on GitHub, in <span class="pill dry">dry run</span>: NFL props on game days from 2026-10-18, NBA props from opening night 2026-10-20.</p>`; return; }
+  el.innerHTML = liveBlock(nba, "NBA props") + liveBlock(nfl, "NFL props");
 }
 
 function scanTable(s) {

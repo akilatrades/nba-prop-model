@@ -354,3 +354,57 @@ def test_entry_prices_average_no_fills():
     )
     e = nba_trade.entry_prices(fills)
     assert abs(e["A"] - 0.575) < 1e-9 and "B" not in e
+
+
+def test_nfl_market_dry_run(tmp_path, monkeypatch):
+    import live.nfl_trade as nfl
+
+    now = pd.Timestamp("2026-10-18T14:00:00Z")
+    markets = [
+        {
+            "ticker": f"KXNFLRECYDS-26OCT18CHIATL-ATLP{i}-75",
+            "event_ticker": "KXNFLRECYDS-26OCT18CHIATL",
+            "title": f"Player {i}: 75+ receiving yards",
+            "yes_sub_title": f"Player {i}: 75+",
+            "floor_strike": 74.5,
+            "yes_bid_dollars": "0.40",
+            "yes_ask_dollars": "0.45",
+            "last_price_dollars": "0.42",
+            "occurrence_datetime": "2026-10-18T18:00:00Z",
+        }
+        for i in range(3)
+    ]
+    p_model = {markets[0]["ticker"]: 0.30, markets[1]["ticker"]: 0.70}  # third unpriced
+    monkeypatch.setattr(
+        nfl,
+        "fetch_markets",
+        lambda series, status, historical: markets if "RECYDS" in series else [],
+    )
+    monkeypatch.setattr(nfl, "load_nfl", lambda: (pd.DataFrame(), pd.DataFrame()))
+    monkeypatch.setattr(nfl, "model_probabilities", lambda m, g, now: p_model)
+    monkeypatch.setattr(
+        nfl,
+        "attach_latest",
+        lambda priced, path=None: priced.assign(p_book=float("nan"), book_n=0),
+    )
+    monkeypatch.setattr(
+        nba_trade, "MARKET_DIRS", {"nba": tmp_path / "nba", "nfl": tmp_path / "nfl"}
+    )
+    monkeypatch.setenv("TRADE_MARKET", "nfl")
+    monkeypatch.setenv("TRADE_MODE", "dry")
+    monkeypatch.setenv("DRY_BANKROLL", "250")
+
+    class FixedNow:
+        @staticmethod
+        def now(tz):
+            return now.to_pydatetime()
+
+    monkeypatch.setattr(nba_trade, "datetime", FixedNow)
+    nba_trade.main()
+    ledger = pd.read_csv(tmp_path / "nfl" / "orders.csv")
+    # Only the market the model rates below the "no" price qualifies; the
+    # unpriced one is skipped under the v1 rule (no model, no book: no order).
+    assert ledger.ticker.tolist() == [markets[0]["ticker"]]
+    assert ledger.status.iloc[0] == "dry" and ledger.game_id.iloc[0] == "26OCT18CHIATL"
+    summary = json.loads((tmp_path / "nfl" / "last_run.json").read_text())
+    assert summary["market"] == "nfl" and summary["placed"] == 1

@@ -45,6 +45,7 @@ cd /home/trader/sports-market-maker
 git pull -q --rebase origin main || true
 mkdir -p outputs/live
 .venv/bin/python -m live.nba_trade >> /home/trader/trader.log 2>&1
+TRADE_MARKET=nfl .venv/bin/python -m live.nba_trade >> /home/trader/trader-nfl.log 2>&1
 if [ -n "${GIT_TOKEN:-}" ]; then
   git add -A outputs/live >/dev/null 2>&1 || true
   git diff --cached --quiet && exit 0

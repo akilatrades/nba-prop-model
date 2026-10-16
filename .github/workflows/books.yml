@@ -1,5 +1,5 @@
 name: book lines
-# Logs the sportsbooks' NBA prop lines (de-vigged consensus only) to
+# Logs the sportsbooks' NBA and NFL prop lines (de-vigged consensus only) to
 # outputs/books/ six times a day in NBA hours, 15 minutes before each
 # projection run so the paper ledgers and the trader see fresh lines.
 # About 8 Odds API credits per game, roughly 15,000 a month.
@@ -25,7 +25,8 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: python -m live.log_books
+      - run: python -m live.log_books nba
+      - run: python -m live.log_books nfl
       - name: Commit
         run: |
           git config user.name "github-actions[bot]"

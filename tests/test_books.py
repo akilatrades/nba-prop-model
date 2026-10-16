@@ -156,3 +156,42 @@ def test_difference_clustered():
     assert np.isclose(d["cents"], 20.0)
     assert d["t"] > 0
     assert difference(a, b.iloc[0:0]) is None
+
+
+def test_nfl_priced_frame_from_open_markets():
+    from live.nfl_trade import COLUMNS, priced_frame
+
+    now = pd.Timestamp("2026-10-18T14:00:00Z")
+    markets = [
+        {
+            "ticker": "KXNFLRECYDS-26OCT18CHIATL-ATLDLONDON-75",
+            "event_ticker": "KXNFLRECYDS-26OCT18CHIATL",
+            "title": "Drake London: 75+ receiving yards",
+            "yes_sub_title": "Drake London: 75+",
+            "floor_strike": 74.5,
+            "yes_bid_dollars": "0.40",
+            "yes_ask_dollars": "0.44",
+            "last_price_dollars": "0.42",
+            "occurrence_datetime": "2026-10-18T20:00:00Z",
+        },
+        {
+            "ticker": "KXNFLANYTD-26OCT18CHIATL-ATLBROBINSON-1",
+            "event_ticker": "KXNFLANYTD-26OCT18CHIATL",
+            "title": "Bijan Robinson: 1+ touchdowns",
+            "yes_sub_title": "Bijan Robinson: 1+",
+            "floor_strike": None,
+            "yes_bid_dollars": "0.60",
+            "yes_ask_dollars": "0.63",
+            "last_price_dollars": "0.61",
+            "occurrence_datetime": "2026-10-18T20:00:00Z",
+        },
+    ]
+    out = priced_frame(markets, {markets[0]["ticker"]: 0.38}, now)
+    assert list(out.columns) == COLUMNS
+    assert out.hours_to_tip.tolist() == [6.0, 6.0]
+    assert (
+        out.team.tolist() == ["ATL", "ATL"] and out.game_id.iloc[0] == "26OCT18CHIATL"
+    )
+    assert out.stat.tolist() == ["receiving_yards", "skill_tds"]
+    assert out.line.tolist() == [74.5, 0.5]
+    assert out.p_model.round(2).tolist()[0] == 0.38 and pd.isna(out.p_model.iloc[1])

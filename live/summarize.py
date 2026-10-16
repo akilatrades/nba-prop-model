@@ -76,6 +76,50 @@ def ledger_rows(frame, group_col, label_fn=None, expected=()):
     return out, daily
 
 
+def live_status(folder):
+    """The live trader's state for one market folder (outputs/live or outputs/live/nfl)."""
+    live = {}
+    p = folder / "last_run.json"
+    if p.exists():
+        live = json.loads(p.read_text())
+    p = folder / "orders.csv"
+    if p.exists():
+        o = pd.read_csv(p)
+        live["orders_by_status"] = o.status.value_counts().to_dict()
+        live["dollars_resting"] = round(
+            float(_num(o.loc[o.status.isin(["placed", "resting"]), "cost"]).sum()), 2
+        )
+    p = folder / "settlements.csv"
+    if p.exists():
+        st = pd.read_csv(p)
+        live["realized_by_day"] = {
+            str(k): round(float(v), 2)
+            for k, v in st.groupby("day").profit.sum().items()
+        }
+        live["realized_total"] = round(float(_num(st.profit).sum()), 2)
+    p = folder / "exits.csv"
+    if p.exists():
+        ex = pd.read_csv(p)
+        scored = ex[ex.result.notna()] if "result" in ex else ex.iloc[0:0]
+        live["exits"] = {
+            "orders": int(len(ex)),
+            "contracts": int(_num(ex.contracts).sum()),
+            "expected_gain": round(float(_num(ex.expected_gain).sum()), 2),
+            "scored": int(len(scored)),
+            "hold_would_have_made": round(
+                float(
+                    (
+                        _num(scored.hold_profit_per_contract) * _num(scored.contracts)
+                    ).sum()
+                ),
+                2,
+            )
+            if len(scored)
+            else None,
+        }
+    return live
+
+
 def main():
     now = datetime.now(UTC)
     ledgers, daily = [], []
@@ -107,45 +151,8 @@ def main():
             r["group"] = "NBA props"
         ledgers += rows
         daily += days
-    live = {}
-    p = Path("outputs/live/last_run.json")
-    if p.exists():
-        live = json.loads(p.read_text())
-    p = Path("outputs/live/orders.csv")
-    if p.exists():
-        o = pd.read_csv(p)
-        live["orders_by_status"] = o.status.value_counts().to_dict()
-        live["dollars_resting"] = round(
-            float(_num(o.loc[o.status.isin(["placed", "resting"]), "cost"]).sum()), 2
-        )
-    p = Path("outputs/live/settlements.csv")
-    if p.exists():
-        st = pd.read_csv(p)
-        live["realized_by_day"] = {
-            str(k): round(float(v), 2)
-            for k, v in st.groupby("day").profit.sum().items()
-        }
-        live["realized_total"] = round(float(_num(st.profit).sum()), 2)
-    p = Path("outputs/live/exits.csv")
-    if p.exists():
-        ex = pd.read_csv(p)
-        scored = ex[ex.result.notna()] if "result" in ex else ex.iloc[0:0]
-        live["exits"] = {
-            "orders": int(len(ex)),
-            "contracts": int(_num(ex.contracts).sum()),
-            "expected_gain": round(float(_num(ex.expected_gain).sum()), 2),
-            "scored": int(len(scored)),
-            "hold_would_have_made": round(
-                float(
-                    (
-                        _num(scored.hold_profit_per_contract) * _num(scored.contracts)
-                    ).sum()
-                ),
-                2,
-            )
-            if len(scored)
-            else None,
-        }
+    live = live_status(Path("outputs/live"))
+    live_nfl = live_status(Path("outputs/live/nfl"))
     scan = []
     p = Path("outputs/scan/table.csv")
     if p.exists():
@@ -188,6 +195,7 @@ def main():
             "worst": worst["ledger"] if worst else None,
         },
         "live": live,
+        "live_nfl": live_nfl,
         "scan_top": scan,
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)

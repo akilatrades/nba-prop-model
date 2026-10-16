@@ -1,5 +1,5 @@
 {
- "updated_utc": "2026-10-16T18:51+00:00",
+ "updated_utc": "2026-10-16T19:12+00:00",
  "paper": {
   "ledgers": [
    {
@@ -196,15 +196,8 @@
   "best": "KXITFMATCH",
   "worst": "KXITFMATCH"
  },
- "live": {
-  "exits": {
-   "orders": 0,
-   "contracts": 0,
-   "expected_gain": 0.0,
-   "scored": 0,
-   "hold_would_have_made": null
-  }
- },
+ "live": {},
+ "live_nfl": {},
  "scan_top": [
   {
    "series": "KXNASCARRACE",

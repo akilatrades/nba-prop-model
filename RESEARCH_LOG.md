@@ -975,3 +975,20 @@ between paper fills (which assume we get every print through our price)
 and real fills. Reported monthly: real fill rate against the paper ledger's,
 and realized cents per contract against the paper ledger's over the same
 markets.
+
+### NFL props in the live trader (added 2026-10-16, before any order)
+
+The trader also runs on NFL anytime-touchdown and receiving-yards markets
+(`TRADE_MARKET=nfl`, `live/nfl_trade.py`), from Sunday 2026-10-18, dry run.
+Same rule and risk limits as NBA; one account, so the open-exposure cap
+counts both markets' ledgers. Orders rest 2 to 6 hours before kickoff
+(kickoff from the market's occurrence time) and expire at kickoff, the NBA
+window rather than the scan's "7 to 4 hours before expiration", since the
+scan's expiration for these markets is two days after the game. Vetoes: the
+NFL model where its ladder prices the line; the books' receiving-yards
+consensus where they quote it; anytime touchdown has no two-sided book
+quote and keeps the model veto only. A market with neither probability gets
+no order. Evidence is thinner than NBA's (anytime TD +3.0¢, t 2.2, 2,255
+scan fills; receiving yards +4.8¢, t 1.7, 769): NFL stays in dry run until
+its paper ledgers (`outputs/paper_markets/`, from 2026-10-16) are positive
+with t ≥ 2, and any real stake is a minority of the bankroll beside NBA.
