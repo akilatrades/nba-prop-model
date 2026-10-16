@@ -40,6 +40,10 @@ jobs:
               for r in json.loads((out / "results.json").read_text()):
                   if "no_resting" in r:
                       prev[r["series"]] = r
+          meta = {}
+          if (out / "series.json").exists():
+              for m in json.loads((out / "series.json").read_text()):
+                  meta[m["series"]] = m
           new = {}
           for p in sorted(out.glob("scan_*.json")):
               for r in json.loads(p.read_text()):
@@ -48,7 +52,8 @@ jobs:
           rows = []
           for s, r in new.items():
               n = r.get("no_resting") or {}
-              rows.append({"series": s, "category": r.get("category"), "title": (r.get("title") or "")[:50],
+              m = meta.get(s, {})
+              rows.append({"series": s, "category": r.get("category") or m.get("category"), "title": (r.get("title") or m.get("title") or "")[:50],
                            "fills": n.get("fills"), "cents": n.get("cents_per_contract"), "t": n.get("t"),
                            "h1": n.get("first_half_cents"), "h2": n.get("second_half_cents"), "passes": r.get("passes")})
           scanned = [x for x in rows if x["fills"] is not None]
