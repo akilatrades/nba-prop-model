@@ -42,8 +42,9 @@ jobs:
                       prev[r["series"]] = r
           meta = {}
           if (out / "series.json").exists():
-              for m in json.loads((out / "series.json").read_text()):
-                  meta[m["series"]] = m
+              listed = json.loads((out / "series.json").read_text())
+              for m in (listed.get("all", []) if isinstance(listed, dict) else listed):
+                  meta[m.get("ticker") or m.get("series")] = m
           new = {}
           for p in sorted(out.glob("scan_*.json")):
               for r in json.loads(p.read_text()):
