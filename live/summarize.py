@@ -172,6 +172,22 @@ def main():
                     else str(r.passes) == "True",
                 }
             )
+    research = {}
+    p = Path("outputs/bookline/results.json")
+    if p.exists():
+        b = json.loads(p.read_text())
+        rows = {r["label"][:2]: r for r in b.get("rows", []) if r.get("fills")}
+        research["bookline"] = {
+            "games": b.get("games_sampled"),
+            "coverage": b.get("coverage_of_fills"),
+            "all": rows.get("1."),
+            "veto": rows.get("3."),
+            "removed": rows.get("3b"),
+            "model": rows.get("5."),
+            "gain": b.get("gain_cents_vs_covered"),
+            "difference": b.get("veto_minus_covered"),
+            "pass": b.get("pass"),
+        }
     total_profit = round(sum(r["profit"] for r in ledgers), 2)
     with_fills = [r for r in ledgers if r["fills"] >= 5]
     best = (
@@ -196,6 +212,7 @@ def main():
         },
         "live": live,
         "live_nfl": live_nfl,
+        "research": research,
         "scan_top": scan,
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)

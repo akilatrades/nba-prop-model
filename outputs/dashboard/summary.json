@@ -1,5 +1,5 @@
 {
- "updated_utc": "2026-10-16T20:57+00:00",
+ "updated_utc": "2026-10-16T20:59+00:00",
  "paper": {
   "ledgers": [
    {
@@ -198,6 +198,50 @@
  },
  "live": {},
  "live_nfl": {},
+ "research": {
+  "bookline": {
+   "games": 151,
+   "coverage": 0.658,
+   "all": {
+    "label": "1. all fills in the sample",
+    "fills": 4862,
+    "games": 151,
+    "cents": 2.04,
+    "t": 1.8,
+    "hit": 0.431
+   },
+   "veto": {
+    "label": "3. book veto: book edge >= 0",
+    "fills": 1647,
+    "games": 146,
+    "cents": 3.81,
+    "t": 2.39,
+    "hit": 0.52
+   },
+   "removed": {
+    "label": "3b. removed by the book veto",
+    "fills": 1550,
+    "games": 132,
+    "cents": 0.38,
+    "t": 0.25,
+    "hit": 0.392
+   },
+   "model": {
+    "label": "5. model veto on covered fills",
+    "fills": 2074,
+    "games": 139,
+    "cents": 2.69,
+    "t": 1.6,
+    "hit": 0.468
+   },
+   "gain": 1.66,
+   "difference": {
+    "cents": 3.44,
+    "t": 2.42
+   },
+   "pass": true
+  }
+ },
  "scan_top": [
   {
    "series": "KXNASCARRACE",

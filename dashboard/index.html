@@ -97,6 +97,11 @@ a { color: var(--accent); }
   </div>
 
   <section class="panel">
+    <h2>Latest research result: sportsbook-line veto, 2025-26 replay</h2>
+    <div id="research"></div>
+  </section>
+
+  <section class="panel">
     <h2>Market scan, 2025-26: where selling "yes" to retail paid, with no model (top 15)</h2>
     <div class="scroll"><table id="scan"></table></div>
     <p class="note">Sample of up to 1,200 markets per series from the last 400 days. Passing means positive in both halves with t ≥ 2 and "yes" not significantly positive. Roughly one series in forty passes by chance.</p>
@@ -221,6 +226,19 @@ function livePanel(s) {
   el.innerHTML = liveBlock(nba, "NBA props") + liveBlock(nfl, "NFL props");
 }
 
+function researchPanel(s) {
+  const el = document.getElementById("research");
+  const b = (s.research || {}).bookline;
+  if (!b || !b.veto) { el.innerHTML = `<p class="note">Not run yet.</p>`; return; }
+  const row = (label, r) => r ? `<tr><td>${esc(label)}</td><td class="num">${r.fills.toLocaleString()}</td><td class="num ${cls(r.cents)}">${cents(r.cents)}</td><td class="num">${r.t == null ? "—" : r.t.toFixed(1)}</td></tr>` : "";
+  let html = `<p class="note">${b.games} games sampled from last season, the books' lines as they stood when each "no" order was posted; a book quote at the exact line for ${Math.round(100 * b.coverage)}% of fills. Rule: sell "no" only when Kalshi's "yes" ask is above the books' de-vigged probability.</p>`;
+  html += `<div class="scroll"><table><thead><tr><th>Fills</th><th>Count</th><th>Profit per contract</th><th>Confidence (t)</th></tr></thead><tbody>`;
+  html += row("All fills in the sample", b.all) + row("Kept by the sportsbook veto", b.veto) + row("Removed by the sportsbook veto", b.removed) + row("Kept by our model's veto, same lines", b.model);
+  html += `</tbody></table></div>`;
+  if (b.difference) html += `<p class="note">Kept minus removed: ${cents(b.difference.cents)} per contract, t ${b.difference.t}. ${b.pass ? '<span class="pill pass">passed the pre-registered test</span> — the live trader runs this rule from opening night.' : "Did not pass the pre-registered test."}</p>`;
+  el.innerHTML = html;
+}
+
 function scanTable(s) {
   const rows = s.scan_top || [];
   let html = `<thead><tr><th>Market</th><th>Fills</th><th>Profit per contract</th><th>Confidence (t)</th><th>Passed</th></tr></thead><tbody>`;
@@ -230,7 +248,7 @@ function scanTable(s) {
 
 fetch("../outputs/dashboard/summary.json", {cache: "no-store"}).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }).then(s => {
   document.getElementById("stamp").textContent = "updated " + s.updated_utc.slice(0,16).replace("T"," ") + " UTC";
-  tiles(s); ledgerTable(s); chart(s); livePanel(s); scanTable(s);
+  tiles(s); ledgerTable(s); chart(s); livePanel(s); researchPanel(s); scanTable(s);
 }).catch(e => { document.getElementById("stamp").innerHTML = `<span class="err">could not load summary.json (${esc(e.message)})</span>`; });
 </script>
 </body>
