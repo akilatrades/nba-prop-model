@@ -39,6 +39,7 @@ body {
 header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; }
 h1 { font-size: 22px; font-weight: 600; margin: 0; letter-spacing: -0.01em; }
 h2 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 10px; }
+.sub { color: var(--muted); font-size: 13.5px; margin-top: 2px; max-width: 60ch; }
 .stamp { color: var(--muted); font-size: 13px; font-family: var(--mono); }
 .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
 .tile { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 14px 16px; min-width: 0; }
@@ -71,16 +72,16 @@ a { color: var(--accent); }
 <body>
 <div class="wrap">
   <header>
-    <h1>Market Maker Desk</h1>
+    <div><h1>Market Maker Desk</h1><div class="sub">Resting "no" orders on Kalshi sports props, with a model as the filter. Paper and dry-run figures until the live switch is thrown.</div></div>
     <div class="stamp" id="stamp">loading…</div>
   </header>
 
   <section class="tiles" id="tiles"></section>
 
   <section class="panel">
-    <h2>Paper ledgers, $500 each</h2>
+    <h2>Paper trading, one $500 bankroll per rule</h2>
     <div class="scroll"><table id="ledgers"></table></div>
-    <p class="note">Fills are read from Kalshi's public trade prints; a ledger "wins" only when the market settles its way. ¢/contract is profit per filled contract after the maker fee. Pass criteria are in the research log.</p>
+    <p class="note">Fills are read from Kalshi's public trade prints; a position wins only when the market settles its way. Profit per contract is after the maker fee. v1 rules are the reference; v2 variants are judged against them at the end of January.</p>
   </section>
 
   <div class="two">
@@ -96,7 +97,7 @@ a { color: var(--accent); }
   </div>
 
   <section class="panel">
-    <h2>Market scan: where the "no" seller paid, no model (top 15 by t)</h2>
+    <h2>Market scan, 2025-26: where selling "yes" to retail paid, with no model (top 15)</h2>
     <div class="scroll"><table id="scan"></table></div>
     <p class="note">Sample of up to 1,200 markets per series from the last 400 days. Passing means positive in both halves with t ≥ 2 and "yes" not significantly positive. Roughly one series in forty passes by chance.</p>
   </section>
@@ -105,6 +106,34 @@ a { color: var(--accent); }
 </div>
 
 <script>
+const NAMES = {
+  KXITFMATCH: "ITF tennis, match winner", KXWTAMATCH: "WTA tennis, match winner", KXATPMATCH: "ATP tennis, match winner",
+  KXNASCARRACE: "NASCAR, race winner", KXLIGAMXSPREAD: "Liga MX, point spread", KXLALIGASPREAD: "La Liga, point spread",
+  KXNFLANYTD: "NFL, anytime touchdown", KXNFLRECYDS: "NFL, receiving yards", KXNFLRSHYDS: "NFL, rushing yards",
+  KXNFLPASSYDS: "NFL, passing yards", KXNFLREC: "NFL, receptions", KXNFLPASSTDS: "NFL, passing touchdowns",
+  KXNBAPTS: "NBA, player points", KXNBAREB: "NBA, player rebounds", KXNBAAST: "NBA, player assists", KXNBA3PT: "NBA, player threes",
+  KXWCSOA: "World Cup, shots on target", KXWCAST: "World Cup, assists", KXWC1HSPREAD: "World Cup, first-half spread",
+  KXWNBA1HTOTAL: "WNBA, first-half total", KXNCAAWBGAME: "NCAA women's basketball, winner", KXNCAAMBTOTAL: "NCAA men's basketball, total",
+  KXLIGUE1GAME: "Ligue 1, match winner", KXMLBF5SPREAD: "MLB, first-five-innings spread", KXBOXING: "Boxing, fight winner",
+  KXNFLGAME: "NFL, game winner", KXNBAGAME: "NBA, game winner", KXMLBGAME: "MLB, game winner", KXNHLGAME: "NHL, game winner",
+  KXNBASPREAD: "NBA, point spread", KXNBATOTAL: "NBA, game total", KXNFLSPREAD: "NFL, point spread", KXNFLTOTAL: "NFL, game total",
+};
+const RULES = {
+  "NBA model_side": "NBA props, model's side (v1)",
+  "NBA no_seller": "NBA props, \"no\" seller (v1)",
+  "NBA no_seller_late": "NBA props, \"no\" seller, last 2 hours (v2)",
+  "NBA no_seller_edge_sized": "NBA props, \"no\" seller, sized by edge (v2)",
+  "NBA no_seller_veto2": "NBA props, \"no\" seller, 2¢ veto (v2)",
+  "NBA no_seller_stat_veto": "NBA props, \"no\" seller, rebounds veto (v2)",
+};
+const GROUPS = {"other markets (model-free unless +model)": "Other markets", "NBA props": "NBA props"};
+function name(key) {
+  if (RULES[key]) return RULES[key];
+  const model = key.endsWith("+model");
+  const base = model ? key.slice(0, -6) : key;
+  const label = NAMES[base] || base.replace(/^KX/, "").replace(/([A-Z]+)(\d)/g, "$1 $2").toLowerCase();
+  return model ? label + ", NFL model filter" : label;
+}
 const COLORS = ["#2a78d6","#eb6834","#1baf7a","#eda100","#e87ba4","#008300","#6250d6","#e34948"];
 const money = v => (v == null ? "—" : (v < 0 ? "−$" : "$") + Math.abs(v).toFixed(2));
 const cents = v => (v == null ? "—" : (v > 0 ? "+" : v < 0 ? "−" : "") + Math.abs(v).toFixed(2) + "¢");
@@ -117,9 +146,9 @@ function tiles(s) {
   const liveMode = live.mode ? `${live.mode}${live.env ? " · " + live.env : ""}` : "not run yet";
   const items = [
     {label: "Paper profit, all ledgers", value: money(p.total_profit), cls: cls(p.total_profit), sub: `${p.total_fills} fills settled`},
-    {label: "Best ledger", value: p.best || "—", sub: "by ¢ per contract, 5+ fills", small: true},
-    {label: "Worst ledger", value: p.worst || "—", sub: "by ¢ per contract, 5+ fills", small: true},
-    {label: "Live trader", value: liveMode, sub: live.run_utc ? `last run ${live.run_utc.slice(0,16).replace("T"," ")} UTC` : "waits for NBA markets", small: true},
+    {label: "Best market", value: p.best ? name(p.best) : "—", sub: "profit per contract, 5+ fills", small: true},
+    {label: "Worst market", value: p.worst ? name(p.worst) : "—", sub: "profit per contract, 5+ fills", small: true},
+    {label: "Live trader", value: liveMode === "dry" ? "Dry run" : liveMode === "not run yet" ? "Waiting for NBA" : liveMode, sub: live.run_utc ? `last run ${live.run_utc.slice(0,16).replace("T"," ")} UTC` : "first NBA markets list before 2026-10-20", small: true},
     {label: "Realized, real account", value: money(live.realized_total ?? 0), cls: cls(live.realized_total ?? 0), sub: live.dollars_resting != null ? `$${live.dollars_resting} resting` : "nothing live yet"},
   ];
   document.getElementById("tiles").innerHTML = items.map(t =>
@@ -129,11 +158,11 @@ function tiles(s) {
 function ledgerTable(s) {
   const rows = s.paper.ledgers;
   const groups = [...new Set(rows.map(r => r.group))];
-  let html = `<thead><tr><th>Ledger</th><th>Orders</th><th>Open</th><th>Fill rate</th><th>Fills</th><th>Contracts</th><th>¢/contract</th><th>Profit</th><th>Bankroll</th></tr></thead><tbody>`;
+  let html = `<thead><tr><th>Market and rule</th><th>Orders</th><th>Open</th><th>Fill rate</th><th>Fills</th><th>Contracts</th><th>Profit per contract</th><th>Profit</th><th>Bankroll</th></tr></thead><tbody>`;
   for (const g of groups) {
-    html += `<tr class="group"><td colspan="9">${esc(g)}</td></tr>`;
+    html += `<tr class="group"><td colspan="9">${esc(GROUPS[g] || g)}</td></tr>`;
     for (const r of rows.filter(r => r.group === g)) {
-      html += `<tr><td>${esc(r.ledger)}</td><td class="num">${r.orders}</td><td class="num">${r.open}</td><td class="num">${pct(r.fill_rate)}</td><td class="num">${r.fills}</td><td class="num">${r.contracts}</td><td class="num ${cls(r.cents_per_contract)}">${cents(r.cents_per_contract)}</td><td class="num ${cls(r.profit)}">${money(r.profit)}</td><td class="num">${money(r.bankroll)}</td></tr>`;
+      html += `<tr><td>${esc(name(r.ledger))}</td><td class="num">${r.orders}</td><td class="num">${r.open}</td><td class="num">${pct(r.fill_rate)}</td><td class="num">${r.fills}</td><td class="num">${r.contracts}</td><td class="num ${cls(r.cents_per_contract)}">${cents(r.cents_per_contract)}</td><td class="num ${cls(r.profit)}">${money(r.profit)}</td><td class="num">${money(r.bankroll)}</td></tr>`;
     }
   }
   document.getElementById("ledgers").innerHTML = html + "</tbody>";
@@ -162,13 +191,13 @@ function chart(s) {
     ledgers.forEach((l, li) => {
       const v = byKey[l+"|"+day] || 0; if (!v) return;
       const color = COLORS[li % COLORS.length];
-      if (v > 0) { svg += `<rect x="${x}" y="${y(up+v)}" width="${bw}" height="${Math.max(1,y(up)-y(up+v)-1)}" fill="${color}"><title>${esc(l)} ${day}: ${money(v)}</title></rect>`; up += v; }
-      else { svg += `<rect x="${x}" y="${y(down)+1}" width="${bw}" height="${Math.max(1,y(down+v)-y(down)-1)}" fill="${color}"><title>${esc(l)} ${day}: ${money(v)}</title></rect>`; down += v; }
+      if (v > 0) { svg += `<rect x="${x}" y="${y(up+v)}" width="${bw}" height="${Math.max(1,y(up)-y(up+v)-1)}" fill="${color}"><title>${esc(name(l))} ${day}: ${money(v)}</title></rect>`; up += v; }
+      else { svg += `<rect x="${x}" y="${y(down)+1}" width="${bw}" height="${Math.max(1,y(down+v)-y(down)-1)}" fill="${color}"><title>${esc(name(l))} ${day}: ${money(v)}</title></rect>`; down += v; }
     });
     svg += `<text x="${x+bw/2}" y="${H-m.b+16}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="var(--mono)">${day.slice(5)}</text>`;
   });
   el.innerHTML = svg + "</svg>";
-  document.getElementById("legend").innerHTML = ledgers.map((l, i) => `<span style="--c:${COLORS[i % COLORS.length]}">${esc(l)}</span>`).join("");
+  document.getElementById("legend").innerHTML = ledgers.map((l, i) => `<span style="--c:${COLORS[i % COLORS.length]}">${esc(name(l))}</span>`).join("");
 }
 
 function livePanel(s) {
@@ -186,8 +215,8 @@ function livePanel(s) {
 
 function scanTable(s) {
   const rows = s.scan_top || [];
-  let html = `<thead><tr><th>Series</th><th>Fills</th><th>¢/contract</th><th>t</th><th>Passed</th></tr></thead><tbody>`;
-  for (const r of rows) html += `<tr><td>${esc(r.series)}</td><td class="num">${r.fills}</td><td class="num ${cls(r.cents)}">${cents(r.cents)}</td><td class="num">${r.t.toFixed(1)}</td><td>${r.passes ? '<span class="pill pass">pass</span>' : ""}</td></tr>`;
+  let html = `<thead><tr><th>Market</th><th>Fills</th><th>Profit per contract</th><th>Confidence (t)</th><th>Passed</th></tr></thead><tbody>`;
+  for (const r of rows) html += `<tr><td>${esc(name(r.series))}</td><td class="num">${r.fills}</td><td class="num ${cls(r.cents)}">${cents(r.cents)}</td><td class="num">${r.t.toFixed(1)}</td><td>${r.passes ? '<span class="pill pass">pass</span>' : ""}</td></tr>`;
   document.getElementById("scan").innerHTML = html + "</tbody>";
 }
 
