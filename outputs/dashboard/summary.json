@@ -1,5 +1,5 @@
 {
- "updated_utc": "2026-10-16T22:31+00:00",
+ "updated_utc": "2026-10-16T22:47+00:00",
  "paper": {
   "ledgers": [
    {
@@ -185,19 +185,19 @@
    {
     "ledger": "KXITFMATCH",
     "orders": 65,
-    "open": 3,
-    "fill_rate": 0.8387096774193549,
-    "fills": 52,
-    "contracts": 919,
-    "profit": -76.47,
-    "cents_per_contract": -2.59,
-    "cents_weighted": -8.32,
-    "se_cents": 2.13,
-    "t": -1.22,
-    "hit_rate": 0.442,
-    "max_drawdown": 76.47,
+    "open": 2,
+    "fill_rate": 0.8412698412698413,
+    "fills": 53,
+    "contracts": 920,
+    "profit": -76.92,
+    "cents_per_contract": -3.39,
+    "cents_weighted": -8.36,
+    "se_cents": 2.25,
+    "t": -1.51,
+    "hit_rate": 0.434,
+    "max_drawdown": 76.92,
     "days": 1,
-    "bankroll": 423.53,
+    "bankroll": 423.08,
     "group": "other markets (model-free unless +model)",
     "backtest_cents": 4.62
    },
@@ -389,10 +389,10 @@
    {
     "ledger": "KXITFMATCH",
     "day": "2026-10-16",
-    "profit": -76.47,
-    "fills": 52,
-    "contracts": 919,
-    "expected": 42.46
+    "profit": -76.92,
+    "fills": 53,
+    "contracts": 920,
+    "expected": 42.5
    },
    {
     "ledger": "KXLALIGASPREAD",
@@ -403,8 +403,8 @@
     "expected": 0.47
    }
   ],
-  "total_profit": -74.67,
-  "total_fills": 54,
+  "total_profit": -75.12,
+  "total_fills": 55,
   "best": "KXITFMATCH",
   "worst": "KXITFMATCH"
  },
@@ -414,7 +414,7 @@
   "-80": 1,
   "-70": 2,
   "-60": 0,
-  "-50": 1,
+  "-50": 2,
   "-40": 4,
   "-30": 9,
   "-20": 7,
