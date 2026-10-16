@@ -803,3 +803,21 @@ Being the combo quoter would be the largest edge per dollar seen in this
 project, and it is only available through Kalshi's RFQ market-maker API,
 which needs onboarding, quoting software and capital for many simultaneous
 positions. Noted, not pursued at $500.
+
+### Paper tests in the scanned markets (live from 2026-10-16)
+
+Five of the passing or near-passing series that are in season now run the
+scan's model-free rule as live paper tests, each from its own $500
+(`nba_model/paper_markets.py`, every three hours): ITF men's tennis, NASCAR
+race winners, Liga MX and La Liga spreads, and NFL anytime touchdown. The
+rule is as scanned (orders 4 to 10 hours before expected expiration, one
+cent inside the ask, cancelled at the next run or three hours before
+expiration). The first run posted 33 ITF orders. These exist to check the
+scan out of sample; the NFL anytime-touchdown market is also the first
+candidate for a model filter (the NFL model). What $500 would have made on
+the scan's own sample (half the flow, in-sample, 4 to 11 months of data):
+ITF $740, NASCAR $749, Liga MX spreads $715, La Liga spreads $647, NFL
+anytime TD $754, NCAA women's games $1,878; the six together from one $500
+bankroll, $4,873 over 11 months (about $13,000 if the real flow is five
+times the 1,200-market sample). Expect less: these markets were chosen for
+passing.
