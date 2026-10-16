@@ -7,6 +7,7 @@ Needs ODDS_API_KEY. Spends a few credits. Run: python -m live.check_odds
 import json
 import os
 import sys
+import urllib.error
 import urllib.parse
 import urllib.request
 
@@ -21,9 +22,14 @@ MARKETS = {"player_anytime_td": "skill_tds", "player_reception_yds": "receiving_
 
 def get(path, params):
     url = f"{BASE}{path}?{urllib.parse.urlencode(params)}"
-    with urllib.request.urlopen(url, timeout=30) as response:
-        remaining = response.headers.get("x-requests-remaining")
-        return json.loads(response.read()), remaining
+    try:
+        with urllib.request.urlopen(url, timeout=30) as response:
+            remaining = response.headers.get("x-requests-remaining")
+            return json.loads(response.read()), remaining
+    except urllib.error.HTTPError as error:
+        body = error.read(300).decode("utf-8", "replace")
+        print(f"::error::odds api {path}: HTTP {error.code} {body}")
+        sys.exit(1)
 
 
 def main():
@@ -81,4 +87,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as error:  # noqa: BLE001 - show the failure in the run summary
+        print(f"::error::{type(error).__name__}: {str(error)[:400]}")
+        sys.exit(1)
