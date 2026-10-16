@@ -1,11 +1,10 @@
-name: series scan
-# Which Kalshi sports markets have the one-sided flow (RESEARCH_LOG.md, scan).
+name: market scan
+# Which Kalshi sports markets share the NBA "no" seller's edge (RESEARCH_LOG.md, 2026-10-16).
 on:
+  push:
+    branches: [main]
+    paths: ["scripts/scan_markets.py", ".github/workflows/scan.yml"]
   workflow_dispatch:
-    inputs:
-      series:
-        description: "Space-separated series tickers to scan (empty: list only)"
-        default: ""
 permissions:
   contents: write
 concurrency:
@@ -13,7 +12,6 @@ concurrency:
   cancel-in-progress: false
 jobs:
   list:
-    if: ${{ inputs.series == '' }}
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -21,63 +19,61 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install pandas numpy pyarrow
-      - run: python scripts/scan_series.py list
+      - run: pip install -r requirements.txt
+      - run: python scripts/scan_markets.py list
       - uses: actions/upload-artifact@v4
         with:
-          name: scan-list
-          path: data/scan/series.parquet
-  prepare:
-    if: ${{ inputs.series != '' }}
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.m.outputs.matrix }}
-    steps:
-      - id: m
-        run: echo "matrix=$(echo '${{ inputs.series }}' | tr ' ' '\n' | grep . | jq -R . | jq -sc .)" >> "$GITHUB_OUTPUT"
+          name: scan-series
+          path: outputs/scan/series.json
   scan:
-    needs: prepare
+    needs: list
     runs-on: ubuntu-latest
-    timeout-minutes: 130
+    timeout-minutes: 340
     strategy:
       fail-fast: false
-      max-parallel: 3
       matrix:
-        series: ${{ fromJson(needs.prepare.outputs.matrix) }}
+        shard: [0, 1, 2, 3, 4, 5]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install pandas numpy pyarrow
-      - run: python scripts/scan_series.py scan --series ${{ matrix.series }} --minutes 100
+      - run: pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          name: scan-series
+          path: outputs/scan
+      - run: python scripts/scan_markets.py scan --shard ${{ matrix.shard }} --shards 6 --minutes 300
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: scan-${{ matrix.series }}
-          path: data/scan/${{ matrix.series }}_*
+          name: scan-${{ matrix.shard }}
+          path: |
+            outputs/scan/scan_*.json
+            outputs/scan/orders_*.csv.gz
           if-no-files-found: ignore
   commit:
     needs: [list, scan]
     if: always()
     runs-on: ubuntu-latest
-    concurrency:
-      group: repo-writes
-      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
       - uses: actions/download-artifact@v4
         with:
           pattern: scan-*
-          path: data/scan
+          path: outputs/scan
           merge-multiple: true
+      - run: python scripts/scan_markets.py report
       - name: Commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          rm -f data/scan/*.tmp
-          git add -A data/scan
+          git add -A outputs/scan
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m "Series scan data"
+          git commit -m "Market scan results"
           git pull --rebase
           git push
