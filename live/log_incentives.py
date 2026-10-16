@@ -5,7 +5,7 @@ keeps those on NBA markets. Writes outputs/incentives/nba_programs.csv (all
 NBA programs seen, deduplicated by id) and summary.json, which says whether
 NBA player-prop markets (points, rebounds, assists, threes) carry rewards.
 
-Usage: python scripts/log_incentives.py
+Usage: python -m live.log_incentives
 """
 
 import json

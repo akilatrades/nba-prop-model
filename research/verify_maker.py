@@ -4,7 +4,7 @@ Rebuilds orders and fills from the raw files without importing
 kalshi.maker or kalshi.strategy, and compares with
 outputs/new_ideas/results.json.
 
-Run from the repository root: python scripts/verify_maker.py
+Run from the repository root: python -m research.verify_maker
 """
 
 import json

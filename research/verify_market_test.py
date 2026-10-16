@@ -4,7 +4,7 @@ Reads outputs/market_test/priced_markets.csv.gz (one row per priced market)
 and recomputes Test B's P&L and t, and Test A's coefficients, without
 importing markets.nba.market.
 
-Run from the repository root: python scripts/verify_market_test.py
+Run from the repository root: python -m research.verify_market_test
 """
 
 import json

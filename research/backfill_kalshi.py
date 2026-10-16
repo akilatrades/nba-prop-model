@@ -18,7 +18,7 @@ Prices are not examined here; see RESEARCH_LOG.md for when they are used.
 
 Writes data/kalshi_history/markets_<series>.parquet and candles_<series>.parquet.
 
-Usage: python scripts/backfill_kalshi.py --series KXNBAPTS --minutes 320
+Usage: python -m research.backfill_kalshi --series KXNBAPTS --minutes 320
 """
 
 import argparse

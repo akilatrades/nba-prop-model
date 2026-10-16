@@ -5,7 +5,7 @@ odds providers and downloads each provider's stored prop bets, flattened to
 one row per prop. Used for idea 2 (RESEARCH_LOG.md). Writes
 data/espn_props/props_2026.parquet and coverage.json.
 
-Usage: python scripts/backfill_espn_props.py
+Usage: python -m research.backfill_espn_props
 """
 
 import json
@@ -18,7 +18,7 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from scripts.probe_espn_props import CORE, get
+from research.probe_espn_props import CORE, get
 
 OUT = Path("data/espn_props")
 

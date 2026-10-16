@@ -1,7 +1,7 @@
 """Tests of the three new ideas on 2025-26 (RESEARCH_LOG.md, 2026-10-15).
 
 1. Maker: rest limit orders on the model's side, filled from trade prints.
-2. Sportsbooks: see scripts/probe_espn_props.py (needs stored book lines).
+2. Sportsbooks: see research/probe_espn_props.py (needs stored book lines).
 3. Structure: ladder arbitrage, and double-doubles and triple-doubles priced
    from Kalshi's own 10+ markets with fitted correlations.
 

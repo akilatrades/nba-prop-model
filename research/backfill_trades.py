@@ -7,7 +7,7 @@ prints counts only.
 
 Writes data/kalshi_history/trades_<series>.parquet.
 
-Usage: python scripts/backfill_trades.py --series KXNBAPTS --minutes 300
+Usage: python -m research.backfill_trades --series KXNBAPTS --minutes 300
 """
 
 import argparse

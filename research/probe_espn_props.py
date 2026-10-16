@@ -5,7 +5,7 @@ fetches a sample of each provider's prop bets, recording status codes, counts
 and one example. Used to decide whether idea 2 can be tested for free
 (RESEARCH_LOG.md). Writes outputs/probes/espn_props.json.
 
-Usage: python scripts/probe_espn_props.py
+Usage: python -m research.probe_espn_props
 """
 
 import json
