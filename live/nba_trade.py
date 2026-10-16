@@ -88,7 +88,9 @@ def other_open_exposure(market):
     return total
 
 
-DEFAULT_RULE = "no_seller_bookline"  # historical test passed 2026-10-16 (RESEARCH_LOG.md)
+DEFAULT_RULE = (
+    "no_seller_bookline"  # historical test passed 2026-10-16 (RESEARCH_LOG.md)
+)
 EXIT_GAIN = 0.06  # "yes" ask at least this far below the level we sold at
 MIN_HOURS_TO_TIP = 0.25  # no new order inside 15 minutes of tip-off
 ORDER_COLUMNS = [
