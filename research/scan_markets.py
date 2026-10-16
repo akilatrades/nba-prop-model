@@ -337,8 +337,46 @@ def report_stage():
                 previous[r["series"]] = r
     rows = list(previous.values())
     (OUT / "results.json").write_text(json.dumps(rows, indent=1, default=str) + "\n")
+    write_table(rows)
     print(
         f"{len(rows)} series in results, {sum('no_resting' in r for r in rows)} scanned"
+    )
+
+
+def write_table(rows):
+    """outputs/scan/table.csv: one row per series, flat, for the README and dashboard."""
+    meta = {}
+    if (OUT / "series.json").exists():
+        listed = json.loads((OUT / "series.json").read_text())
+        for m in listed.get("all", []) if isinstance(listed, dict) else listed:
+            meta[m.get("ticker") or m.get("series")] = m
+    out = []
+    for r in rows:
+        m = meta.get(r["series"], {})
+        no, yes = r.get("no_resting") or {}, r.get("yes_resting") or {}
+        out.append(
+            {
+                "series": r["series"],
+                "category": r.get("category") or m.get("category"),
+                "title": r.get("title") or m.get("title"),
+                "markets": r.get("markets"),
+                "vol_$": r.get("sample_volume"),
+                "spread": r.get("median_spread_cents"),
+                "no_fills": no.get("fills"),
+                "no_c": no.get("cents_per_contract"),
+                "no_t": no.get("t"),
+                "no_h1": no.get("first_half_cents"),
+                "no_h2": no.get("second_half_cents"),
+                "no_fill%": r.get("no_fill_rate"),
+                "yes_fills": yes.get("fills"),
+                "yes_c": yes.get("cents_per_contract"),
+                "yes_t": yes.get("t"),
+                "passes": r.get("passes"),
+                "skipped": r.get("skipped"),
+            }
+        )
+    pd.DataFrame(out).sort_values("no_t", ascending=False).to_csv(
+        OUT / "table.csv", index=False
     )
 
 

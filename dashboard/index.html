@@ -162,11 +162,16 @@ const NAMES = {
   "KXWCSOT": "World Cup, shots on target", "KXWC1HSPREAD": "World Cup, first-half spread", "KXWNBA1HTOTAL": "WNBA, first-half total",
   "KXWCASSIST": "World Cup, assists", "KXNCAAWBGAME": "NCAA women's basketball, winner", "KXLIGUE1GAME": "Ligue 1, match winner",
   "KXMLBF5SPREAD": "MLB, first-five-innings spread", "KXNCAAMBTOTAL": "NCAA men's basketball, total", "KXWTAMATCH": "WTA tennis, match winner",
-  "KXBOXING": "Boxing, fight winner", "KXWCAST": "World Cup, assists", "KXATPMATCH": "ATP tennis, match winner", "KXNFLGAME": "NFL, game winner", "KXMLBGAME": "MLB, game winner",
+  "KXBOXING": "Boxing, fight winner", "KXWCAST": "World Cup, assists",
+  "KXCLUBFBTTS": "Club soccer, both teams to score", "KXUCLCORNERS": "Champions League, corners", "KXUFCMOF": "UFC, method of finish",
+  "KXNBAFTM": "NBA, free throws made", "KXNCAAMENTION": "NCAA broadcast mentions", "KXNCAAMB1HSPREAD": "NCAA men's basketball, 1st-half spread",
+  "KXNWSLSPREAD": "NWSL, spread", "KXUCLWADVANCE": "Champions League, to advance", "KXWNBA1QSPREAD": "WNBA, 1st-quarter spread",
+  "KXINDYCARTOP3": "IndyCar, top-3 finish", "KXRLGAME": "Rocket League, game winner", "KXVTBGAME": "VTB basketball, game winner",
+  "KXINXDUD": "S&P 500, daily up/down", "KXAHLGAME": "AHL hockey, game winner", "KXEWSLGAME": "Women's Super League, winner", "KXATPMATCH": "ATP tennis, match winner", "KXNFLGAME": "NFL, game winner", "KXMLBGAME": "MLB, game winner",
   "KXNBAGAME": "NBA, game winner", "KXWCSOA": "World Cup, shots on target",
 };
 // Fixed slot order: color follows the ledger, never its rank or its row.
-const SLOT_ORDER = ["NBA no_seller_bookline","NBA no_seller","NBA no_seller_late","NBA no_seller_edge_sized","NBA no_seller_veto2","NBA no_seller_stat_veto","NBA model_side","KXNFLANYTD+model","KXNFLRECYDS+model","KXNFLANYTD","KXNFLRECYDS","KXITFMATCH","KXNASCARRACE","KXLALIGASPREAD","KXLIGAMXSPREAD"];
+const SLOT_ORDER = ["NBA no_seller_bookline","NBA no_seller","NBA no_seller_late","NBA no_seller_edge_sized","NBA no_seller_veto2","NBA no_seller_stat_veto","NBA model_side","KXNFLANYTD+model","KXNFLRECYDS+model","KXNFLANYTD","KXNFLRECYDS","KXCLUBFBTTS","KXNBAFTM","KXUCLCORNERS","KXUFCMOF","KXNCAAMENTION","KXNCAAMB1HSPREAD","KXITFMATCH","KXNASCARRACE","KXLALIGASPREAD","KXLIGAMXSPREAD"];
 const SLOTS = ["var(--s1)","var(--s2)","var(--s3)","var(--s4)","var(--s5)","var(--s6)","var(--s7)","var(--s8)"];
 const name = k => NAMES[k] || k.replace(/^KX/, "");
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));

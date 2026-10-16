@@ -1,5 +1,5 @@
 {
- "updated_utc": "2026-10-16T22:21+00:00",
+ "updated_utc": "2026-10-16T22:26+00:00",
  "paper": {
   "ledgers": [
    {
@@ -21,6 +21,108 @@
    },
    {
     "ledger": "KXNFLRECYDS",
+    "orders": 0,
+    "open": 0,
+    "fill_rate": null,
+    "fills": 0,
+    "contracts": 0,
+    "profit": 0.0,
+    "cents_per_contract": null,
+    "se_cents": null,
+    "t": null,
+    "hit_rate": null,
+    "max_drawdown": 0.0,
+    "days": 0,
+    "bankroll": 500.0,
+    "group": "other markets (model-free unless +model)"
+   },
+   {
+    "ledger": "KXCLUBFBTTS",
+    "orders": 0,
+    "open": 0,
+    "fill_rate": null,
+    "fills": 0,
+    "contracts": 0,
+    "profit": 0.0,
+    "cents_per_contract": null,
+    "se_cents": null,
+    "t": null,
+    "hit_rate": null,
+    "max_drawdown": 0.0,
+    "days": 0,
+    "bankroll": 500.0,
+    "group": "other markets (model-free unless +model)"
+   },
+   {
+    "ledger": "KXUCLCORNERS",
+    "orders": 0,
+    "open": 0,
+    "fill_rate": null,
+    "fills": 0,
+    "contracts": 0,
+    "profit": 0.0,
+    "cents_per_contract": null,
+    "se_cents": null,
+    "t": null,
+    "hit_rate": null,
+    "max_drawdown": 0.0,
+    "days": 0,
+    "bankroll": 500.0,
+    "group": "other markets (model-free unless +model)"
+   },
+   {
+    "ledger": "KXUFCMOF",
+    "orders": 0,
+    "open": 0,
+    "fill_rate": null,
+    "fills": 0,
+    "contracts": 0,
+    "profit": 0.0,
+    "cents_per_contract": null,
+    "se_cents": null,
+    "t": null,
+    "hit_rate": null,
+    "max_drawdown": 0.0,
+    "days": 0,
+    "bankroll": 500.0,
+    "group": "other markets (model-free unless +model)"
+   },
+   {
+    "ledger": "KXNBAFTM",
+    "orders": 0,
+    "open": 0,
+    "fill_rate": null,
+    "fills": 0,
+    "contracts": 0,
+    "profit": 0.0,
+    "cents_per_contract": null,
+    "se_cents": null,
+    "t": null,
+    "hit_rate": null,
+    "max_drawdown": 0.0,
+    "days": 0,
+    "bankroll": 500.0,
+    "group": "other markets (model-free unless +model)"
+   },
+   {
+    "ledger": "KXNCAAMENTION",
+    "orders": 0,
+    "open": 0,
+    "fill_rate": null,
+    "fills": 0,
+    "contracts": 0,
+    "profit": 0.0,
+    "cents_per_contract": null,
+    "se_cents": null,
+    "t": null,
+    "hit_rate": null,
+    "max_drawdown": 0.0,
+    "days": 0,
+    "bankroll": 500.0,
+    "group": "other markets (model-free unless +model)"
+   },
+   {
+    "ledger": "KXNCAAMB1HSPREAD",
     "orders": 0,
     "open": 0,
     "fill_rate": null,
@@ -350,6 +452,14 @@
    "passes": true
   },
   {
+   "series": "KXCLUBFBTTS",
+   "fills": 567,
+   "cents": 11.49,
+   "t": 3.36,
+   "se": 3.42,
+   "passes": true
+  },
+  {
    "series": "KXWCSOA",
    "fills": 1409,
    "cents": 6.34,
@@ -398,6 +508,22 @@
    "passes": true
   },
   {
+   "series": "KXNCAAMENTION",
+   "fills": 813,
+   "cents": 6.48,
+   "t": 2.29,
+   "se": 2.82,
+   "passes": true
+  },
+  {
+   "series": "KXVTBGAME",
+   "fills": 379,
+   "cents": 3.78,
+   "t": 2.26,
+   "se": 1.67,
+   "passes": true
+  },
+  {
    "series": "KXNFLANYTD",
    "fills": 2255,
    "cents": 2.98,
@@ -422,43 +548,19 @@
    "passes": true
   },
   {
+   "series": "KXAHLGAME",
+   "fills": 487,
+   "cents": 6.26,
+   "t": 2.05,
+   "se": 3.06,
+   "passes": true
+  },
+  {
    "series": "KXLIGUE1GAME",
    "fills": 1008,
    "cents": 2.76,
    "t": 1.99,
    "se": 1.39,
-   "passes": false
-  },
-  {
-   "series": "KXMLBF5SPREAD",
-   "fills": 565,
-   "cents": 4.69,
-   "t": 1.93,
-   "se": 2.44,
-   "passes": false
-  },
-  {
-   "series": "KXNCAAMBTOTAL",
-   "fills": 678,
-   "cents": 5.67,
-   "t": 1.91,
-   "se": 2.97,
-   "passes": false
-  },
-  {
-   "series": "KXWTAMATCH",
-   "fills": 1063,
-   "cents": 3.93,
-   "t": 1.91,
-   "se": 2.06,
-   "passes": false
-  },
-  {
-   "series": "KXBOXING",
-   "fills": 1123,
-   "cents": 1.32,
-   "t": 1.88,
-   "se": 0.7,
    "passes": false
   }
  ]

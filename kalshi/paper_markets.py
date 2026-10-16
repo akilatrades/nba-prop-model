@@ -29,6 +29,14 @@ SERIES = [
     "KXLALIGASPREAD",
     "KXNFLANYTD",
     "KXNFLRECYDS",
+    # Second scan pass, 2026-10-16 (RESEARCH_LOG.md): prop-shaped series with
+    # at least 100 fills that passed; paper tests, not conclusions.
+    "KXCLUBFBTTS",  # club soccer, both teams to score
+    "KXUCLCORNERS",  # Champions League corners
+    "KXUFCMOF",  # UFC method of finish
+    "KXNBAFTM",  # NBA player free throws made
+    "KXNCAAMENTION",  # NCAA broadcast mentions (the one non-sports candidate)
+    "KXNCAAMB1HSPREAD",  # college basketball first-half spread (from November)
 ]
 WINDOW_HOURS = (4, 10)
 EVENT_HOURS = 3  # orders are cancelled this long before expiration

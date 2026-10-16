@@ -53,6 +53,7 @@ season of Kalshi prices (2025-26) unless stated.
 | Kalshi NBA combos | Do parlay buyers overpay? | **−9% per dollar** for buyers (t −2.5), −19% on 5+ legs; $1.4M sample | Edge belongs to the quoting makers |
 | Miami daily high (weather) | Does the method transfer? | Market forecasts better than public models; every rule lost | Failed |
 | Market scan, 274 Kalshi sports series | Where else does the "no" seller work? | Props mostly pay; big-league game winners lose; 10 series passed | Candidates, paper-tested |
+| Market scan, second pass: every Kalshi category (1,178 testable series) | Does it work outside sports? | No: commodities −0.6¢, financials −1.1¢, nothing in crypto, politics or entertainment. Only "Mentions" markets (+3.6¢) and more sports props (soccer both-teams-to-score +11.5¢, UCL corners, NBA free throws) | Six paper ledgers from 2026-10-17 |
 | Liquidity rewards | Does Kalshi pay makers here? | 8 programs on NBA props, $800 total | No |
 | Sportsbook-line veto (pre-registered 2026-10-16) | Are the books a better veto than the model? | 150 sampled 2025-26 games, books' lines at the moment each order was posted; pass if ≥ 1¢ better with t ≥ 2 | Pending: `outputs/bookline/` |
 
@@ -89,6 +90,7 @@ are the test.
 | NBA taker (control) | Buy at the ask when the model's edge is 5¢ or more, tight spreads only | 2026-10-20 |
 | NFL "no" seller, model veto | Anytime touchdown and receiving yards, NFL model as veto; $500 each | 2026-10-16 |
 | Model-free "no" seller | ITF tennis, NASCAR, Liga MX and La Liga spreads, NFL anytime TD and receiving yards; $500 each, as the control | 2026-10-16 |
+| Second-scan candidates | Club soccer both-teams-to-score, Champions League corners, UFC method of finish, NBA free throws made, NCAA broadcast mentions, college basketball 1H spreads (from November); $500 each, judged 2026-12-15 | 2026-10-17 |
 | Price logs | Kalshi NBA and NFL prop snapshots before games | 2026-10 |
 | Book lines | Sportsbooks' NBA prop lines (de-vigged consensus only) six times a day | 2026-10-16 |
 | Live trader (dry run) | `live/nba_trade.py`: the "no" seller's real orders on NBA props (from opening night) and NFL anytime-TD and receiving-yards props (from 2026-10-18, `TRADE_MARKET=nfl`), sized from the account, through the risk limits; every 15 minutes on GitHub and every minute on a small server. Cancels resting orders on new injury news; rests an exit when a position has moved 6¢ our way. Places nothing until switched to live by hand | 2026-10-16 |

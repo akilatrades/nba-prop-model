@@ -1058,3 +1058,50 @@ from opening night (`TRADE_RULE`), with the model veto on uncovered lines.
 Caveats: 150 games, one season, and the fills the veto removes were still
 slightly positive, so the gain is in selection, not in avoiding losses; the
 paper ledger beside v1 is the out-of-sample test.
+
+## 2026-10-16: Market scan, second pass: results
+
+All 20 shards finished 22:16 UTC. Both passes together: 5,393 series listed,
+1,178 with enough trading in the window to test, **70 pass** (positive "no"
+seller with t ≥ 2 in both halves, "yes" not significantly positive). At one
+in forty by chance, about 30 of the 70 are noise, and 45 of the 70 have
+fewer than 100 fills. Full table: `outputs/scan/table.csv`.
+
+**Non-sports: no edge.** Commodities (10 series, 2,226 fills) −0.6¢;
+financials (S&P ranges) −1.1¢; crypto, economics, elections, politics and
+entertainment have no series with 100 fills that passes. The exception is
+the **Mentions** markets (will X be said): 3 series, 1,398 fills, +3.6¢;
+NCAA Mention +6.5¢ (t 2.3, 813 fills). A market with a fan on the "yes"
+side; the rest have none. The hope that price markets (crypto, equities)
+would fill NBA's dark days is not supported.
+
+**Scorer props: flat.** NHL goalscorer +0.1¢ (180 fills), NFL passing
+touchdowns −4.2¢ (334), NHL first goal +4.7¢ and points +6.2¢ on 62 and 143
+fills. Not a second NBA.
+
+**Passes with at least 100 fills, prop-shaped, in season or soon:**
+
+| Series | Fills | ¢ | t | Halves | Season |
+|---|---:|---:|---:|---|---|
+| KXCLUBFBTTS, club soccer both teams to score | 567 | +11.5 | 3.4 | +13.0 / +10.2 | now, daily |
+| KXNCAAMB1HSPREAD, college basketball 1H spread | 223 | +16.4 | 4.0 | +20.2 / +13.7 | from Nov |
+| KXUCLCORNERS, Champions League corners | 141 | +29.4 | 3.1 | +26.1 / +31.8 | Tue/Wed |
+| KXUFCMOF, UFC method of finish | 218 | +8.6 | 2.3 | +6.8 / +10.4 | Saturdays |
+| KXNBAFTM, NBA free throws made | 127 | +12.4 | 2.1 | +18.7 / +9.6 | from Oct 20 |
+| KXNCAAMENTION, NCAA broadcast mentions | 813 | +6.5 | 2.3 | +2.7 / +10.0 | now |
+| KXWNBA1QSPREAD / KXWNBA1HTOTAL | 109 / 675 | +16.4 / +8.8 | 2.7 / 2.6 | both + | summer |
+
+Winner-shaped passes (NWSL spread, NCAAW, AHL, VTB, Rocket League, EWSL,
+NASCAR, ITF) are noted and not tested further: winner markets lost in the
+first pass and are losing live.
+
+**Pre-registered paper tests, from 2026-10-17:** model-free "no" seller
+ledgers ($500 each, same rule, window and fills as the others) for the six
+in-season rows above: BTTS, UCL corners, UFC method of finish, NBA free
+throws made, NCAA Mention and, from the first game in November, NCAA 1H
+spreads. Judged after 2026-12-15 (or 300 fills, whichever is later): kept if
+positive with t ≥ 2; otherwise off the list. Expected by chance: about one
+of the six passes anyway, so a single survivor is weak evidence; two or more
+is not. Grouped reading, written before the data: the mechanism is a fan
+backing a person or an event to *happen*; BTTS, corners, free throws and
+mentions fit; a 1H spread is half-way to a winner market.
