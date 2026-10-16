@@ -97,6 +97,7 @@ def test_trader_places_sized_orders_and_reconciles(tmp_path, monkeypatch):
     monkeypatch.setattr(nba_trade, "ORDERS", out / "orders.csv")
     monkeypatch.setattr(nba_trade, "FILLS", out / "fills.csv")
     monkeypatch.setattr(nba_trade, "SETTLEMENTS", out / "settlements.csv")
+    monkeypatch.setattr(nba_trade, "EXITS", out / "exits.csv")
     latest = tmp_path / "latest.csv"
     priced.to_csv(latest, index=False)
     monkeypatch.setattr(nba_trade, "LATEST", latest)
