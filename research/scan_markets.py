@@ -50,10 +50,12 @@ def to_utc(x):
 # --- Stage: list ---------------------------------------------------------------
 
 
-def all_series():
+def all_series(category=None):
     out, cursor = [], ""
     while True:
-        params = {"limit": 1000, "category": "Sports"}
+        params = {"limit": 1000}
+        if category:
+            params["category"] = category
         if cursor:
             params["cursor"] = cursor
         page = get_json("/series", params) or {}
@@ -63,8 +65,15 @@ def all_series():
             return out
 
 
-def list_stage():
+def list_stage(skip_done=False):
     series = all_series()
+    done = set()
+    if skip_done and (OUT / "results.json").exists():
+        done = {
+            r["series"]
+            for r in json.loads((OUT / "results.json").read_text())
+            if "no_resting" in r
+        }
     rows = []
     for s in series:
         ticker = s.get("ticker", "")
@@ -89,6 +98,7 @@ def list_stage():
             {
                 "ticker": ticker,
                 "title": s.get("title"),
+                "category": s.get("category"),
                 "frequency": s.get("frequency"),
                 "first_page_markets": len(markets),
                 "has_more": bool(page.get("cursor")),
@@ -96,7 +106,9 @@ def list_stage():
             }
         )
     frame = pd.DataFrame(rows).sort_values("first_page_volume", ascending=False)
-    keep = frame[frame.first_page_volume >= MIN_PAGE_VOLUME]
+    keep = frame[
+        (frame.first_page_volume >= MIN_PAGE_VOLUME) & ~frame.ticker.isin(done)
+    ]
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "series.json").write_text(
         json.dumps(
@@ -108,8 +120,9 @@ def list_stage():
     )
     annotate(
         "notice",
-        f"{len(frame)} sports series, {len(keep)} with >= ${MIN_PAGE_VOLUME:,} on the "
-        f"first page: {keep.ticker.tolist()}",
+        f"{len(frame)} series in all categories, {len(keep)} with >= ${MIN_PAGE_VOLUME:,} "
+        f"on the first page and not scanned before; by category: "
+        f"{keep.category.value_counts().to_dict()}",
     )
 
 
@@ -132,6 +145,7 @@ def sample_markets(series):
     frame = frame[recent & (frame.volume > 0) & frame.result.isin(["yes", "no"])]
     if len(frame) > SAMPLE:
         frame = frame.sample(SAMPLE, random_state=0)
+    frame.attrs["sample"] = SAMPLE
     return frame.reset_index(drop=True)
 
 
@@ -311,22 +325,37 @@ def scan_stage(shard, shards, minutes):
 
 
 def report_stage():
-    rows = []
+    """Merge the shards with earlier results (a series' newest scan wins)."""
+    previous = {}
+    if (OUT / "results.json").exists():
+        for r in json.loads((OUT / "results.json").read_text()):
+            if "no_resting" in r:
+                previous[r["series"]] = r
     for path in sorted(OUT.glob("scan_*.json")):
-        rows.extend(json.loads(path.read_text()))
+        for r in json.loads(path.read_text()):
+            if "no_resting" in r or r["series"] not in previous:
+                previous[r["series"]] = r
+    rows = list(previous.values())
     (OUT / "results.json").write_text(json.dumps(rows, indent=1, default=str) + "\n")
+    print(
+        f"{len(rows)} series in results, {sum('no_resting' in r for r in rows)} scanned"
+    )
 
 
 def main():
+    global SAMPLE
     parser = argparse.ArgumentParser()
     parser.add_argument("stage", choices=["list", "scan", "report"])
     parser.add_argument("--shard", type=int, default=0)
     parser.add_argument("--shards", type=int, default=1)
     parser.add_argument("--minutes", type=float, default=300)
+    parser.add_argument("--sample", type=int, default=SAMPLE)
+    parser.add_argument("--skip-done", action="store_true")
     args = parser.parse_args()
+    SAMPLE = args.sample
     OUT.mkdir(parents=True, exist_ok=True)
     if args.stage == "list":
-        list_stage()
+        list_stage(args.skip_done)
     elif args.stage == "scan":
         scan_stage(args.shard, args.shards, args.minutes)
     else:

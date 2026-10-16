@@ -1,5 +1,6 @@
 name: market scan
-# Which Kalshi sports markets share the NBA "no" seller's edge (RESEARCH_LOG.md, 2026-10-16).
+# Which Kalshi markets share the "no" seller's edge (RESEARCH_LOG.md, 2026-10-16).
+# Second pass (2026-10-16): every category, series not scanned before, 400-market samples.
 on:
   workflow_dispatch:
 permissions:
@@ -10,14 +11,14 @@ concurrency:
 jobs:
   list:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: python -m research.scan_markets list
+      - run: python -m research.scan_markets list --skip-done
       - uses: actions/upload-artifact@v4
         with:
           name: scan-series
@@ -28,8 +29,9 @@ jobs:
     timeout-minutes: 340
     strategy:
       fail-fast: false
+      max-parallel: 20
       matrix:
-        shard: [0, 1, 2, 3, 4, 5]
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -40,7 +42,7 @@ jobs:
         with:
           name: scan-series
           path: outputs/scan
-      - run: python -m research.scan_markets scan --shard ${{ matrix.shard }} --shards 6 --minutes 300
+      - run: python -m research.scan_markets scan --shard ${{ matrix.shard }} --shards 20 --minutes 300 --sample 400
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -69,8 +71,9 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm -f outputs/scan/scan_*.json
           git add -A outputs/scan
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m "Market scan results"
+          git commit -m "Market scan results (all categories)"
           git pull --rebase
           git push

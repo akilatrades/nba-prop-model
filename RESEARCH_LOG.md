@@ -847,3 +847,20 @@ as in the other paper tests.
 filled contract above zero with game-clustered t ≥ 2.0, and the filtered
 ledger's profit per contract above the model-free control's over the same
 markets. Reported: the vetoed orders' profit (what the model kept us out of).
+
+## 2026-10-16: Market scan, second pass: every Kalshi market
+
+The first pass reached 274 of the 2,270 sports series with at least $20,000
+on their first page. This pass runs the same model-free rule and pass
+criteria (resting "no" one cent inside the ask, 7 to 4 hours before expected
+expiration, one hour's rest, fills from trade prints; pass if "no" is
+positive with t ≥ 2 in both halves and "yes" is not significantly positive)
+on **every remaining series in every category** with that volume, sports
+and non-sports, with 400-market samples instead of 1,200 so it finishes.
+Combo (multivariate) series are excluded as before. Non-sports markets have
+no game, so "7 to 4 hours before expiration" is simply a pre-close window;
+long-horizon markets (futures, season winners, elections) will show up with
+few quotes in that window and are reported with their counts. Results merge
+into the same table; a series' newest scan wins. Same caution as before: at
+t ≥ 2 about one series in forty passes by chance, so passing series are
+candidates for paper tests, not conclusions.
