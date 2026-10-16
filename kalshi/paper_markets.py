@@ -28,6 +28,7 @@ SERIES = [
     "KXLIGAMXSPREAD",
     "KXLALIGASPREAD",
     "KXNFLANYTD",
+    "KXNFLRECYDS",
 ]
 WINDOW_HOURS = (4, 10)
 EVENT_HOURS = 3  # orders are cancelled this long before expiration
