@@ -1,0 +1,42 @@
+[
+ {
+  "policy": "join",
+  "eligible_orders": 35404,
+  "fill_rate": 0.3,
+  "profit_per_100_orders_cents": 86.0,
+  "t_per_order": 4.71,
+  "cents_per_filled_contract": 2.86,
+  "t_per_fill": 4.73,
+  "avg_no_price": 0.478
+ },
+ {
+  "policy": "improve1",
+  "eligible_orders": 35404,
+  "fill_rate": 0.582,
+  "profit_per_100_orders_cents": 171.0,
+  "t_per_order": 6.12,
+  "cents_per_filled_contract": 2.94,
+  "t_per_fill": 6.12,
+  "avg_no_price": 0.486
+ },
+ {
+  "policy": "improve2",
+  "eligible_orders": 35404,
+  "fill_rate": 0.68,
+  "profit_per_100_orders_cents": 168.3,
+  "t_per_order": 5.46,
+  "cents_per_filled_contract": 2.47,
+  "t_per_fill": 5.48,
+  "avg_no_price": 0.494
+ },
+ {
+  "policy": "edge2",
+  "eligible_orders": 28213,
+  "fill_rate": 0.579,
+  "profit_per_100_orders_cents": 191.4,
+  "t_per_order": 6.16,
+  "cents_per_filled_contract": 3.3,
+  "t_per_fill": 6.16,
+  "avg_no_price": 0.471
+ }
+]

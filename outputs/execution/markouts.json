@@ -1,0 +1,150 @@
+{
+ "fills_matched": 33475,
+ "of_orders": 33475,
+ "rows": [
+  {
+   "label": "all fills",
+   "fills": 33475,
+   "cents": 1.65,
+   "t": 4.11,
+   "markout_m5": -1.16,
+   "markout_m15": -0.98,
+   "markout_m60": -0.91,
+   "markout_to_tip": -0.94
+  },
+  {
+   "label": "yes price rose in the hour before posting: above median (0)",
+   "fills": 1589,
+   "cents": 2.32,
+   "t": 1.76,
+   "markout_m5": -0.84,
+   "markout_m15": -0.77,
+   "markout_m60": -0.8,
+   "markout_to_tip": -1.07
+  },
+  {
+   "label": "yes price rose in the hour before posting: at or below median",
+   "fills": 31886,
+   "cents": 1.62,
+   "t": 4.07,
+   "markout_m5": -1.19,
+   "markout_m15": -1.0,
+   "markout_m60": -0.92,
+   "markout_to_tip": -0.93
+  },
+  {
+   "label": "busy 15 min before posting: above median (0)",
+   "fills": 4955,
+   "cents": 2.23,
+   "t": 2.56,
+   "markout_m5": -0.93,
+   "markout_m15": -0.88,
+   "markout_m60": -0.88,
+   "markout_to_tip": -1.23
+  },
+  {
+   "label": "busy 15 min before posting: at or below median",
+   "fills": 28520,
+   "cents": 1.56,
+   "t": 3.92,
+   "markout_m5": -1.24,
+   "markout_m15": -1.02,
+   "markout_m60": -0.92,
+   "markout_to_tip": -0.88
+  },
+  {
+   "label": "yes-taker share 15 min before posting: above median (1)",
+   "fills": 0
+  },
+  {
+   "label": "yes-taker share 15 min before posting: at or below median",
+   "fills": 4955,
+   "cents": 2.23,
+   "t": 2.56,
+   "markout_m5": -0.93,
+   "markout_m15": -0.88,
+   "markout_m60": -0.88,
+   "markout_to_tip": -1.23
+  },
+  {
+   "label": "size of the print that filled us: above median (18)",
+   "fills": 16598,
+   "cents": 1.51,
+   "t": 3.18,
+   "markout_m5": -1.36,
+   "markout_m15": -1.12,
+   "markout_m60": -1.04,
+   "markout_to_tip": -1.08
+  },
+  {
+   "label": "size of the print that filled us: at or below median",
+   "fills": 16877,
+   "cents": 1.8,
+   "t": 3.91,
+   "markout_m5": -0.89,
+   "markout_m15": -0.82,
+   "markout_m60": -0.77,
+   "markout_to_tip": -0.8
+  },
+  {
+   "label": "minutes to tip at fill: above median (185)",
+   "fills": 16734,
+   "cents": 1.75,
+   "t": 3.35,
+   "markout_m5": -1.0,
+   "markout_m15": -0.87,
+   "markout_m60": -0.8,
+   "markout_to_tip": -0.87
+  },
+  {
+   "label": "minutes to tip at fill: at or below median",
+   "fills": 16741,
+   "cents": 1.56,
+   "t": 3.43,
+   "markout_m5": -1.32,
+   "markout_m15": -1.09,
+   "markout_m60": -1.04,
+   "markout_to_tip": -1.04
+  },
+  {
+   "label": "toxicity flag: momentum > 2c or yes-share > 80% on 3+ prints",
+   "fills": 1167,
+   "cents": 2.96,
+   "t": 1.78,
+   "markout_m5": -0.96,
+   "markout_m15": -0.97,
+   "markout_m60": -1.02,
+   "markout_to_tip": -1.54
+  },
+  {
+   "label": "toxicity flag off",
+   "fills": 32308,
+   "cents": 1.61,
+   "t": 4.04,
+   "markout_m5": -1.18,
+   "markout_m15": -0.98,
+   "markout_m60": -0.91,
+   "markout_to_tip": -0.91
+  },
+  {
+   "label": "filled in the last 15 minutes before tip",
+   "fills": 1806,
+   "cents": 3.29,
+   "t": 3.24,
+   "markout_m5": -1.39,
+   "markout_m15": -1.15,
+   "markout_m60": -1.15,
+   "markout_to_tip": -1.15
+  },
+  {
+   "label": "filled earlier",
+   "fills": 31669,
+   "cents": 1.56,
+   "t": 3.79,
+   "markout_m5": -1.14,
+   "markout_m15": -0.97,
+   "markout_m60": -0.91,
+   "markout_to_tip": -0.93
+  }
+ ]
+}

@@ -1105,3 +1105,75 @@ of the six passes anyway, so a single survivor is weak evidence; two or more
 is not. Grouped reading, written before the data: the mechanism is a fan
 backing a person or an event to *happen*; BTTS, corners, free throws and
 mentions fit; a 1H spread is half-way to a winner market.
+
+## 2026-10-16: Execution studies (from the research agenda), written before running
+
+Akila's research agenda (strategy_research.pdf) puts execution first: whether
+the "no" seller's fills are the ones a sharp sweeps. Two offline studies on
+the 2025-26 NBA fills and trade prints; no change to the running ledgers or
+the trader.
+
+**Markouts and a toxicity veto (`research/markouts.py`).** For each paper
+fill, the first print at or through our level is the fill; markouts are
+the last "yes" price 5, 15 and 60 minutes after it and at the last print
+before tip, from our side (positive = price moved our way). Features known
+before posting: the yes price change in the prior hour, prints and
+yes-taker share in the prior 15 minutes, volume so far. Splits at each
+feature's median, plus two flags fixed now: **toxic** = prior-hour momentum
+above +2¢, or yes-taker share above 80% on at least 3 prints; **late** =
+filled within 15 minutes of tip. Endpoint: settlement profit per contract
+(clustered t) in each split; markouts are diagnostics, not the endpoint.
+Reading, in advance: if the toxic group's settlement profit is below the
+rest by ≥ 1.5¢ with the difference's t ≥ 2, a pre-posting veto goes into
+the v2 paper ledgers (not the trader) as `no_seller_toxveto`. If the
+groups do not differ, the fills are not being picked off in a way these
+features see, which is good news for execution.
+
+**Quote placement (`research/quote_placement.py`).** Same orders, same
+prints, four price policies: join the no bid; improve 1¢ (the current
+rule); improve 2¢ when the spread allows; improve 1¢ only when the
+model's edge at that price is at least 2¢. Endpoint: net profit per 100
+eligible orders (unfilled orders count zero), not per fill, so a policy
+cannot win by filling less. Also reported: fill rate and per-fill profit.
+Expected in advance: joining the bid fills less and earns more per fill;
+2¢ fills more and earns less; which wins per 100 orders is the question.
+
+### Results: execution studies (run 2026-10-16, offline)
+
+**Markouts.** All 33,475 paper fills matched to the print that filled them.
+Settlement profit +1.65¢ (t 4.1); markouts from our side −1.16¢ at 5
+minutes, −0.98¢ at 15, −0.91¢ at 60 and −0.94¢ at the last pre-tip print.
+So after we are filled the "yes" price drifts about 1¢ *against* us and
+stays there, yet the position still settles +1.65¢: the market's "yes"
+stays overpriced relative to outcomes all the way to tip. Two readings
+follow. (1) There is mild adverse selection in the price, but the edge is
+in settlement, not in the mark: an exit rule that sells back on price
+moves would give the edge away, and the pre-registered 6¢ early exit will
+rarely trigger. The exits ledger stays, judged on realized exits against
+hold value as written. (2) None of the pre-posting features separate good
+fills from bad: the **toxic** flag (1,167 fills) made +2.96¢ against
++1.61¢ for the rest, the wrong direction for a veto; fills in the last 15
+minutes before tip made +3.29¢ (t 3.2) against +1.56¢ earlier; large
+prints that filled us made +1.51¢ against +1.80¢ for small ones (not
+significant). **The pre-registered veto criterion (toxic group worse by ≥
+1.5¢, t ≥ 2) is not met; no toxicity veto.** Most orders have no prints in
+the hour before posting (median momentum and 15-minute print count both 0):
+these markets are thin before tip, which is itself why resting orders work.
+
+**Quote placement** (35,404 eligible orders, model veto on, one contract
+each):
+
+| Policy | Fill rate | ¢ per 100 eligible orders | t | ¢ per filled contract |
+|---|---:|---:|---:|---:|
+| Join the no bid | 30% | +86 | 4.7 | +2.86 |
+| **Improve 1¢ (current rule)** | 58% | **+171** | 6.1 | +2.94 |
+| Improve 2¢ when the spread allows | 68% | +168 | 5.5 | +2.47 |
+| Improve 1¢ only with model edge ≥ 2¢ | 58% | +191 (on 28,213 orders) | 6.2 | +3.30 |
+
+Joining the queue halves the fills and the profit; 2¢ inside buys 10
+points of fill rate and gives it all back in edge; the 1¢ rule is at the
+optimum of the three price policies. The edge-2¢ filter earns more per
+order on fewer orders (total +540 against +605 for all orders at 1¢), so
+it is the better rule when the daily cap, not the opportunity set, binds,
+which is the small-bankroll case; it is already running as
+`no_seller_veto2`. No change to the trader from this study.

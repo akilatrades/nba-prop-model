@@ -55,7 +55,9 @@ season of Kalshi prices (2025-26) unless stated.
 | Market scan, 274 Kalshi sports series | Where else does the "no" seller work? | Props mostly pay; big-league game winners lose; 10 series passed | Candidates, paper-tested |
 | Market scan, second pass: every Kalshi category (1,178 testable series) | Does it work outside sports? | No: commodities −0.6¢, financials −1.1¢, nothing in crypto, politics or entertainment. Only "Mentions" markets (+3.6¢) and more sports props (soccer both-teams-to-score +11.5¢, UCL corners, NBA free throws) | Six paper ledgers from 2026-10-17 |
 | Liquidity rewards | Does Kalshi pay makers here? | 8 programs on NBA props, $800 total | No |
-| Sportsbook-line veto (pre-registered 2026-10-16) | Are the books a better veto than the model? | 150 sampled 2025-26 games, books' lines at the moment each order was posted; pass if ≥ 1¢ better with t ≥ 2 | Pending: `outputs/bookline/` |
+| Sportsbook-line veto | Are the books a better veto than the model? | 151 sampled games, books' lines at the moment each order was posted: kept fills **+3.8¢** (t 2.4) against +0.4¢ removed; passed its pre-registered test | Live trader's rule |
+| Markouts and toxicity | Are our fills the ones a sharp sweeps? | Price drifts 1¢ against us after a fill and stays, yet settles +1.65¢; no pre-posting feature separates good fills from bad | No veto; edge is in settlement, not the mark |
+| Quote placement | Join the bid, 1¢ or 2¢ inside? | Per 100 orders: join +86¢, 1¢ +171¢, 2¢ +168¢; 1¢ with a 2¢ model edge +191¢ | Current 1¢ rule kept |
 
 ![Resting "no" orders across Kalshi series: props pay, big-league winners lose](docs/figures/scan_props_vs_winners.svg)
 
