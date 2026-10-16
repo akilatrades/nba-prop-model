@@ -745,3 +745,61 @@ both halves, and "yes" orders not significantly positive (that would mean
 the flow is two-sided and the "no" edge is spread capture a model could
 also get on the yes side). Passing series are candidates for a model and a
 pre-registered test of their own; nothing is traded from this scan.
+
+## 2026-10-16: Results: market scan and Kalshi NBA combos
+
+### Market scan (run once as written; [results](outputs/scan/results.json), [table](outputs/scan/table.csv))
+
+The listing found 3,972 sports series, 2,270 with at least $20,000 on their
+first page. The six shards scanned 274 of them in the time allowed, taken in
+order of volume, so the big markets are covered and the long tail is not.
+
+- **Control:** NBA points (1,200-market sample) gave "no" orders +3.0¢ with
+  no model (t 1.6; the full-season figure was +1.65¢ for all four stats);
+  "yes" orders −2.6¢. Same sign as idea 1. The other three NBA prop series
+  were not reached.
+- **Game-winner markets lose.** Of 83 "...GAME" series, "no" orders lost in
+  most of the large ones: NFL −4.8¢ (t −2.4), MLB −7.9¢ (t −3.0), NBA −1.7¢,
+  Liga MX −3.6¢ (t −3.3). As expected: both sides are a team, the flow is
+  two-sided and the sharps are there. The same for NBA spreads (−3.9¢,
+  t −2.1) and team totals.
+- **Ten series passed** (t ≥ 2, both halves positive, "yes" not positive):
+  ITF tennis match winners (+4.6¢, t 2.5, $117M sample volume), NCAA women's
+  basketball games (+2.9¢, t 2.1), World Cup first-half spreads (+4.9¢),
+  NASCAR race winners (+4.0¢, t 3.6), La Liga spreads (+4.3¢), World Cup
+  shots on target (+6.3¢, t 3.1), **NFL anytime touchdown (+3.0¢, t 2.2,
+  "yes" −1.1¢)**, WNBA first-half totals (+8.8¢), Liga MX spreads (+4.7¢),
+  World Cup assists (+3.7¢). Near misses with the same shape: NFL receiving
+  yards (+4.8¢, t 1.7), NCAA men's totals and spreads, WTA matches (+3.9¢,
+  t 1.9, $750M volume), Ligue 1 games (+2.8¢, t 2.0 but "yes" also moved).
+- **Caution.** 274 series were tested; at the 2.0 threshold about six would
+  pass by chance. The ones to believe are those where "yes" orders also lost
+  clearly (ITF, NASCAR, shots on target, WNBA 1H totals, Liga MX spreads) and
+  the player props, where the mechanism is the same as NBA's (NFL anytime
+  TD, receiving yards). Several passing markets are long-shot fields (NASCAR
+  winners, ITF upsets): there the "no" edge is the favourite-longshot bias,
+  not spread capture, and it comes with rare large losses.
+
+Overall across the 274 series, resting "no" made +0.2¢ at the median and
+"yes" lost 1.3¢ (fill-weighted). The asymmetry is general; the size is
+market-specific.
+
+### Kalshi NBA same-game combos (P3, run once; [results](outputs/parlays/combos.json))
+
+236,239 combos listed for 2025-26; trades downloaded for a 29,934-combo
+sample ($1.43M paid, 598 games). Takers were "yes" buyers 98% of the time.
+
+- Takers paid an average 19¢ per contract and 17.3% of contracts paid out:
+  **−9.0% per dollar (t −2.5)**. First half −10.2%, second half +2.1% (the
+  playoffs; the pre-registered "both halves" criterion fails).
+- By legs: 2 legs −4.5%, 3 legs −9.6%, 4 legs −16.4%, 5+ legs −18.7%
+  (t −2.3). The loss grows with the number of legs, like sportsbook parlays.
+- Quotes are 1.5x the product of the legs' mids (17¢ against 11¢), but the
+  legs are positively correlated and 16% hit, so the quoting margin is
+  roughly 1 to 3¢ per contract, not 6¢. The makers' profit is mostly the
+  longshot premium on many-leg combos.
+
+Being the combo quoter would be the largest edge per dollar seen in this
+project, and it is only available through Kalshi's RFQ market-maker API,
+which needs onboarding, quoting software and capital for many simultaneous
+positions. Noted, not pursued at $500.
