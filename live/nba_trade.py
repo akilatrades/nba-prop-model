@@ -124,7 +124,10 @@ def settlement_frame(raw):
     st = pd.DataFrame(raw)
     if st.empty:
         return st
-    cents = lambda c: pd.to_numeric(st.get(c, 0), errors="coerce").fillna(0) / 100
+
+    def cents(column):
+        return pd.to_numeric(st.get(column, 0), errors="coerce").fillna(0) / 100
+
     st["revenue_dollars"] = cents("revenue")
     st["cost_dollars"] = cents("yes_total_cost") + cents("no_total_cost")
     st["fee_dollars"] = cents("fee_cost") if "fee_cost" in st else 0.0
