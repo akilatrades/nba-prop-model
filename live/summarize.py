@@ -122,9 +122,46 @@ def ledger_rows(frame, group_col, label_fn=None, expected=()):
                     "day": str(day),
                     "profit": round(float(_num(d.profit).sum()), 2),
                     "fills": int(len(d)),
+                    "contracts": int(_num(d.filled_contracts).sum()),
                 }
             )
+        # per-fill profit per contract, cents, for the distribution chart
+        if len(settled) and contracts.sum():
+            pc = 100 * (profit / contracts.replace(0, np.nan)).dropna()
+            PER_FILL.extend(
+                {
+                    "ledger": label_fn(key) if label_fn else str(key),
+                    "cents": round(float(v), 1),
+                }
+                for v in pc
+            )
     return out, daily
+
+
+PER_FILL = []
+# What last season's tests say each ledger should make per contract: the
+# benchmark line on the equity chart (expected profit at the backtest edge).
+BACKTEST_CENTS = {
+    "NBA no_seller": 2.93,
+    "NBA no_seller_late": 2.93,
+    "NBA no_seller_edge_sized": 2.93,
+    "NBA no_seller_veto2": 2.93,
+    "NBA no_seller_stat_veto": 2.93,
+    "NBA no_seller_bookline": 3.81,
+    "NBA model_side": 3.1,
+}
+
+
+def backtest_cents(ledger):
+    if ledger in BACKTEST_CENTS:
+        return BACKTEST_CENTS[ledger]
+    p = Path("outputs/scan/table.csv")
+    if p.exists():
+        t = pd.read_csv(p).set_index("series")
+        key = ledger.replace("+model", "")
+        if key in t.index and pd.notna(t.at[key, "no_c"]):
+            return round(float(t.at[key, "no_c"]), 2)
+    return None
 
 
 def live_status(folder):
@@ -257,6 +294,17 @@ def main():
             "difference": b.get("veto_minus_covered"),
             "pass": b.get("pass"),
         }
+    for r in ledgers:
+        r["backtest_cents"] = backtest_cents(r["ledger"])
+    expected = {r["ledger"]: r["backtest_cents"] for r in ledgers}
+    for d in daily:
+        bc = expected.get(d["ledger"])
+        d["expected"] = round(d["contracts"] * bc / 100, 2) if bc is not None else None
+    bins = list(range(-100, 101, 10))
+    hist = {f"{a}": 0 for a in bins[:-1]}
+    for f in PER_FILL:
+        c = max(-100, min(99.9, f["cents"]))
+        hist[str(int(np.floor(c / 10) * 10))] += 1
     total_profit = round(sum(r["profit"] for r in ledgers), 2)
     with_fills = [r for r in ledgers if r["fills"] >= 5]
     best = (
@@ -279,6 +327,7 @@ def main():
             "best": best["ledger"] if best else None,
             "worst": worst["ledger"] if worst else None,
         },
+        "per_fill_histogram": hist,
         "live": live,
         "live_nfl": live_nfl,
         "limits": limits,

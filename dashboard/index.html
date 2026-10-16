@@ -3,174 +3,223 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Market Maker Desk</title>
-<meta name="description" content="Tearsheet for the Kalshi sports-prop market maker: equity, drawdown, edge estimates with standard errors, live risk utilization.">
+<title>Market Maker Report</title>
+<meta name="description" content="Backtest-report style view of the Kalshi sports-prop market maker: key statistics, cumulative profit against the backtest benchmark, daily profit, profit per fill, monthly heatmap, drawdown periods, rolling edge, strategies and live risk.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
   color-scheme: light;
-  --surface: #fcfcfb; --surface-2: #f3f2ef; --rule: #e3e1dc; --rule-2: #cfccc5;
-  --ink: #0b0b0b; --ink-2: #52514e; --ink-3: #8b8984;
-  --pos: #008300; --neg: #c8312f; --accent: #2a78d6;
-  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#e87ba4; --s6:#008300; --s7:#6250d6; --s8:#e34948; --other:#9a9893;
+  --paper: #ffffff; --paper-2: #f4f5f7; --rule: #dde0e4; --rule-2: #b9bec6;
+  --ink: #1b1d21; --ink-2: #5b616b; --ink-3: #8a9099;
+  --algo: #2a78d6; --algo-soft: #86b6ef; --bench: #9aa0a6;
+  --up: #2a78d6; --down: #b4b9c0; --pos: #1a8f4f; --neg: #c8312f;
+  --heat-pos: #1a8f4f; --heat-neg: #c8312f; --heat-mid: #eef0f2;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#e87ba4; --s6:#008300; --s7:#6250d6; --s8:#e34948; --other:#9aa0a6;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
-    --surface: #1a1a19; --surface-2: #222220; --rule: #2e2e2b; --rule-2: #44443f;
-    --ink: #f0efec; --ink-2: #c3c2b7; --ink-3: #8b8984;
-    --pos: #3fb950; --neg: #e66767; --accent: #3987e5;
+    --paper: #141516; --paper-2: #1d1f22; --rule: #2b2e33; --rule-2: #454a52;
+    --ink: #eceef1; --ink-2: #b4bac3; --ink-3: #7f8690;
+    --algo: #3987e5; --algo-soft: #1c5cab; --bench: #7f8690;
+    --up: #3987e5; --down: #565b63; --pos: #3fb950; --neg: #e66767;
+    --heat-pos: #3fb950; --heat-neg: #e66767; --heat-mid: #22252a;
     --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#008300; --s7:#9085e9; --s8:#e66767; --other:#6f6e69;
   }
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --surface: #1a1a19; --surface-2: #222220; --rule: #2e2e2b; --rule-2: #44443f;
-  --ink: #f0efec; --ink-2: #c3c2b7; --ink-3: #8b8984;
-  --pos: #3fb950; --neg: #e66767; --accent: #3987e5;
+  --paper: #141516; --paper-2: #1d1f22; --rule: #2b2e33; --rule-2: #454a52;
+  --ink: #eceef1; --ink-2: #b4bac3; --ink-3: #7f8690;
+  --algo: #3987e5; --algo-soft: #1c5cab; --bench: #7f8690;
+  --up: #3987e5; --down: #565b63; --pos: #3fb950; --neg: #e66767;
+  --heat-pos: #3fb950; --heat-neg: #e66767; --heat-mid: #22252a;
   --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#008300; --s7:#9085e9; --s8:#e66767; --other:#6f6e69;
 }
 * { box-sizing: border-box; }
-html, body { margin: 0; background: var(--surface); color: var(--ink); }
-body { font: 13px/1.45 "IBM Plex Sans", system-ui, sans-serif; padding: 20px 16px 48px; max-width: 1240px; margin: 0 auto; }
-.mono, td.num, th.num, .stat b, .axis, .tt, .legend, .kv, .util .lab, .meta { font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace; font-variant-numeric: tabular-nums; }
-h1 { font: 500 17px/1.2 "IBM Plex Mono", monospace; margin: 0; letter-spacing: .02em; }
-h2 { font: 500 11px/1.2 "IBM Plex Mono", monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2); margin: 0 0 10px; display: flex; gap: 10px; align-items: baseline; }
-h2 .n { color: var(--ink-3); }
-h2 .sub { font-family: "IBM Plex Sans", sans-serif; text-transform: none; letter-spacing: 0; color: var(--ink-3); font-weight: 400; }
-.mast { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--ink); flex-wrap: wrap; }
-.mast p { margin: 4px 0 0; color: var(--ink-2); max-width: 70ch; }
-.meta { font-size: 11px; color: var(--ink-3); text-align: right; }
-.strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); border-bottom: 1px solid var(--rule-2); }
-.stat { padding: 12px 12px 12px 0; border-right: 1px solid var(--rule); margin-right: 12px; }
-.stat:last-child { border-right: 0; }
-.stat small { display: block; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 4px; }
-.stat b { display: block; font-size: 20px; font-weight: 500; line-height: 1.1; }
-.stat span { display: block; font-size: 11px; color: var(--ink-2); margin-top: 3px; }
-section { padding: 22px 0 18px; border-bottom: 1px solid var(--rule-2); }
-.grid2 { display: grid; grid-template-columns: 3fr 2fr; gap: 28px; }
-.grid2.even { grid-template-columns: 1fr 1fr; }
-@media (max-width: 900px) { .grid2, .grid2.even { grid-template-columns: 1fr; } }
+html, body { margin: 0; background: var(--paper); color: var(--ink); }
+body { font: 15px/1.5 "Source Sans 3", "Segoe UI", system-ui, sans-serif; font-variant-numeric: tabular-nums; padding: 28px 20px 56px; max-width: 1120px; margin: 0 auto; }
+a { color: var(--algo); }
+.report-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; padding-bottom: 14px; border-bottom: 2px solid var(--ink); flex-wrap: wrap; }
+.report-head h1 { font-size: 26px; font-weight: 700; line-height: 1.1; margin: 0 0 4px; letter-spacing: -.01em; }
+.report-head p { margin: 0; color: var(--ink-2); max-width: 72ch; }
+.report-head .meta { color: var(--ink-2); text-align: right; font-size: 14px; line-height: 1.4; }
+@media (max-width: 600px) { .report-head .meta { text-align: left; } }
+.report-head .meta strong { color: var(--ink); font-weight: 600; }
+h2 { font-size: 18px; font-weight: 600; margin: 0 0 2px; }
+.desc { color: var(--ink-2); font-size: 14px; margin: 0 0 12px; max-width: 80ch; }
+section { padding: 26px 0 8px; }
+section + section { border-top: 1px solid var(--rule); }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; }
+@media (max-width: 860px) { .two { grid-template-columns: 1fr; gap: 20px; } }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0 36px; margin-top: 10px; }
+@media (max-width: 860px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 20px; } }
+@media (max-width: 480px) { .stats { grid-template-columns: minmax(0, 1fr); } }
+.stats div { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--rule); font-size: 14px; min-width: 0; }
+.stats div span:first-child { color: var(--ink-2); }
+.stats div span:last-child { font-weight: 600; text-align: right; }
 .pos { color: var(--pos); } .neg { color: var(--neg); } .muted { color: var(--ink-3); }
 svg { display: block; width: 100%; height: auto; overflow: visible; }
-.axis { font-size: 10px; fill: var(--ink-3); }
+.axis { font-size: 11px; fill: var(--ink-3); }
 .grid line { stroke: var(--rule); stroke-width: 1; shape-rendering: crispEdges; }
 .zero { stroke: var(--rule-2); stroke-width: 1; shape-rendering: crispEdges; }
-.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 11px; color: var(--ink-2); margin-top: 8px; }
-.legend i { display: inline-block; width: 14px; height: 2px; vertical-align: middle; margin-right: 6px; background: var(--c); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13px; color: var(--ink-2); margin-top: 6px; }
+.legend i { display: inline-block; width: 18px; height: 3px; vertical-align: middle; margin-right: 6px; background: var(--c); border-radius: 2px; }
 .scroll { overflow-x: auto; }
-table { border-collapse: collapse; width: 100%; font-size: 12px; }
-th { text-align: left; font-family: "IBM Plex Mono", monospace; font-weight: 500; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); padding: 6px 8px 6px 0; border-bottom: 1px solid var(--rule-2); white-space: nowrap; }
-td { padding: 5px 8px 5px 0; border-bottom: 1px solid var(--rule); vertical-align: middle; white-space: nowrap; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th { text-align: left; font-weight: 600; color: var(--ink-2); padding: 6px 10px 6px 0; border-bottom: 1px solid var(--rule-2); white-space: nowrap; font-size: 13px; }
+td { padding: 6px 10px 6px 0; border-bottom: 1px solid var(--rule); vertical-align: middle; white-space: nowrap; }
 td.num, th.num { text-align: right; }
-tr.group td { font-family: "IBM Plex Mono", monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); padding-top: 12px; border-bottom: 1px solid var(--rule-2); }
-td.lbl { white-space: normal; min-width: 180px; }
-td .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--c); margin-right: 8px; vertical-align: middle; }
+td.lbl { white-space: normal; min-width: 200px; }
+.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--c); margin-right: 8px; vertical-align: middle; }
+tr.group td { font-weight: 600; color: var(--ink-2); padding-top: 14px; font-size: 13px; border-bottom: 1px solid var(--rule-2); }
 .spark svg { width: 90px; height: 22px; }
-details { margin-top: 8px; } summary { cursor: pointer; color: var(--ink-2); font-size: 12px; } summary::marker { color: var(--ink-3); }
-.note { font-size: 11.5px; color: var(--ink-3); margin: 10px 0 0; max-width: 90ch; }
-.kv { display: grid; grid-template-columns: max-content 1fr; gap: 3px 14px; font-size: 12px; margin: 6px 0 12px; }
-.kv dt { color: var(--ink-3); } .kv dd { margin: 0; }
-.util { margin: 10px 0 0; }
-.util .row { display: grid; grid-template-columns: 150px 1fr 110px; gap: 10px; align-items: center; font-size: 11px; margin-bottom: 6px; }
+details { margin-top: 8px; font-size: 14px; } summary { cursor: pointer; color: var(--ink-2); }
+.note { font-size: 13px; color: var(--ink-3); margin: 10px 0 0; max-width: 90ch; }
+.heat { display: grid; gap: 2px; font-size: 12px; align-items: center; }
+.heat .h { color: var(--ink-3); text-align: center; padding-bottom: 2px; }
+.heat .r { color: var(--ink-2); padding-right: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.heat .c { height: 26px; display: flex; align-items: center; justify-content: center; border-radius: 1px; background: var(--heat-mid); color: var(--ink); }
+.heat .c.e { background: transparent; border: 1px dashed var(--rule); }
+.kv { display: grid; grid-template-columns: max-content 1fr; gap: 4px 16px; font-size: 14px; margin: 8px 0 12px; }
+.kv dt { color: var(--ink-2); } .kv dd { margin: 0; }
+.util .row { display: grid; grid-template-columns: 160px 1fr 120px; gap: 10px; align-items: center; font-size: 13px; margin-bottom: 7px; }
 .util .lab { color: var(--ink-2); } .util .val { text-align: right; color: var(--ink-2); }
-.util .bar { height: 6px; background: var(--surface-2); position: relative; }
-.util .bar i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent); }
+.util .bar { height: 8px; background: var(--paper-2); position: relative; border-radius: 1px; }
+.util .bar i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--algo); border-radius: 1px; }
 .util .bar i.hot { background: var(--neg); }
-.tag { font-family: "IBM Plex Mono", monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1px solid var(--rule-2); padding: 1px 6px; color: var(--ink-2); }
-.tag.live { border-color: var(--pos); color: var(--pos); }
-.tt { position: fixed; pointer-events: none; background: var(--ink); color: var(--surface); font-size: 11px; padding: 6px 8px; border-radius: 2px; display: none; z-index: 10; white-space: pre; line-height: 1.4; }
-.ref { fill: none; stroke: var(--ink-2); stroke-width: 1.5; }
-footer { padding-top: 14px; font-size: 11px; color: var(--ink-3); }
-footer a { color: var(--ink-2); }
+.pill { display: inline-block; font-size: 12px; font-weight: 600; padding: 1px 8px; border-radius: 10px; background: var(--paper-2); color: var(--ink-2); vertical-align: middle; }
+.pill.live { background: var(--pos); color: #fff; }
+.tt { position: fixed; pointer-events: none; background: var(--ink); color: var(--paper); font-size: 12px; padding: 7px 9px; border-radius: 3px; display: none; z-index: 10; white-space: pre; line-height: 1.45; font-variant-numeric: tabular-nums; }
 .marker { cursor: default; }
+footer { padding-top: 18px; margin-top: 10px; border-top: 2px solid var(--ink); font-size: 13px; color: var(--ink-3); }
+.expo .row { display: grid; grid-template-columns: 220px 1fr 70px; gap: 10px; align-items: center; font-size: 13px; margin-bottom: 6px; }
+.expo .bar { height: 10px; background: var(--paper-2); position: relative; }
+.expo .bar i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--c); }
+.expo .val { text-align: right; color: var(--ink-2); }
+@media (max-width: 600px) { .expo .row { grid-template-columns: 1fr 60px; } .expo .row span:first-child { grid-column: 1 / -1; } .util .row { grid-template-columns: 1fr 100px; } .util .row .lab { grid-column: 1 / -1; } }
 </style>
 </head>
 <body>
-<div class="mast">
+<div class="report-head">
   <div>
-    <h1>MARKET MAKER DESK</h1>
-    <p>Resting "no" orders on Kalshi sports props; the sportsbooks and a stat model as the filter. Paper ledgers and a dry-run trader until the live switch is thrown. Standard errors are clustered by game.</p>
+    <h1>Sports market maker</h1>
+    <p>Resting "no" orders on Kalshi player props, sold to the fans buying "yes"; the sportsbooks and a stat model decide which lines. Paper ledgers and a dry-run trader; no real money until the live switch is thrown.</p>
   </div>
-  <div class="meta" id="stamp">loading…</div>
+  <div class="meta" id="stamp">Loading…</div>
 </div>
-<div class="strip" id="strip"></div>
 
 <section>
-  <div class="grid2">
+  <h2>Key statistics</h2>
+  <p class="desc">All paper ledgers together, treated as one portfolio. Standard errors are clustered by game.</p>
+  <div class="stats" id="stats"></div>
+</section>
+
+<section>
+  <h2>Cumulative profit</h2>
+  <p class="desc">Portfolio paper profit in dollars, with the benchmark in grey: what the same filled contracts would have made at each ledger's backtest edge. Blue below grey means real fills are doing worse than last season's replay said.</p>
+  <div id="cumulative"></div>
+  <div class="legend"><span style="--c:var(--algo)"><i></i>Paper ledgers</span><span style="--c:var(--bench)"><i></i>Benchmark: fills × backtest edge</span></div>
+</section>
+
+<section>
+  <div class="two">
     <div>
-      <h2><span class="n">01</span> Equity <span class="sub">cumulative paper P&amp;L, $, per ledger with fills</span></h2>
-      <div id="equity"></div>
-      <h2 style="margin-top:14px"><span class="n"></span> Drawdown <span class="sub">from running peak, $</span></h2>
-      <div id="drawdown"></div>
-      <div class="legend" id="legend"></div>
+      <h2>Daily profit</h2>
+      <p class="desc">Profitable days in blue, losing days in grey.</p>
+      <div id="daily"></div>
     </div>
     <div>
-      <h2><span class="n">02</span> Edge <span class="sub">profit per contract, ¢, ±2 SE; ledgers with ≥5 fills</span></h2>
-      <div id="forest"></div>
-      <p class="note">Hollow markers are last season's backtests for reference: NBA "no" seller with the model veto (+2.9¢, 21,373 fills) and with the sportsbook veto (+3.8¢, 1,647 fills). A live ledger whose interval excludes zero on the right side has shown its edge; one that excludes zero on the left is losing.</p>
+      <h2>Profit per fill</h2>
+      <p class="desc">Distribution of profit per contract across settled fills, in cents.</p>
+      <div id="hist"></div>
     </div>
   </div>
 </section>
 
 <section>
-  <h2><span class="n">03</span> Strategies <span class="sub">one $500 paper bankroll per ledger; fills from Kalshi's public trade prints with price priority</span></h2>
+  <h2>Monthly profit by ledger</h2>
+  <p class="desc">Dollars per month; green positive, red negative, darker is larger. Dashed cells are months with no settlement.</p>
+  <div id="heat"></div>
+</section>
+
+<section>
+  <h2>Drawdown</h2>
+  <p class="desc">Portfolio decline from its running peak, in dollars. The three largest drawdown periods are shaded.</p>
+  <div id="underwater"></div>
+  <div class="scroll" id="ddtable"></div>
+</section>
+
+<section>
+  <div class="two">
+    <div>
+      <h2>Rolling edge</h2>
+      <p class="desc">Profit per contract over the trailing 7 and 30 settlement days, in cents, with the backtest edge for reference.</p>
+      <div id="rolling"></div>
+      <div class="legend"><span style="--c:var(--algo)"><i></i>Trailing 30 days</span><span style="--c:var(--algo-soft)"><i></i>Trailing 7 days</span><span style="--c:var(--bench)"><i></i>Backtest edge</span></div>
+    </div>
+    <div>
+      <h2>Edge by ledger</h2>
+      <p class="desc">Profit per contract with ±2 standard errors, ledgers with at least five fills; last season's backtests as hollow markers.</p>
+      <div id="forest"></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Strategies</h2>
+  <p class="desc">One $500 paper bankroll per ledger. Fills come from Kalshi's public trade prints with price priority; positions settle on Kalshi's result.</p>
   <div class="scroll"><table id="ledgers"></table></div>
   <div id="idle"></div>
 </section>
 
 <section>
-  <h2><span class="n">04</span> Live desk <span class="sub">the trader's last pass, exposure against the risk limits in kalshi/risk.py</span></h2>
-  <div class="grid2 even" id="live"></div>
+  <h2>Where the contracts went</h2>
+  <p class="desc">Share of settled contracts by ledger, the equivalent of the report's asset allocation.</p>
+  <div class="expo" id="expo"></div>
 </section>
 
 <section>
-  <div class="grid2">
+  <h2>Live trader</h2>
+  <p class="desc">The trader's last pass for each market and its exposure against the risk limits in kalshi/risk.py.</p>
+  <div class="two" id="live"></div>
+</section>
+
+<section>
+  <div class="two">
     <div>
-      <h2><span class="n">05</span> Market scan <span class="sub">2025-26, model-free "no" seller, top 15 series by t; ¢ per contract ±2 SE</span></h2>
+      <h2>Market scan</h2>
+      <p class="desc">2025-26, model-free "no" seller, top 15 series by t; cents per contract with ±2 standard errors. Filled markers passed; about one series in forty passes by chance.</p>
       <div id="scan"></div>
-      <p class="note">Up to 1,200 markets per series, last 400 days. Filled marker: positive in both halves with t ≥ 2 and "yes" not significantly positive. About one series in forty passes by chance, so a pass is a candidate for a paper ledger, not a conclusion.</p>
     </div>
     <div>
-      <h2><span class="n">06</span> Research <span class="sub">sportsbook-line veto, 2025-26 replay</span></h2>
+      <h2>Sportsbook-line veto</h2>
+      <p class="desc">Historical test on 2025-26 fills: selling "no" only where Kalshi's "yes" ask sits above the books' probability.</p>
       <div id="research"></div>
     </div>
   </div>
 </section>
 
-<footer>Data: <a href="../outputs/dashboard/summary.json">summary.json</a>, rebuilt by every scheduled job · <a href="https://github.com/akilatrades/sports-market-maker">akilatrades/sports-market-maker</a> · RESEARCH_LOG.md holds every pre-registration and result.</footer>
+<footer>Data: <a href="../outputs/dashboard/summary.json">summary.json</a>, rebuilt by every scheduled job. Code and every pre-registration: <a href="https://github.com/akilatrades/sports-market-maker">akilatrades/sports-market-maker</a>. The layout follows the QuantConnect backtest report: key statistics, cumulative returns against a benchmark, daily returns, return per trade, monthly heatmap, drawdown periods, rolling statistics.</footer>
 <div class="tt" id="tt"></div>
 
 <script>
 const NAMES = {
-  "KXITFMATCH": "ITF tennis, match winner",
-  "KXNASCARRACE": "NASCAR, race winner",
-  "KXLIGAMXSPREAD": "Liga MX, point spread",
-  "KXLALIGASPREAD": "La Liga, point spread",
-  "KXNFLANYTD": "NFL, anytime touchdown",
-  "KXNFLRECYDS": "NFL, receiving yards",
-  "KXNFLANYTD+model": "NFL, anytime TD, model filter",
-  "KXNFLRECYDS+model": "NFL, receiving yds, model filter",
-  "NBA model_side": "NBA props, model's side (v1)",
-  "NBA no_seller": "NBA props, \"no\" seller (v1)",
-  "NBA no_seller_late": "NBA props, \"no\" seller, last 2 h (v2)",
-  "NBA no_seller_edge_sized": "NBA props, \"no\" seller, edge-sized (v2)",
-  "NBA no_seller_veto2": "NBA props, \"no\" seller, 2¢ veto (v2)",
-  "NBA no_seller_stat_veto": "NBA props, \"no\" seller, rebounds veto (v2)",
-  "NBA no_seller_bookline": "NBA props, \"no\" seller, sportsbook veto (v2)",
-  "KXWCSOT": "World Cup, shots on target", "KXWC1HSPREAD": "World Cup, first-half spread", "KXWNBA1HTOTAL": "WNBA, first-half total",
-  "KXWCASSIST": "World Cup, assists", "KXNCAAWBGAME": "NCAA women's basketball, winner", "KXLIGUE1GAME": "Ligue 1, match winner",
-  "KXMLBF5SPREAD": "MLB, first-five-innings spread", "KXNCAAMBTOTAL": "NCAA men's basketball, total", "KXWTAMATCH": "WTA tennis, match winner",
-  "KXBOXING": "Boxing, fight winner", "KXWCAST": "World Cup, assists",
-  "KXCLUBFBTTS": "Club soccer, both teams to score", "KXUCLCORNERS": "Champions League, corners", "KXUFCMOF": "UFC, method of finish",
-  "KXNBAFTM": "NBA, free throws made", "KXNCAAMENTION": "NCAA broadcast mentions", "KXNCAAMB1HSPREAD": "NCAA men's basketball, 1st-half spread",
-  "KXNWSLSPREAD": "NWSL, spread", "KXUCLWADVANCE": "Champions League, to advance", "KXWNBA1QSPREAD": "WNBA, 1st-quarter spread",
-  "KXINDYCARTOP3": "IndyCar, top-3 finish", "KXRLGAME": "Rocket League, game winner", "KXVTBGAME": "VTB basketball, game winner",
-  "KXINXDUD": "S&P 500, daily up/down", "KXAHLGAME": "AHL hockey, game winner", "KXEWSLGAME": "Women's Super League, winner", "KXATPMATCH": "ATP tennis, match winner", "KXNFLGAME": "NFL, game winner", "KXMLBGAME": "MLB, game winner",
-  "KXNBAGAME": "NBA, game winner", "KXWCSOA": "World Cup, shots on target",
+  "KXITFMATCH": "ITF tennis, match winner", "KXNASCARRACE": "NASCAR, race winner", "KXLIGAMXSPREAD": "Liga MX, point spread", "KXLALIGASPREAD": "La Liga, point spread",
+  "KXNFLANYTD": "NFL, anytime touchdown", "KXNFLRECYDS": "NFL, receiving yards", "KXNFLANYTD+model": "NFL, anytime TD, model filter", "KXNFLRECYDS+model": "NFL, receiving yds, model filter",
+  "NBA model_side": "NBA props, model's side (v1)", "NBA no_seller": "NBA props, \"no\" seller (v1)", "NBA no_seller_late": "NBA props, \"no\" seller, last 2 h (v2)",
+  "NBA no_seller_edge_sized": "NBA props, \"no\" seller, edge-sized (v2)", "NBA no_seller_veto2": "NBA props, \"no\" seller, 2¢ veto (v2)",
+  "NBA no_seller_stat_veto": "NBA props, \"no\" seller, rebounds veto (v2)", "NBA no_seller_bookline": "NBA props, \"no\" seller, sportsbook veto (v2)",
+  "KXWCSOT": "World Cup, shots on target", "KXWC1HSPREAD": "World Cup, first-half spread", "KXWNBA1HTOTAL": "WNBA, first-half total", "KXWCASSIST": "World Cup, assists",
+  "KXNCAAWBGAME": "NCAA women's basketball, winner", "KXLIGUE1GAME": "Ligue 1, match winner", "KXMLBF5SPREAD": "MLB, first-five-innings spread", "KXNCAAMBTOTAL": "NCAA men's basketball, total",
+  "KXWTAMATCH": "WTA tennis, match winner", "KXBOXING": "Boxing, fight winner", "KXWCAST": "World Cup, assists", "KXATPMATCH": "ATP tennis, match winner", "KXNFLGAME": "NFL, game winner",
+  "KXMLBGAME": "MLB, game winner", "KXNBAGAME": "NBA, game winner", "KXWCSOA": "World Cup, shots on target",
+  "KXCLUBFBTTS": "Club soccer, both teams to score", "KXUCLCORNERS": "Champions League, corners", "KXUFCMOF": "UFC, method of finish", "KXNBAFTM": "NBA, free throws made",
+  "KXNCAAMENTION": "NCAA broadcast mentions", "KXNCAAMB1HSPREAD": "NCAA men's basketball, 1st-half spread", "KXNWSLSPREAD": "NWSL, spread", "KXUCLWADVANCE": "Champions League, to advance",
+  "KXWNBA1QSPREAD": "WNBA, 1st-quarter spread", "KXINDYCARTOP3": "IndyCar, top-3 finish", "KXRLGAME": "Rocket League, game winner", "KXVTBGAME": "VTB basketball, game winner",
+  "KXINXDUD": "S&P 500, daily up/down", "KXAHLGAME": "AHL hockey, game winner", "KXEWSLGAME": "Women's Super League, winner",
 };
-// Fixed slot order: color follows the ledger, never its rank or its row.
 const SLOT_ORDER = ["NBA no_seller_bookline","NBA no_seller","NBA no_seller_late","NBA no_seller_edge_sized","NBA no_seller_veto2","NBA no_seller_stat_veto","NBA model_side","KXNFLANYTD+model","KXNFLRECYDS+model","KXNFLANYTD","KXNFLRECYDS","KXCLUBFBTTS","KXNBAFTM","KXUCLCORNERS","KXUFCMOF","KXNCAAMENTION","KXNCAAMB1HSPREAD","KXITFMATCH","KXNASCARRACE","KXLALIGASPREAD","KXLIGAMXSPREAD"];
 const SLOTS = ["var(--s1)","var(--s2)","var(--s3)","var(--s4)","var(--s5)","var(--s6)","var(--s7)","var(--s8)"];
 const name = k => NAMES[k] || k.replace(/^KX/, "");
@@ -187,78 +236,81 @@ function hover(el, text) {
   el.addEventListener("mouseleave", () => tt.style.display = "none");
 }
 const colorOf = (() => { const map = {}; let i = 0; return key => { if (!(key in map)) { const idx = SLOT_ORDER.indexOf(key); map[key] = idx >= 0 && i < 8 ? SLOTS[i++] : "var(--other)"; } return map[key]; }; })();
+const widthOf = el => Math.max(300, Math.round(el.getBoundingClientRect().width || 640));
+function niceStep(span, n) { const raw = span / n, mag = Math.pow(10, Math.floor(Math.log10(raw || 1))); return [1, 2, 2.5, 5, 10].map(k => k * mag).find(k => k >= raw) || mag; }
 
-function strip(s) {
-  const p = s.paper, live = s.live || {}, nfl = s.live_nfl || {};
-  const active = p.ledgers.filter(l => l.fills > 0);
-  const best = active.filter(l => l.fills >= 5).sort((a, b) => b.cents_per_contract - a.cents_per_contract)[0];
-  const open = (live.open_exposure || 0) + (nfl.open_exposure || 0);
-  const realized = (live.realized_total || 0) + (nfl.realized_total || 0);
-  const days = new Set(p.daily.map(d => d.day)).size;
-  const cells = [
-    ["Paper P&L, all ledgers", money(p.total_profit), `${p.total_fills} fills settled · ${days} day${days === 1 ? "" : "s"}`, cls(p.total_profit)],
-    ["Realized, real account", money(realized), live.run_utc ? `${esc(live.mode)} · ${esc(live.env)}` : "nothing live yet", cls(realized)],
-    ["Open exposure", money(open), `limit ${money0(s.limits?.max_open)} · night ${money0(s.limits?.max_night)}`, ""],
-    ["Leading ledger (≥5 fills)", best ? cents(best.cents_per_contract) : "—", best ? `${name(best.ledger)} · t ${fmt1(best.t)}` : "none with 5 fills yet", best ? cls(best.cents_per_contract) : "muted"],
-    ["Live rule", (live.rule ? name("NBA " + live.rule).replace("NBA props, ", "") : "\"no\" seller, sportsbook veto (v2)").replace("\"no\" seller, ", "").replace(" (v2)", ""), live.run_utc ? "last pass " + live.run_utc.slice(5, 16).replace("T", " ") + "Z" : "first pass when markets list", ""],
-  ];
-  document.getElementById("strip").innerHTML = cells.map(([k, v, sub, c]) => `<div class="stat"><small>${esc(k)}</small><b class="${c}">${esc(v)}</b><span>${sub}</span></div>`).join("");
-}
-
-function series(s) {
-  // cumulative P&L and drawdown per ledger with fills, on the union of days
+function portfolio(s) {
   const days = [...new Set(s.paper.daily.map(d => d.day))].sort();
-  const ledgers = s.paper.ledgers.filter(l => l.fills > 0).map(l => l.ledger);
-  const out = ledgers.map(k => {
-    const byDay = Object.fromEntries(s.paper.daily.filter(d => d.ledger === k).map(d => [d.day, d.profit]));
-    let cum = 0, peak = 0; const eq = [], dd = [];
-    for (const d of days) { cum += byDay[d] || 0; peak = Math.max(peak, cum); eq.push(cum); dd.push(cum - peak); }
-    return {key: k, eq, dd, color: colorOf(k)};
-  });
-  return {days, series: out};
+  const by = {}; days.forEach(d => by[d] = {profit: 0, expected: 0, fills: 0, contracts: 0});
+  for (const d of s.paper.daily) { const b = by[d.day]; b.profit += d.profit; b.expected += d.expected || 0; b.fills += d.fills; b.contracts += d.contracts || 0; }
+  let cum = 0, cumE = 0, peak = 0; const eq = [], bench = [], dd = [], daily = [];
+  for (const d of days) { const b = by[d]; cum += b.profit; cumE += b.expected; peak = Math.max(peak, cum); eq.push(cum); bench.push(cumE); dd.push(cum - peak); daily.push(b); }
+  return {days, eq, bench, dd, daily};
 }
 
-const widthOf = el => Math.max(320, Math.round(el.getBoundingClientRect().width || 640));
-
-function lineChart(el, days, rows, pick, opts = {}) {
-  const W = widthOf(el), H = opts.h || 220, m = {t: 10, r: 14, b: 26, l: 48};
-  if (!days.length) { el.innerHTML = `<p class="note">No settled fills yet. Curves start with the first settlement.</p>`; return; }
-  const vals = rows.flatMap(r => pick(r)); let lo = Math.min(0, ...vals), hi = Math.max(0, ...vals);
-  if (hi === lo) { hi = lo + 1; }
-  const span = hi - lo, raw = span / 4, mag = Math.pow(10, Math.floor(Math.log10(raw))), stepY = [1, 2, 2.5, 5, 10].map(k => k * mag).find(k => k >= raw);
-  lo = Math.floor(lo / stepY) * stepY; hi = Math.ceil(hi / stepY) * stepY; if (opts.maxZero) hi = Math.max(hi, 0);
-  const x = i => m.l + (days.length === 1 ? (W - m.l - m.r) / 2 : i * (W - m.l - m.r) / (days.length - 1));
+function frame(el, H, m, lo, hi, opts = {}) {
+  const W = widthOf(el);
+  const step = niceStep((hi - lo) || 1, opts.ticks || 4);
+  lo = Math.floor(lo / step) * step; hi = Math.ceil(hi / step) * step; if (hi === lo) hi = lo + step;
   const y = v => m.t + (hi - v) / (hi - lo) * (H - m.t - m.b);
   let g = `<g class="grid">`;
-  for (let v = lo; v <= hi + 1e-9; v += stepY) { g += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}"/><text class="axis" x="${m.l - 6}" y="${y(v) + 3}" text-anchor="end">${money0(Math.round(v))}</text>`; }
-  g += `</g><line class="zero" x1="${m.l}" x2="${W - m.r}" y1="${y(0)}" y2="${y(0)}"/>`;
-  const step = Math.max(1, Math.ceil(days.length / 8));
-  days.forEach((d, i) => { if (i % step === 0 || i === days.length - 1) g += `<text class="axis" x="${x(i)}" y="${H - 8}" text-anchor="middle">${d.slice(5)}</text>`; });
-  for (const r of rows) {
-    const v = pick(r); const path = v.map((p, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(p).toFixed(1)}`).join("");
-    if (opts.area) g += `<path d="${path}L${x(v.length - 1)},${y(0)}L${x(0)},${y(0)}Z" fill="${r.color}" opacity=".12"/>`;
-    g += `<path d="${path}" fill="none" stroke="${r.color}" stroke-width="2" stroke-linejoin="round"/>`;
-    if (days.length <= 3) v.forEach((p, i) => g += `<circle cx="${x(i)}" cy="${y(p)}" r="4" fill="${r.color}" stroke="var(--surface)" stroke-width="2"/>`);
-  }
-  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" id="${opts.id || ""}">${g}<g class="cross"></g><rect x="${m.l}" y="${m.t}" width="${W - m.l - m.r}" height="${H - m.t - m.b}" fill="transparent"/></svg>`;
-  const svg = el.querySelector("svg"), cross = svg.querySelector(".cross"), rect = svg.querySelector("rect");
+  for (let v = lo; v <= hi + 1e-9; v += step) g += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}"/><text class="axis" x="${m.l - 6}" y="${y(v) + 4}" text-anchor="end">${opts.fmt ? opts.fmt(Math.round(v * 100) / 100) : money0(Math.round(v))}</text>`;
+  g += `</g>`;
+  if (lo <= 0 && hi >= 0) g += `<line class="zero" x1="${m.l}" x2="${W - m.r}" y1="${y(0)}" y2="${y(0)}"/>`;
+  return {W, y, g, lo, hi};
+}
+function xLabels(days, x, H, m, W) {
+  const step = Math.max(1, Math.ceil(days.length / Math.max(3, Math.floor((W - m.l - m.r) / 70))));
+  let g = ""; days.forEach((d, i) => { if (i % step === 0 || i === days.length - 1) g += `<text class="axis" x="${x(i)}" y="${H - 8}" text-anchor="middle">${d.slice(5)}</text>`; }); return g;
+}
+function crosshair(svg, days, x, rows, m, H) {
+  const cross = svg.querySelector(".cross"), rect = svg.querySelector("rect.hit");
   rect.addEventListener("mousemove", e => {
     const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY; const p = pt.matrixTransform(svg.getScreenCTM().inverse());
     let i = 0, best = 1e9; days.forEach((d, j) => { const dx = Math.abs(x(j) - p.x); if (dx < best) { best = dx; i = j; } });
-    cross.innerHTML = `<line x1="${x(i)}" x2="${x(i)}" y1="${m.t}" y2="${H - m.b}" stroke="var(--ink-3)" stroke-width="1"/>` + rows.map(r => `<circle cx="${x(i)}" cy="${y(pick(r)[i])}" r="4" fill="${r.color}" stroke="var(--surface)" stroke-width="2"/>`).join("");
+    cross.innerHTML = `<line x1="${x(i)}" x2="${x(i)}" y1="${m.t}" y2="${H - m.b}" stroke="var(--ink-3)" stroke-width="1"/>` + rows.map(r => `<circle cx="${x(i)}" cy="${r.y(r.v[i])}" r="4" fill="${r.color}" stroke="var(--paper)" stroke-width="2"/>`).join("");
     tt.style.display = "block"; tt.style.left = (e.clientX + 12) + "px"; tt.style.top = (e.clientY + 12) + "px";
-    tt.textContent = days[i] + "\n" + rows.map(r => `${name(r.key).padEnd(34)} ${money(pick(r)[i]).padStart(10)}`).join("\n");
+    tt.textContent = days[i] + "\n" + rows.map(r => `${r.label.padEnd(28)} ${r.fmt(r.v[i]).padStart(11)}`).join("\n");
   });
   rect.addEventListener("mouseleave", () => { cross.innerHTML = ""; tt.style.display = "none"; });
 }
-
+function lines(el, days, series, H, opts = {}) {
+  if (!days.length) { el.innerHTML = `<p class="note">${esc(opts.empty || "No settled fills yet; the chart starts with the first settlement.")}</p>`; return; }
+  const m = {t: 12, r: 16, b: 28, l: 56};
+  const vals = series.flatMap(r => r.v);
+  const f = frame(el, H, m, Math.min(0, ...vals), Math.max(0, ...vals), opts);
+  const x = i => m.l + (days.length === 1 ? (f.W - m.l - m.r) / 2 : i * (f.W - m.l - m.r) / (days.length - 1));
+  let g = f.g + xLabels(days, x, H, m, f.W);
+  if (opts.bands) for (const b of opts.bands) g = `<rect x="${x(b.from)}" y="${m.t}" width="${Math.max(3, x(b.to) - x(b.from))}" height="${H - m.t - m.b}" fill="${b.color}" opacity=".18"/>` + g;
+  for (const r of series) {
+    const path = r.v.map((p, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${f.y(p).toFixed(1)}`).join("");
+    if (r.area) g += `<path d="${path}L${x(r.v.length - 1)},${f.y(0)}L${x(0)},${f.y(0)}Z" fill="${r.color}" opacity=".15"/>`;
+    g += `<path d="${path}" fill="none" stroke="${r.color}" stroke-width="${r.width || 2}" ${r.dash ? 'stroke-dasharray="5 4"' : ""} stroke-linejoin="round"/>`;
+    if (days.length <= 2) r.v.forEach((p, i) => g += `<circle cx="${x(i)}" cy="${f.y(p)}" r="4" fill="${r.color}" stroke="var(--paper)" stroke-width="2"/>`);
+  }
+  el.innerHTML = `<svg viewBox="0 0 ${f.W} ${H}">${g}<g class="cross"></g><rect class="hit" x="${m.l}" y="${m.t}" width="${f.W - m.l - m.r}" height="${H - m.t - m.b}" fill="transparent"/></svg>`;
+  crosshair(el.querySelector("svg"), days, x, series.map(r => ({...r, y: f.y, fmt: r.fmt || money})), m, H);
+}
+function bars(el, labels, values, H, opts = {}) {
+  if (!labels.length) { el.innerHTML = `<p class="note">${esc(opts.empty || "Nothing settled yet.")}</p>`; return; }
+  const m = {t: 12, r: 12, b: 28, l: 52};
+  const f = frame(el, H, m, Math.min(0, ...values), Math.max(0, ...values), opts);
+  const n = labels.length, slot = (f.W - m.l - m.r) / n, bw = Math.max(2, Math.min(28, slot - 2));
+  let g = f.g;
+  const stepL = Math.max(1, Math.ceil(n / Math.max(3, Math.floor((f.W - m.l - m.r) / 60))));
+  labels.forEach((d, i) => { if (i % stepL === 0 || i === n - 1) g += `<text class="axis" x="${m.l + slot * (i + .5)}" y="${H - 8}" text-anchor="middle">${opts.lab ? opts.lab(d) : d.slice(5)}</text>`; });
+  values.forEach((v, i) => {
+    const cx = m.l + slot * (i + .5), y0 = f.y(0), y1 = f.y(v);
+    g += `<rect class="marker" data-i="${i}" x="${cx - bw / 2}" y="${Math.min(y0, y1)}" width="${bw}" height="${Math.max(1, Math.abs(y1 - y0))}" fill="${opts.color ? opts.color(v, i) : (v >= 0 ? "var(--up)" : "var(--down)")}" rx="1"/>`;
+  });
+  el.innerHTML = `<svg viewBox="0 0 ${f.W} ${H}">${g}</svg>`;
+  el.querySelectorAll(".marker").forEach(r => { const i = +r.dataset.i; hover(r, opts.tip ? opts.tip(i) : `${labels[i]}\n${money(values[i])}`); });
+}
 function forest(el, items, opts = {}) {
-  // items: {label, est, se, color, hollow, sub, pass}
-  const W = widthOf(el), rowH = 22, narrow = W < 480;
-  const m = {t: 8, r: narrow ? 52 : 64, b: 24, l: Math.min(opts.labelW || 190, Math.round(W * 0.42))};
-  const maxChars = Math.floor(m.l / 6.6);
-  const short = t => t.length > maxChars ? t.slice(0, maxChars - 1) + "…" : t;
+  const W = widthOf(el), rowH = 24, narrow = W < 480;
+  const m = {t: 8, r: narrow ? 56 : 70, b: 26, l: Math.min(opts.labelW || 210, Math.round(W * 0.42))};
   if (!items.length) { el.innerHTML = `<p class="note">${esc(opts.empty || "Nothing to show yet.")}</p>`; return; }
+  const maxChars = Math.floor(m.l / 6.8), short = t => t.length > maxChars ? t.slice(0, maxChars - 1) + "…" : t;
   const H = m.t + m.b + rowH * items.length;
   const xs = items.flatMap(i => i.se != null ? [i.est - 2 * i.se, i.est + 2 * i.se] : [i.est]);
   let lo = Math.min(0, ...xs), hi = Math.max(0, ...xs); const pad = (hi - lo) * 0.1 || 1; lo -= pad; hi += pad;
@@ -268,15 +320,14 @@ function forest(el, items, opts = {}) {
   g += `</g><line class="zero" x1="${x(0)}" x2="${x(0)}" y1="${m.t}" y2="${H - m.b}" style="stroke:var(--ink-2)"/>`;
   items.forEach((it, i) => {
     const cy = m.t + rowH * i + rowH / 2;
-    g += `<text class="axis" style="fill:var(--ink-2);font-size:11px" x="${m.l - 10}" y="${cy + 4}" text-anchor="end">${esc(short(it.label))}</text>`;
+    g += `<text class="axis" style="fill:var(--ink-2);font-size:12px" x="${m.l - 10}" y="${cy + 4}" text-anchor="end">${esc(short(it.label))}</text>`;
     if (it.se != null) g += `<line x1="${x(it.est - 2 * it.se)}" x2="${x(it.est + 2 * it.se)}" y1="${cy}" y2="${cy}" stroke="${it.color}" stroke-width="2"/><line x1="${x(it.est - 2 * it.se)}" x2="${x(it.est - 2 * it.se)}" y1="${cy - 4}" y2="${cy + 4}" stroke="${it.color}" stroke-width="2"/><line x1="${x(it.est + 2 * it.se)}" x2="${x(it.est + 2 * it.se)}" y1="${cy - 4}" y2="${cy + 4}" stroke="${it.color}" stroke-width="2"/>`;
-    g += it.hollow ? `<circle class="marker" data-i="${i}" cx="${x(it.est)}" cy="${cy}" r="5" fill="var(--surface)" stroke="${it.color}" stroke-width="2"/>` : `<circle class="marker" data-i="${i}" cx="${x(it.est)}" cy="${cy}" r="5" fill="${it.color}" stroke="var(--surface)" stroke-width="2"/>`;
+    g += it.hollow ? `<circle class="marker" data-i="${i}" cx="${x(it.est)}" cy="${cy}" r="5" fill="var(--paper)" stroke="${it.color}" stroke-width="2"/>` : `<circle class="marker" data-i="${i}" cx="${x(it.est)}" cy="${cy}" r="5" fill="${it.color}" stroke="var(--paper)" stroke-width="2"/>`;
     g += `<text class="axis" style="fill:var(--ink-2)" x="${W - 2}" y="${cy + 4}" text-anchor="end">${cents(it.est)}</text>`;
   });
   el.innerHTML = `<svg viewBox="0 0 ${W} ${H}">${g}</svg>`;
   el.querySelectorAll(".marker").forEach(c => { const it = items[+c.dataset.i]; hover(c, `${it.label}\n${cents(it.est)} per contract${it.se != null ? ` ± ${(2 * it.se).toFixed(2)}¢ (2 SE)` : ""}${it.sub ? "\n" + it.sub : ""}`); });
 }
-
 function spark(values, color) {
   if (!values || values.length < 2) return "";
   const W = 90, H = 22, lo = Math.min(0, ...values), hi = Math.max(0, ...values) || 1;
@@ -284,63 +335,132 @@ function spark(values, color) {
   return `<svg viewBox="0 0 ${W} ${H}"><line x1="0" x2="${W}" y1="${y(0)}" y2="${y(0)}" stroke="var(--rule-2)"/><path d="${values.map((v, i) => `${i ? "L" : "M"}${x(i)},${y(v)}`).join("")}" fill="none" stroke="${color}" stroke-width="1.5"/></svg>`;
 }
 
+function stats(s, pf) {
+  const p = s.paper, live = s.live || {}, nfl = s.live_nfl || {};
+  const fills = p.total_fills, contracts = p.daily.reduce((a, d) => a + (d.contracts || 0), 0);
+  const active = p.ledgers.filter(l => l.fills > 0);
+  const orders = p.ledgers.reduce((a, l) => a + l.orders, 0), done = p.ledgers.reduce((a, l) => a + l.orders - l.open, 0);
+  const edge = contracts ? 100 * p.total_profit / contracts : null;
+  const maxdd = pf.dd.length ? -Math.min(...pf.dd) : 0;
+  const wins = pf.daily.filter(d => d.profit > 0).length;
+  const rows = [
+    ["Runtime", `${pf.days.length} settlement day${pf.days.length === 1 ? "" : "s"}`],
+    ["Ledgers trading", `${active.length} of ${p.ledgers.length}`],
+    ["Orders placed", orders.toLocaleString()],
+    ["Fill rate", done ? pct(fills / done) : "—"],
+    ["Fills settled", fills.toLocaleString()],
+    ["Contracts", contracts.toLocaleString()],
+    ["Net profit", money(p.total_profit), cls(p.total_profit)],
+    ["Profit per contract, weighted", edge == null ? "—" : cents(edge), cls(edge)],
+    ["Benchmark profit", money(pf.bench.length ? pf.bench[pf.bench.length - 1] : 0), "muted"],
+    ["Winning days", pf.days.length ? `${wins} of ${pf.days.length}` : "—"],
+    ["Max drawdown", maxdd ? "−" + money(maxdd) : "$0.00", maxdd ? "neg" : ""],
+    ["Contracts per day", pf.days.length ? Math.round(contracts / pf.days.length).toLocaleString() : "—"],
+    ["Real account", money((live.realized_total || 0) + (nfl.realized_total || 0)), "muted"],
+    ["Open exposure", `${money((live.open_exposure || 0) + (nfl.open_exposure || 0))} of ${money0(s.limits?.max_open)}`],
+    ["Live rule", (live.rule ? name("NBA " + live.rule) : "NBA props, \"no\" seller, sportsbook veto (v2)").replace("NBA props, \"no\" seller, ", "").replace(" (v2)", "")],
+    ["Mode", live.run_utc ? `${live.mode} (${live.env})` : "dry run, waiting for markets"],
+  ];
+  document.getElementById("stats").innerHTML = rows.map(([k, v, c]) => `<div><span>${esc(k)}</span><span class="${c || ""}">${esc(v)}</span></div>`).join("");
+}
+function heatmap(s) {
+  const el = document.getElementById("heat");
+  const months = [...new Set(s.paper.daily.map(d => d.day.slice(0, 7)))].sort();
+  const ledgers = s.paper.ledgers.filter(l => l.fills > 0).map(l => l.ledger);
+  if (!months.length) { el.innerHTML = `<p class="note">No settled month yet.</p>`; return; }
+  const cell = {}; let mx = 1;
+  for (const d of s.paper.daily) { const k = d.ledger + "|" + d.day.slice(0, 7); cell[k] = (cell[k] || 0) + d.profit; }
+  for (const v of Object.values(cell)) mx = Math.max(mx, Math.abs(v));
+  const shade = v => { const a = Math.min(1, Math.abs(v) / mx); const base = v >= 0 ? "var(--heat-pos)" : "var(--heat-neg)"; return `background: color-mix(in oklab, ${base} ${Math.round(15 + 85 * a)}%, var(--heat-mid)); color: ${a > .55 ? "#fff" : "var(--ink)"}`; };
+  const fmtM = m => new Date(m + "-02T00:00:00").toLocaleString(undefined, {month: "short", year: "2-digit"});
+  let html = `<div class="heat" style="grid-template-columns: minmax(140px, 220px) repeat(${months.length}, minmax(56px, 1fr))"><div></div>${months.map(m => `<div class="h">${fmtM(m)}</div>`).join("")}`;
+  for (const l of ledgers) { html += `<div class="r">${esc(name(l))}</div>` + months.map(m => { const v = cell[l + "|" + m]; return v == null ? `<div class="c e"></div>` : `<div class="c" style="${shade(v)}" title="${esc(name(l))} ${fmtM(m)}: ${money(v)}">${money0(v)}</div>`; }).join(""); }
+  const tot = months.map(m => s.paper.daily.filter(d => d.day.startsWith(m)).reduce((a, d) => a + d.profit, 0));
+  html += `<div class="r" style="font-weight:600">All ledgers</div>` + tot.map(v => `<div class="c" style="${shade(v)}; font-weight:600">${money0(v)}</div>`).join("") + `</div>`;
+  el.innerHTML = html;
+}
+function drawdownPeriods(pf) {
+  const periods = []; let start = null, trough = 0, troughI = 0;
+  pf.dd.forEach((v, i) => { if (v < 0 && start === null) { start = i; trough = v; troughI = i; } if (start !== null && v < trough) { trough = v; troughI = i; } if (v === 0 && start !== null) { periods.push({from: start, to: i, trough, troughI}); start = null; } });
+  if (start !== null) periods.push({from: start, to: pf.dd.length - 1, trough, troughI, open: true});
+  return periods.sort((a, b) => a.trough - b.trough).slice(0, 3);
+}
 function ledgerTable(s, eqs) {
   const rows = s.paper.ledgers, active = rows.filter(l => l.orders > 0), idle = rows.filter(l => l.orders === 0);
   const groups = [["NBA props", l => l.ledger.startsWith("NBA")], ["Other markets", l => !l.ledger.startsWith("NBA")]];
-  let html = `<thead><tr><th>Ledger</th><th class="num">Days</th><th class="num">Orders</th><th class="num">Fill</th><th class="num">Fills</th><th class="num">Contracts</th><th class="num">¢/contract</th><th class="num">SE</th><th class="num">t</th><th class="num">Hit</th><th class="num">P&amp;L</th><th class="num">Max DD</th><th class="num">Bankroll</th><th>Equity</th></tr></thead><tbody>`;
+  let html = `<thead><tr><th>Ledger</th><th class="num">Days</th><th class="num">Orders</th><th class="num">Fill</th><th class="num">Fills</th><th class="num">Contracts</th><th class="num">¢/contract</th><th class="num">SE</th><th class="num">t</th><th class="num">Hit</th><th class="num">Backtest ¢</th><th class="num">Profit</th><th class="num">Max DD</th><th class="num">Bankroll</th><th>Equity</th></tr></thead><tbody>`;
   for (const [g, f] of groups) {
     const rs = active.filter(f); if (!rs.length) continue;
-    html += `<tr class="group"><td colspan="14">${g}</td></tr>`;
+    html += `<tr class="group"><td colspan="15">${g}</td></tr>`;
     for (const l of rs) {
-      const eq = eqs.series.find(e => e.key === l.ledger);
-      html += `<tr><td class="lbl"><span class="dot" style="--c:${colorOf(l.ledger)}"></span>${esc(name(l.ledger))}</td><td class="num">${l.days}</td><td class="num">${l.orders}</td><td class="num">${pct(l.fill_rate)}</td><td class="num">${l.fills}</td><td class="num">${l.contracts.toLocaleString()}</td><td class="num ${cls(l.cents_per_contract)}">${cents(l.cents_per_contract)}</td><td class="num muted">${l.se_cents == null ? "—" : l.se_cents.toFixed(2)}</td><td class="num">${fmt1(l.t)}</td><td class="num">${pct(l.hit_rate)}</td><td class="num ${cls(l.profit)}">${money(l.profit)}</td><td class="num muted">${l.max_drawdown ? "−" + money(l.max_drawdown).replace("$", "$") : "—"}</td><td class="num">${money(l.bankroll)}</td><td class="spark">${eq ? spark(eq.eq, eq.color) : ""}</td></tr>`;
+      const eq = eqs[l.ledger];
+      html += `<tr><td class="lbl"><span class="dot" style="--c:${colorOf(l.ledger)}"></span>${esc(name(l.ledger))}</td><td class="num">${l.days}</td><td class="num">${l.orders}</td><td class="num">${pct(l.fill_rate)}</td><td class="num">${l.fills}</td><td class="num">${l.contracts.toLocaleString()}</td><td class="num ${cls(l.cents_per_contract)}">${cents(l.cents_per_contract)}</td><td class="num muted">${l.se_cents == null ? "—" : l.se_cents.toFixed(2)}</td><td class="num">${fmt1(l.t)}</td><td class="num">${pct(l.hit_rate)}</td><td class="num muted">${l.backtest_cents == null ? "—" : cents(l.backtest_cents)}</td><td class="num ${cls(l.profit)}">${money(l.profit)}</td><td class="num muted">${l.max_drawdown ? "−" + money(l.max_drawdown) : "—"}</td><td class="num">${money(l.bankroll)}</td><td class="spark">${eq ? spark(eq, colorOf(l.ledger)) : ""}</td></tr>`;
     }
   }
   document.getElementById("ledgers").innerHTML = html + "</tbody>";
-  document.getElementById("idle").innerHTML = idle.length ? `<details><summary>${idle.length} ledgers awaiting their first order</summary><p class="note">${idle.map(l => esc(name(l.ledger))).join(" · ")}. NBA ledgers start on opening night (2026-10-20); NFL on Sunday; NASCAR and Liga MX when a race or match enters the window.</p></details>` : "";
+  document.getElementById("idle").innerHTML = idle.length ? `<details><summary>${idle.length} ledgers waiting for their first order</summary><p class="note">${idle.map(l => esc(name(l.ledger))).join("; ")}. NBA ledgers start on opening night (October 20); NFL on Sunday; UFC on Saturday; Champions League corners midweek; college basketball in November.</p></details>` : "";
 }
-
+function exposure(s) {
+  const el = document.getElementById("expo");
+  const rows = s.paper.ledgers.filter(l => l.contracts > 0).sort((a, b) => b.contracts - a.contracts);
+  const total = rows.reduce((a, l) => a + l.contracts, 0);
+  if (!total) { el.innerHTML = `<p class="note">No contracts settled yet.</p>`; return; }
+  el.innerHTML = rows.map(l => `<div class="row"><span>${esc(name(l.ledger))}</span><div class="bar" style="--c:${colorOf(l.ledger)}"><i style="width:${(100 * l.contracts / total).toFixed(1)}%"></i></div><span class="val">${pct(l.contracts / total)}</span></div>`).join("");
+}
 function util(label, value, limit, hot) {
   const f = limit ? Math.min(1, Math.max(0, value / limit)) : 0;
-  return `<div class="row"><span class="lab">${esc(label)}</span><div class="bar"><i class="${hot && f >= 1 ? "hot" : ""}" style="width:${(100 * f).toFixed(1)}%"></i></div><span class="val">${money(value)} / ${money0(limit)}</span></div>`;
+  return `<div class="row"><span class="lab">${esc(label)}</span><div class="bar"><i class="${hot && f >= 1 ? "hot" : ""}" style="width:${(100 * f).toFixed(1)}%"></i></div><span class="val">${money(value)} of ${money0(limit)}</span></div>`;
 }
-
 function liveBlock(live, label, limits) {
   const today = live.realized_by_day ? Object.values(live.realized_by_day).slice(-1)[0] : 0;
-  let html = `<div><h2 style="margin-bottom:6px">${esc(label)} ${live.run_utc ? `<span class="tag ${live.mode === "live" ? "live" : ""}">${esc(live.mode)}</span> <span class="tag">${esc(live.env || "")}</span>` : `<span class="tag">idle</span>`}</h2>`;
-  if (!live.run_utc) { html += `<p class="note">No pass logged yet. The trader runs every minute on the server and every 15 on GitHub; it starts logging when these markets list.</p></div>`; return html; }
-  html += `<dl class="kv"><dt>last pass</dt><dd>${esc(live.run_utc.slice(0, 16).replace("T", " "))}Z</dd><dt>rule</dt><dd>${esc(name("NBA " + live.rule).replace("NBA props, ", ""))}</dd><dt>bankroll</dt><dd>${money(live.bankroll)}</dd><dt>candidates → placed</dt><dd>${live.candidates ?? "—"} → ${live.placed ?? "—"}${live.rejected ? ` <span class="muted">(${live.rejected} rejected)</span>` : ""}</dd>${live.injury_cancels ? `<dt>injury cancels</dt><dd>${live.injury_cancels}</dd>` : ""}${live.exits?.orders ? `<dt>early exits</dt><dd>${live.exits.orders} orders · expected ${money(live.exits.expected_gain)}${live.exits.scored ? ` · hold would have made ${money(live.exits.hold_would_have_made)}` : ""}</dd>` : ""}</dl>`;
-  html += `<div class="util">${util("open exposure", live.open_exposure || 0, limits.max_open, true)}${util("today's loss vs stop", Math.max(0, -(today || 0)), limits.daily_loss_stop, true)}${util("per order", limits.max_order, limits.max_order)}</div>`;
+  let html = `<div><h2 style="font-size:16px">${esc(label)} ${live.run_utc ? `<span class="pill ${live.mode === "live" ? "live" : ""}">${esc(live.mode)}</span> <span class="pill">${esc(live.env || "")}</span>` : `<span class="pill">waiting for markets</span>`}</h2>`;
+  if (!live.run_utc) { html += `<p class="note">No pass logged yet. The trader runs every minute on the server and every 15 minutes on GitHub; it starts logging when these markets list.</p></div>`; return html; }
+  html += `<dl class="kv"><dt>Last pass</dt><dd>${esc(live.run_utc.slice(0, 16).replace("T", " "))} UTC</dd><dt>Rule</dt><dd>${esc(name("NBA " + live.rule).replace("NBA props, ", ""))}</dd><dt>Bankroll</dt><dd>${money(live.bankroll)}</dd><dt>Candidates → placed</dt><dd>${live.candidates ?? "—"} → ${live.placed ?? "—"}${live.rejected ? ` <span class="muted">(${live.rejected} rejected)</span>` : ""}</dd>${live.injury_cancels ? `<dt>Injury cancels</dt><dd>${live.injury_cancels}</dd>` : ""}${live.exits?.orders ? `<dt>Early exits</dt><dd>${live.exits.orders} orders, expected ${money(live.exits.expected_gain)}${live.exits.scored ? `; holding would have made ${money(live.exits.hold_would_have_made)}` : ""}</dd>` : ""}</dl>`;
+  html += `<div class="util">${util("Open exposure", live.open_exposure || 0, limits.max_open, true)}${util("Today's loss vs stop", Math.max(0, -(today || 0)), limits.daily_loss_stop, true)}</div>`;
   if (live.rejections && Object.keys(live.rejections).length) html += `<p class="note">Rejections: ${Object.entries(live.rejections).map(([k, v]) => `${esc(k)} (${v})`).join("; ")}</p>`;
   if (live.realized_by_day) html += `<div class="scroll" style="margin-top:8px"><table><thead><tr><th>Day</th><th class="num">Realized</th></tr></thead><tbody>${Object.entries(live.realized_by_day).slice(-7).map(([d, v]) => `<tr><td>${esc(d)}</td><td class="num ${cls(v)}">${money(v)}</td></tr>`).join("")}</tbody></table></div>`;
   return html + "</div>";
 }
-
 function research(s) {
   const b = (s.research || {}).bookline, el = document.getElementById("research");
   if (!b || !b.veto) { el.innerHTML = `<p class="note">Not run yet.</p>`; return; }
-  const items = [["All fills in sample", b.all], ["Kept by sportsbook veto", b.veto], ["Removed by sportsbook veto", b.removed], ["Kept by model veto", b.model]].filter(x => x[1]).map(([label, r]) => ({label, est: r.cents, se: r.se, color: label.startsWith("Kept by sportsbook") ? "var(--s1)" : "var(--ink-3)", sub: `${r.fills.toLocaleString()} fills · t ${r.t}`}));
+  const items = [["All fills in sample", b.all], ["Kept by sportsbook veto", b.veto], ["Removed by sportsbook veto", b.removed], ["Kept by model veto", b.model]].filter(x => x[1]).map(([label, r]) => ({label, est: r.cents, se: r.se, color: label.startsWith("Kept by sportsbook") ? "var(--algo)" : "var(--bench)", sub: `${r.fills.toLocaleString()} fills, t ${r.t}`}));
   forest(el, items, {labelW: 200});
-  el.insertAdjacentHTML("beforeend", `<p class="note">${b.games} games sampled from 2025-26, the books' lines as they stood when each order was posted; exact-line quote for ${Math.round(100 * b.coverage)}% of fills. Kept minus removed ${cents(b.difference?.cents)}, t ${b.difference?.t}. ${b.pass ? "Passed the pre-registered test (≥1¢, t ≥ 2, ≥2,000 covered fills); the live trader runs this rule from opening night." : "Did not pass the pre-registered test."}</p>`);
+  el.insertAdjacentHTML("beforeend", `<p class="note">${b.games} games sampled from 2025-26 with the books' lines as they stood when each order was posted; an exact-line quote for ${Math.round(100 * b.coverage)}% of fills. Kept minus removed ${cents(b.difference?.cents)}, t ${b.difference?.t}. ${b.pass ? "Passed the pre-registered test (at least 1¢ better, t ≥ 2, 2,000+ covered fills); the live trader runs this rule from opening night." : "Did not pass the pre-registered test."}</p>`);
 }
 
 fetch("../outputs/dashboard/summary.json", {cache: "no-store"}).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }).then(s => {
-  document.getElementById("stamp").innerHTML = `as of ${esc(s.updated_utc.slice(0, 16).replace("T", " "))} UTC<br>paper + dry run · no real money yet`;
-  strip(s);
-  const eqs = series(s);
-  lineChart(document.getElementById("equity"), eqs.days, eqs.series, r => r.eq, {h: 200});
-  lineChart(document.getElementById("drawdown"), eqs.days, eqs.series, r => r.dd, {h: 110, area: true, maxZero: true});
-  document.getElementById("legend").innerHTML = eqs.series.map(r => `<span style="--c:${r.color}"><i></i>${esc(name(r.key))}</span>`).join("");
-  const live5 = s.paper.ledgers.filter(l => l.fills >= 5 && l.cents_per_contract != null).map(l => ({label: name(l.ledger), est: l.cents_per_contract, se: l.se_cents, color: colorOf(l.ledger), sub: `${l.fills} fills · t ${fmt1(l.t)} · hit ${pct(l.hit_rate)}`}));
-  const refs = [{label: "NBA + model veto, 2025-26", est: 2.93, se: 0.48, color: "var(--ink-3)", hollow: true, sub: "21,373 fills · backtest"}, {label: "NBA + book veto, 2025-26", est: 3.81, se: 1.59, color: "var(--ink-3)", hollow: true, sub: "1,647 fills · backtest"}];
+  const pf = portfolio(s);
+  document.getElementById("stamp").innerHTML = `<strong>Paper and dry run</strong><br>${esc(s.updated_utc.slice(0, 16).replace("T", " "))} UTC<br>${pf.days.length ? `${pf.days[0]} to ${pf.days[pf.days.length - 1]}` : "no settlements yet"}`;
+  stats(s, pf);
+  lines(document.getElementById("cumulative"), pf.days, [
+    {label: "Benchmark (backtest edge)", v: pf.bench, color: "var(--bench)", width: 2},
+    {label: "Paper ledgers", v: pf.eq, color: "var(--algo)", width: 2.5},
+  ], 260);
+  bars(document.getElementById("daily"), pf.days, pf.daily.map(d => d.profit), 200, {tip: i => `${pf.days[i]}\n${money(pf.daily[i].profit)}  (${pf.daily[i].fills} fills, ${pf.daily[i].contracts} contracts)`});
+  const h = s.per_fill_histogram || {}; const hk = Object.keys(h).map(Number).sort((a, b) => a - b);
+  const any = hk.some(k => h[k]);
+  bars(document.getElementById("hist"), any ? hk.map(String) : [], hk.map(k => h[k]), 200, {fmt: v => String(Math.round(v)), lab: d => `${d}¢`, color: (v, i) => hk[i] >= 0 ? "var(--up)" : "var(--down)", tip: i => `${hk[i]} to ${hk[i] + 10}¢ per contract\n${h[hk[i]]} fills`, empty: "No settled fills yet."});
+  heatmap(s);
+  const periods = drawdownPeriods(pf), bandColors = ["var(--s8)", "var(--s2)", "var(--s4)"];
+  lines(document.getElementById("underwater"), pf.days, [{label: "Drawdown", v: pf.dd, color: "var(--neg)", area: true, width: 1.5}], 160, {bands: periods.map((p, i) => ({from: p.from, to: p.to, color: bandColors[i]}))});
+  document.getElementById("ddtable").innerHTML = periods.length ? `<table><thead><tr><th>Drawdown period</th><th>From</th><th>Trough</th><th>Recovered</th><th class="num">Depth</th></tr></thead><tbody>${periods.map((p, i) => `<tr><td><span class="dot" style="--c:${bandColors[i]}"></span>${i + 1}</td><td>${pf.days[p.from]}</td><td>${pf.days[p.troughI]}</td><td>${p.open ? "not yet" : pf.days[p.to]}</td><td class="num neg">${money(p.trough)}</td></tr>`).join("")}</tbody></table>` : "";
+  const roll = n => pf.days.map((d, i) => { const w = pf.daily.slice(Math.max(0, i - n + 1), i + 1); const c = w.reduce((a, x) => a + x.contracts, 0); return c ? 100 * w.reduce((a, x) => a + x.profit, 0) / c : 0; });
+  lines(document.getElementById("rolling"), pf.days, [
+    {label: "Backtest edge", v: pf.days.map(() => 2.93), color: "var(--bench)", width: 1.5, dash: true, fmt: cents},
+    {label: "Trailing 7 days", v: roll(7), color: "var(--algo-soft)", width: 2, fmt: cents},
+    {label: "Trailing 30 days", v: roll(30), color: "var(--algo)", width: 2.5, fmt: cents},
+  ], 200, {fmt: v => `${v > 0 ? "+" : ""}${v}¢`});
+  const live5 = s.paper.ledgers.filter(l => l.fills >= 5 && l.cents_per_contract != null).map(l => ({label: name(l.ledger), est: l.cents_per_contract, se: l.se_cents, color: colorOf(l.ledger), sub: `${l.fills} fills, t ${fmt1(l.t)}, hit ${pct(l.hit_rate)}`}));
+  const refs = [{label: "NBA + model veto, 2025-26", est: 2.93, se: 0.48, color: "var(--bench)", hollow: true, sub: "21,373 fills, backtest"}, {label: "NBA + book veto, 2025-26", est: 3.81, se: 1.59, color: "var(--bench)", hollow: true, sub: "1,647 fills, backtest"}];
   forest(document.getElementById("forest"), [...live5, ...refs], {empty: "No ledger has five fills yet."});
-  ledgerTable(s, eqs);
+  const eqs = {}; for (const l of s.paper.ledgers.filter(l => l.fills > 0)) { let c = 0; const by = Object.fromEntries(s.paper.daily.filter(d => d.ledger === l.ledger).map(d => [d.day, d.profit])); eqs[l.ledger] = pf.days.map(d => (c += by[d] || 0)); }
+  ledgerTable(s, eqs); exposure(s);
   document.getElementById("live").innerHTML = liveBlock(s.live || {}, "NBA props", s.limits || {}) + liveBlock(s.live_nfl || {}, "NFL props", s.limits || {});
-  const scan = (s.scan_top || []).map(r => ({label: name(r.series), est: r.cents, se: r.se, color: r.passes ? "var(--s1)" : "var(--ink-3)", hollow: !r.passes, sub: `${r.fills.toLocaleString()} fills · t ${r.t}${r.passes ? " · passed" : ""}`}));
-  forest(document.getElementById("scan"), scan, {labelW: 210});
+  forest(document.getElementById("scan"), (s.scan_top || []).map(r => ({label: name(r.series), est: r.cents, se: r.se, color: r.passes ? "var(--algo)" : "var(--bench)", hollow: !r.passes, sub: `${r.fills.toLocaleString()} fills, t ${r.t}${r.passes ? ", passed" : ""}`})), {labelW: 220});
   research(s);
   let tmr; window.addEventListener("resize", () => { clearTimeout(tmr); tmr = setTimeout(() => location.reload(), 400); });
-}).catch(e => { document.getElementById("stamp").textContent = "could not load summary.json (" + e.message + ")"; });
+}).catch(e => { document.getElementById("stamp").textContent = "Could not load summary.json (" + e.message + ")"; });
 </script>
 </body>
 </html>
