@@ -98,6 +98,12 @@ footer { padding-top: 18px; margin-top: 10px; border-top: 2px solid var(--ink); 
 .expo .bar { height: 10px; background: var(--paper-2); position: relative; }
 .expo .bar i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--c); }
 .expo .val { text-align: right; color: var(--ink-2); }
+.guide-body { max-width: 80ch; }
+.guide-body p { margin: 0 0 10px; color: var(--ink); }
+.guide-body details { margin-top: 4px; }
+.howto { margin: 10px 0 0; display: grid; grid-template-columns: max-content 1fr; gap: 8px 18px; font-size: 14px; }
+.howto dt { font-weight: 600; } .howto dd { margin: 0; color: var(--ink-2); }
+@media (max-width: 600px) { .howto { grid-template-columns: 1fr; gap: 2px 0; } .howto dd { margin-bottom: 8px; } }
 @media (max-width: 600px) { .expo .row { grid-template-columns: 1fr 60px; } .expo .row span:first-child { grid-column: 1 / -1; } .util .row { grid-template-columns: 1fr 100px; } .util .row .lab { grid-column: 1 / -1; } }
 </style>
 </head>
@@ -109,6 +115,32 @@ footer { padding-top: 18px; margin-top: 10px; border-top: 2px solid var(--ink); 
   </div>
   <div class="meta" id="stamp">Loading…</div>
 </div>
+
+<section class="guide">
+  <h2>What you are looking at</h2>
+  <p class="desc">A plain-language guide for anyone who has not seen a trading report before.</p>
+  <div class="guide-body">
+    <p><strong>The idea in one sentence.</strong> On Kalshi, people bet "yes" on things like "LeBron scores 25+ points" because it is fun to root for. That enthusiasm pushes the "yes" price a little above its fair value. This project sits on the other side: it quietly offers to sell those "yes" tickets at slightly too high a price, takes the few cents of overpayment each time, and lets a model and the sportsbooks' odds decide which tickets are safe to sell. It is the same job a market maker does in any market, applied to sports props.</p>
+    <p><strong>Paper and dry run.</strong> Nothing here is real money yet. "Paper" ledgers are pretend $500 accounts that follow the rules exactly and are scored against what actually happened. The "dry run" trader builds real orders but does not send them. Both exist to find out whether last season's result repeats before any real money is risked.</p>
+    <details>
+      <summary>How to read each section</summary>
+      <dl class="howto">
+        <dt>Key statistics</dt><dd>The scoreboard. <em>Fills</em> are orders that actually traded. <em>Profit per contract</em> is the average cents made or lost on each ticket sold; a few cents is normal for this kind of strategy, and the sign matters more than the size. <em>Max drawdown</em> is the largest fall from a previous high, the number that tells you how bad the worst stretch was.</dd>
+        <dt>Cumulative profit</dt><dd>Running total of money made, day by day. The grey line is the benchmark: what the same tickets <em>should</em> have made if last season's results repeated exactly. Blue above grey means we are doing better than expected; blue below grey means worse.</dd>
+        <dt>Daily profit</dt><dd>Each day's result as a bar. Blue days made money, grey days lost. Expect plenty of grey; a good strategy here wins a little more often than it loses, not every day.</dd>
+        <dt>Profit per fill</dt><dd>A histogram: how many tickets made or lost each amount. A healthy picture is a hump centred just right of zero, with the losses on the left no bigger than the wins on the right.</dd>
+        <dt>Monthly profit by ledger</dt><dd>A calendar grid. Each row is one strategy, each column a month; green cells made money, red lost, darker is bigger.</dd>
+        <dt>Drawdown</dt><dd>How far below its best-ever level the account is at each moment. It sits at zero when a new high is set and dips below between highs. The shaded stretches are the three worst dips.</dd>
+        <dt>Rolling edge</dt><dd>The average cents per ticket over the last 7 and 30 days, so you can see whether the edge is holding up, fading, or growing, against the dashed line of what last season suggested.</dd>
+        <dt>Edge by ledger</dt><dd>One dot per strategy with a bar showing the range of uncertainty (two standard errors). If the bar sits entirely right of zero, that strategy has shown a real edge; entirely left, it is losing; crossing zero, we cannot tell yet. Hollow dots are last season's backtests for comparison.</dd>
+        <dt>Strategies</dt><dd>One row per rule being tested. <em>t</em> is a confidence score: above 2 (or below −2) is the usual bar for "probably not luck". <em>Hit</em> is how often the ticket we sold paid us. <em>Backtest ¢</em> is what last season said this rule should make; compare it with the live ¢ beside it.</dd>
+        <dt>Where the contracts went</dt><dd>Which strategies have actually been trading, by share of tickets.</dd>
+        <dt>Live trader</dt><dd>The automated trader's last pass: what it found, what it would have placed, and how much of its risk budget it is using.</dd>
+        <dt>Market scan and sportsbook-line veto</dt><dd>Research results. The scan asked, for hundreds of Kalshi markets, "would selling 'yes' tickets have paid last season?"; the veto test asked whether using the sportsbooks' odds to pick tickets beats our own model. Both use the same dot-and-bar style as the edge chart.</dd>
+      </dl>
+    </details>
+  </div>
+</section>
 
 <section>
   <h2>Key statistics</h2>
