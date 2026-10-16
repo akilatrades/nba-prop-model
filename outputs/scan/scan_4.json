@@ -1,0 +1,2955 @@
+[
+ {
+  "series": "KXMLBGAME",
+  "markets": 1200,
+  "markets_with_quotes": 925,
+  "sample_volume": 2287420206.3100004,
+  "median_spread_cents": 1.0000000000000009,
+  "trade_prints": 1300655,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 0.0925,
+  "seconds": 640,
+  "no_orders": 2788,
+  "no_fill_rate": 0.19010043041606886,
+  "no_resting": {
+   "fills": 530,
+   "events": 376,
+   "contracts_traded_through": 18300446.02,
+   "cents_per_contract": -7.848963301886794,
+   "t": -2.9818360259227985,
+   "first_half_cents": -12.048508617424243,
+   "second_half_cents": -3.6809935150375956,
+   "hit_rate": 0.4169811320754717,
+   "avg_price": 0.49120754716981135
+  },
+  "yes_orders": 2788,
+  "yes_fill_rate": 0.133428981348637,
+  "yes_resting": {
+   "fills": 372,
+   "events": 277,
+   "contracts_traded_through": 1911666.32,
+   "cents_per_contract": 5.396712836021504,
+   "t": 1.8246921925100443,
+   "first_half_cents": 6.7450524725274725,
+   "second_half_cents": 4.105145394736843,
+   "hit_rate": 0.5591397849462365,
+   "avg_price": 0.5009408602150538
+  },
+  "passes": false
+ },
+ {
+  "series": "KXIPLGAME",
+  "markets": 144,
+  "markets_with_quotes": 144,
+  "sample_volume": 1045273640.8000001,
+  "median_spread_cents": 1.0000000000000009,
+  "trade_prints": 177049,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": -0.9619444444444445,
+  "seconds": 69,
+  "no_orders": 576,
+  "no_fill_rate": 0.3559027777777778,
+  "no_resting": {
+   "fills": 205,
+   "events": 72,
+   "contracts_traded_through": 21918104.17,
+   "cents_per_contract": -0.9839836585365855,
+   "t": -0.2818046053124156,
+   "first_half_cents": -2.8865781862745097,
+   "second_half_cents": 0.9001390776699024,
+   "hit_rate": 0.47804878048780486,
+   "avg_price": 0.48360975609756096
+  },
+  "yes_orders": 576,
+  "yes_fill_rate": 0.3211805555555556,
+  "yes_resting": {
+   "fills": 185,
+   "events": 71,
+   "contracts_traded_through": 4795501.15,
+   "cents_per_contract": 1.7882248648648649,
+   "t": 0.5705375115108942,
+   "first_half_cents": 1.8300236111111121,
+   "second_half_cents": 1.7486260526315789,
+   "hit_rate": 0.5135135135135135,
+   "avg_price": 0.4913513513513514
+  },
+  "passes": false
+ },
+ {
+  "series": "KXMARMAD",
+  "markets": 112,
+  "candles": 0
+ },
+ {
+  "series": "KXNBATOTAL",
+  "markets": 1200,
+  "markets_with_quotes": 1078,
+  "sample_volume": 105779110.07,
+  "median_spread_cents": 2.0000000000000018,
+  "trade_prints": 54833,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 0.30666666666666664,
+  "seconds": 510,
+  "no_orders": 3927,
+  "no_fill_rate": 0.4255156608097785,
+  "no_resting": {
+   "fills": 1671,
+   "events": 621,
+   "contracts_traded_through": 3573911.57,
+   "cents_per_contract": 0.36933429084380576,
+   "t": 0.17661608221407948,
+   "first_half_cents": 1.6430549691358025,
+   "second_half_cents": -0.8289395180023232,
+   "hit_rate": 0.4590065828845003,
+   "avg_price": 0.45157390783961693
+  },
+  "yes_orders": 3927,
+  "yes_fill_rate": 0.3259485612426789,
+  "yes_resting": {
+   "fills": 1280,
+   "events": 555,
+   "contracts_traded_through": 1938838.4300000002,
+   "cents_per_contract": -1.6773802929687494,
+   "t": -0.7390343399039728,
+   "first_half_cents": -2.3526452681388013,
+   "second_half_cents": -1.0146589396284829,
+   "hit_rate": 0.44609375,
+   "avg_price": 0.45910156250000006
+  },
+  "passes": false
+ },
+ {
+  "series": "KXWCGOAL",
+  "markets": 1200,
+  "markets_with_quotes": 506,
+  "sample_volume": 198850417.62,
+  "median_spread_cents": 1.0000000000000009,
+  "trade_prints": 463539,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 0.8359722222222222,
+  "seconds": 662,
+  "no_orders": 1487,
+  "no_fill_rate": 0.5164761264290518,
+  "no_resting": {
+   "fills": 768,
+   "events": 94,
+   "contracts_traded_through": 18519515.55,
+   "cents_per_contract": 1.647492708333334,
+   "t": 0.8308283887407514,
+   "first_half_cents": 1.6087996584699469,
+   "second_half_cents": 1.6827207089552252,
+   "hit_rate": 0.890625,
+   "avg_price": 0.872421875
+  },
+  "yes_orders": 1487,
+  "yes_fill_rate": 0.26630800268997984,
+  "yes_resting": {
+   "fills": 396,
+   "events": 87,
+   "contracts_traded_through": 1078098.08,
+   "cents_per_contract": -2.2872657828282823,
+   "t": -0.6943679390847255,
+   "first_half_cents": -4.140760331632654,
+   "second_half_cents": -0.47084112499999997,
+   "hit_rate": 0.15404040404040403,
+   "avg_price": 0.1746969696969697
+  },
+  "passes": false
+ },
+ {
+  "series": "KXNEXTTEAMNBA",
+  "markets": 390,
+  "candles": 0
+ },
+ {
+  "series": "KXNFLTOTAL",
+  "markets": 1200,
+  "markets_with_quotes": 748,
+  "sample_volume": 152087359.01,
+  "median_spread_cents": 1.9999999999999991,
+  "trade_prints": 117301,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": -0.3332370894444444,
+  "seconds": 656,
+  "no_orders": 2627,
+  "no_fill_rate": 0.39512752188808525,
+  "no_resting": {
+   "fills": 1038,
+   "events": 231,
+   "contracts_traded_through": 4666456.49,
+   "cents_per_contract": 0.1709722061657033,
+   "t": 0.053269447619290686,
+   "first_half_cents": -0.2041524319066146,
+   "second_half_cents": 0.5389379770992366,
+   "hit_rate": 0.47591522157996147,
+   "avg_price": 0.4705394990366089
+  },
+  "yes_orders": 2627,
+  "yes_fill_rate": 0.35135135135135137,
+  "yes_resting": {
+   "fills": 923,
+   "events": 217,
+   "contracts_traded_through": 2168578.52,
+   "cents_per_contract": -2.313398726977248,
+   "t": -0.7339392867789495,
+   "first_half_cents": -4.339792864923747,
+   "second_half_cents": -0.3088407327586209,
+   "hit_rate": 0.47020585048754066,
+   "avg_price": 0.48965330444203686
+  },
+  "passes": false
+ },
+ {
+  "series": "KXINTLFRIENDLYGAME",
+  "markets": 864,
+  "markets_with_quotes": 647,
+  "sample_volume": 302058580.02,
+  "median_spread_cents": 1.0000000000000009,
+  "trade_prints": 405064,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 0.9638888888888888,
+  "seconds": 486,
+  "no_orders": 2350,
+  "no_fill_rate": 0.4646808510638298,
+  "no_resting": {
+   "fills": 1092,
+   "events": 212,
+   "contracts_traded_through": 6627584.83,
+   "cents_per_contract": 1.0581595238095243,
+   "t": 1.1083580918749207,
+   "first_half_cents": 2.261257990654206,
+   "second_half_cents": -0.09741979353680362,
+   "hit_rate": 0.6547619047619048,
+   "avg_price": 0.641062271062271
+  },
+  "yes_orders": 2350,
+  "yes_fill_rate": 0.26595744680851063,
+  "yes_resting": {
+   "fills": 625,
+   "events": 188,
+   "contracts_traded_through": 721112.6199999999,
+   "cents_per_contract": -2.21174652,
+   "t": -1.5329024218671239,
+   "first_half_cents": -3.4149257281553402,
+   "second_half_cents": -1.0352200158227847,
+   "hit_rate": 0.3232,
+   "avg_price": 0.342224
+  },
+  "passes": false
+ },
+ {
+  "series": "KXNBAWEST",
+  "markets": 15,
+  "candles": 0
+ },
+ {
+  "series": "KXMLBTOTAL",
+  "markets": 1200,
+  "markets_with_quotes": 818,
+  "sample_volume": 97403233.97,
+  "median_spread_cents": 1.0000000000000009,
+  "trade_prints": 79353,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 0.1748611111111111,
+  "seconds": 616,
+  "no_orders": 2419,
+  "no_fill_rate": 0.20463001240181894,
+  "no_resting": {
+   "fills": 495,
+   "events": 311,
+   "contracts_traded_through": 1335012.37,
+   "cents_per_contract": 1.5766397474747469,
+   "t": 0.6350304608831309,
+   "first_half_cents": 0.4830053278688528,
+   "second_half_cents": 2.6397744023904384,
+   "hit_rate": 0.397979797979798,
+   "avg_price": 0.3790909090909091
+  },
+  "yes_orders": 2419,
+  "yes_fill_rate": 0.14799503927242663,
+  "yes_resting": {
+   "fills": 358,
+   "events": 251,
+   "contracts_traded_through": 713405.3300000001,
+   "cents_per_contract": 0.062303631284916255,
+   "t": 0.020508878337473932,
+   "first_half_cents": -1.0496214488636362,
+   "second_half_cents": 1.1375718406593411,
+   "hit_rate": 0.5726256983240223,
+   "avg_price": 0.5687709497206704
+  },
+  "passes": false
+ },
+ {
+  "series": "KXNFLNFCCHAMP",
+  "markets": 16,
+  "candles": 0
+ },
+ {
+  "series": "KXNHLTOTAL",
+  "markets": 1200,
+  "markets_with_quotes": 988,
+  "sample_volume": 32767635.89,
+  "median_spread_cents": 2.0000000000000018,
+  "trade_prints": 30265,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": -0.15750428625,
+  "seconds": 551,
+  "no_orders": 3583,
+  "no_fill_rate": 0.3131454088752442,
+  "no_resting": {
+   "fills": 1122,
+   "events": 505,
+   "contracts_traded_through": 1084288.4,
+   "cents_per_contract": 0.9688191176470589,
+   "t": 0.4216193866730486,
+   "first_half_cents": -0.3917106751824816,
+   "second_half_cents": 2.26772212543554,
+   "hit_rate": 0.483065953654189,
+   "avg_price": 0.4699465240641711
+  },
+  "yes_orders": 3583,
+  "yes_fill_rate": 0.23109126430365615,
+  "yes_resting": {
+   "fills": 828,
+   "events": 423,
+   "contracts_traded_through": 733030.98,
+   "cents_per_contract": 1.414347403381642,
+   "t": 0.5698996148699562,
+   "first_half_cents": 2.0750791975308647,
+   "second_half_cents": 0.7817318557919614,
+   "hit_rate": 0.5108695652173914,
+   "avg_price": 0.49321256038647343
+  },
+  "passes": false
+ },
+ {
+  "series": "KXHUNDREDMATCH",
+  "markets": 56,
+  "markets_with_quotes": 56,
+  "sample_volume": 92089832.68,
+  "median_spread_cents": 1.0000000000000009,
+  "trade_prints": 92346,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 0.9769444444444444,
+  "seconds": 31,
+  "no_orders": 188,
+  "no_fill_rate": 0.7127659574468085,
+  "no_resting": {
+   "fills": 134,
+   "events": 28,
+   "contracts_traded_through": 6037063.210000001,
+   "cents_per_contract": -1.7339535447761196,
+   "t": -0.7247419915473995,
+   "first_half_cents": -0.24559765625000002,
+   "second_half_cents": -3.0947360714285717,
+   "hit_rate": 0.47761194029850745,
+   "avg_price": 0.49067164179104467
+  },
+  "yes_orders": 188,
+  "yes_fill_rate": 0.5212765957446809,
+  "yes_resting": {
+   "fills": 98,
+   "events": 28,
+   "contracts_traded_through": 1400458.5099999998,
+   "cents_per_contract": -4.080807653061225,
+   "t": -2.449838153370352,
+   "first_half_cents": -2.0788088541666654,
+   "second_half_cents": -6.002726500000001,
+   "hit_rate": 0.45918367346938777,
+   "avg_price": 0.4957142857142857
+  },
+  "passes": false
+ },
+ {
+  "series": "KXCONCACAFNLGAME",
+  "markets": 222,
+  "markets_with_quotes": 0,
+  "sample_volume": 76877095.85000001,
+  "median_spread_cents": NaN,
+  "trade_prints": 96707,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 1.0843055555555556,
+  "seconds": 219,
+  "no_orders": 0,
+  "no_fill_rate": null,
+  "no_resting": {
+   "fills": 0
+  },
+  "yes_orders": 0,
+  "yes_fill_rate": null,
+  "yes_resting": {
+   "fills": 0
+  },
+  "passes": false
+ },
+ {
+  "series": "KXUSOPEN",
+  "markets": 0
+ },
+ {
+  "series": "KXSAUDIPLGAME",
+  "markets": 933,
+  "markets_with_quotes": 737,
+  "sample_volume": 101204962.61,
+  "median_spread_cents": 1.0000000000000009,
+  "trade_prints": 90096,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 0.9158921869444445,
+  "seconds": 445,
+  "no_orders": 2500,
+  "no_fill_rate": 0.4444,
+  "no_resting": {
+   "fills": 1111,
+   "events": 240,
+   "contracts_traded_through": 1855841.3499999999,
+   "cents_per_contract": 0.31325294779477936,
+   "t": 0.28010502525804143,
+   "first_half_cents": 1.1516972897196256,
+   "second_half_cents": -0.4655104600694446,
+   "hit_rate": 0.6363636363636364,
+   "avg_price": 0.6300720072007201
+  },
+  "yes_orders": 2500,
+  "yes_fill_rate": 0.2064,
+  "yes_resting": {
+   "fills": 516,
+   "events": 194,
+   "contracts_traded_through": 296833.06999999995,
+   "cents_per_contract": -0.27963667635658934,
+   "t": -0.16955845869699665,
+   "first_half_cents": -2.748053838582677,
+   "second_half_cents": 2.113408969465649,
+   "hit_rate": 0.3391472868217054,
+   "avg_price": 0.3388565891472869
+  },
+  "passes": false
+ },
+ {
+  "series": "KXMLBSTGAME",
+  "markets": 859,
+  "markets_with_quotes": 859,
+  "sample_volume": 55406854.0,
+  "median_spread_cents": 1.9999999999999907,
+  "trade_prints": 89288,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 0.24388888888888888,
+  "seconds": 326,
+  "no_orders": 2555,
+  "no_fill_rate": 0.699412915851272,
+  "no_resting": {
+   "fills": 1787,
+   "events": 424,
+   "contracts_traded_through": 3103153.0,
+   "cents_per_contract": 0.18027596530498063,
+   "t": 0.2714013266500692,
+   "first_half_cents": 0.023216882750845626,
+   "second_half_cents": 0.33506641666666687,
+   "hit_rate": 0.49636261891438166,
+   "avg_price": 0.49030777839955236
+  },
+  "yes_orders": 2555,
+  "yes_fill_rate": 0.28806262230919766,
+  "yes_resting": {
+   "fills": 736,
+   "events": 326,
+   "contracts_traded_through": 214673.0,
+   "cents_per_contract": -0.899121773097826,
+   "t": -0.628299278517142,
+   "first_half_cents": -1.1992758571428574,
+   "second_half_cents": -0.6269613341968907,
+   "hit_rate": 0.49184782608695654,
+   "avg_price": 0.49661684782608695
+  },
+  "passes": false
+ },
+ {
+  "series": "KXWTASETWINNER",
+  "markets": 1200,
+  "markets_with_quotes": 758,
+  "sample_volume": 39568979.66,
+  "median_spread_cents": 4.0000000000000036,
+  "trade_prints": 2862,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": -2.5430555555555556,
+  "seconds": 774,
+  "no_orders": 2240,
+  "no_fill_rate": 0.06428571428571428,
+  "no_resting": {
+   "fills": 144,
+   "events": 95,
+   "contracts_traded_through": 114333.56000000001,
+   "cents_per_contract": 3.1378098958333336,
+   "t": 0.5564746112065568,
+   "first_half_cents": 1.1147215277777778,
+   "second_half_cents": 5.160898263888889,
+   "hit_rate": 0.5,
+   "avg_price": 0.46493055555555557
+  },
+  "yes_orders": 2240,
+  "yes_fill_rate": 0.010267857142857143,
+  "yes_resting": {
+   "fills": 23,
+   "events": 21,
+   "contracts_traded_through": 19112.249999999996,
+   "cents_per_contract": -13.630370652173914,
+   "t": -1.2928025831096905,
+   "first_half_cents": -9.640163636363633,
+   "second_half_cents": -17.28806041666667,
+   "hit_rate": 0.43478260869565216,
+   "avg_price": 0.5673913043478261
+  },
+  "passes": false
+ },
+ {
+  "series": "KXMLBF5",
+  "markets": 1200,
+  "markets_with_quotes": 923,
+  "sample_volume": 36223901.839999996,
+  "median_spread_cents": 1.0000000000000009,
+  "trade_prints": 71158,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 1.415,
+  "seconds": 561,
+  "no_orders": 2730,
+  "no_fill_rate": 0.5021978021978022,
+  "no_resting": {
+   "fills": 1371,
+   "events": 604,
+   "contracts_traded_through": 2334617.17,
+   "cents_per_contract": -2.685823395331874,
+   "t": -1.526999375542069,
+   "first_half_cents": -1.9213048976608182,
+   "second_half_cents": -3.4470033842794754,
+   "hit_rate": 0.6229029905178701,
+   "avg_price": 0.6461050328227571
+  },
+  "yes_orders": 2730,
+  "yes_fill_rate": 0.12161172161172161,
+  "yes_resting": {
+   "fills": 332,
+   "events": 250,
+   "contracts_traded_through": 150848.91,
+   "cents_per_contract": 0.6869204819277114,
+   "t": 0.21553510647634447,
+   "first_half_cents": 1.4140221874999996,
+   "second_half_cents": 0.010546802325581073,
+   "hit_rate": 0.4006024096385542,
+   "avg_price": 0.3898192771084338
+  },
+  "passes": false
+ },
+ {
+  "series": "KXTHEOPEN",
+  "markets": 0
+ },
+ {
+  "series": "KXFIFAGAME",
+  "markets": 411,
+  "markets_with_quotes": 411,
+  "sample_volume": 43075421.0,
+  "median_spread_cents": 1.0000000000000009,
+  "trade_prints": 59054,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 0.9188874338888888,
+  "seconds": 159,
+  "no_orders": 1430,
+  "no_fill_rate": 0.6055944055944056,
+  "no_resting": {
+   "fills": 866,
+   "events": 135,
+   "contracts_traded_through": 2074096.0,
+   "cents_per_contract": 0.7569135681293306,
+   "t": 0.7473261782010646,
+   "first_half_cents": -0.2477855437665772,
+   "second_half_cents": 1.5314975460122706,
+   "hit_rate": 0.6524249422632794,
+   "avg_price": 0.6418013856812933
+  },
+  "yes_orders": 1430,
+  "yes_fill_rate": 0.27972027972027974,
+  "yes_resting": {
+   "fills": 400,
+   "events": 119,
+   "contracts_traded_through": 280542.0,
+   "cents_per_contract": 3.4225390625,
+   "t": 1.8027310305899262,
+   "first_half_cents": 2.3628875000000003,
+   "second_half_cents": 4.362230070754717,
+   "hit_rate": 0.375,
+   "avg_price": 0.33777500000000005
+  },
+  "passes": false
+ },
+ {
+  "series": "KXWC2HTOTAL",
+  "markets": 352,
+  "markets_with_quotes": 352,
+  "sample_volume": 41200069.480000004,
+  "median_spread_cents": 1.4999999999999958,
+  "trade_prints": 55828,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 1.9916666666666667,
+  "seconds": 136,
+  "no_orders": 1352,
+  "no_fill_rate": 0.6257396449704142,
+  "no_resting": {
+   "fills": 846,
+   "events": 88,
+   "contracts_traded_through": 2423072.23,
+   "cents_per_contract": -0.06885913120567401,
+   "t": -0.019790374020087657,
+   "first_half_cents": 1.1839992592592583,
+   "second_half_cents": -1.219443367346939,
+   "hit_rate": 0.58274231678487,
+   "avg_price": 0.5804137115839244
+  },
+  "yes_orders": 1352,
+  "yes_fill_rate": 0.4223372781065089,
+  "yes_resting": {
+   "fills": 571,
+   "events": 88,
+   "contracts_traded_through": 1159990.5,
+   "cents_per_contract": 0.9742537215411557,
+   "t": 0.2580528110907966,
+   "first_half_cents": 1.1858401291512908,
+   "second_half_cents": 0.7831206666666664,
+   "hit_rate": 0.4413309982486865,
+   "avg_price": 0.4285989492119089
+  },
+  "passes": false
+ },
+ {
+  "series": "KXWCSOA",
+  "markets": 1200,
+  "markets_with_quotes": 656,
+  "sample_volume": 32537796.93,
+  "median_spread_cents": 3.0,
+  "trade_prints": 177326,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 0.9123611111111112,
+  "seconds": 600,
+  "no_orders": 1814,
+  "no_fill_rate": 0.7767364939360529,
+  "no_resting": {
+   "fills": 1409,
+   "events": 103,
+   "contracts_traded_through": 6761881.4399999995,
+   "cents_per_contract": 6.339645777146914,
+   "t": 3.078643674632797,
+   "first_half_cents": 5.901085037313434,
+   "second_half_cents": 6.737258355886333,
+   "hit_rate": 0.772888573456352,
+   "avg_price": 0.7063875088715401
+  },
+  "yes_orders": 1814,
+  "yes_fill_rate": 0.32524807056229327,
+  "yes_resting": {
+   "fills": 590,
+   "events": 100,
+   "contracts_traded_through": 382967.39,
+   "cents_per_contract": -7.556783050847457,
+   "t": -2.4403798532650818,
+   "first_half_cents": -9.438688784246576,
+   "second_half_cents": -5.712768036912752,
+   "hit_rate": 0.3,
+   "avg_price": 0.37203389830508476
+  },
+  "passes": true
+ },
+ {
+  "series": "KXUSOMENSINGLES",
+  "markets": 0
+ },
+ {
+  "series": "KXMLBWORLD",
+  "markets": 20,
+  "markets_with_quotes": 6,
+  "sample_volume": 33109649.0,
+  "median_spread_cents": 1.0000000000000002,
+  "trade_prints": 37,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": -276.48333333333335,
+  "seconds": 16,
+  "no_orders": 21,
+  "no_fill_rate": 0.19047619047619047,
+  "no_resting": {
+   "fills": 4,
+   "events": 1,
+   "contracts_traded_through": 967.0,
+   "cents_per_contract": 42.35743125,
+   "t": 0.0,
+   "first_half_cents": null,
+   "second_half_cents": 42.35743125,
+   "hit_rate": 1.0,
+   "avg_price": 0.5725
+  },
+  "yes_orders": 21,
+  "yes_fill_rate": 0.14285714285714285,
+  "yes_resting": {
+   "fills": 3,
+   "events": 1,
+   "contracts_traded_through": 74.0,
+   "cents_per_contract": -40.377649999999996,
+   "t": -0.0,
+   "first_half_cents": null,
+   "second_half_cents": -40.377649999999996,
+   "hit_rate": 0.0,
+   "avg_price": 0.39999999999999997
+  },
+  "passes": false
+ },
+ {
+  "series": "KXNFLFIRSTTD",
+  "markets": 1200,
+  "markets_with_quotes": 491,
+  "sample_volume": 31190624.97,
+  "median_spread_cents": 4.0,
+  "trade_prints": 99096,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 1.4278367454166667,
+  "seconds": 613,
+  "no_orders": 1599,
+  "no_fill_rate": 0.5891181988742964,
+  "no_resting": {
+   "fills": 942,
+   "events": 201,
+   "contracts_traded_through": 1260359.0,
+   "cents_per_contract": -0.03753574840764291,
+   "t": -0.02741986024012942,
+   "first_half_cents": -1.9398296573875797,
+   "second_half_cents": 1.8327195263157898,
+   "hit_rate": 0.916135881104034,
+   "avg_price": 0.9151910828025477
+  },
+  "yes_orders": 1599,
+  "yes_fill_rate": 0.05315822388993121,
+  "yes_resting": {
+   "fills": 85,
+   "events": 48,
+   "contracts_traded_through": 42892.0,
+   "cents_per_contract": -0.5868420588235291,
+   "t": -0.1623038111946158,
+   "first_half_cents": 2.2693156250000004,
+   "second_half_cents": -3.125648888888888,
+   "hit_rate": 0.09411764705882353,
+   "avg_price": 0.09847058823529412
+  },
+  "passes": false
+ },
+ {
+  "series": "KXUNITEDCUPMATCH",
+  "markets": 100,
+  "markets_with_quotes": 98,
+  "sample_volume": 29521412.0,
+  "median_spread_cents": 1.0000000000000009,
+  "trade_prints": 11718,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 0.21706480722222224,
+  "seconds": 46,
+  "no_orders": 330,
+  "no_fill_rate": 0.6515151515151515,
+  "no_resting": {
+   "fills": 215,
+   "events": 48,
+   "contracts_traded_through": 933925.0,
+   "cents_per_contract": -0.9740044186046518,
+   "t": -0.43551954406832455,
+   "first_half_cents": 1.130881428571428,
+   "second_half_cents": -2.983213636363636,
+   "hit_rate": 0.4883720930232558,
+   "avg_price": 0.4948837209302325
+  },
+  "yes_orders": 330,
+  "yes_fill_rate": 0.3242424242424242,
+  "yes_resting": {
+   "fills": 107,
+   "events": 37,
+   "contracts_traded_through": 68113.0,
+   "cents_per_contract": -1.3332343457943931,
+   "t": -0.5000345475811799,
+   "first_half_cents": 1.4294351063829789,
+   "second_half_cents": -3.4973254166666674,
+   "hit_rate": 0.5046728971962616,
+   "avg_price": 0.5146728971962616
+  },
+  "passes": false
+ },
+ {
+  "series": "KXNBASUMMERSPREAD",
+  "markets": 1000,
+  "markets_with_quotes": 823,
+  "sample_volume": 26685682.880000003,
+  "median_spread_cents": 6.0,
+  "trade_prints": 28084,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 0.9219444444444445,
+  "seconds": 468,
+  "no_orders": 2739,
+  "no_fill_rate": 0.36400146038700254,
+  "no_resting": {
+   "fills": 997,
+   "events": 92,
+   "contracts_traded_through": 1218038.65,
+   "cents_per_contract": -3.4802947091273837,
+   "t": -1.4262980726129912,
+   "first_half_cents": -2.307079959100205,
+   "second_half_cents": -4.609629379921261,
+   "hit_rate": 0.5787362086258776,
+   "avg_price": 0.6097392176529588
+  },
+  "yes_orders": 2739,
+  "yes_fill_rate": 0.17707192405987587,
+  "yes_resting": {
+   "fills": 485,
+   "events": 84,
+   "contracts_traded_through": 468489.93999999994,
+   "cents_per_contract": -1.7662651030927832,
+   "t": -0.42318975394326924,
+   "first_half_cents": -5.835911162790697,
+   "second_half_cents": 1.4743789814814818,
+   "hit_rate": 0.38762886597938145,
+   "avg_price": 0.40138144329896913
+  },
+  "passes": false
+ },
+ {
+  "series": "KXFIBAGAME",
+  "markets": 462,
+  "markets_with_quotes": 329,
+  "sample_volume": 37002867.11,
+  "median_spread_cents": 2.0,
+  "trade_prints": 26825,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 0.9902777777777778,
+  "seconds": 244,
+  "no_orders": 1159,
+  "no_fill_rate": 0.5996548748921484,
+  "no_resting": {
+   "fills": 695,
+   "events": 158,
+   "contracts_traded_through": 710751.77,
+   "cents_per_contract": 0.7388050000000002,
+   "t": 0.8739884520653646,
+   "first_half_cents": 1.0612209795321632,
+   "second_half_cents": 0.42643597733711075,
+   "hit_rate": 0.539568345323741,
+   "avg_price": 0.5296834532374101
+  },
+  "yes_orders": 1159,
+  "yes_fill_rate": 0.1984469370146678,
+  "yes_resting": {
+   "fills": 230,
+   "events": 105,
+   "contracts_traded_through": 81506.4,
+   "cents_per_contract": -0.7508982608695651,
+   "t": -0.3439387928488765,
+   "first_half_cents": 0.11801353211009177,
+   "second_half_cents": -1.5336369834710744,
+   "hit_rate": 0.5391304347826087,
+   "avg_price": 0.5444347826086956
+  },
+  "passes": false
+ },
+ {
+  "series": "KXURYPDGAME",
+  "markets": 678,
+  "markets_with_quotes": 464,
+  "sample_volume": 36856381.19,
+  "median_spread_cents": 1.9999999999999962,
+  "trade_prints": 75875,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 0.9609722222222222,
+  "seconds": 363,
+  "no_orders": 1450,
+  "no_fill_rate": 0.43655172413793103,
+  "no_resting": {
+   "fills": 633,
+   "events": 143,
+   "contracts_traded_through": 1200904.13,
+   "cents_per_contract": 1.0585847551342822,
+   "t": 0.6008538769600296,
+   "first_half_cents": 0.017071955128206567,
+   "second_half_cents": 2.0708962616822433,
+   "hit_rate": 0.6587677725118484,
+   "avg_price": 0.6444865718799369
+  },
+  "yes_orders": 1450,
+  "yes_fill_rate": 0.11655172413793104,
+  "yes_resting": {
+   "fills": 169,
+   "events": 77,
+   "contracts_traded_through": 379508.58999999997,
+   "cents_per_contract": -11.021404142011836,
+   "t": -3.9615994759227973,
+   "first_half_cents": -8.63714598765432,
+   "second_half_cents": -13.216005397727274,
+   "hit_rate": 0.23076923076923078,
+   "avg_price": 0.3375147928994083
+  },
+  "passes": false
+ },
+ {
+  "series": "KXNEXTTEAMGIANNIS",
+  "markets": 53,
+  "candles": 0
+ },
+ {
+  "series": "KXNBACUP",
+  "markets": 28,
+  "markets_with_quotes": 2,
+  "sample_volume": 23186778.0,
+  "median_spread_cents": 1.0000000000000009,
+  "trade_prints": 9841,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 196.91270276916666,
+  "seconds": 26,
+  "no_orders": 8,
+  "no_fill_rate": 0.25,
+  "no_resting": {
+   "fills": 2,
+   "events": 1,
+   "contracts_traded_through": 87772.0,
+   "cents_per_contract": -44.4312,
+   "t": NaN,
+   "first_half_cents": null,
+   "second_half_cents": -44.4312,
+   "hit_rate": 0.0,
+   "avg_price": 0.44
+  },
+  "yes_orders": 8,
+  "yes_fill_rate": 0.25,
+  "yes_resting": {
+   "fills": 2,
+   "events": 1,
+   "contracts_traded_through": 18713.0,
+   "cents_per_contract": 43.568799999999996,
+   "t": NaN,
+   "first_half_cents": null,
+   "second_half_cents": 43.568799999999996,
+   "hit_rate": 1.0,
+   "avg_price": 0.56
+  },
+  "passes": false
+ },
+ {
+  "series": "KXVALORANTMAP",
+  "markets": 1200,
+  "markets_with_quotes": 1001,
+  "sample_volume": 14726296.89,
+  "median_spread_cents": 5.999999999999995,
+  "trade_prints": 70789,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 2.1606944444444443,
+  "seconds": 559,
+  "no_orders": 3360,
+  "no_fill_rate": 0.31607142857142856,
+  "no_resting": {
+   "fills": 1062,
+   "events": 563,
+   "contracts_traded_through": 1453898.7399999998,
+   "cents_per_contract": -1.341454990583804,
+   "t": -0.6764662637298995,
+   "first_half_cents": -3.3562421698113223,
+   "second_half_cents": 0.6657578007518805,
+   "hit_rate": 0.4500941619585687,
+   "avg_price": 0.4595668549905838
+  },
+  "yes_orders": 3360,
+  "yes_fill_rate": 0.1505952380952381,
+  "yes_resting": {
+   "fills": 506,
+   "events": 386,
+   "contracts_traded_through": 549638.47,
+   "cents_per_contract": -4.536847084980238,
+   "t": -2.023867376683723,
+   "first_half_cents": -2.36091837944664,
+   "second_half_cents": -6.7127757905138346,
+   "hit_rate": 0.4031620553359684,
+   "avg_price": 0.44468379446640316
+  },
+  "passes": false
+ },
+ {
+  "series": "KXLOLMAP",
+  "markets": 1200,
+  "markets_with_quotes": 819,
+  "sample_volume": 22738195.43,
+  "median_spread_cents": 4.000000000000001,
+  "trade_prints": 79727,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 2.0808333333333335,
+  "seconds": 645,
+  "no_orders": 2912,
+  "no_fill_rate": 0.3248626373626374,
+  "no_resting": {
+   "fills": 946,
+   "events": 531,
+   "contracts_traded_through": 2403938.27,
+   "cents_per_contract": -1.8694288583509517,
+   "t": -0.8716017552596751,
+   "first_half_cents": -0.905718269230769,
+   "second_half_cents": -2.8129781380753145,
+   "hit_rate": 0.4725158562367865,
+   "avg_price": 0.4875475687103594
+  },
+  "yes_orders": 2912,
+  "yes_fill_rate": 0.15384615384615385,
+  "yes_resting": {
+   "fills": 448,
+   "events": 336,
+   "contracts_traded_through": 681172.72,
+   "cents_per_contract": -1.8415204799107143,
+   "t": -0.7291637152040256,
+   "first_half_cents": -3.8548993243243244,
+   "second_half_cents": 0.1362233407079647,
+   "hit_rate": 0.43973214285714285,
+   "avg_price": 0.45453125
+  },
+  "passes": false
+ },
+ {
+  "series": "KXWWOMENSINGLES",
+  "markets": 0
+ },
+ {
+  "series": "KXEUROCUPGAME",
+  "markets": 290,
+  "markets_with_quotes": 201,
+  "sample_volume": 22025966.0,
+  "median_spread_cents": 3.0000000000000027,
+  "trade_prints": 11598,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 0.8212007841666666,
+  "seconds": 161,
+  "no_orders": 719,
+  "no_fill_rate": 0.717663421418637,
+  "no_resting": {
+   "fills": 516,
+   "events": 100,
+   "contracts_traded_through": 401162.66000000003,
+   "cents_per_contract": 0.33031361434108547,
+   "t": 0.33963181794762387,
+   "first_half_cents": 0.8582798418972329,
+   "second_half_cents": -0.17757785171102644,
+   "hit_rate": 0.48643410852713176,
+   "avg_price": 0.47963178294573644
+  },
+  "yes_orders": 719,
+  "yes_fill_rate": 0.2767732962447844,
+  "yes_resting": {
+   "fills": 199,
+   "events": 71,
+   "contracts_traded_through": 45953.0,
+   "cents_per_contract": -2.4831811557788934,
+   "t": -1.012976500660904,
+   "first_half_cents": -3.0464098404255324,
+   "second_half_cents": -1.97895738095238,
+   "hit_rate": 0.4271356783919598,
+   "avg_price": 0.4485427135678392
+  },
+  "passes": false
+ },
+ {
+  "series": "KXBUNDESLIGA2GAME",
+  "markets": 540,
+  "markets_with_quotes": 405,
+  "sample_volume": 27182928.84,
+  "median_spread_cents": 1.0000000000000009,
+  "trade_prints": 7883,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 0.9402777777777778,
+  "seconds": 284,
+  "no_orders": 1289,
+  "no_fill_rate": 0.2761830876648565,
+  "no_resting": {
+   "fills": 356,
+   "events": 118,
+   "contracts_traded_through": 132295.39,
+   "cents_per_contract": 0.19908518258426963,
+   "t": 0.07961020794817204,
+   "first_half_cents": -5.10094909090909,
+   "second_half_cents": 4.77764882198953,
+   "hit_rate": 0.6348314606741573,
+   "avg_price": 0.6290168539325843
+  },
+  "yes_orders": 1289,
+  "yes_fill_rate": 0.0643910007757952,
+  "yes_resting": {
+   "fills": 83,
+   "events": 59,
+   "contracts_traded_through": 17095.71,
+   "cents_per_contract": -9.39420873493976,
+   "t": -2.1073935461448245,
+   "first_half_cents": -9.89091219512195,
+   "second_half_cents": -8.909331547619049,
+   "hit_rate": 0.25301204819277107,
+   "avg_price": 0.3432530120481928
+  },
+  "passes": false
+ },
+ {
+  "series": "KXWCAST",
+  "markets": 1200,
+  "markets_with_quotes": 575,
+  "sample_volume": 12874460.91,
+  "median_spread_cents": 2.0000000000000018,
+  "trade_prints": 62295,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 0.8377777777777777,
+  "seconds": 590,
+  "no_orders": 1706,
+  "no_fill_rate": 0.67936694021102,
+  "no_resting": {
+   "fills": 1159,
+   "events": 101,
+   "contracts_traded_through": 2764518.75,
+   "cents_per_contract": 3.6903745254529774,
+   "t": 2.3249254754813626,
+   "first_half_cents": 2.3606691891891898,
+   "second_half_cents": 4.912206415562914,
+   "hit_rate": 0.9068162208800691,
+   "avg_price": 0.8680327868852459
+  },
+  "yes_orders": 1706,
+  "yes_fill_rate": 0.152989449003517,
+  "yes_resting": {
+   "fills": 261,
+   "events": 76,
+   "contracts_traded_through": 71089.89,
+   "cents_per_contract": -5.343046264367815,
+   "t": -1.9273550811573397,
+   "first_half_cents": -4.776244758064515,
+   "second_half_cents": -5.856063686131387,
+   "hit_rate": 0.12260536398467432,
+   "avg_price": 0.17367816091954025
+  },
+  "passes": true
+ },
+ {
+  "series": "KXPGAR2LEAD",
+  "markets": 1200,
+  "candles": 0
+ },
+ {
+  "series": "KXUEFANLSPREAD",
+  "markets": 503,
+  "markets_with_quotes": 0,
+  "sample_volume": 15730456.309999999,
+  "median_spread_cents": NaN,
+  "trade_prints": 70278,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 2.066388888888889,
+  "seconds": 445,
+  "no_orders": 0,
+  "no_fill_rate": null,
+  "no_resting": {
+   "fills": 0
+  },
+  "yes_orders": 0,
+  "yes_fill_rate": null,
+  "yes_resting": {
+   "fills": 0
+  },
+  "passes": false
+ },
+ {
+  "series": "KXNBAALLSTARMVP",
+  "markets": 26,
+  "markets_with_quotes": 18,
+  "sample_volume": 15002262.0,
+  "median_spread_cents": 1.0000000000000002,
+  "trade_prints": 7767,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": -0.057777777777777775,
+  "seconds": 11,
+  "no_orders": 69,
+  "no_fill_rate": 0.4057971014492754,
+  "no_resting": {
+   "fills": 28,
+   "events": 1,
+   "contracts_traded_through": 513290.0,
+   "cents_per_contract": -7.7830151785714285,
+   "t": -0.0,
+   "first_half_cents": null,
+   "second_half_cents": -7.7830151785714285,
+   "hit_rate": 0.8571428571428571,
+   "avg_price": 0.9339285714285716
+  },
+  "yes_orders": 69,
+  "yes_fill_rate": 0.2028985507246377,
+  "yes_resting": {
+   "fills": 14,
+   "events": 1,
+   "contracts_traded_through": 29481.0,
+   "cents_per_contract": 6.669801785714284,
+   "t": 0.0,
+   "first_half_cents": null,
+   "second_half_cents": 6.669801785714284,
+   "hit_rate": 0.14285714285714285,
+   "avg_price": 0.07500000000000002
+  },
+  "passes": false
+ },
+ {
+  "series": "KXDENSUPERLIGAGAME",
+  "markets": 429,
+  "markets_with_quotes": 311,
+  "sample_volume": 21307862.31,
+  "median_spread_cents": 1.0000000000000009,
+  "trade_prints": 18226,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 0.9425,
+  "seconds": 232,
+  "no_orders": 1158,
+  "no_fill_rate": 0.29015544041450775,
+  "no_resting": {
+   "fills": 336,
+   "events": 98,
+   "contracts_traded_through": 319618.06000000006,
+   "cents_per_contract": 1.4496976934523806,
+   "t": 0.5463005981060738,
+   "first_half_cents": 2.482137351190476,
+   "second_half_cents": 0.4172580357142854,
+   "hit_rate": 0.625,
+   "avg_price": 0.6068154761904762
+  },
+  "yes_orders": 1158,
+  "yes_fill_rate": 0.05958549222797927,
+  "yes_resting": {
+   "fills": 69,
+   "events": 44,
+   "contracts_traded_through": 65511.26,
+   "cents_per_contract": -3.1176974637681174,
+   "t": -0.5414430616348362,
+   "first_half_cents": -8.75254621212121,
+   "second_half_cents": 2.0475805555555544,
+   "hit_rate": 0.30434782608695654,
+   "avg_price": 0.33202898550724635
+  },
+  "passes": false
+ },
+ {
+  "series": "KXWCFINISHINGORDER",
+  "markets": 16,
+  "markets_with_quotes": 2,
+  "sample_volume": 13973060.899999999,
+  "median_spread_cents": 1.0000000000000009,
+  "trade_prints": 14818,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 112.81472222222223,
+  "seconds": 13,
+  "no_orders": 8,
+  "no_fill_rate": 1.0,
+  "no_resting": {
+   "fills": 8,
+   "events": 1,
+   "contracts_traded_through": 327951.99,
+   "cents_per_contract": 0.16841875000000173,
+   "t": 0.0,
+   "first_half_cents": null,
+   "second_half_cents": 0.16841875000000173,
+   "hit_rate": 0.5,
+   "avg_price": 0.495
+  },
+  "yes_orders": 8,
+  "yes_fill_rate": 0.875,
+  "yes_resting": {
+   "fills": 7,
+   "events": 1,
+   "contracts_traded_through": 436673.19,
+   "cents_per_contract": -0.5099321428571408,
+   "t": -0.0,
+   "first_half_cents": null,
+   "second_half_cents": -0.5099321428571408,
+   "hit_rate": 0.42857142857142855,
+   "avg_price": 0.43
+  },
+  "passes": false
+ },
+ {
+  "series": "KXASEANGAME",
+  "markets": 72,
+  "markets_with_quotes": 60,
+  "sample_volume": 15428929.220000003,
+  "median_spread_cents": 1.0000000000000009,
+  "trade_prints": 17205,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 1.0043055555555556,
+  "seconds": 36,
+  "no_orders": 230,
+  "no_fill_rate": 0.5130434782608696,
+  "no_resting": {
+   "fills": 118,
+   "events": 20,
+   "contracts_traded_through": 441280.53,
+   "cents_per_contract": -0.4844976694915251,
+   "t": -0.2347570212224507,
+   "first_half_cents": -0.15868679245283004,
+   "second_half_cents": -0.7501588461538472,
+   "hit_rate": 0.6271186440677966,
+   "avg_price": 0.6297457627118644
+  },
+  "yes_orders": 230,
+  "yes_fill_rate": 0.26521739130434785,
+  "yes_resting": {
+   "fills": 61,
+   "events": 20,
+   "contracts_traded_through": 169878.91999999998,
+   "cents_per_contract": 7.94077786885246,
+   "t": 1.8314739642269862,
+   "first_half_cents": 6.003993000000002,
+   "second_half_cents": 9.28576736111111,
+   "hit_rate": 0.47540983606557374,
+   "avg_price": 0.39377049180327867
+  },
+  "passes": false
+ },
+ {
+  "series": "KXAFCCLGAME",
+  "markets": 237,
+  "markets_with_quotes": 141,
+  "sample_volume": 28097369.36999999,
+  "median_spread_cents": 1.0000000000000009,
+  "trade_prints": 30692,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 0.9355555555555556,
+  "seconds": 137,
+  "no_orders": 494,
+  "no_fill_rate": 0.6659919028340081,
+  "no_resting": {
+   "fills": 329,
+   "events": 47,
+   "contracts_traded_through": 450624.95999999996,
+   "cents_per_contract": -0.13347021276595716,
+   "t": -0.06781548595447759,
+   "first_half_cents": -1.4934928797468354,
+   "second_half_cents": 1.1231589181286554,
+   "hit_rate": 0.6565349544072948,
+   "avg_price": 0.6544072948328268
+  },
+  "yes_orders": 494,
+  "yes_fill_rate": 0.291497975708502,
+  "yes_resting": {
+   "fills": 144,
+   "events": 44,
+   "contracts_traded_through": 74763.22,
+   "cents_per_contract": -7.595081423611111,
+   "t": -2.300785852805801,
+   "first_half_cents": -4.482386885245902,
+   "second_half_cents": -9.882724397590362,
+   "hit_rate": 0.2916666666666667,
+   "avg_price": 0.36409722222222224
+  },
+  "passes": false
+ },
+ {
+  "series": "KXNCAAMBACC",
+  "markets": 15,
+  "markets_with_quotes": 2,
+  "sample_volume": 12070838.0,
+  "median_spread_cents": 1.0000000000000009,
+  "trade_prints": 156,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 23.231944444444444,
+  "seconds": 16,
+  "no_orders": 6,
+  "no_fill_rate": 0.0,
+  "no_resting": {
+   "fills": 0
+  },
+  "yes_orders": 6,
+  "yes_fill_rate": 0.0,
+  "yes_resting": {
+   "fills": 0
+  },
+  "passes": false
+ },
+ {
+  "series": "KXNCAAF1HTOTAL",
+  "markets": 1200,
+  "markets_with_quotes": 0,
+  "sample_volume": 9248512.34,
+  "median_spread_cents": NaN,
+  "trade_prints": 8220,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 1.2763888888888888,
+  "seconds": 1028,
+  "no_orders": 0,
+  "no_fill_rate": null,
+  "no_resting": {
+   "fills": 0
+  },
+  "yes_orders": 0,
+  "yes_fill_rate": null,
+  "yes_resting": {
+   "fills": 0
+  },
+  "passes": false
+ },
+ {
+  "series": "KXNCAAMBSEC",
+  "markets": 16,
+  "markets_with_quotes": 2,
+  "sample_volume": 11125573.0,
+  "median_spread_cents": 1.0000000000000009,
+  "trade_prints": 7093,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 40.34597222222222,
+  "seconds": 12,
+  "no_orders": 8,
+  "no_fill_rate": 0.125,
+  "no_resting": {
+   "fills": 1
+  },
+  "yes_orders": 8,
+  "yes_fill_rate": 0.125,
+  "yes_resting": {
+   "fills": 1
+  },
+  "passes": false
+ },
+ {
+  "series": "KXNCAAWBSPREAD",
+  "markets": 570,
+  "markets_with_quotes": 406,
+  "sample_volume": 10633135.0,
+  "median_spread_cents": 38.0,
+  "trade_prints": 12369,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 0.16347222222222224,
+  "seconds": 296,
+  "no_orders": 1186,
+  "no_fill_rate": 0.2554806070826307,
+  "no_resting": {
+   "fills": 303,
+   "events": 60,
+   "contracts_traded_through": 440683.0,
+   "cents_per_contract": -2.5563803630363044,
+   "t": -0.34384023436165706,
+   "first_half_cents": 2.163507638888888,
+   "second_half_cents": -6.830995911949686,
+   "hit_rate": 0.47194719471947194,
+   "avg_price": 0.4936633663366337
+  },
+  "yes_orders": 1186,
+  "yes_fill_rate": 0.18802698145025296,
+  "yes_resting": {
+   "fills": 223,
+   "events": 57,
+   "contracts_traded_through": 192734.0,
+   "cents_per_contract": 9.501059977578473,
+   "t": 1.4282034943523914,
+   "first_half_cents": 12.418986342592591,
+   "second_half_cents": 6.76074652173913,
+   "hit_rate": 0.5291479820627802,
+   "avg_price": 0.4302690582959641
+  },
+  "passes": false
+ },
+ {
+  "series": "KXNEXTNFLCOACH",
+  "markets": 231,
+  "candles": 0
+ },
+ {
+  "series": "KXATPGTOTAL",
+  "markets": 1200,
+  "markets_with_quotes": 652,
+  "sample_volume": 10517543.18,
+  "median_spread_cents": 7.000000000000006,
+  "trade_prints": 7264,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": -1.37375,
+  "seconds": 776,
+  "no_orders": 1750,
+  "no_fill_rate": 0.1462857142857143,
+  "no_resting": {
+   "fills": 256,
+   "events": 137,
+   "contracts_traded_through": 168108.74000000002,
+   "cents_per_contract": -4.779274121093749,
+   "t": -1.0479369637622533,
+   "first_half_cents": -8.30240098425197,
+   "second_half_cents": -1.3107693798449622,
+   "hit_rate": 0.40625,
+   "avg_price": 0.45003906250000003
+  },
+  "yes_orders": 1750,
+  "yes_fill_rate": 0.068,
+  "yes_resting": {
+   "fills": 119,
+   "events": 79,
+   "contracts_traded_through": 37617.94,
+   "cents_per_contract": 7.131102941176469,
+   "t": 1.2643019165787455,
+   "first_half_cents": 13.328779237288135,
+   "second_half_cents": 1.0367212499999992,
+   "hit_rate": 0.5546218487394958,
+   "avg_price": 0.479327731092437
+  },
+  "passes": false
+ },
+ {
+  "series": "KXNCAAMBIVY",
+  "markets": 4,
+  "markets_with_quotes": 2,
+  "sample_volume": 9505370.0,
+  "median_spread_cents": 1.0000000000000009,
+  "trade_prints": 2006,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 11.475694444444443,
+  "seconds": 2,
+  "no_orders": 8,
+  "no_fill_rate": 0.375,
+  "no_resting": {
+   "fills": 3,
+   "events": 1,
+   "contracts_traded_through": 72197.0,
+   "cents_per_contract": -26.92485,
+   "t": NaN,
+   "first_half_cents": null,
+   "second_half_cents": -26.92485,
+   "hit_rate": 0.3333333333333333,
+   "avg_price": 0.6
+  },
+  "yes_orders": 8,
+  "yes_fill_rate": 0.5,
+  "yes_resting": {
+   "fills": 4,
+   "events": 1,
+   "contracts_traded_through": 3352.0,
+   "cents_per_contract": -0.25829999999999464,
+   "t": NaN,
+   "first_half_cents": null,
+   "second_half_cents": -0.25829999999999464,
+   "hit_rate": 0.5,
+   "avg_price": 0.49999999999999994
+  },
+  "passes": false
+ },
+ {
+  "series": "KXSLGREECEGAME",
+  "markets": 483,
+  "markets_with_quotes": 355,
+  "sample_volume": 13685965.73,
+  "median_spread_cents": 1.0000000000000009,
+  "trade_prints": 8940,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 0.9466666666666667,
+  "seconds": 260,
+  "no_orders": 1238,
+  "no_fill_rate": 0.284329563812601,
+  "no_resting": {
+   "fills": 352,
+   "events": 106,
+   "contracts_traded_through": 248307.0,
+   "cents_per_contract": -0.7317894176136369,
+   "t": -0.2963562012174162,
+   "first_half_cents": 0.6925514204545448,
+   "second_half_cents": -2.1561302556818185,
+   "hit_rate": 0.6306818181818182,
+   "avg_price": 0.6345738636363637
+  },
+  "yes_orders": 1238,
+  "yes_fill_rate": 0.07673667205169628,
+  "yes_resting": {
+   "fills": 95,
+   "events": 59,
+   "contracts_traded_through": 44493.83,
+   "cents_per_contract": -5.58142947368421,
+   "t": -1.3976798890781037,
+   "first_half_cents": -2.7723216666666657,
+   "second_half_cents": -8.109626500000001,
+   "hit_rate": 0.2736842105263158,
+   "avg_price": 0.3263157894736842
+  },
+  "passes": false
+ },
+ {
+  "series": "KXLOLTOTALMAPS",
+  "markets": 1200,
+  "markets_with_quotes": 823,
+  "sample_volume": 7254946.32,
+  "median_spread_cents": 4.999999999999993,
+  "trade_prints": 52186,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": 0.67041392,
+  "seconds": 639,
+  "no_orders": 2835,
+  "no_fill_rate": 0.3943562610229277,
+  "no_resting": {
+   "fills": 1118,
+   "events": 522,
+   "contracts_traded_through": 662388.8900000001,
+   "cents_per_contract": 2.182570013416816,
+   "t": 0.898738175102826,
+   "first_half_cents": 2.8679013888888867,
+   "second_half_cents": 1.4996862499999994,
+   "hit_rate": 0.552772808586762,
+   "avg_price": 0.5269320214669052
+  },
+  "yes_orders": 2835,
+  "yes_fill_rate": 0.3058201058201058,
+  "yes_resting": {
+   "fills": 867,
+   "events": 455,
+   "contracts_traded_through": 566833.48,
+   "cents_per_contract": -2.9447727797001146,
+   "t": -1.1822378790563763,
+   "first_half_cents": -4.499570034642032,
+   "second_half_cents": -1.3935580069124422,
+   "hit_rate": 0.3875432525951557,
+   "avg_price": 0.4131257208765859
+  },
+  "passes": false
+ },
+ {
+  "series": "KXNCAAFTEAMTOTAL",
+  "markets": 1200,
+  "markets_with_quotes": 0,
+  "sample_volume": 5284920.9,
+  "median_spread_cents": NaN,
+  "trade_prints": 6079,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": -0.25416666666666665,
+  "seconds": 1037,
+  "no_orders": 0,
+  "no_fill_rate": null,
+  "no_resting": {
+   "fills": 0
+  },
+  "yes_orders": 0,
+  "yes_fill_rate": null,
+  "yes_resting": {
+   "fills": 0
+  },
+  "passes": false
+ },
+ {
+  "series": "KXDPWORLDTOUR",
+  "markets": 1200,
+  "markets_with_quotes": 109,
+  "sample_volume": 51196573.25,
+  "median_spread_cents": 1.2999999999999998,
+  "trade_prints": 8079,
+  "failed_requests": 0,
+  "expiry_minus_close_hours_median": -13.819722222222222,
+  "seconds": 894,
+  "no_orders": 369,
+  "no_fill_rate": 0.2872628726287263,
+  "no_resting": {
+   "fills": 106,
+   "events": 17,
+   "contracts_traded_through": 85995.23000000003,
+   "cents_per_contract": -4.7979584410377365,
+   "t": -0.803154275985652,
+   "first_half_cents": -1.8476191874999979,
+   "second_half_cents": -7.639025870370368,
+   "hit_rate": 0.7547169811320755,
+   "avg_price": 0.8004811320754717
+  },
+  "yes_orders": 369,
+  "yes_fill_rate": 0.27100271002710025,
+  "yes_resting": {
+   "fills": 100,
+   "events": 16,
+   "contracts_traded_through": 65792.77,
+   "cents_per_contract": 4.678297155000001,
+   "t": 0.7182089037771364,
+   "first_half_cents": 1.8000277777777776,
+   "second_half_cents": 7.033244827272727,
+   "hit_rate": 0.25,
+   "avg_price": 0.20099999999999998
+  },
+  "passes": false
+ },
+ {
+  "series": "KXCFLGAME",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXATPEXACTMATCH",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMLBHR",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXLALIGARELEGATION",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXWCGROUPQUAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXSERIEASPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXEGYPLTOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNFLPASSTDS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNBAMIMP",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNHLGOAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXESPSUPERCUPGAME",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXUAEPLGAME",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNPBTOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNCAAHOCKEYGAME",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXUEFANLGOAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXTACAPORTGAME",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXCONCACAFNL1HTOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNCAAMBMAMER",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXKBOTOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXLVAVIRGAME",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNWSLTOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMOMEN",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXLSUCOACH",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXWCTOTALGOAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXCHNL1GAME",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNBAAST",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNFLNFCWEST",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXIDNSLGAME",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNCAAF3QTOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXLMBGAME",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXSCOCUPGAME",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNCAAMBAE",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXPGAPLAYERCAT",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNFLNFCNORTH",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMLBF7",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNFLFFPTS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMLBALMVP",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNHLPLAYOFF",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXATPTOTALSETS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNFLDRAFT1",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNBASIXTH",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNCAAFACC",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXWFIBATOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXCHNL1TOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMIXEDDOUBLESMATCH",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXLIGAMX1HTOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXSERIEABTTS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXLVAVIRTOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXCONCACAFNL1H",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXOWGAME",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXEFLCHAMPIONSHIPTOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMLBHRDERBYOU",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNFLTEAMSACK",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXUSLTOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXUEFANL1HSPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXFACUPTOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNFLLADDERRECYDS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMLBASGMVP",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNFLAFCSOUTH",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXJLEAGUETOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMLBINNINGWIN",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXWCTEAMH2H",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXLIGAMXBTTS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNFLCPOTY",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXBATTLEOFSEXES",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNFC",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXWCGROUPORDER",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNBBGAME",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNCAAMSOCCERGAME",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXWNBA2QWINNER",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNCAAMBSOCON",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXPRESCUPPTSLEAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMMAFIGHT",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNCAASBGAME",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNFLNEXTTEAM",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNCAAFFIRSTTDTEAM",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNCAAMBHOR",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNBABLK",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXCOD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNHLTEAMTOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXVLEAGUE1TOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNCAAMBMVAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXCONMEBOLSUDSPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXCOACHONDATE",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNBA4QWINNER",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXDIMAYORSPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXEFLCUPADVANCE",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXWCSQUAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXSTARLADDERBUDAPESTMAJOR",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNBASTL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXPLLGAME",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXWCTEAMTOTALGOALS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXSERIEA",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXWCDELAY",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMLBBESTRECORD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNBATOPPICK",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXUEFANL1HBTTS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXUEL1HTOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMLBHRDERBYFIN",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXCOPADOBRASILSPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXCONMEBOLSUD1H",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNFLDRAFTCAT",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXATPWTA",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNBASERIESROADWIN",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXBOXINGKNOCKOUT",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMLBSEASONHR",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXWNBA2HSPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXF1TOP5",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXLEADERMLBHR",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXLIGUE1BTTS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXCOACHOUTOLEMISS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNCAAMBMEAC",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNFLLEADCHANGE",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXPRESCUPDAYWINNER",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMLS2H",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNWSLSPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXUCLFINALIST",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXBRASILEIROSCORE",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXEKSTRAKLASASPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXALEAGUESPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXLIIGAGAME",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNCAAFDSTTD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXATPCHALLENGERDOUBLES",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNBAUNBEATEN",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNFLDRAFTQB",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXUAEPLTOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNBLSPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNASCARPOLE",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXCHLLDPSPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXEPL2H",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNBANEXTTEAMOUTLET",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXBRASILEIROTEAMTOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXWCKOPENALTIES",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXKNVBCUPTOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXLIGUE1TEAMTOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNFLNOSCOREQ",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMLBNLMVP",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNCAABBIGTEN",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXEFLCUP1H",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXSVKCUPSPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXT20CANADAMATCH",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNASCARTOP20",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXBELGIANPLSPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXSERIEBSPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXLEAGUESCUP1HBTTS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXWBCRFI",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXEFLL1TOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNFLWINS-IND",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXBALOGUNPLAY",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNFLWINS-MIA",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXUSOPENCUPTOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXSLGREECESPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXEFLCUPBTTS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNFLT100TOP",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXVLEAGUE1SPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNBA1H",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMLBSB",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNFLWINS-PIT",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXUSL1H",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMOTOGPRACE",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXDAVISCUP",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMLBNLWEST",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMLBASGKS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNFLWINS-CLE",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXUCL1HSPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXTHAIL1SPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMLBHA",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXUSLSPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXLALIGA2TOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXIPLFOUR",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNEXTMANAGERMANU",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMLBALLSTAR",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXWCGROUPGOALS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMARMADCONFWIN",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMLBNLCSQUAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXACBSPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXDELGAME",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXWBCKS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXSCOTTISHPREMBTTS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXARGNACBBTTS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNEWCOACHDAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXLIVTOP5",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNHL3PSPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNHL1PSPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXLEADERMLBWINS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXBSLTOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXEKSTRAKLASABTTS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNFL4QTOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNCAABACC",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXBUNDESLIGA",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXTRADEOFFNBA",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNBAPACIFIC",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXLOLFBLOOD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXBBINTLGAME",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNFLFFWEEKTOP",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXSIXKINGSSLAMMATCH",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNCAAFAPRANK",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXLAXTEWAARATON",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNFLWINS-LV",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXWNBANEXTTEAM",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNFLWINS-LAC",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXTFF1LIGGAME",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNEXTMANAGERMLB",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXWOALPSKI",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNEXTTEAMSKUBAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMLBNLCSMVP",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMLSFTTS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXSKLGAME",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNFLWINS-DEN",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXENGCSSPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXWOBIATH",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMANAGERSOUT",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXKNVBCUPSPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXSCOCUPSPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXWNBAMVP",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXBSLSPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMLBPLAYOFFS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXDFBPOKALSCORE",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXLNBELITESPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXPGAR3TOP10",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXWCFASTESTGOAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXINDYCARTOP5",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNFLDRAFTRB",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXTULNCOACH",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXBUNDESLIGA2BTTS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXEUROCUPSPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNBANEXTTEAM",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXUCL16PSVJUV",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXBBSERIEASPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXSERIECCUPTOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNBADRAFTCAT",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNFLDRAFTEDGE",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXLEADERMLBKS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXVENFUTVEBTTS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMANTISFREETHROWS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXEPL2HBTTS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXLOLSPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXLNBELITETOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXATPNATWINNER",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXAFCON1HBTTS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXWOXC",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNCAAMBIGEAST",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXCEBLGAME",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNCAABBHR",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMLBPLAYEROTM",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXFFQBALLENMAHOMES",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMLBLSTREAK",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXRANKLISTFFQB",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXWTATOURNWIN",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXPHKLGAME",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXVTBTOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNHLMETROPOLITAN",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNCAAFDELAY",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNBASERIESREBLEADER",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMLS2HSPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXCONMEBOLSUD1HBTTS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXUCL16RMAMCI",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXWTAROE",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXIEMCHEN",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXLEADERWNBAREB",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXPREMDARTS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXTTMATCH",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXHNLBTTS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXFRASUPERCUPSPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXINTERCUPADVANCE",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXUCLTOP8",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXGERSCSCORE",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNBADRAFTTOP10",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNCAAF2PT",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXCS2QUALIFY",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNASCARCUPSEASON",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXLEADERNFLRUSHYDS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMEMCOACH",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXGOLFMAJOR",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNBADRAFT6",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXWTADDF",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNCAAMWRESTLING133",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXLIVR2LEAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXLKLTOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNFLEXACTWINSBAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXRUGBYFRA14MATCH",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMLBWINS-DET",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMLBSERIESSPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXAFCCLSCORE",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXEFLTROPHYTOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXSERIEA1HTOTAL",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXEFLL1BTTS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMLBWINS-HOU",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXSTARTNOSAINTS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXINDYCARPOLE",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXALCARAZCOACH",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXINDYCARFASTLAP",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXSTARTIND",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXWCREGIONKO",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNHLDRAFTTOP",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXCOPADOBRASIL1HBTTS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNBADRAFT2",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXSALMONRUN",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXFIBAECUPSPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMLBDEBUT",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXDDFWOMENSINGLES",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXLEADERMLBTRIPLES",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXEPLTCORNERS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXFORTNITE",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXLEADERWNBAPTS",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNCAAMWRESTLING285",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNEXTTEAMWESTBROOK",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNCAABIVY",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNBAH2HPRA",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXMLBRETURN",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXWCLOCATION",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXR6",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNFLEXACTWINSBUF",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXPGAUNDERPAR",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXFINYLSPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXTFF1LIGSPREAD",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNFLEXACTWINSGB",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNBAROOKIE2NDTEAM",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXNHL2OT",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXRMAPLAYTOGETHER",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXWNBADRAFT4",
+  "skipped": "out of time"
+ },
+ {
+  "series": "KXLALIGATOP4",
+  "skipped": "out of time"
+ }
+]
