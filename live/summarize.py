@@ -14,6 +14,8 @@ import pandas as pd
 
 from kalshi.paper_markets import SERIES as OTHER_SERIES
 from kalshi.paper_props import ALL_RULES
+from kalshi.risk import RiskLimits
+from kalshi.stats import clustered_mean_t
 from markets.nfl.paper import MODEL_SERIES
 
 OUT = Path("outputs/dashboard/summary.json")
@@ -24,8 +26,26 @@ def _num(s):
     return pd.to_numeric(s, errors="coerce").fillna(0.0)
 
 
+def _cluster_key(frame):
+    for column in ("game_id", "event_ticker", "day"):
+        if column in frame:
+            return frame[column].astype(str)
+    return pd.Series(range(len(frame)), index=frame.index).astype(str)
+
+
+def _drawdown(cum):
+    peak = np.maximum.accumulate(np.concatenate([[0.0], cum]))[1:]
+    return float((peak - cum).max()) if len(cum) else 0.0
+
+
 def ledger_rows(frame, group_col, label_fn=None, expected=()):
-    """Per-ledger scorecard and per-day profit from a resting-order ledger."""
+    """Per-ledger scorecard and per-day profit from a resting-order ledger.
+
+    Statistics a reader of a tearsheet expects: profit per contract with a
+    cluster-robust standard error (clusters are games or events, since lines
+    in one game settle together), its t, the hit rate, the maximum drawdown
+    of cumulative profit in dollars, and the days with a settlement.
+    """
     out, daily = [], []
     present = set(frame[group_col].astype(str))
     for key in expected:
@@ -40,6 +60,11 @@ def ledger_rows(frame, group_col, label_fn=None, expected=()):
                     "contracts": 0,
                     "profit": 0.0,
                     "cents_per_contract": None,
+                    "se_cents": None,
+                    "t": None,
+                    "hit_rate": None,
+                    "max_drawdown": 0.0,
+                    "days": 0,
                     "bankroll": START,
                 }
             )
@@ -48,7 +73,27 @@ def ledger_rows(frame, group_col, label_fn=None, expected=()):
         settled = g[g.status == "settled"]
         contracts = _num(settled.filled_contracts)
         profit = _num(settled.profit)
-        per = (100 * profit.sum() / contracts.sum()) if contracts.sum() else None
+        # Profit per contract averaged over fills (each fill one observation, as
+        # in every research test), with the contract-weighted figure beside it.
+        weighted = (100 * profit.sum() / contracts.sum()) if contracts.sum() else None
+        per = se = t = hit = None
+        if len(settled) and contracts.sum():
+            per_contract = (profit / contracts.replace(0, np.nan)).fillna(0)
+            per = round(100 * float(per_contract.mean()), 2)
+            if len(settled) >= 2:
+                mean, tstat = clustered_mean_t(per_contract, _cluster_key(settled))
+                if np.isfinite(tstat) and tstat != 0:
+                    se = round(abs(100 * float(mean) / float(tstat)), 2)
+                    t = round(float(tstat), 2)
+        if len(settled):
+            won = np.where(
+                settled.side.astype(str) == "yes",
+                settled.result.astype(str) == "yes",
+                settled.result.astype(str) == "no",
+            )
+            hit = round(float(np.mean(won)), 3)
+        by_day = settled.groupby("day").profit.apply(lambda x: float(_num(x).sum()))
+        cum = by_day.sort_index().cumsum().to_numpy()
         out.append(
             {
                 "ledger": label_fn(key) if label_fn else str(key),
@@ -60,7 +105,13 @@ def ledger_rows(frame, group_col, label_fn=None, expected=()):
                 "fills": int(len(settled)),
                 "contracts": int(contracts.sum()),
                 "profit": round(float(profit.sum()), 2),
-                "cents_per_contract": round(per, 2) if per is not None else None,
+                "cents_per_contract": per,
+                "cents_weighted": round(weighted, 2) if weighted is not None else None,
+                "se_cents": se,
+                "t": t,
+                "hit_rate": hit,
+                "max_drawdown": round(_drawdown(cum), 2),
+                "days": int(len(by_day)),
                 "bankroll": round(START + float(_num(done.profit).sum()), 2),
             }
         )
@@ -153,6 +204,16 @@ def main():
         daily += days
     live = live_status(Path("outputs/live"))
     live_nfl = live_status(Path("outputs/live/nfl"))
+    lim = RiskLimits()
+    limits = {
+        "max_order": lim.max_order,
+        "max_night": lim.max_night,
+        "max_open": lim.max_open,
+        "max_per_game": lim.max_per_game,
+        "max_per_team": lim.max_per_team,
+        "daily_loss_stop": lim.daily_loss_stop,
+        "max_orders_per_game": lim.max_orders_per_game,
+    }
     scan = []
     p = Path("outputs/scan/table.csv")
     if p.exists():
@@ -167,6 +228,9 @@ def main():
                     "fills": int(r.no_fills),
                     "cents": round(float(r.no_c), 2),
                     "t": round(float(r.no_t), 2),
+                    "se": round(float(r.no_c) / float(r.no_t), 2)
+                    if r.no_t and np.isfinite(r.no_t) and r.no_t != 0
+                    else None,
                     "passes": bool(r.passes)
                     if isinstance(r.passes, (bool, np.bool_))
                     else str(r.passes) == "True",
@@ -176,7 +240,12 @@ def main():
     p = Path("outputs/bookline/results.json")
     if p.exists():
         b = json.loads(p.read_text())
-        rows = {r["label"][:2]: r for r in b.get("rows", []) if r.get("fills")}
+        rows = {}
+        for r in b.get("rows", []):
+            if r.get("fills"):
+                r = dict(r)
+                r["se"] = round(r["cents"] / r["t"], 2) if r.get("t") else None
+                rows[r["label"][:2]] = r
         research["bookline"] = {
             "games": b.get("games_sampled"),
             "coverage": b.get("coverage_of_fills"),
@@ -212,6 +281,7 @@ def main():
         },
         "live": live,
         "live_nfl": live_nfl,
+        "limits": limits,
         "research": research,
         "scan_top": scan,
     }

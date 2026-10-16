@@ -1,5 +1,5 @@
 {
- "updated_utc": "2026-10-16T20:59+00:00",
+ "updated_utc": "2026-10-16T21:03+00:00",
  "paper": {
   "ledgers": [
    {
@@ -11,6 +11,11 @@
     "contracts": 0,
     "profit": 0.0,
     "cents_per_contract": null,
+    "se_cents": null,
+    "t": null,
+    "hit_rate": null,
+    "max_drawdown": 0.0,
+    "days": 0,
     "bankroll": 500.0,
     "group": "other markets (model-free unless +model)"
    },
@@ -23,6 +28,11 @@
     "contracts": 0,
     "profit": 0.0,
     "cents_per_contract": null,
+    "se_cents": null,
+    "t": null,
+    "hit_rate": null,
+    "max_drawdown": 0.0,
+    "days": 0,
     "bankroll": 500.0,
     "group": "other markets (model-free unless +model)"
    },
@@ -35,6 +45,11 @@
     "contracts": 0,
     "profit": 0.0,
     "cents_per_contract": null,
+    "se_cents": null,
+    "t": null,
+    "hit_rate": null,
+    "max_drawdown": 0.0,
+    "days": 0,
     "bankroll": 500.0,
     "group": "other markets (model-free unless +model)"
    },
@@ -47,6 +62,11 @@
     "contracts": 0,
     "profit": 0.0,
     "cents_per_contract": null,
+    "se_cents": null,
+    "t": null,
+    "hit_rate": null,
+    "max_drawdown": 0.0,
+    "days": 0,
     "bankroll": 500.0,
     "group": "other markets (model-free unless +model)"
    },
@@ -59,6 +79,11 @@
     "contracts": 0,
     "profit": 0.0,
     "cents_per_contract": null,
+    "se_cents": null,
+    "t": null,
+    "hit_rate": null,
+    "max_drawdown": 0.0,
+    "days": 0,
     "bankroll": 500.0,
     "group": "other markets (model-free unless +model)"
    },
@@ -71,6 +96,11 @@
     "contracts": 0,
     "profit": 0.0,
     "cents_per_contract": null,
+    "se_cents": null,
+    "t": null,
+    "hit_rate": null,
+    "max_drawdown": 0.0,
+    "days": 0,
     "bankroll": 500.0,
     "group": "other markets (model-free unless +model)"
    },
@@ -82,7 +112,13 @@
     "fills": 27,
     "contracts": 650,
     "profit": -65.88,
-    "cents_per_contract": -10.14,
+    "cents_per_contract": -4.59,
+    "cents_weighted": -10.14,
+    "se_cents": 1.98,
+    "t": -2.32,
+    "hit_rate": 0.37,
+    "max_drawdown": 65.88,
+    "days": 1,
     "bankroll": 434.12,
     "group": "other markets (model-free unless +model)"
    },
@@ -95,6 +131,12 @@
     "contracts": 0,
     "profit": 0.0,
     "cents_per_contract": null,
+    "cents_weighted": null,
+    "se_cents": null,
+    "t": null,
+    "hit_rate": null,
+    "max_drawdown": 0.0,
+    "days": 0,
     "bankroll": 500.0,
     "group": "other markets (model-free unless +model)"
    },
@@ -107,6 +149,11 @@
     "contracts": 0,
     "profit": 0.0,
     "cents_per_contract": null,
+    "se_cents": null,
+    "t": null,
+    "hit_rate": null,
+    "max_drawdown": 0.0,
+    "days": 0,
     "bankroll": 500.0,
     "group": "NBA props"
    },
@@ -119,6 +166,11 @@
     "contracts": 0,
     "profit": 0.0,
     "cents_per_contract": null,
+    "se_cents": null,
+    "t": null,
+    "hit_rate": null,
+    "max_drawdown": 0.0,
+    "days": 0,
     "bankroll": 500.0,
     "group": "NBA props"
    },
@@ -131,6 +183,11 @@
     "contracts": 0,
     "profit": 0.0,
     "cents_per_contract": null,
+    "se_cents": null,
+    "t": null,
+    "hit_rate": null,
+    "max_drawdown": 0.0,
+    "days": 0,
     "bankroll": 500.0,
     "group": "NBA props"
    },
@@ -143,6 +200,11 @@
     "contracts": 0,
     "profit": 0.0,
     "cents_per_contract": null,
+    "se_cents": null,
+    "t": null,
+    "hit_rate": null,
+    "max_drawdown": 0.0,
+    "days": 0,
     "bankroll": 500.0,
     "group": "NBA props"
    },
@@ -155,6 +217,11 @@
     "contracts": 0,
     "profit": 0.0,
     "cents_per_contract": null,
+    "se_cents": null,
+    "t": null,
+    "hit_rate": null,
+    "max_drawdown": 0.0,
+    "days": 0,
     "bankroll": 500.0,
     "group": "NBA props"
    },
@@ -167,6 +234,11 @@
     "contracts": 0,
     "profit": 0.0,
     "cents_per_contract": null,
+    "se_cents": null,
+    "t": null,
+    "hit_rate": null,
+    "max_drawdown": 0.0,
+    "days": 0,
     "bankroll": 500.0,
     "group": "NBA props"
    },
@@ -179,6 +251,11 @@
     "contracts": 0,
     "profit": 0.0,
     "cents_per_contract": null,
+    "se_cents": null,
+    "t": null,
+    "hit_rate": null,
+    "max_drawdown": 0.0,
+    "days": 0,
     "bankroll": 500.0,
     "group": "NBA props"
    }
@@ -198,6 +275,15 @@
  },
  "live": {},
  "live_nfl": {},
+ "limits": {
+  "max_order": 5.0,
+  "max_night": 75.0,
+  "max_open": 150.0,
+  "max_per_game": 25.0,
+  "max_per_team": 15.0,
+  "daily_loss_stop": 25.0,
+  "max_orders_per_game": 6
+ },
  "research": {
   "bookline": {
    "games": 151,
@@ -208,7 +294,8 @@
     "games": 151,
     "cents": 2.04,
     "t": 1.8,
-    "hit": 0.431
+    "hit": 0.431,
+    "se": 1.13
    },
    "veto": {
     "label": "3. book veto: book edge >= 0",
@@ -216,7 +303,8 @@
     "games": 146,
     "cents": 3.81,
     "t": 2.39,
-    "hit": 0.52
+    "hit": 0.52,
+    "se": 1.59
    },
    "removed": {
     "label": "3b. removed by the book veto",
@@ -224,7 +312,8 @@
     "games": 132,
     "cents": 0.38,
     "t": 0.25,
-    "hit": 0.392
+    "hit": 0.392,
+    "se": 1.52
    },
    "model": {
     "label": "5. model veto on covered fills",
@@ -232,7 +321,8 @@
     "games": 139,
     "cents": 2.69,
     "t": 1.6,
-    "hit": 0.468
+    "hit": 0.468,
+    "se": 1.68
    },
    "gain": 1.66,
    "difference": {
@@ -248,6 +338,7 @@
    "fills": 940,
    "cents": 4.0,
    "t": 3.62,
+   "se": 1.11,
    "passes": true
   },
   {
@@ -255,6 +346,7 @@
    "fills": 1409,
    "cents": 6.34,
    "t": 3.08,
+   "se": 2.06,
    "passes": true
   },
   {
@@ -262,6 +354,7 @@
    "fills": 525,
    "cents": 4.87,
    "t": 2.57,
+   "se": 1.9,
    "passes": true
   },
   {
@@ -269,6 +362,7 @@
    "fills": 675,
    "cents": 8.81,
    "t": 2.55,
+   "se": 3.45,
    "passes": true
   },
   {
@@ -276,6 +370,7 @@
    "fills": 1168,
    "cents": 4.62,
    "t": 2.51,
+   "se": 1.84,
    "passes": true
   },
   {
@@ -283,6 +378,7 @@
    "fills": 1159,
    "cents": 3.69,
    "t": 2.32,
+   "se": 1.59,
    "passes": true
   },
   {
@@ -290,6 +386,7 @@
    "fills": 835,
    "cents": 4.31,
    "t": 2.29,
+   "se": 1.88,
    "passes": true
   },
   {
@@ -297,6 +394,7 @@
    "fills": 2255,
    "cents": 2.98,
    "t": 2.25,
+   "se": 1.32,
    "passes": true
   },
   {
@@ -304,6 +402,7 @@
    "fills": 938,
    "cents": 4.65,
    "t": 2.21,
+   "se": 2.1,
    "passes": true
   },
   {
@@ -311,6 +410,7 @@
    "fills": 2236,
    "cents": 2.87,
    "t": 2.1,
+   "se": 1.36,
    "passes": true
   },
   {
@@ -318,6 +418,7 @@
    "fills": 1008,
    "cents": 2.76,
    "t": 1.99,
+   "se": 1.39,
    "passes": false
   },
   {
@@ -325,6 +426,7 @@
    "fills": 565,
    "cents": 4.69,
    "t": 1.93,
+   "se": 2.44,
    "passes": false
   },
   {
@@ -332,6 +434,7 @@
    "fills": 678,
    "cents": 5.67,
    "t": 1.91,
+   "se": 2.97,
    "passes": false
   },
   {
@@ -339,6 +442,7 @@
    "fills": 1063,
    "cents": 3.93,
    "t": 1.91,
+   "se": 2.06,
    "passes": false
   },
   {
@@ -346,6 +450,7 @@
    "fills": 1123,
    "cents": 1.32,
    "t": 1.88,
+   "se": 0.7,
    "passes": false
   }
  ]
