@@ -161,6 +161,7 @@ def test_orders_per_game_cap(tmp_path, monkeypatch):
         ("ORDERS", out / "orders.csv"),
         ("FILLS", out / "fills.csv"),
         ("SETTLEMENTS", out / "settlements.csv"),
+        ("EXITS", out / "exits.csv"),
     ]:
         monkeypatch.setattr(nba_trade, name, path)
     latest = tmp_path / "latest.csv"
