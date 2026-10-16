@@ -1,0 +1,26 @@
+{
+  "retrieved": "2026-10-15",
+  "seasons": [
+    2012,
+    2026
+  ],
+  "last_completed_week": {
+    "season": 2026,
+    "week": 5
+  },
+  "sources": {
+    "games": "https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv",
+    "player_week": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_{season}.csv",
+    "injuries": "https://github.com/nflverse/nflverse-data/releases/download/injuries/injuries_{season}.csv"
+  },
+  "rows": {
+    "games": 3935,
+    "player_week": 81921,
+    "injuries": 23447
+  },
+  "sha256": {
+    "games.csv": "a866272e9641ed791d774687f09893b7f54c346900234a6d5654fc4eba1f9d11",
+    "player_week.csv.gz": "4a2b1c95fe3f1b177bbf1c5cbde2279090e18663836279dea269b11cbec58ec5",
+    "injuries.csv.gz": "fff5d638bcdf34b73b016cb2869650e6322aba1fc5978d24090db4ab5e8688c4"
+  }
+}

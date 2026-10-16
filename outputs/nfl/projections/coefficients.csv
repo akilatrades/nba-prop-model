@@ -1,0 +1,50 @@
+stat,feature,coefficient
+receiving_yards,log expected targets,0.6861
+receiving_yards,log yards per target,0.4249
+receiving_yards,log implied team points,0.3743
+receiving_yards,win probability,-0.1281
+receiving_yards,is TE,-0.035
+receiving_yards,is RB,-0.1292
+receiving_yards,is RB x win probability,-0.0369
+receiving_yards,log games played,-0.0386
+receiving_yards,log recent receiving yards,0.2662
+receiving_yards,log opponent pass yards allowed,0.207
+receiving_yards,"teammates out, same position: targets to redistribute",1.1495
+receiving_yards,"teammates out, other positions: targets to redistribute",0.3168
+receptions,log expected targets,0.5053
+receptions,log catch rate,0.3211
+receptions,log implied team points,0.1761
+receptions,win probability,-0.1004
+receptions,is TE,0.0332
+receptions,is RB,0.0451
+receptions,is RB x win probability,-0.0744
+receptions,log recent receptions,0.5217
+receptions,log opponent pass yards allowed,0.2385
+receptions,"teammates out, same position: targets to redistribute",1.0764
+receptions,"teammates out, other positions: targets to redistribute",0.2547
+rushing_yards,log expected carries,0.3855
+rushing_yards,log yards per carry,0.1677
+rushing_yards,log implied team points,-0.0548
+rushing_yards,win probability,0.1886
+rushing_yards,log recent rushing yards,0.5604
+rushing_yards,log opponent rush yards allowed,0.3761
+rushing_yards,"teammates out, same position: carries to redistribute",0.5955
+rushing_yards,"teammates out, other positions: carries to redistribute",0.1732
+passing_yards,log team pass attempts,0.3215
+passing_yards,log yards per attempt,0.1706
+passing_yards,log implied team points,0.6747
+passing_yards,win probability,-0.2519
+passing_yards,log recent passing yards,0.119
+passing_yards,log opponent pass yards allowed,0.2116
+passing_tds,log team pass attempts,0.3463
+passing_tds,log TD rate per attempt,0.2007
+passing_tds,log implied team points,1.4967
+passing_tds,win probability,-0.2596
+passing_tds,log opponent pass yards allowed,-0.0342
+skill_tds,log expected targets,0.4567
+skill_tds,log expected carries,0.1414
+skill_tds,log TDs per touch,-0.1841
+skill_tds,log implied team points,1.0089
+skill_tds,is TE,0.1243
+skill_tds,is RB,-0.0364
+skill_tds,log recent TDs,0.4137

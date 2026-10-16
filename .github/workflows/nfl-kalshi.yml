@@ -1,0 +1,34 @@
+name: nfl kalshi prices
+# Snapshots of Kalshi's open NFL prop markets before games, then the comparison.
+on:
+  schedule:
+    - cron: "30 14 * * *"     # daily
+    - cron: "30 16 * * 0"     # Sunday, before 1pm ET games
+    - cron: "45 19 * * 0"     # Sunday, before late-afternoon games
+    - cron: "45 23 * * 0,1,4" # Sunday, Monday, Thursday night games
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: repo-writes
+  cancel-in-progress: false
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - run: python -m live.nfl_log_kalshi
+      - run: python -m live.nfl_compare
+      - name: Commit snapshot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/nfl/kalshi outputs/nfl/market
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "NFL Kalshi snapshot"
+          git pull --rebase
+          git push

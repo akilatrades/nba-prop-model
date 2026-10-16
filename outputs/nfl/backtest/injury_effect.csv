@@ -1,0 +1,7 @@
+stat,vacated_at_least,player_games,actual_average,expected_without_injuries,expected_with_injuries,brier_without,brier_with,brier_improvement_pct,mae_without,mae_with
+receiving_yards,0.1,3516,25.4349,22.6138,25.2627,0.0991,0.0983,0.7646,17.3719,17.7254
+receiving_yards,0.2,1378,25.5414,21.3507,25.5882,0.0999,0.0983,1.5673,17.2099,17.6583
+receptions,0.1,3516,2.279,2.0744,2.2801,0.1058,0.1052,0.5751,1.3292,1.3487
+receptions,0.2,1378,2.32,1.9751,2.3037,0.1104,0.1085,1.7091,1.3432,1.363
+rushing_yards,0.1,697,31.8149,25.0529,31.4952,0.1238,0.1217,1.6626,19.819,20.6122
+rushing_yards,0.2,500,30.766,23.0542,31.4824,0.1264,0.1244,1.6382,19.9211,21.0642
