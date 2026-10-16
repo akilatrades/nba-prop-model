@@ -1,1 +1,7 @@
-
+stat,markets,brier_model,brier_market_mid,avg_model_minus_market,paper_trades,paper_profit_per_contract,paper_total_profit
+all,231,0.1461,0.1377,-0.036,77,-0.0315,-2.4259
+passing_tds,4,0.1568,0.1737,-0.0194,0,,0.0
+passing_yards,8,0.1893,0.181,0.0172,0,,0.0
+receiving_yards,97,0.1399,0.1266,-0.0335,25,-0.1272,-3.1801
+receptions,84,0.1636,0.1562,-0.0401,34,-0.013,-0.4427
+rushing_yards,38,0.1128,0.1122,-0.0463,18,0.0665,1.1969
