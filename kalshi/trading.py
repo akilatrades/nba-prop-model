@@ -42,7 +42,7 @@ class TradingError(RuntimeError):
 def normalize_pem(pem):
     """Repair a PEM pasted into a secret: literal "\\n", lost line breaks, stray spaces."""
     text = pem.strip().replace("\\n", "\n").replace("\r", "")
-    match = re.search(r"-----BEGIN ([A-Z ]+)-----(.*?)-----END \1-----", text, re.S)
+    match = re.search(r"-----BEGIN ([A-Z ]+)-----(.*?)-----END \1-----", text, re.DOTALL)
     if not match:
         return text
     label, body = match.group(1), re.sub(r"\s+", "", match.group(2))

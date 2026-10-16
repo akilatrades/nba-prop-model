@@ -24,7 +24,10 @@ def main():
         client = TradingClient(dry_run=True)
     except Exception as error:  # noqa: BLE001 - report, without the key material
         print(
-            f"::error::could not load credentials: {type(error).__name__}: {str(error)[:300]}"
+            f"::error::could not load credentials: {type(error).__name__}: {str(error)[:300]} | "
+            f"key id length {len(key_id)}, pem length {len(pem)}, "
+            f"BEGIN present: {'-----BEGIN' in pem}, END present: {'-----END' in pem}, "
+            f"first 11 chars: {pem.strip()[:11]!r}"
         )
         sys.exit(1)
     if not client.can_sign:
