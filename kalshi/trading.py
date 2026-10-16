@@ -17,6 +17,7 @@ Nothing in this module decides what to trade; see ``live/nba_trade.py``.
 import base64
 import json
 import os
+import re
 import time
 import urllib.error
 import urllib.parse
@@ -38,8 +39,23 @@ class TradingError(RuntimeError):
     pass
 
 
+def normalize_pem(pem):
+    """Repair a PEM pasted into a secret: literal "\\n", lost line breaks, stray spaces."""
+    text = pem.strip().replace("\\n", "\n").replace("\r", "")
+    match = re.search(r"-----BEGIN ([A-Z ]+)-----(.*?)-----END \1-----", text, re.S)
+    if not match:
+        return text
+    label, body = match.group(1), re.sub(r"\s+", "", match.group(2))
+    lines = [body[i : i + 64] for i in range(0, len(body), 64)]
+    return (
+        f"-----BEGIN {label}-----\n" + "\n".join(lines) + f"\n-----END {label}-----\n"
+    )
+
+
 def load_private_key(pem):
-    return serialization.load_pem_private_key(pem.encode(), password=None)
+    return serialization.load_pem_private_key(
+        normalize_pem(pem).encode(), password=None
+    )
 
 
 def sign(private_key, timestamp_ms, method, path):

@@ -96,3 +96,15 @@ def test_risk_limits():
     ex.realized_today = 0.0
     with pytest.raises(Rejected, match="orders in one run"):
         check(1.0, "d2", 5, limits, ex, 150)
+
+
+def test_pem_normalization_repairs_pasted_keys():
+    from kalshi.trading import load_private_key, normalize_pem
+
+    _, text = pem()
+    one_line = text.replace("\n", " ")
+    escaped = text.replace("\n", "\\n")
+    assert normalize_pem(one_line) == normalize_pem(text)
+    load_private_key(one_line)
+    load_private_key(escaped)
+    load_private_key("  " + text + "\n\n")
