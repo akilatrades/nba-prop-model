@@ -992,3 +992,44 @@ no order. Evidence is thinner than NBA's (anytime TD +3.0¢, t 2.2, 2,255
 scan fills; receiving yards +4.8¢, t 1.7, 769): NFL stays in dry run until
 its paper ledgers (`outputs/paper_markets/`, from 2026-10-16) are positive
 with t ≥ 2, and any real stake is a minority of the bankroll beside NBA.
+
+## 2026-10-16: Stake size at a small bankroll (replay, same 2025-26 orders)
+
+Akila asked whether 2-3% a line instead of 1% raises the return from $250.
+Replays with `research/scaling.py` (every line, model veto, half the flow,
+$25/100-contract order cap, bootstrap over days) say the per-line stake is
+not the constraint: a night has about 175 orders (median), so 1% each asks
+for 175% of the bankroll and the **30% daily cap** is what binds. Raising
+the stake to 2-5% at the same daily cap leaves the season's end within
+noise ($250 -> about $1,600-2,500 median) and concentrates the same 30% in
+fewer lines. The lever is the daily cap, with a per-game cap to spread it:
+
+| Start | Stake | Day cap | Game cap | Boot median | 10th | P(loss) | Median max DD |
+|---:|---:|---:|---:|---:|---:|---:|---:|
+| $250 | 1% | 30% | 10% | $1,643 | $875 | 0% | 24% |
+| $250 | 2% | 50% | 15% | $2,106 | $981 | 0% | 38% |
+| $250 | 3% | 70% | 20% | $2,998 | $1,097 | 0% | 46% |
+| $250 | 3% | 100% | 25% | $7,209 | $2,151 | 0% | 45% |
+| $500 | 1% | 30% | 10% | $2,732 | $1,733 | 0% | 21% |
+| $500 | 3% | 100% | 25% | $11,122 | $4,433 | 0% | 36% |
+
+Stress, $250, shrinking every fill's profit toward zero edge:
+
+| Edge | 1% / 30% day: median, P(loss), P(< half) | 3% / 100% day: median, P(loss), P(< half) |
+|---|---|---|
+| As backtested (3.1¢) | $1,777, 0%, 0% | $7,246, 0%, 0% |
+| Halved (1.6¢) | $778, 3%, 0% | $1,346, 13%, 5% |
+| None | $265, 42%, 8% | $82, 67%, 57% |
+
+Reading: the aggressive setting roughly quadruples the median if the edge
+is as backtested, and loses more than half the money in a majority of
+seasons if there is no edge. The conservative setting is nearly flat with
+no edge. Since the first weeks are exactly the test of whether the edge
+survives real fills, the trader keeps 1% / 30% / per-game cap until the
+realized cents per contract over the first 500 fills are positive with
+t ≥ 2; the daily cap then rises in steps (50%, 70%), never above 70%, and
+only while the running realized edge stays above 1.5¢. Written here before
+the first fill. The replay's drawdowns (21-46%) are larger than the
+2026-10-16 scaling entry's (5-12%), which sized edge-first within a day
+without a per-game cap and measured drawdown differently; these are the
+numbers to plan around.
