@@ -213,6 +213,21 @@ class TradingClient:
             if not cursor:
                 return out
 
+    def settlements(self, min_ts=None):
+        """Settled positions: revenue, cost and fees per market, newest first."""
+        params = {"limit": 200}
+        if min_ts:
+            params["min_ts"] = int(min_ts)
+        out, cursor = [], ""
+        while True:
+            if cursor:
+                params["cursor"] = cursor
+            page = self._request("GET", "/portfolio/settlements", params)
+            out.extend(page.get("settlements", []))
+            cursor = page.get("cursor") or ""
+            if not cursor:
+                return out
+
     def positions(self):
         return self._request("GET", "/portfolio/positions", {"limit": 200}).get(
             "market_positions", []

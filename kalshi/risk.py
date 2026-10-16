@@ -13,6 +13,9 @@ Limits (dollars unless noted), read from ``RiskLimits``:
   resting is cancelled. A manual off switch.
 - ``max_orders_per_run``: a sanity cap; a bug that generates 5,000 orders
   stops here.
+- ``max_orders_per_game``: how many separate lines we will sit on in one
+  game. Every "no" order in a game wins on the same quiet night and loses on
+  the same shootout, so this caps the correlated exposure.
 """
 
 from dataclasses import dataclass
@@ -27,6 +30,7 @@ class RiskLimits:
     max_per_game: float = 25.0
     daily_loss_stop: float = 25.0
     max_orders_per_run: int = 150
+    max_orders_per_game: int = 6
     kill_file: Path = Path("outputs/live/KILL")
 
 
@@ -38,6 +42,11 @@ class Exposure:
     by_game: dict
     open_total: float
     realized_today: float
+    orders_by_game: dict = None
+
+    def __post_init__(self):
+        if self.orders_by_game is None:
+            self.orders_by_game = {}
 
 
 class Rejected(Exception):
@@ -62,9 +71,12 @@ def check(order_cost, day, game, limits, exposure, placed_this_run):
         raise Rejected(f"game cap ${limits.max_per_game:.2f} reached for {game}")
     if exposure.open_total + order_cost > limits.max_open + 1e-9:
         raise Rejected(f"open exposure cap ${limits.max_open:.2f} reached")
+    if exposure.orders_by_game.get(game, 0) >= limits.max_orders_per_game:
+        raise Rejected(f"{limits.max_orders_per_game} orders already in game {game}")
 
 
 def commit(exposure, order_cost, day, game):
     exposure.by_day[day] = exposure.by_day.get(day, 0.0) + order_cost
     exposure.by_game[game] = exposure.by_game.get(game, 0.0) + order_cost
     exposure.open_total += order_cost
+    exposure.orders_by_game[game] = exposure.orders_by_game.get(game, 0) + 1

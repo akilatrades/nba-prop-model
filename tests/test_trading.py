@@ -127,3 +127,15 @@ def test_ed25519_body_only_key():
     loaded = load_private_key(body)
     sig = sign(loaded, "1", "GET", "/trade-api/v2/portfolio/balance")
     key.public_key().verify(b64.b64decode(sig), b"1GET/trade-api/v2/portfolio/balance")
+
+
+def test_per_game_order_count_cap():
+    limits = RiskLimits(max_orders_per_game=2)
+    ex = Exposure(by_day={}, by_game={}, open_total=0.0, realized_today=0.0)
+    check(1.0, "d", 7, limits, ex, 0)
+    commit(ex, 1.0, "d", 7)
+    check(1.0, "d", 7, limits, ex, 1)
+    commit(ex, 1.0, "d", 7)
+    with pytest.raises(Rejected, match="orders already in game"):
+        check(1.0, "d", 7, limits, ex, 2)
+    check(1.0, "d", 8, limits, ex, 2)  # another game is fine
