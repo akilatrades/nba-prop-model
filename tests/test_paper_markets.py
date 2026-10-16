@@ -71,3 +71,43 @@ def test_post_fill_settle():
     card = scorecard(ledger, "KXT")
     assert card["bankroll"] == 502.17
     assert card["fills_settled"] == 1
+
+
+def test_model_veto():
+    markets = [
+        market(
+            "KXT-26OCT16AB-A", 0.40, 0.45
+        ),  # no at 0.56; model says yes 0.30: edge 0.14, kept
+        market(
+            "KXT-26OCT16AB-B", 0.40, 0.45
+        ),  # no at 0.56; model says yes 0.50: edge -0.06, vetoed
+        market("KXT-26OCT16AB-C", 0.40, 0.45),  # no model price: skipped
+    ]
+    p_model = {"KXT-26OCT16AB-A": 0.30, "KXT-26OCT16AB-B": 0.50}
+    posted = post_orders("KXT+model", markets, empty_ledger(), NOW, p_model=p_model)
+    assert posted.ticker.tolist() == ["KXT-26OCT16AB-A", "KXT-26OCT16AB-B"]
+    assert posted.status.tolist() == ["resting", "vetoed"]
+    assert posted.contracts.tolist() == [8, 0]
+    assert posted.reserved.tolist() == [4.48, 0.0]
+    later = int((NOW + pd.Timedelta(hours=3)).timestamp())
+
+    def fetch_trades(ticker, min_ts, max_ts):
+        when = (NOW + pd.Timedelta(hours=1)).isoformat()
+        return [
+            {
+                "created_time": when,
+                "yes_price": 0.44,
+                "count": 5,
+                "taker_outcome_side": "yes",
+            }
+        ]
+
+    ledger = check_fills(posted, fetch_trades, later)
+    assert ledger.status.tolist() == ["filled", "vetoed_filled"]
+    ledger = settle(ledger, lambda t: {"result": "yes"})
+    assert ledger.status.tolist() == ["settled", "vetoed_settled"]
+    card = scorecard(ledger, "KXT+model")
+    assert card["orders"] == 1 and card["vetoed"] == 1
+    assert card["bankroll"] == 500 - 5 * 0.56 - 0.03
+    # The vetoed order would have lost: no at 0.56, result yes.
+    assert card["vetoed_would_have_made_cents"] < -55

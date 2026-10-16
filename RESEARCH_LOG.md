@@ -821,3 +821,29 @@ anytime TD $754, NCAA women's games $1,878; the six together from one $500
 bankroll, $4,873 over 11 months (about $13,000 if the real flow is five
 times the 1,200-market sample). Expect less: these markets were chosen for
 passing.
+
+## 2026-10-16: NFL props with the NFL model as filter, fixed before it runs
+
+The scan's two NFL prop hits (anytime touchdown +3.0¢, receiving yards +4.8¢
+model-free) get the same treatment as NBA: the "no" seller with a model veto.
+The NFL model is the one from akilatrades/nfl-parlay-model, now
+`markets/nfl` (walk-forward 2019-2026, calibrated within about a point over
+125,803 predictions); it has never been tuned on Kalshi prices.
+
+**Rule (ledgers `KXNFLANYTD+model` and `KXNFLRECYDS+model`, $500 each).**
+Every three hours, for every open market in the series whose expected
+expiration is 4 to 10 hours away with a two-sided quote: a "no" order one
+cent inside the ask (at the bid when the spread is 1¢), cancelled at the next
+run or three hours before expiration. **Veto:** the order is skipped when
+(1 − p) − price − maker fee < 0, where p is the model's over-probability
+for that player and line from the latest ladder made before the run (the
+anytime-touchdown market is the 0.5 line of rushing plus receiving
+touchdowns). Markets the model cannot price (no ladder row) are skipped, so
+the ledger is a strict subset of the model-free one for the same series,
+which keeps running alongside as the control. Sizing, fills and settlement
+as in the other paper tests.
+
+**Pass criteria, judged after the Super Bowl (2027-02-08):** profit per
+filled contract above zero with game-clustered t ≥ 2.0, and the filtered
+ledger's profit per contract above the model-free control's over the same
+markets. Reported: the vetoed orders' profit (what the model kept us out of).

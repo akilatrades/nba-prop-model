@@ -52,6 +52,8 @@ COLUMNS = [
     "result",
     "fee",
     "profit",
+    "p_model",
+    "vetoed",
 ]
 
 
@@ -108,13 +110,29 @@ def no_orders(q):
     return out[(out.price > 0) & (out.price < 1)]
 
 
-def post_orders(series, markets, ledger, now, next_run_hours=3, start=START_BANKROLL):
+def post_orders(
+    series, markets, ledger, now, next_run_hours=3, start=START_BANKROLL, p_model=None
+):
+    """New orders for one series.
+
+    ``p_model``, when given, maps ticker to a model probability of "yes";
+    markets without one are skipped, and an order is vetoed (recorded with
+    status "vetoed", no capital) when the model's "no" probability minus the
+    order price and the maker fee is below zero.
+    """
     q = quotes(markets, now)
     if q.empty:
         return empty_ledger()
     o = no_orders(q)
+    o["p_model"] = np.nan
+    o["vetoed"] = False
+    if p_model is not None:
+        o["p_model"] = o.ticker.map(p_model)
+        o = o[o.p_model.notna()].copy()
+        edge = (1 - o.p_model) - o.price - maker_fee(o.price, FEE_SHARE)
+        o["vetoed"] = edge < 0
     mine = ledger[ledger.series == series]
-    resting = mine[mine.status == "resting"]
+    resting = mine[mine.status.isin(["resting", "vetoed"])]
     o = o[~o.ticker.isin(set(resting.ticker))]
     if o.empty:
         return empty_ledger()
@@ -129,9 +147,10 @@ def post_orders(series, markets, ledger, now, next_run_hours=3, start=START_BANK
         for r in group.itertuples():
             budget = min(STAKE * bank, room, MAX_ORDER_DOLLARS)
             n = min(math.floor(budget / r.price + 1e-9), MAX_CONTRACTS)
-            if n < 1:
+            if n < 1 and not r.vetoed:
                 continue
-            room -= n * r.price
+            if not r.vetoed:
+                room -= n * r.price
             cancel = min(
                 now + pd.Timedelta(hours=next_run_hours),
                 r.expiration_utc - pd.Timedelta(hours=EVENT_HOURS),
@@ -151,9 +170,13 @@ def post_orders(series, markets, ledger, now, next_run_hours=3, start=START_BANK
                     "price": float(r.price),
                     "improved": bool(r.improved),
                     "yes_level": float(r.yes_level),
-                    "contracts": n,
-                    "reserved": round(n * float(r.price), 2),
-                    "status": "resting",
+                    "contracts": 0 if r.vetoed else n,
+                    "reserved": 0.0 if r.vetoed else round(n * float(r.price), 2),
+                    "status": "vetoed" if r.vetoed else "resting",
+                    "p_model": None
+                    if pd.isna(r.p_model)
+                    else round(float(r.p_model), 4),
+                    "vetoed": bool(r.vetoed),
                 }
             )
     return pd.DataFrame(rows, columns=COLUMNS)
@@ -163,7 +186,9 @@ def check_fills(ledger, fetch_trades, now_ts):
     ledger = ledger.copy()
     for column in ["status", "result"]:
         ledger[column] = ledger[column].astype(object)
-    due = ledger.index[(ledger.status == "resting") & (ledger.cancel_ts <= now_ts)]
+    due = ledger.index[
+        ledger.status.isin(["resting", "vetoed"]) & (ledger.cancel_ts <= now_ts)
+    ]
     for i in due:
         row = ledger.loc[[i]].rename(
             columns={"placed_ts": "end_ts", "cancel_ts": "tip_ts"}
@@ -180,6 +205,13 @@ def check_fills(ledger, fetch_trades, now_ts):
             )
             row["improved"] = row.improved.astype(str).str.lower().eq("true")
             traded = float(fills(row, t).get(row.ticker.iat[0], 0.0))
+        if ledger.at[i, "status"] == "vetoed":
+            # Report only: what the vetoed order would have filled.
+            ledger.at[i, "filled_contracts"] = math.floor(traded)
+            ledger.at[i, "status"] = (
+                "vetoed_filled" if traded >= 1 else "vetoed_unfilled"
+            )
+            continue
         filled = min(int(ledger.at[i, "contracts"]), math.floor(traded))
         ledger.at[i, "filled_contracts"] = filled
         if filled > 0:
@@ -195,11 +227,17 @@ def settle(ledger, fetch_market):
     ledger = ledger.copy()
     for column in ["status", "result"]:
         ledger[column] = ledger[column].astype(object)
-    for i in ledger.index[ledger.status == "filled"]:
+    for i in ledger.index[ledger.status.isin(["filled", "vetoed_filled"])]:
         market = fetch_market(ledger.at[i, "ticker"])
         if not market or market.get("result") not in {"yes", "no"}:
             continue
         won = 1.0 if market["result"] == "no" else 0.0
+        if ledger.at[i, "status"] == "vetoed_filled":
+            ledger.at[i, "result"] = market["result"]
+            ledger.at[i, "profit"] = 0.0
+            ledger.at[i, "fee"] = 0.0
+            ledger.at[i, "status"] = "vetoed_settled"
+            continue
         n = int(ledger.at[i, "filled_contracts"])
         price = float(ledger.at[i, "price"])
         fee = math.ceil(round(100 * n * maker_fee(price, FEE_SHARE), 6)) / 100
@@ -214,8 +252,10 @@ def scorecard(ledger, series, start=START_BANKROLL):
     mine = ledger[ledger.series == series]
     done = mine[mine.status.isin(["settled", "unfilled"])]
     settled = mine[mine.status == "settled"].copy()
+    vetoed = mine[mine.status.str.startswith("vetoed")]
     card = {
-        "orders": len(mine),
+        "orders": len(mine) - len(vetoed),
+        "vetoed": len(vetoed),
         "open": int(mine.status.isin(["resting", "filled"]).sum()),
         "fill_rate": float((done.status == "settled").mean()) if len(done) else None,
         "fills_settled": len(settled),
@@ -227,4 +267,14 @@ def scorecard(ledger, series, start=START_BANKROLL):
         card["cents_per_contract"] = round(100 * float(mean), 2)
         card["t"] = round(float(t), 2) if np.isfinite(t) else None
         card["profit_dollars"] = round(float(pd.to_numeric(settled.profit).sum()), 2)
+    vs = vetoed[vetoed.status == "vetoed_settled"]
+    if len(vs):
+        won = (vs.result == "no").astype(float)
+        per = (
+            won
+            - pd.to_numeric(vs.price)
+            - maker_fee(pd.to_numeric(vs.price), FEE_SHARE)
+        )
+        card["vetoed_would_have_made_cents"] = round(100 * float(per.mean()), 2)
+        card["vetoed_settled"] = len(vs)
     return card
