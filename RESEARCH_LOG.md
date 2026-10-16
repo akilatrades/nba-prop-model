@@ -680,3 +680,32 @@ every line, resting inside the ask, skipping orders the model rates below
 zero) is the right shape. It is a liquidity-provision strategy with a model
 filter, not a forecasting one. Picking winners is not the edge; neither is
 hunting outliers.
+
+## 2026-10-16: Scaling the "no" seller (simulation, same 2025-26 orders)
+
+Akila asked what $25,000 and several sports would do. Replays of the chosen
+rule (every line, model veto) over the 184 trading days of 2025-26 with the
+staking rule (1% per order, 30% per day), unfilled orders reserving capital.
+"Flow share" is the fraction of the contracts that traded through our price
+that we are assumed to get (the backtest assumed all of it; half is the
+working assumption from here on). Other sports are simulated by gluing
+together independently resampled NBA days, i.e. they assume a sport with
+the same flow and edge, which is untested.
+
+| Bankroll | Flow share | $25/100-contract order cap | End of season | Max drawdown |
+|---:|---:|---|---:|---:|
+| $500 | 100% | on | $3,192 | 11% |
+| $500 | 50% | on | $2,635 | 12% |
+| $5,000 | 50% | on | $18,174 | 9% |
+| $5,000 | 50% | off | $24,236 | 10% |
+| $25,000 | 50% | on | $46,364 | 5% |
+| $25,000 | 50% | off | $73,356 (bootstrap median $70,236; 10th-90th $53k-$91k) | 9% |
+| $25,000 | 25% | off | $57,904 | 9% |
+
+With $25,000 the order cap binds (about $600 a night deployed), so it has to
+come off, and the return per dollar falls from about 4x at $500 to about
+1.9x at $25,000 at half the flow: capital stops being the constraint and
+flow does. Adding sports (independent days, half the flow, no cap, $25,000):
+1 sport $70k, 2 sports $88k, 3 sports $101k, 5 sports $116k median, with
+the drawdown falling from 8% to 2%. Fewer sports with no cap beat more
+sports with the cap. All in-sample, one season, assuming the edge holds.
