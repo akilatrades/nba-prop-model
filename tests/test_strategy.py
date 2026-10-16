@@ -2,14 +2,14 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from nba_model.paper import empty_ledger, new_positions, scorecard, settle
-from nba_model.strategy import (
+from kalshi.strategy import (
     historical_trades,
     one_per_player,
     order_fee,
     qualifying,
     simulate,
 )
+from markets.nba.paper import empty_ledger, new_positions, scorecard, settle
 
 TIP = pd.Timestamp("2026-11-03 00:00", tz="UTC")  # 7 pm New York, Nov 2
 

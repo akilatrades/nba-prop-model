@@ -1,7 +1,7 @@
 import pandas as pd
 import pytest
 
-from nba_model.maker import fills, maker_fee, orders, settle_orders
+from kalshi.maker import fills, maker_fee, orders, settle_orders
 
 
 def quote(**kw):

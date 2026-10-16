@@ -1,14 +1,9 @@
 import pandas as pd
 import pytest
 
-from nba_model import kalshi
-from nba_model.kalshi import (
-    fee_per_contract,
-    normalize_name,
-    parse,
-    settled_frame,
-    snapshot,
-)
+from kalshi import api
+from kalshi.api import fee_per_contract, settled_frame, snapshot
+from markets.nba.kalshi import SERIES, normalize_name, parse
 
 
 def raw_market(**overrides):
@@ -50,7 +45,9 @@ def test_parse_reads_teams_line_date_and_prices():
             raw_market(floor_strike=None, yes_sub_title="Victor Wembanyama: 20+"),
         ]
 
-    frame = parse(snapshot(fetch=fetch, now=pd.Timestamp("2026-05-30", tz="UTC")))
+    frame = parse(
+        snapshot(SERIES, fetch=fetch, now=pd.Timestamp("2026-05-30", tz="UTC"))
+    )
     assert list(frame.line) == [24.5, 19.5]
     first = frame.iloc[0]
     assert first.stat == "points"
@@ -96,8 +93,8 @@ def test_candles_flattens_close_quotes(monkeypatch):
         calls.append((path, params))
         return payload
 
-    monkeypatch.setattr(kalshi, "get_json", fake_get)
-    rows = kalshi.candles("KXNBAPTS-26MAY30SASOKC-SASVWEMBANYAMA1-25", 1, 2)
+    monkeypatch.setattr(api, "get_json", fake_get)
+    rows = api.candles("KXNBAPTS-26MAY30SASOKC-SASVWEMBANYAMA1-25", 1, 2)
     assert calls[0][0].startswith("/historical/markets/KXNBAPTS-26MAY30SASOKC")
     assert calls[0][1]["period_interval"] == 60
     assert rows[0]["yes_bid"] == pytest.approx(0.61)

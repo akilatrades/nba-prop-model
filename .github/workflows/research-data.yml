@@ -3,12 +3,6 @@ name: research data
 # before tip-off (limit-order test), double-double and triple-double markets
 # (correlation test), and a probe of ESPN's stored sportsbook prop lines.
 on:
-  push:
-    branches: [main]
-    paths:
-      - "scripts/backfill_trades.py"
-      - "scripts/probe_espn_props.py"
-      - ".github/workflows/research-data.yml"
   workflow_dispatch:
 permissions:
   contents: write
@@ -31,7 +25,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install pandas numpy pyarrow
-      - run: python scripts/backfill_trades.py --series ${{ matrix.series }} --minutes 300
+      - run: python -m research.backfill_trades --series ${{ matrix.series }} --minutes 300
       - uses: actions/upload-artifact@v4
         with:
           name: history-trades-${{ matrix.series }}
@@ -54,7 +48,7 @@ jobs:
           python-version: "3.12"
       - run: pip install pandas numpy pyarrow
       - run: >-
-          python scripts/backfill_kalshi.py --series ${{ matrix.series }}
+          python -m research.backfill_kalshi --series ${{ matrix.series }}
           --minutes 300 --workers 16
       - uses: actions/upload-artifact@v4
         with:
@@ -69,7 +63,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: python scripts/probe_espn_props.py
+      - run: python -m research.probe_espn_props
       - uses: actions/upload-artifact@v4
         with:
           name: probe

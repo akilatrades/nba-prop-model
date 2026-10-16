@@ -1,9 +1,6 @@
 name: ESPN props
 # Stored sportsbook prop lines for 2025-26 games, for idea 2 (RESEARCH_LOG.md).
 on:
-  push:
-    branches: [main]
-    paths: ["scripts/backfill_espn_props.py", ".github/workflows/espn-props.yml"]
   workflow_dispatch:
 permissions:
   contents: write
@@ -22,8 +19,8 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: python fetch_data.py
-      - run: python scripts/backfill_espn_props.py
+      - run: python -m live.fetch_nba_data
+      - run: python -m research.backfill_espn_props
       - name: Commit
         run: |
           git config user.name "github-actions[bot]"

@@ -61,12 +61,12 @@ development seasons (2021-22 to 2024-25) gave the same picture:
 
 ## How it works
 
-1. **Data** ([`fetch_data.py`](fetch_data.py)): ESPN box scores for every player
+1. **Data** ([`live/fetch_nba_data.py`](live/fetch_nba_data.py)): ESPN box scores for every player
    and game since 2017-18, including who did not play and why, and the
    consensus closing spread and total for each game since 2020-21, from the
    sportsdataverse hoopR data repository.
 2. **Pre-game features, from earlier games only**
-   ([`features.py`](nba_model/features.py)):
+   ([`features.py`](markets/nba/features.py)):
    - *Minutes:* recent minutes (half-life of five games), minutes last game,
      share of recent starts, team games missed since he last played,
      back-to-backs, playoffs, and the size of the spread (big favourites rest
@@ -80,14 +80,14 @@ development seasons (2021-22 to 2024-25) gave the same picture:
      each stat that belongs to regulars (15+ minutes) who played in the
      team's last three games but are out tonight, split by position group,
      and the share belonging to regulars returning tonight.
-3. **Expected value** ([`marginals.py`](nba_model/marginals.py)): a Poisson
+3. **Expected value** ([`marginals.py`](markets/nba/marginals.py)): a Poisson
    regression per stat, with seasons weighted so one three years older counts
    half as much.
 4. **Range of outcomes:** the distribution of actual ÷ expected in the latest
    three seasons, kept separately for ten bands of expected value within three
    tiers of recent minutes (under 20, 20–30, 30+). This keeps the real shape,
    including zero-three nights and 40-point games.
-5. **Backtest** ([`evaluate.py`](nba_model/evaluate.py)): refit before every
+5. **Backtest** ([`evaluate.py`](markets/nba/evaluate.py)): refit before every
    calendar month on all earlier games, scored on the month it has not seen.
 
 ## Phase 2: the market test
@@ -98,7 +98,7 @@ rebounds, assists and threes market from Kalshi's first NBA props
 (2025-11-18) through the Finals. The rules were committed to
 [`RESEARCH_LOG.md`](RESEARCH_LOG.md) before the prices were downloaded, the
 model was frozen (commit `ce26c24`), and the test was run once
-([`run_market_test.py`](run_market_test.py)).
+([`research/market_test.py`](research/market_test.py)).
 
 **Sample:** markets that settled yes or no (markets on players who sat are
 settled at a fixed value and excluded), priced at the last hourly quote
@@ -133,7 +133,7 @@ the price at tip-off, the price reflects news the model does not have, such
 as starting lineups. [Results](outputs/market_test/results.json) ·
 [trades](outputs/market_test/trades.csv.gz) ·
 [every priced market](outputs/market_test/priced_markets.csv.gz) ·
-[independent recomputation](scripts/verify_market_test.py)
+[independent recomputation](research/verify_market_test.py)
 
 One exploratory check, run after the test and not pre-registered: blending
 the model with the market (weights refit each month on earlier months) and
@@ -144,7 +144,7 @@ trading money.
 
 Everything in this section was found after the market test failed, on the
 same season, so it is a hypothesis, not a result
-([log](RESEARCH_LOG.md), [code](run_strategy_backtest.py),
+([log](RESEARCH_LOG.md), [code](research/strategy_backtest.py),
 [results](outputs/strategy/results.json)).
 
 **Where the money went.** Priced at the mid, the model's picks made 2.4¢
@@ -153,7 +153,7 @@ per contract; buying at the ask and paying the fee cost 3.3¢. Markets with a
 of 5¢ or more lost 5.5¢. Prices a few hours before tip-off were softer than
 prices at tip-off, which already reflect lineup news.
 
-**The rule** ([`strategy.py`](nba_model/strategy.py)): take the price 2–6
+**The rule** ([`strategy.py`](kalshi/strategy.py)): take the price 2–6
 hours before tip-off; trade only markets with a spread of 2¢ or less; buy the
 side the model rates at least 5¢ better than its cost after the fee; one
 line per player, stat and game; skip anyone on the injury report. Stake 1% of
@@ -189,7 +189,7 @@ pass criteria were committed before the season (RESEARCH_LOG.md).
 The first approach (out-predict the price, then pay the spread) failed, so
 three different sources of edge were tested on 2025-26, each with its rules
 committed before its data was downloaded
-([log](RESEARCH_LOG.md), [code](run_new_ideas.py),
+([log](RESEARCH_LOG.md), [code](research/new_ideas.py),
 [results](outputs/new_ideas/results.json)).
 
 | Idea | What it does | Result |
@@ -216,7 +216,7 @@ day), resampling 2025-26's days 2,000 times:
 
 It needs a program placing and cancelling about 80 orders a day through
 Kalshi's API; the simulation cannot know how other traders would have
-reacted to those orders. [Independent recomputation](scripts/verify_maker.py)
+reacted to those orders. [Independent recomputation](research/verify_maker.py)
 
 ## Phase 6: the "no" seller, trading during games, and rewards
 
@@ -239,7 +239,7 @@ minutes on court rebuilt from substitutions, fouls, score, time left),
 fitted on earlier seasons, priced 47,570 live Kalshi quotes in 2025-26.
 Trading where it disagreed by 5¢ after fees: **+4.2¢ per contract over 4,978
 trades (t 6.3)**, +3.6¢ in the regular season
-([results](outputs/ingame/results.json), [code](run_ingame.py)). The profit
+([results](outputs/ingame/results.json), [code](research/ingame.py)). The profit
 depends on seeing plays quickly:
 
 | Game state known | ¢ per contract | t |
@@ -263,28 +263,28 @@ Three scheduled workflows run during the season:
 
 - [`kalshi.yml`](.github/workflows/kalshi.yml) saves every open Kalshi NBA
   prop market each morning and before each evening's tip-offs
-  ([`log_kalshi.py`](log_kalshi.py)), into `data/kalshi/`.
+  ([`live/log_kalshi.py`](live/log_kalshi.py)), into `data/kalshi/`.
 - [`projections.yml`](.github/workflows/projections.yml), four times a day:
   refreshes the box scores, settles paper positions
-  ([`run_paper.py`](run_paper.py)), reads ESPN's schedule, lines and injury
+  ([`live/nba_paper.py`](live/nba_paper.py)), reads ESPN's schedule, lines and injury
   report (Out and Doubtful players sit), refits the models from scratch on
   every completed game and prices every open Kalshi prop
-  ([`run_projections.py`](run_projections.py)). Output:
+  ([`live/nba_projections.py`](live/nba_projections.py)). Output:
   [`outputs/projections/latest.csv`](outputs/projections/) with the model's
   expected value and probability, Kalshi's bid and ask, and the edge on each
   side after fees, plus the bet card and paper ledger.
 - [`backfill.yml`](.github/workflows/backfill.yml) downloaded the settled
   2025-26 markets and their hourly prices for the market test
-  ([`scripts/backfill_kalshi.py`](scripts/backfill_kalshi.py)).
+  ([`research/backfill_kalshi.py`](research/backfill_kalshi.py)).
 
 ## Reproduce
 
 ```bash
 pip install -r requirements.txt
-python fetch_data.py               # box scores, schedules and lines (about 10 MB)
-python run_backtest.py             # development seasons; --holdout for 2025-26
-python run_market_test.py          # needs data/kalshi_history/ from the backfill
-python run_strategy_backtest.py    # Phase 4 rule replayed on 2025-26, $500 bankroll
+python -m live.fetch_nba_data               # box scores, schedules and lines (about 10 MB)
+python -m research.backtest             # development seasons; --holdout for 2025-26
+python -m research.market_test          # needs data/kalshi_history/ from the backfill
+python -m research.strategy_backtest    # Phase 4 rule replayed on 2025-26, $500 bankroll
 pytest                             # unit tests on synthetic games, no data needed
 ```
 

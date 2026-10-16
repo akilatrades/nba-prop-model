@@ -4,9 +4,6 @@ name: backfill Kalshi history
 # the last stopped, and a run with nothing left to fetch finishes in seconds.
 # Complete as of 2026-10-15; run by hand if it ever needs repeating.
 on:
-  push:
-    branches: [main]
-    paths: ["scripts/backfill_kalshi.py", ".github/workflows/backfill.yml"]
   workflow_dispatch:
 permissions:
   contents: write
@@ -32,7 +29,7 @@ jobs:
       # Kalshi's historical candles take about two seconds per request, so
       # more workers are needed to use the 10-per-second request budget.
       - run: >-
-          python scripts/backfill_kalshi.py --series ${{ matrix.series }}
+          python -m research.backfill_kalshi --series ${{ matrix.series }}
           --minutes 320 --workers 16
       - uses: actions/upload-artifact@v4
         with:

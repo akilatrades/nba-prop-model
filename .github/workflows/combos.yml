@@ -2,9 +2,6 @@ name: kalshi combos
 # Kalshi's NBA same-game combo (parlay) markets and a sample of their trades
 # (RESEARCH_LOG.md, parlays). The probe (scripts/probe_kalshi_combos.py) ran once.
 on:
-  push:
-    branches: [main]
-    paths: ["scripts/backfill_combos.py", ".github/workflows/combos.yml"]
   workflow_dispatch:
 permissions:
   contents: write
@@ -23,7 +20,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install pandas numpy pyarrow
-      - run: python scripts/backfill_combos.py --minutes 240 --workers 8 --sample 30000
+      - run: python -m research.backfill_combos --minutes 240 --workers 8 --sample 30000
       - name: Commit
         if: always()
         run: |

@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from nba_model.features import build_features, model_rows
+from markets.nba.features import build_features, model_rows
 from tests.synthetic import league
 
 

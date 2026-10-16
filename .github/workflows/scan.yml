@@ -1,9 +1,6 @@
 name: market scan
 # Which Kalshi sports markets share the NBA "no" seller's edge (RESEARCH_LOG.md, 2026-10-16).
 on:
-  push:
-    branches: [main]
-    paths: ["scripts/scan_markets.py", ".github/workflows/scan.yml"]
   workflow_dispatch:
 permissions:
   contents: write
@@ -20,7 +17,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: python scripts/scan_markets.py list
+      - run: python -m research.scan_markets list
       - uses: actions/upload-artifact@v4
         with:
           name: scan-series
@@ -43,7 +40,7 @@ jobs:
         with:
           name: scan-series
           path: outputs/scan
-      - run: python scripts/scan_markets.py scan --shard ${{ matrix.shard }} --shards 6 --minutes 300
+      - run: python -m research.scan_markets scan --shard ${{ matrix.shard }} --shards 6 --minutes 300
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -67,7 +64,7 @@ jobs:
           pattern: scan-*
           path: outputs/scan
           merge-multiple: true
-      - run: python scripts/scan_markets.py report
+      - run: python -m research.scan_markets report
       - name: Commit
         run: |
           git config user.name "github-actions[bot]"

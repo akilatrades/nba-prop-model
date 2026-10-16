@@ -1,7 +1,7 @@
 import pandas as pd
 import pytest
 
-from nba_model.paper_maker import (
+from kalshi.paper_props import (
     candidate_orders,
     check_fills,
     empty_ledger,

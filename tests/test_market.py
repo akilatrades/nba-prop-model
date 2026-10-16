@@ -2,13 +2,9 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from nba_model.market import (
-    clustered_logit,
-    clustered_mean_t,
-    match_markets,
-    price_at_tip,
-    trades,
-)
+from kalshi.prices import price_at_tip
+from kalshi.stats import clustered_logit, clustered_mean_t
+from markets.nba.market import match_markets, trades
 
 
 def test_clustered_t_matches_plain_t_with_singleton_clusters():

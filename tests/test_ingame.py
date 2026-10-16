@@ -1,7 +1,7 @@
 import pandas as pd
 import pytest
 
-from nba_model.ingame import game_states, minutes_until, on_court_intervals
+from markets.nba.ingame import game_states, minutes_until, on_court_intervals
 
 
 def plays():

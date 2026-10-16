@@ -1,11 +1,11 @@
 [project]
-name = "nba-prop-model"
+name = "sports-market-maker"
 version = "0.1.0"
-description = "NBA player-prop pricing model, tested against Kalshi prices"
+description = "Market making in Kalshi sports markets: resting orders against retail flow, with sport models as filters"
 requires-python = ">=3.11"
 license = {text = "MIT"}
 authors = [{name = "Akila Juan"}]
-keywords = ["sports-betting", "player-props", "prediction-markets", "kalshi", "nba", "python"]
+keywords = ["prediction-markets", "kalshi", "market-making", "player-props", "nba", "nfl", "python"]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]

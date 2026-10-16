@@ -22,7 +22,7 @@ jobs:
       - name: Run (errors shown as an annotation)
         run: |
           set -o pipefail
-          python run_paper_markets.py 2>&1 | tee run.log || {
+          python -m live.paper_markets 2>&1 | tee run.log || {
             echo "::error::$(tail -c 3000 run.log | sed ':a;N;$!ba;s/%/%25/g;s/\n/%0A/g')"
             exit 1
           }

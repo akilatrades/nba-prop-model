@@ -21,7 +21,7 @@ at tip-off, after Kalshi's fees?
 - **Kalshi prices:** every settled market in the series KXNBAPTS, KXNBAREB,
   KXNBAAST and KXNBA3PT for 2025-26 games, with hourly candles (yes bid,
   yes ask, last price, volume) around each game, from Kalshi's public
-  historical API. Downloaded by `scripts/backfill_kalshi.py` in GitHub
+  historical API. Downloaded by `research/backfill_kalshi.py` in GitHub
   Actions starting 2026-10-15.
 
 ### Split
@@ -88,7 +88,7 @@ money.
 
 ## 2026-10-15: Development results; model frozen
 
-**Model** (`nba_model/features.py`, `nba_model/marginals.py`): for each stat a
+**Model** (`markets/nba/features.py`, `markets/nba/marginals.py`): for each stat a
 Poisson regression on expected minutes (recent minutes, minutes last game,
 share of starts, team games missed, teammates out or back, back-to-back,
 playoffs, home, size of the spread), the player's per-minute rate shrunk
@@ -229,7 +229,7 @@ model before then is logged here with its date.
 Everything in this entry was found after the market test failed, on the same
 2025-26 markets. It is in-sample and is recorded so the choices can be
 checked; it proves nothing until 2026-27 confirms it
-(`run_strategy_backtest.py`, `outputs/strategy/`).
+(`research/strategy_backtest.py`, `outputs/strategy/`).
 
 **Where the money went.** Priced at the mid, with no spread or fee, the
 model's picks made +2.4¢ per contract (t 3.9). Buying at the ask and paying
@@ -240,7 +240,7 @@ spreads of 2¢ or less, prices taken 2, 4 and 6 hours before tip-off gave
 teammates-out features switched off
 ([grid](outputs/strategy/exploratory_grid.csv)).
 
-**The rule** (`nba_model/strategy.py`): price taken 2–6 hours before tip-off;
+**The rule** (`kalshi/strategy.py`): price taken 2–6 hours before tip-off;
 spread of 2¢ or less; the model's edge at least 5¢ after the fee; one line
 per player, stat and game; live, skip anyone on the injury report. Staking:
 1% of the bankroll per position, at most $25 or 100 contracts, at most 30%
@@ -356,7 +356,7 @@ and that decision is the account holder's.
 
 ## 2026-10-15: Results for the three new ideas
 
-Run once each as written above (`run_new_ideas.py`,
+Run once each as written above (`research/new_ideas.py`,
 [results](outputs/new_ideas/results.json)). Data downloaded after the tests
 were committed: 657,723 Kalshi trade prints in the six hours before tip-off,
 4,879 double-double and 1,171 triple-double markets, and ESPN's stored
@@ -379,7 +379,7 @@ Reported checks: every fill requiring a trade through the price, +3.0¢
 (t 3.6); the model without the teammates-out features, +3.8¢ (t 5.0); "no"
 orders +3.5¢ (t 4.2), "yes" orders +0.1¢ (t 0.1). Return per dollar on
 filled orders 10.8%. Recomputed with separate code
-(`scripts/verify_maker.py`): identical.
+(`research/verify_maker.py`): identical.
 
 $500 bankroll (each order reserves its cost while it rests; 1% per order,
 day's orders capped at 30% of the bankroll, fills limited to the contracts
@@ -520,7 +520,7 @@ that updates on the live game state price them better than the market?
 
 ### In-game: passed, but the edge is speed
 
-Run once as written above (`run_ingame.py`,
+Run once as written above (`research/ingame.py`,
 [results](outputs/ingame/results.json)). The state rebuilt from play-by-play
 matches the box scores (stats exactly; minutes within about 0.8), and the
 in-game model fitted on 2023-24 alone was calibrated on 2024-25 within half
@@ -731,7 +731,7 @@ major sports; markets that expire long after the event, such as season-long
 or multi-day ones, are reported but flagged). At each candle with a
 two-sided quote, a resting "no" order one cent inside the ask (at the bid
 when the spread is one cent) rests for one hour and fills from the trade
-prints with the price-priority rules of `nba_model/maker.py`. The mirror
+prints with the price-priority rules of `kalshi/maker.py`. The mirror
 "yes" order is run the same way. One order per market per hour.
 
 **Measures per series:** fills, contracts traded through, profit per filled
@@ -808,7 +808,7 @@ positions. Noted, not pursued at $500.
 
 Five of the passing or near-passing series that are in season now run the
 scan's model-free rule as live paper tests, each from its own $500
-(`nba_model/paper_markets.py`, every three hours): ITF men's tennis, NASCAR
+(`kalshi/paper_markets.py`, every three hours): ITF men's tennis, NASCAR
 race winners, Liga MX and La Liga spreads, and NFL anytime touchdown. The
 rule is as scanned (orders 4 to 10 hours before expected expiration, one
 cent inside the ask, cancelled at the next run or three hours before

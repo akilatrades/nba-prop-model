@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 from scipy.stats import multivariate_normal
 
-from nba_model.correlation import (
+from markets.nba.correlation import (
     bvn_cdf,
     double_double,
     fit_rho,

@@ -1,8 +1,8 @@
 import pandas as pd
 import pytest
 
-from nba_model.features import build_features, model_rows
-from nba_model.live import (
+from markets.nba.features import build_features, model_rows
+from markets.nba.live import (
     home_spread_from,
     parse_injuries,
     parse_scoreboard,

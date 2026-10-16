@@ -23,7 +23,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: python log_kalshi.py
+      - run: python -m live.log_kalshi
       - name: Commit snapshot
         run: |
           git config user.name "github-actions[bot]"

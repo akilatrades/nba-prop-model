@@ -1,6 +1,6 @@
 import pandas as pd
 
-from nba_model.paper_markets import (
+from kalshi.paper_markets import (
     check_fills,
     empty_ledger,
     post_orders,
