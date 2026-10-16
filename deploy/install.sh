@@ -12,7 +12,7 @@ if [ ! -d sports-market-maker ]; then
   sudo -u trader git clone -q https://github.com/akilatrades/sports-market-maker.git
 fi
 cd sports-market-maker
-sudo -u trader git pull -q
+sudo -u trader git pull -q || true
 sudo -u trader python3 -m venv .venv
 sudo -u trader .venv/bin/pip install -q -r requirements.txt
 
@@ -38,8 +38,9 @@ cat > /home/trader/run.sh <<'RUN'
 #!/usr/bin/env bash
 set -euo pipefail
 cd /home/trader/sports-market-maker
-set -a; source /etc/market-maker.env; set +a
+# Credentials arrive from systemd's EnvironmentFile; nothing is read here.
 git pull -q --rebase origin main || true
+mkdir -p outputs/live
 .venv/bin/python -m live.nba_trade >> /home/trader/trader.log 2>&1
 if [ -n "${GIT_TOKEN:-}" ]; then
   git add -A outputs/live >/dev/null 2>&1 || true
