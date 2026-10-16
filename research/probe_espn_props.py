@@ -25,7 +25,7 @@ OUT = Path("outputs/probes/espn_props.json")
 
 
 def get(url):
-    request = urllib.request.Request(url, headers={"User-Agent": "nba-prop-model"})
+    request = urllib.request.Request(url, headers={"User-Agent": "sports-market-maker"})
     try:
         with urllib.request.urlopen(request, timeout=30) as response:
             return response.status, json.load(response)

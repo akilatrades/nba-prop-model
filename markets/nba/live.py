@@ -31,7 +31,7 @@ SCHEDULE_COLUMNS = [
 
 
 def get_json(url):
-    request = urllib.request.Request(url, headers={"User-Agent": "nba-prop-model"})
+    request = urllib.request.Request(url, headers={"User-Agent": "sports-market-maker"})
     with urllib.request.urlopen(request, timeout=30) as response:
         return json.load(response)
 

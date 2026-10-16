@@ -49,7 +49,7 @@ the quoting market makers, and is noted as the destination, not pursued.
 Fills are read from Kalshi's public trade prints with price priority (an
 order fills only with contracts that traded through its price), and
 positions settle from Kalshi's results. Scorecards:
-[`outputs/paper_maker/`](outputs/paper_maker/) (NBA),
+`outputs/paper_maker/` (NBA, from opening night 2026-10-20),
 [`outputs/paper_markets/`](outputs/paper_markets/) (everything else).
 Pass criteria are fixed in the log; nothing is traded with money.
 

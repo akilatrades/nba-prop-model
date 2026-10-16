@@ -4,7 +4,7 @@ This is the NBA project as it stood before it became part of
 [sports-market-maker](../README.md). It is kept as the record of Phases 1-6;
 the current state of the strategy is in the top-level README and
 [RESEARCH_LOG.md](../RESEARCH_LOG.md). Links to files below are relative to the
-repository root.
+repository root; the live NBA outputs it links to (projections, bets, paper ledgers) are created by the scheduled jobs from opening night, 2026-10-20.
 
 [![tests](https://github.com/akilatrades/sports-market-maker/actions/workflows/tests.yml/badge.svg)](https://github.com/akilatrades/sports-market-maker/actions/workflows/tests.yml)
 
@@ -72,7 +72,7 @@ development seasons (2021-22 to 2024-25) gave the same picture:
    consensus closing spread and total for each game since 2020-21, from the
    sportsdataverse hoopR data repository.
 2. **Pre-game features, from earlier games only**
-   ([`features.py`](markets/nba/features.py)):
+   ([`features.py`](../markets/nba/features.py)):
    - *Minutes:* recent minutes (half-life of five games), minutes last game,
      share of recent starts, team games missed since he last played,
      back-to-backs, playoffs, and the size of the spread (big favourites rest
@@ -86,14 +86,14 @@ development seasons (2021-22 to 2024-25) gave the same picture:
      each stat that belongs to regulars (15+ minutes) who played in the
      team's last three games but are out tonight, split by position group,
      and the share belonging to regulars returning tonight.
-3. **Expected value** ([`marginals.py`](markets/nba/marginals.py)): a Poisson
+3. **Expected value** ([`marginals.py`](../markets/nba/marginals.py)): a Poisson
    regression per stat, with seasons weighted so one three years older counts
    half as much.
 4. **Range of outcomes:** the distribution of actual ÷ expected in the latest
    three seasons, kept separately for ten bands of expected value within three
    tiers of recent minutes (under 20, 20–30, 30+). This keeps the real shape,
    including zero-three nights and 40-point games.
-5. **Backtest** ([`evaluate.py`](markets/nba/evaluate.py)): refit before every
+5. **Backtest** ([`evaluate.py`](../markets/nba/evaluate.py)): refit before every
    calendar month on all earlier games, scored on the month it has not seen.
 
 ## Phase 2: the market test
@@ -159,7 +159,7 @@ per contract; buying at the ask and paying the fee cost 3.3¢. Markets with a
 of 5¢ or more lost 5.5¢. Prices a few hours before tip-off were softer than
 prices at tip-off, which already reflect lineup news.
 
-**The rule** ([`strategy.py`](kalshi/strategy.py)): take the price 2–6
+**The rule** ([`strategy.py`](../kalshi/strategy.py)): take the price 2–6
 hours before tip-off; trade only markets with a spread of 2¢ or less; buy the
 side the model rates at least 5¢ better than its cost after the fee; one
 line per player, stat and game; skip anyone on the injury report. Stake 1% of

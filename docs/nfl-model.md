@@ -19,7 +19,7 @@ A same-game parlay pricing model, built and tested in phases. The goal is a fair
 
 **Across 125,803 player-stat predictions from 2019 through week 5 of 2026, each made using only earlier games, the model's probabilities were calibrated to within about one percentage point in every band, and it beat each player's own recent average on all six stats.** The gain is large for quarterbacks and touchdowns and small for receiving and rushing yards, where a player's recent production is already a strong guide.
 
-![Calibration](outputs/backtest/calibration.svg)
+![Calibration](../outputs/nfl/backtest/calibration.svg)
 
 | Stat | Player-games | Typical miss: model vs recent average | Brier score improvement | Log loss improvement |
 |---|---:|---:|---:|---:|
@@ -30,7 +30,7 @@ A same-game parlay pricing model, built and tested in phases. The goal is a fair
 | Rushing yards (RB) | 11,055 | 19.1 vs 19.1 yards | 0.9% | 1.4% |
 | Receptions (WR, TE, RB) | 35,774 | 1.31 vs 1.31 | 0.7% | 1.0% |
 
-"Typical miss" is mean absolute error of the expected value. Brier score and log loss score the over/under probabilities at the lines below; lower is better, and the improvement is relative to the baseline. The baseline is each player's own recent average (same recency weighting) with the same outcome-spread layer, so the comparison isolates what the extra pre-game information adds. [Full summary](outputs/backtest/summary.csv)
+"Typical miss" is mean absolute error of the expected value. Brier score and log loss score the over/under probabilities at the lines below; lower is better, and the improvement is relative to the baseline. The baseline is each player's own recent average (same recency weighting) with the same outcome-spread layer, so the comparison isolates what the extra pre-game information adds. [Full summary](../outputs/nfl/backtest/summary.csv)
 
 ### Calibration by line
 
@@ -45,25 +45,25 @@ A same-game parlay pricing model, built and tested in phases. The goal is a fair
 | QB 2+ passing TDs | 45.2% | 44.5% |
 | Anytime TD | 19.7% | 19.9% |
 
-[All lines](outputs/backtest/by_line.csv) · [Calibration bands](outputs/backtest/calibration.csv) · [Bias by season](outputs/backtest/season_bias.csv)
+[All lines](../outputs/nfl/backtest/by_line.csv) · [Calibration bands](../outputs/nfl/backtest/calibration.csv) · [Bias by season](../outputs/nfl/backtest/season_bias.csv)
 
 For yardage, actual results fell at or below the model's 90th percentile 90% of the time (89.7% for passing yards, 90.0–90.2% for the others). For passing yards, a continuous stat, 10.8% fell at or below the 10th percentile and 50.2% at or below the median.
 
 ## How it works
 
-1. **Data.** Weekly box scores for every QB, RB, WR and TE since 2012, weekly injury reports, and every game's closing spread, total and moneyline, from nflverse ([`fetch_data.py`](fetch_data.py)).
-2. **Pre-game features, from earlier games only** ([`features.py`](parlay_model/features.py)):
+1. **Data.** Weekly box scores for every QB, RB, WR and TE since 2012, weekly injury reports, and every game's closing spread, total and moneyline, from nflverse ([`fetch_data.py`](../live/fetch_nfl_data.py)).
+2. **Pre-game features, from earlier games only** ([`features.py`](../markets/nfl/features.py)):
    - *Usage:* the player's recent share of his team's targets, carries or pass attempts, and the team's recent volume. Recent games count most (exponential weighting, half-life of four games).
    - *Efficiency:* yards per target, carry or attempt, catch rate and touchdown rates over his last 24 games, shrunk toward the position average from earlier seasons, so a few lucky games do not dominate.
    - *Game environment:* the team's implied points (closing total and spread) and no-vig win probability, and what the opponent's defense has allowed recently.
    - *Teammates out:* the share of last game's targets and carries that belonged to teammates now listed Out or Doubtful on the injury report, split into the player's own position group and others.
-3. **Expected value** ([`marginals.py`](parlay_model/marginals.py)). A Poisson regression per stat. Seasons are weighted so that one three years older counts half as much. [Fitted coefficients](outputs/projections/coefficients.csv): for example, anytime-TD expectations scale almost one-for-one with the team's implied points (coefficient 1.01 on the log scale).
+3. **Expected value** ([`marginals.py`](../markets/nfl/marginals.py)). A Poisson regression per stat. Seasons are weighted so that one three years older counts half as much. [Fitted coefficients](../outputs/nfl/projections/coefficients.csv): for example, anytime-TD expectations scale almost one-for-one with the team's implied points (coefficient 1.01 on the log scale).
 4. **Range of outcomes.** For yards and receptions, the distribution of actual ÷ expected from the latest four seasons, kept separately for ten bands of expected value. This keeps the real shape, including zero-catch games and long tails. Anytime TDs follow a Poisson. Passing TDs vary less than a Poisson allows, so they use a binomial whose number of "chances" is fitted by likelihood.
-5. **Backtest** ([`evaluate.py`](parlay_model/evaluate.py)). The model is refit before every four-week block (weeks 1–4, 5–8, 9–12, 13–18) on all earlier games, from 2019 through 2026 week 5, and scored on the block it has not seen.
+5. **Backtest** ([`evaluate.py`](../markets/nfl/evaluate.py)). The model is refit before every four-week block (weeks 1–4, 5–8, 9–12, 13–18) on all earlier games, from 2019 through 2026 week 5, and scored on the block it has not seen.
 
 ## The injury report
 
-When a starter is ruled out, his targets and carries go somewhere. Phase 1 reads the final injury report, drops players listed Out or Doubtful, and gives the model the share of last game's volume they leave behind. The fitted coefficients say where it goes: teammates at the missing player's position absorb about all of his targets (coefficient 1.15 for receiving yards, where 1.0 means "in proportion to their usage"), while players at other positions pick up much less (0.32). [Coefficients](outputs/projections/coefficients.csv)
+When a starter is ruled out, his targets and carries go somewhere. Phase 1 reads the final injury report, drops players listed Out or Doubtful, and gives the model the share of last game's volume they leave behind. The fitted coefficients say where it goes: teammates at the missing player's position absorb about all of his targets (coefficient 1.15 for receiving yards, where 1.0 means "in proportion to their usage"), while players at other positions pick up much less (0.32). [Coefficients](../outputs/nfl/projections/coefficients.csv)
 
 On player-games where teammates ruled out had at least 20% of the team's targets (carries, for rushing), the backtest with the injury report against the same backtest without it:
 
@@ -73,21 +73,21 @@ On player-games where teammates ruled out had at least 20% of the team's targets
 | Receptions | 1,378 | 2.32 | 1.98 | **2.30** | 1.7% |
 | Rushing yards | 500 | 30.8 | 23.1 | **31.5** | 1.6% |
 
-Without the report the model under-projected the remaining players by 15–25% in those games; with it the average projection lands within about 2% of what happened. Mean absolute error rose slightly (receiving 17.2 → 17.7 yards), because the extra volume is spread across every teammate when in practice one or two absorb it. Overall, on all games, the change is small because most weeks have no major absence. [Injury effect](outputs/backtest/injury_effect.csv)
+Without the report the model under-projected the remaining players by 15–25% in those games; with it the average projection lands within about 2% of what happened. Mean absolute error rose slightly (receiving 17.2 → 17.7 yards), because the extra volume is spread across every teammate when in practice one or two absorb it. Overall, on all games, the change is small because most weeks have no major absence. [Injury effect](../outputs/nfl/backtest/injury_effect.csv)
 
 ## Checking against Kalshi
 
 Phase 1's probabilities still have to beat a market. Kalshi publishes its NFL player-prop prices (passing, rushing and receiving yards, receptions, passing TDs, anytime TD) as ladders of contracts such as "80+ receiving yards", priced in cents, and the data needs no login.
 
-- [`log_kalshi.py`](log_kalshi.py) saves every open market. A [scheduled workflow](.github/workflows/kalshi.yml) runs it daily and shortly before each kickoff window, writing to `data/kalshi/`.
-- A [daily workflow](.github/workflows/refresh.yml) refreshes nflverse data and the injury report, reruns projections, and saves the model's over-probability at every ladder line (`outputs/projections/ladders/`), time-stamped.
-- [`compare_market.py`](compare_market.py) matches each Kalshi market to the model's price made before kickoff and the last Kalshi price before kickoff, adds the result once the game is played, and scores both. It also records the paper trades a simple rule would make: buy whichever side the model prices at least 5¢ above the ask after Kalshi's fee (0.07 × price × (1 − price) per contract, before rounding). Results go to [`outputs/market/`](outputs/market/).
+- [`log_kalshi.py`](../live/nfl_log_kalshi.py) saves every open market. A [scheduled workflow](../.github/workflows/kalshi.yml) runs it daily and shortly before each kickoff window, writing to `data/kalshi/`.
+- A [daily workflow](../.github/workflows/nfl-refresh.yml) refreshes nflverse data and the injury report, reruns projections, and saves the model's over-probability at every ladder line (`outputs/projections/ladders/`), time-stamped.
+- [`compare_market.py`](../live/nfl_compare.py) matches each Kalshi market to the model's price made before kickoff and the last Kalshi price before kickoff, adds the result once the game is played, and scores both. It also records the paper trades a simple rule would make: buy whichever side the model prices at least 5¢ above the ask after Kalshi's fee (0.07 × price × (1 − price) per contract, before rounding). Results go to [`outputs/market/`](../outputs/nfl/market/).
 
 The log started in October 2026 (week 6), so there are no settled comparisons yet. The question it answers is the one that matters: are the model's prices better than Kalshi's, and on which kinds of props?
 
 ## This week's projections
 
-[`outputs/projections/2026_week06.csv`](outputs/projections/2026_week06.csv) lists every player expected to play in 2026 week 6: the expected value and the 10th, 25th, 50th, 75th and 90th percentiles for yardage and receptions, and the chance of 1+, 2+ and 3+ touchdowns. Read the percentiles as "a 10% chance of fewer than p10, a 10% chance of more than p90".
+[`outputs/projections/2026_week06.csv`](../outputs/nfl/projections/2026_week06.csv) lists every player expected to play in 2026 week 6: the expected value and the 10th, 25th, 50th, 75th and 90th percentiles for yardage and receptions, and the chance of 1+, 2+ and 3+ touchdowns. Read the percentiles as "a 10% chance of fewer than p10, a 10% chance of more than p90".
 
 Projections refresh daily. Players listed Out or Doubtful are removed and their volume is handed to teammates; Questionable players stay in, flagged in the `injury_status` column. The injury report is final on Friday (earlier for Thursday games), so earlier runs in the week are provisional. Late scratches are not covered: check the news before kickoff. The starting quarterback is the one listed in the schedule.
 
