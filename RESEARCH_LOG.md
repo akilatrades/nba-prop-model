@@ -897,3 +897,81 @@ happen"); winner markets ("A beats B") lost in the scan and are losing live.
 
 **Not yet done, needs a purchase:** a sportsbook-line veto (live odds feed,
 about $40 a month). To be pre-registered when the feed is in hand.
+
+## 2026-10-16: Raising the edge: sportsbook-line veto, early exit, faster quoting
+
+Written before any of it runs. Profit for a resting-order seller is fills x
+edge per fill x capital turns, less what informed buyers take back. One
+change per term, each judged separately.
+
+### Sportsbook-line veto (edge per fill)
+
+The model is the bouncer that decides which "no" tickets to sell. The
+sportsbooks are a better bouncer: they price every player prop with far
+more information than four stat models fit on box scores. A "no" sold
+where Kalshi's "yes" ask is above the books' probability of the over is
+selling an overpriced ticket; one sold below it is selling a cheap ticket to
+someone who may know more.
+
+**Data.** The Odds API (paid feed, bought 2026-10-16): US books' player
+points, rebounds, assists and threes lines, main and alternate. Book
+probability of the over at a line = the average, across books quoting both
+sides of that exact line, of the over's implied probability with the vig
+removed proportionally. A Kalshi line with no book quote has no book
+probability and is left to the model.
+
+**Historical test, run first.** From the 2025-26 "no" seller's 33,475
+fills (`outputs/decompose/orders_no.csv.gz`, orders posted 5 h and 2 h
+before tip-off), a random sample of 150 games, stratified by month (seed
+20261016, chosen before fetching). For each, the books' lines at the moment
+the order was posted (the feed's snapshot at or just before `end_ts`).
+Reported, in cents per filled contract with game-clustered t:
+
+1. all fills in the sample (the baseline, to compare with the season's 1.65¢);
+2. fills with a book quote at the exact line (coverage, and whether covered
+   lines differ from uncovered ones);
+3. **the veto**: covered fills where (1 - p_book) - no price - maker fee ≥ 0;
+   and the fills it removes;
+4. the veto at a 2¢ margin;
+5. the model veto on the same covered fills, for comparison;
+6. both vetoes together.
+
+**Pass:** (3) beats (2) by at least 1¢ per contract with the difference's
+clustered t ≥ 2, on a sample of at least 2,000 covered fills. If it passes,
+`no_seller_bookline` runs as the live trader's rule from opening night;
+if not, the trader keeps v1 and the book line runs as a paper ledger only.
+About 12,000 of the feed's 100,000 monthly credits.
+
+**Paper ledger `no_seller_bookline`,** from opening night, $500, beside the
+others: v1's rule with the book veto on covered lines and the model veto on
+uncovered ones. Book lines are logged every two hours in NBA hours
+(`outputs/books/`), so the test can be re-run on this season's quotes.
+
+### Early exit (capital turns)
+
+A "no" held to settlement ties up its cost for hours and carries the
+game's variance. Rule, live only: when the exchange's "yes" ask has fallen
+at least 6¢ below the level we sold at (so the "no" we hold is worth at
+least 6¢ more than we paid), rest a sell order for the position 1¢ inside
+the "no" bid, post-only, expiring at tip-off. Judged on the exits ledger
+(`outputs/live/exits.csv`): realized exit profit against what the same
+contracts would have made held to settlement, over the first 200 exits.
+The 6¢ threshold is roughly three times the round-trip maker fee at the
+mid; it was not fitted to anything.
+
+### Protecting the edge (adverse selection)
+
+- The server quotes every minute instead of every five; the first order at
+  a price level fills first, and a quote that is a minute stale is less
+  likely to be the one a sharp sweeps.
+- Resting orders on a player whose injury-report entry changed since the
+  order was placed, or who is now Out or Doubtful, are cancelled on the
+  next run, not just skipped for new orders. Logged with the reason.
+- No new order inside 15 minutes of tip-off (v1's window already stops at
+  30 minutes; this is a hard floor for every rule).
+
+These are protective, not profit rules; their effect shows up as the gap
+between paper fills (which assume we get every print through our price)
+and real fills. Reported monthly: real fill rate against the paper ledger's,
+and realized cents per contract against the paper ledger's over the same
+markets.
