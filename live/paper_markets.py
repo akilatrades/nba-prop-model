@@ -34,6 +34,7 @@ def main():
     ledger = check_fills(ledger, fetch_trades, int(now.timestamp()))
     ledger = settle(ledger, fetch_market)
     nfl_games = None
+    seen = {}
     for series in SERIES:
         try:
             markets = fetch_markets(series, status="open", historical=False)
@@ -43,6 +44,7 @@ def main():
         posted = post_orders(series, markets, ledger, now)
         ledger = pd.concat([ledger, posted], ignore_index=True)[COLUMNS]
         print(f"{series}: {len(markets)} open markets, {len(posted)} new orders")
+        seen[series] = {"open": len(markets), "posted": int(len(posted))}
         if series in MODEL_SERIES:
             # The same markets with the NFL model as veto (RESEARCH_LOG.md, 2026-10-16).
             if nfl_games is None:
@@ -56,6 +58,7 @@ def main():
                 f"{label}: {len(p_model)} priced by the model, {len(posted) - vetoed} orders, {vetoed} vetoed"
             )
     ledger.to_csv(LEDGER, index=False)
+    print("::notice::" + json.dumps(seen))
     labels = list(SERIES) + [s + MODEL_SUFFIX for s in SERIES if s in MODEL_SERIES]
     cards = {s: scorecard(ledger, s) for s in labels}
     cards["updated_utc"] = now.isoformat(timespec="minutes")
