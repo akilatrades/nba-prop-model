@@ -709,3 +709,39 @@ flow does. Adding sports (independent days, half the flow, no cap, $25,000):
 1 sport $70k, 2 sports $88k, 3 sports $101k, 5 sports $116k median, with
 the drawdown falling from 8% to 2%. Fewer sports with no cap beat more
 sports with the cap. All in-sample, one season, assuming the edge holds.
+
+## 2026-10-16: Market scan, fixed before the data is downloaded
+
+Question: in which Kalshi sports markets does the structural edge found in
+NBA props (resting "no" orders fill against uninformed "yes" buyers) also
+exist? The scan needs no model; it measures the flow asymmetry alone, so a
+positive result is the floor the model filter would build on.
+
+**Markets.** Every Kalshi series in the Sports category, excluding combo
+(multivariate) series. From each series' settled markets of the last 400
+days, a random sample (seed 0) of up to 1,200 that traded and settled yes
+or no. Series whose first page of settled markets shows under $20,000 of
+volume are skipped. NBA props are included as the control: the scan's
+numbers for them should agree in sign with idea 1.
+
+**Generic timing** (there is no tip-off time for most sports): hourly
+candles ending between 7 and 4 hours before the market's expected
+expiration (a game lasts about three hours, so this is pre-game for the
+major sports; markets that expire long after the event, such as season-long
+or multi-day ones, are reported but flagged). At each candle with a
+two-sided quote, a resting "no" order one cent inside the ask (at the bid
+when the spread is one cent) rests for one hour and fills from the trade
+prints with the price-priority rules of `nba_model/maker.py`. The mirror
+"yes" order is run the same way. One order per market per hour.
+
+**Measures per series:** fills, contracts traded through, profit per filled
+contract after the maker fee (25% of 0.07 x P x (1 - P)) and its t with
+standard errors clustered by event (game); the same for "yes" orders;
+fill rate; median spread; volume of the sample. Plus profit per contract
+for the first and second half of each series' sample dates.
+
+**Pass, per series:** "no" orders positive with t ≥ 2.0 and positive in
+both halves, and "yes" orders not significantly positive (that would mean
+the flow is two-sided and the "no" edge is spread capture a model could
+also get on the yes side). Passing series are candidates for a model and a
+pre-registered test of their own; nothing is traded from this scan.
