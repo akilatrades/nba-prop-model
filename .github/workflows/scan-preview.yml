@@ -1,0 +1,67 @@
+name: scan preview
+# Reads the finished shards of a running market scan and prints a preview of
+# the merged results (new passing series by category). Writes nothing to the
+# repository; the scan's own report stage does that when every shard is in.
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: run id of the market scan to preview
+        required: true
+permissions:
+  contents: read
+  actions: read
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: scan-*
+          merge-multiple: true
+          path: outputs/scan
+          run-id: ${{ inputs.run_id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Preview
+        run: |
+          ls outputs/scan | head -40
+          python - <<'PY'
+          import json, glob
+          from pathlib import Path
+          out = Path("outputs/scan")
+          prev = {}
+          if (out / "results.json").exists():
+              for r in json.loads((out / "results.json").read_text()):
+                  if "no_resting" in r:
+                      prev[r["series"]] = r
+          new = {}
+          for p in sorted(out.glob("scan_*.json")):
+              for r in json.loads(p.read_text()):
+                  if "no_resting" in r and r["series"] not in prev:
+                      new[r["series"]] = r
+          rows = []
+          for s, r in new.items():
+              n = r.get("no_resting") or {}
+              rows.append({"series": s, "category": r.get("category"), "title": (r.get("title") or "")[:50],
+                           "fills": n.get("fills"), "cents": n.get("cents_per_contract"), "t": n.get("t"),
+                           "h1": n.get("first_half_cents"), "h2": n.get("second_half_cents"), "passes": r.get("passes")})
+          scanned = [x for x in rows if x["fills"] is not None]
+          print(f"NEW SERIES SCANNED: {len(scanned)} (of {len(rows)} listed)")
+          top = sorted([x for x in scanned if (x["fills"] or 0) >= 300], key=lambda x: -(x["t"] or -99))[:40]
+          for x in top:
+              print(f"{'PASS' if x['passes'] else '    '} {x['series']:<28} {str(x['category']):<14} fills {x['fills']:>6} {(x['cents'] or 0):+6.2f}c t {(x['t'] or 0):5.2f}  | {x['title']}")
+          json.dump(rows, open("preview.json", "w"), indent=1, default=str)
+          PY
+          echo "::notice::$(python -c "
+          import json; rows=json.load(open('preview.json')); sc=[r for r in rows if r['fills'] is not None]; ps=[r for r in sc if r['passes']]
+          print(len(sc),'new series scanned;',len(ps),'pass:', ', '.join(f\"{r['series']}({r['category']},{r['fills']}f,{r['cents']:+.1f}c,t{r['t']:.1f})\" for r in sorted(ps,key=lambda r:-r['t'])))" | cut -c1-3900)"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: scan-preview
+          path: preview.json
