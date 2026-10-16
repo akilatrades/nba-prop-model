@@ -23,7 +23,7 @@ TRADE_MODE=dry
 KALSHI_ENV=demo
 # Which "no" seller variant to trade: no_seller (v1) or no_seller_bookline
 # once its historical test passes (RESEARCH_LOG.md, 2026-10-16).
-TRADE_RULE=no_seller
+TRADE_RULE=no_seller_bookline
 KALSHI_KEY_ID=paste-key-id-here
 KALSHI_PRIVATE_KEY=paste-private-key-here
 ODDS_API_KEY=paste-odds-key-here

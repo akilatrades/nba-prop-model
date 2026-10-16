@@ -1033,3 +1033,28 @@ the first fill. The replay's drawdowns (21-46%) are larger than the
 2026-10-16 scaling entry's (5-12%), which sized edge-first within a day
 without a per-game cap and measured drawdown differently; these are the
 numbers to plan around.
+
+### Result: sportsbook-line veto, historical test (run 2026-10-16 19:19 UTC)
+
+151 games sampled, all found in the feed; 4,862 fills; a book quote at the
+exact line for 66% of them (3,197). Cents per filled contract, game-clustered t:
+
+| Fills | Count | ¢/contract | t |
+|---|---:|---:|---:|
+| All in the sample | 4,862 | +2.04 | 1.8 |
+| Covered by a book quote | 3,197 | +2.15 | 1.6 |
+| **Book veto (book edge ≥ 0)** | 1,647 | **+3.81** | **2.4** |
+| Removed by the book veto | 1,550 | +0.38 | 0.3 |
+| Book veto at 2¢ | 476 | +2.23 | 1.0 |
+| Model veto, same covered fills | 2,074 | +2.69 | 1.6 |
+| Both vetoes | 1,149 | +3.74 | 1.9 |
+
+Kept minus removed: +3.44¢, t 2.42. Gain over all covered fills +1.66¢.
+**Passes the pre-registered test** (≥ 1¢, t ≥ 2, ≥ 2,000 covered fills).
+The books are better calibrated than Kalshi's ask at every decile (table in
+`outputs/bookline/summary.md`); the 2¢ margin removes too much. Per the
+pre-registration, `no_seller_bookline` is the live trader's default rule
+from opening night (`TRADE_RULE`), with the model veto on uncovered lines.
+Caveats: 150 games, one season, and the fills the veto removes were still
+slightly positive, so the gain is in selection, not in avoiding losses; the
+paper ledger beside v1 is the out-of-sample test.
