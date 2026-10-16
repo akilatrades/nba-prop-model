@@ -1,6 +1,7 @@
 {
   "KXITFMATCH": {
     "orders": 33,
+    "vetoed": 0,
     "open": 33,
     "fill_rate": null,
     "fills_settled": 0,
@@ -8,6 +9,7 @@
   },
   "KXNASCARRACE": {
     "orders": 0,
+    "vetoed": 0,
     "open": 0,
     "fill_rate": null,
     "fills_settled": 0,
@@ -15,6 +17,7 @@
   },
   "KXLIGAMXSPREAD": {
     "orders": 0,
+    "vetoed": 0,
     "open": 0,
     "fill_rate": null,
     "fills_settled": 0,
@@ -22,6 +25,7 @@
   },
   "KXLALIGASPREAD": {
     "orders": 0,
+    "vetoed": 0,
     "open": 0,
     "fill_rate": null,
     "fills_settled": 0,
@@ -29,10 +33,19 @@
   },
   "KXNFLANYTD": {
     "orders": 0,
+    "vetoed": 0,
     "open": 0,
     "fill_rate": null,
     "fills_settled": 0,
     "bankroll": 500.0
   },
-  "updated_utc": "2026-10-16T09:47+00:00"
+  "KXNFLANYTD+model": {
+    "orders": 0,
+    "vetoed": 0,
+    "open": 0,
+    "fill_rate": null,
+    "fills_settled": 0,
+    "bankroll": 500.0
+  },
+  "updated_utc": "2026-10-16T10:29+00:00"
 }
