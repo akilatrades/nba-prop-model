@@ -34,5 +34,5 @@ jobs:
           git add -A outputs/books
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "Book lines $(date -u +%Y-%m-%dT%H:%MZ)"
-          git pull --rebase
+          git pull --rebase -X theirs
           git push

@@ -28,5 +28,5 @@ jobs:
           git add -A data/espn_props
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "ESPN stored prop lines, 2025-26"
-          git pull --rebase
+          git pull --rebase -X theirs
           git push

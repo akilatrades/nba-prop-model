@@ -96,5 +96,5 @@ jobs:
           git add -A data/kalshi_history outputs/probes
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "Research data: trades, combo markets, ESPN probe"
-          git pull --rebase
+          git pull --rebase -X theirs
           git push
