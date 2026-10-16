@@ -1,6 +1,9 @@
-# NFL parlay model
+# NFL prop model (project history)
 
-[![tests](https://github.com/akilatrades/nfl-parlay-model/actions/workflows/tests.yml/badge.svg)](https://github.com/akilatrades/nfl-parlay-model/actions/workflows/tests.yml)
+This is the NFL project as it stood in akilatrades/nfl-parlay-model (now archived) before it became `markets/nfl` of [sports-market-maker](../README.md). Paths below were `parlay_model/`, `data/` and `outputs/`; they are now `markets/nfl/`, `data/nfl/` and `outputs/nfl/`.
+
+
+[![tests](https://github.com/akilatrades/sports-market-maker/actions/workflows/tests.yml/badge.svg)](https://github.com/akilatrades/sports-market-maker/actions/workflows/tests.yml)
 
 A same-game parlay pricing model, built and tested in phases. The goal is a fair price for any combination of NFL player and game legs, to compare against prediction-market and sportsbook quotes. It grows out of my [same-game parlay correlation study](https://github.com/akilatrades/nfl-sgp-correlation).
 
