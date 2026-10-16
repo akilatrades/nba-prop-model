@@ -86,7 +86,7 @@ are the test.
 | NBA model side | The model's favoured side when its edge after fees is 3¢ or more; $500 | 2026-10-20 |
 | NBA taker (control) | Buy at the ask when the model's edge is 5¢ or more, tight spreads only | 2026-10-20 |
 | NFL "no" seller, model veto | Anytime touchdown and receiving yards, NFL model as veto; $500 each | 2026-10-16 |
-| Model-free "no" seller | ITF tennis, NASCAR, Liga MX and La Liga spreads, NFL anytime TD; $500 each, as the control | 2026-10-16 |
+| Model-free "no" seller | ITF tennis, NASCAR, Liga MX and La Liga spreads, NFL anytime TD and receiving yards; $500 each, as the control | 2026-10-16 |
 | Price logs | Kalshi NBA and NFL prop snapshots before games | 2026-10 |
 
 Fills are read from Kalshi's public trade prints with price priority (an
