@@ -1,0 +1,135 @@
+{
+ "games_sampled": 151,
+ "games_with_book_data": 151,
+ "coverage_of_fills": 0.658,
+ "rows": [
+  {
+   "label": "1. all fills in the sample",
+   "fills": 4862,
+   "games": 151,
+   "cents": 2.04,
+   "t": 1.8,
+   "hit": 0.431
+  },
+  {
+   "label": "2. fills with a book quote at the exact line",
+   "fills": 3197,
+   "games": 150,
+   "cents": 2.15,
+   "t": 1.58,
+   "hit": 0.458
+  },
+  {
+   "label": "2b. fills with no book quote",
+   "fills": 1665,
+   "games": 134,
+   "cents": 1.83,
+   "t": 1.38,
+   "hit": 0.379
+  },
+  {
+   "label": "3. book veto: book edge >= 0",
+   "fills": 1647,
+   "games": 146,
+   "cents": 3.81,
+   "t": 2.39,
+   "hit": 0.52
+  },
+  {
+   "label": "3b. removed by the book veto",
+   "fills": 1550,
+   "games": 132,
+   "cents": 0.38,
+   "t": 0.25,
+   "hit": 0.392
+  },
+  {
+   "label": "4. book veto at a 2 cent margin",
+   "fills": 476,
+   "games": 123,
+   "cents": 2.23,
+   "t": 0.98,
+   "hit": 0.613
+  },
+  {
+   "label": "5. model veto on covered fills",
+   "fills": 2074,
+   "games": 139,
+   "cents": 2.69,
+   "t": 1.6,
+   "hit": 0.468
+  },
+  {
+   "label": "6. both vetoes",
+   "fills": 1149,
+   "games": 133,
+   "cents": 3.74,
+   "t": 1.91,
+   "hit": 0.534
+  }
+ ],
+ "veto_minus_covered": {
+  "cents": 3.44,
+  "t": 2.42
+ },
+ "pass": true,
+ "gain_cents_vs_covered": 1.66,
+ "calibration": [
+  {
+   "bin": "(0.1, 0.2]",
+   "n": 232,
+   "hit": 0.151,
+   "p_book": 0.16,
+   "kalshi_yes_ask": 0.158
+  },
+  {
+   "bin": "(0.2, 0.3]",
+   "n": 279,
+   "hit": 0.197,
+   "p_book": 0.248,
+   "kalshi_yes_ask": 0.251
+  },
+  {
+   "bin": "(0.3, 0.4]",
+   "n": 484,
+   "hit": 0.366,
+   "p_book": 0.351,
+   "kalshi_yes_ask": 0.358
+  },
+  {
+   "bin": "(0.4, 0.5]",
+   "n": 747,
+   "hit": 0.418,
+   "p_book": 0.452,
+   "kalshi_yes_ask": 0.463
+  },
+  {
+   "bin": "(0.5, 0.6]",
+   "n": 683,
+   "hit": 0.53,
+   "p_book": 0.547,
+   "kalshi_yes_ask": 0.569
+  },
+  {
+   "bin": "(0.6, 0.7]",
+   "n": 422,
+   "hit": 0.6,
+   "p_book": 0.649,
+   "kalshi_yes_ask": 0.67
+  },
+  {
+   "bin": "(0.7, 0.8]",
+   "n": 257,
+   "hit": 0.778,
+   "p_book": 0.745,
+   "kalshi_yes_ask": 0.772
+  },
+  {
+   "bin": "(0.8, 0.9]",
+   "n": 93,
+   "hit": 0.763,
+   "p_book": 0.819,
+   "kalshi_yes_ask": 0.844
+  }
+ ]
+}
