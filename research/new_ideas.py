@@ -7,7 +7,7 @@
 
 Writes outputs/new_ideas/results.json and supporting tables.
 
-Run from the repository root: python run_new_ideas.py
+Run from the repository root: python -m research.new_ideas
 """
 
 import json

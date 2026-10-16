@@ -8,7 +8,7 @@
 Downloads play-by-play from the hoopR data repository into data/pbp/ if
 missing (about 22 MB a season).
 
-Run from the repository root: python run_ingame.py [--calibration-only]
+Run from the repository root: python -m research.ingame [--calibration-only]
 """
 
 import argparse

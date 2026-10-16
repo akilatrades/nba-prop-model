@@ -8,7 +8,7 @@ and runs tests A and B exactly as written in RESEARCH_LOG.md on 2026-10-15.
 it reads no prices, results or volumes, so it can be run before the model
 is frozen.
 
-Run from the repository root: python run_market_test.py [--coverage]
+Run from the repository root: python -m research.market_test [--coverage]
 """
 
 import argparse

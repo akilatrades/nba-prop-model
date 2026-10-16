@@ -3,7 +3,7 @@
 Development seasons (2021-22 to 2024-25) by default; ``--holdout`` runs the
 2025-26 season once the model is frozen (see RESEARCH_LOG.md).
 
-Run from the repository root: python run_backtest.py [--holdout]
+Run from the repository root: python -m research.backtest [--holdout]
 """
 
 import argparse
