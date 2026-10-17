@@ -9,7 +9,8 @@ the query string). Credentials come from the environment:
     KALSHI_PRIVATE_KEY   a PEM key or unencrypted PKCS#8 base64 body
     KALSHI_ENV           "demo" (default) or "prod"
 
-V2 order writes use /portfolio/events/orders with a YES-side bid/ask book.\nIn dry-run mode (``TradingClient(dry_run=True)``, the default) orders are
+V2 order writes use /portfolio/events/orders with a YES-side bid/ask book.
+In dry-run mode (``TradingClient(dry_run=True)``, the default) orders are
 built, validated and logged but not sent; reads still go to the exchange.
 Nothing in this module decides what to trade; see ``live/nba_trade.py``.
 """
@@ -134,6 +135,7 @@ class Order:
         if self.expiration_ts is not None:
             body["expiration_time"] = int(self.expiration_ts)
         return body
+
 
 class TradingClient:
     def __init__(
@@ -267,8 +269,12 @@ class TradingClient:
         """Submit V2 single-book order; dry mode only validates and logs."""
         body = order.body()
         entry = {
-            **body, "op": "place", "dry_run": self.dry_run, "env": self.env,
-            "action": order.action, "outcome_side": order.side,
+            **body,
+            "op": "place",
+            "dry_run": self.dry_run,
+            "env": self.env,
+            "action": order.action,
+            "outcome_side": order.side,
         }
         if self.dry_run:
             entry["order_id"] = "dry-run"
@@ -295,7 +301,9 @@ class TradingClient:
     def cancel(self, order_id, ticker=None):
         """Cancel a resting order using V2; market ticker is required for routing."""
         entry = {
-            "op": "cancel", "dry_run": self.dry_run, "env": self.env,
+            "op": "cancel",
+            "dry_run": self.dry_run,
+            "env": self.env,
             "order_id": order_id,
         }
         if self.dry_run or order_id == "dry-run":
@@ -313,7 +321,8 @@ class TradingClient:
                 f"cannot route V2 cancellation for {order_id}; verify the order's ticker"
             )
         result = self._request(
-            "DELETE", f"/portfolio/events/orders/{order_id}",
+            "DELETE",
+            f"/portfolio/events/orders/{order_id}",
             params={"market_ticker": ticker},
         )
         entry["ticker"] = ticker
