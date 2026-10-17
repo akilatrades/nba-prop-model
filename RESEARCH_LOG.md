@@ -1508,3 +1508,32 @@ attached to its own game, and nothing attached without a tip time). The
 reviewer's remaining point stands as written: +3.90¢ is a per-order
 sensitivity check on the old snapshots, not a full rerun with
 earliest-posting snapshots, which is deferred for its credit cost.
+
+### Results: the last 1,017 sports series (run 2026-10-17)
+
+Every sports series above the volume bar has now been through the scan.
+Of these 1,017, 698 had too few settled markets with two-sided quotes to
+test (median 15 markets; season-long futures) and 319 were testable. Nine
+passed, which is about what chance alone gives at this bar (5% of 319 ≈
+16), so each is read as a candidate at best:
+
+| Series | Fills | ¢ | t | Note |
+|---|---:|---:|---:|---|
+| KXNASCARTOP10, driver top-10 finish | 108 | +14.1 | 3.5 | both halves +11 or more; "yes" side −14¢ (t −3.1): the prop shape (fans back a driver). **Added to the paper ledger**; three races left this season. |
+| KXWNBA1QWINNER, WNBA first-quarter winner | 306 | +6.5 | 2.2 | off-season until May |
+| KXINDYCARTOP10 | 208 | +9.8 | 2.1 | off-season until March |
+| KXFIFAWGAME, women's international match | 159 | +5.5 | 2.1 | winner market; tennis argues against |
+| KXISLGAME, Israel league match | 246 | +3.8 | 2.0 | winner market, borderline |
+| KXBIG3GAME, KXCONMEBOLLIBSPREAD, KXISRPLCUPGAME, KXNHL2OT | 74, 32, 10, 5 | | | too few fills |
+
+Near misses worth a look next season, not added: Serie A both-teams-to-score
+(537 fills, +6.4¢, t 1.9), NBA points leader of the night (316, +5.3¢, t
+1.8, a prop-shaped NBA market), IPL team total (145, +12.9¢, t 1.9).
+Negative with volume: La Liga BTTS (644, −5.1¢), MLS BTTS flat.
+
+Reading, across all three passes (2,075 testable sports series): the
+positives that survive both halves and have a losing "yes" side are
+player or driver markets (NBA props, NBA triple-double, NASCAR top-10,
+World Cup score-or-assist, UFC method); game-winner and spread markets
+are flat as a class. The scan is finished; no further breadth work until
+the live ledger has real fills.

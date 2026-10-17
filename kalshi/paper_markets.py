@@ -39,6 +39,7 @@ SERIES = [
     "KXNCAAMB1HSPREAD",  # college basketball first-half spread (from November)
     # Targeted scan of series the second pass ran out of time on, 2026-10-17.
     "KXNBA3D",  # NBA player triple-double (+4.5c, t 2.3, 509 fills)
+    "KXNASCARTOP10",  # NASCAR driver top-10 finish (+14.1c, t 3.5, 108 fills); season ends 2026-11-08
 ]
 WINDOW_HOURS = (4, 10)
 # Price-floor variants (RESEARCH_LOG.md, 2026-10-17): the same series with
