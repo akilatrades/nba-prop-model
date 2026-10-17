@@ -42,12 +42,15 @@ def test_order_body_and_validation():
         ticker="KXNBAPTS-X-Y-20", side="no", count=7, price_cents=49, expiration_ts=exp
     )
     body = o.body()
-    assert body["no_price"] == 49 and body["count"] == 7 and body["action"] == "buy"
-    assert (
-        body["type"] == "limit"
-        and body["post_only"] is True
-        and body["expiration_ts"] == exp
-    )
+    # Buying NO at 49c = V2 ask (sell YES) at 51c.
+    assert body["side"] == "ask"
+    assert body["price"] == "0.5100"
+    assert body["count"] == "7.00"
+    assert body["time_in_force"] == "good_till_canceled"
+    assert body["self_trade_prevention_type"] == "taker_at_cross"
+    assert body["post_only"] is True
+    assert body["expiration_time"] == exp
+    assert body["cancel_order_on_pause"] is True
     with pytest.raises(TradingError):
         Order("T", "yes", 0, 50).body()
     with pytest.raises(TradingError):
@@ -139,3 +142,86 @@ def test_per_game_order_count_cap():
     with pytest.raises(Rejected, match="orders already in game"):
         check(1.0, "d", 7, limits, ex, 2)
     check(1.0, "d", 8, limits, ex, 2)  # another game is fine
+
+
+@pytest.mark.parametrize(
+    "outcome,action,book_side,price",
+    [
+        ("yes", "buy", "bid", "0.4000"),
+        ("yes", "sell", "ask", "0.4000"),
+        ("no", "buy", "ask", "0.6000"),
+        ("no", "sell", "bid", "0.6000"),
+    ],
+)
+def test_v2_side_mapping(outcome, action, book_side, price):
+    body = Order("KXNFLTEST", outcome, 2, 40, action=action).body()
+    assert body["side"] == book_side
+    assert body["price"] == price
+    assert body["count"] == "2.00"
+    assert "no_price" not in body
+    assert "yes_price" not in body
+    assert "action" not in body
+
+
+def test_v2_demo_submission_and_cancel_uses_market_ticker(monkeypatch):
+    client = TradingClient(dry_run=False, env="demo", key_id="fake")
+    calls = []
+
+    def api(method, path, params=None, body=None):
+        calls.append((method, path, params, body))
+        if method == "POST":
+            return {
+                "order_id": "o-123",
+                "fill_count": "0.00",
+                "remaining_count": "1.00",
+            }
+        if method == "DELETE":
+            return {"order_id": "o-123", "reduced_by": "1.00"}
+        raise AssertionError("Unexpected call")
+
+    monkeypatch.setattr(client, "_request", api)
+    order = Order("KXNFLTEST-40", "no", 1, 40)
+    placed = client.place(order)
+    assert placed["order_id"] == "o-123"
+    assert placed["outcome_side"] == "no" and placed["action"] == "buy"
+    assert calls[0][0:2] == ("POST", "/portfolio/events/orders")
+    assert calls[0][3]["side"] == "ask"
+    assert calls[0][3]["price"] == "0.6000"
+    cancelled = client.cancel("o-123")
+    assert cancelled["reduced_by"] == "1.00"
+    assert calls[1][0:3] == (
+        "DELETE",
+        "/portfolio/events/orders/o-123",
+        {"market_ticker": "KXNFLTEST-40"},
+    )
+
+
+def test_v2_cancel_fail_closed_without_ticker(monkeypatch):
+    client = TradingClient(dry_run=False, env="demo")
+    monkeypatch.setattr(client, "orders", lambda status="resting": [])
+    with pytest.raises(TradingError, match="cannot route"):
+        client.cancel("unknown")
+
+
+def test_production_writes_require_explicit_opt_in(monkeypatch):
+    monkeypatch.delenv("ALLOW_PRODUCTION_TRADING", raising=False)
+    client = TradingClient(dry_run=False, env="prod")
+
+    def forbidden_request(*args, **kwargs):
+        raise AssertionError("Must not contact production for a blocked order")
+
+    monkeypatch.setattr(client, "_request", forbidden_request)
+    with pytest.raises(TradingError, match="production order placement disabled"):
+        client.place(Order("TEST", "yes", 1, 10))
+
+
+def test_v2_dry_run_does_not_send_order(monkeypatch):
+    client = TradingClient(dry_run=True, env="demo")
+
+    def forbidden_request(*args, **kwargs):
+        raise AssertionError("Dry run must not contact exchange")
+
+    monkeypatch.setattr(client, "_request", forbidden_request)
+    result = client.place(Order("TEST", "no", 1, 40))
+    assert result["order_id"] == "dry-run"
+    assert result["outcome_side"] == "no" and result["action"] == "buy"
