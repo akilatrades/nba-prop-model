@@ -1177,3 +1177,79 @@ order on fewer orders (total +540 against +605 for all orders at 1¢), so
 it is the better rule when the daily cap, not the opportunity set, binds,
 which is the small-bankroll case; it is already running as
 `no_seller_veto2`. No change to the trader from this study.
+
+## 2026-10-17: Desk studies, written before running (`research/desk.py`)
+
+Four replays on the 2025-26 NBA "no" seller (model veto on, half the flow,
+$500, 1% a line, 30% a night, 10% a game), offline, nothing live changes.
+
+1. **Value per quote.** A logistic fill model from what is known at posting
+   (spread, no price, open interest, the hour's volume, hours to tip), fit
+   on the first half of the season and scored on the second. On the second
+   half, the daily cap is spent by three rankings: model edge (the current
+   rule), P(fill) × edge, and P(fill) × edge per dollar-hour reserved, plus a
+   random-order control. Endpoint: season end from $500 and profit per 100
+   orders placed. Adopted into the v2 ledgers only if the EV ranking beats
+   edge-first by ≥ 10% of end bankroll on the holdout half.
+2. **Inventory.** Nightly paper profit per fill against that night's
+   league-wide scoring surprise (points per game minus the trailing-20-night
+   mean). Pre-registered reading: a correlation below −0.3 means a night of
+   "no" fills is one short-scoring position and a game-total hedge is worth
+   testing; above −0.15, the per-game caps already handle it.
+3. **Sizing under uncertainty.** Daily cap = 30% × (shrunk running edge / 3¢),
+   clamped to 10–70%, where the running edge is the mean profit per contract
+   of fills so far shrunk toward zero by 250, 500 or 1,000 imaginary
+   zero-edge fills. Compared with the fixed 30% cap on the backtested edge,
+   a halved edge and no edge. Adopted if it ends higher at the full edge and
+   loses less with no edge.
+4. **Attribution.** On the 3,197 fills with a book quote: profit = premium
+   (what selling above the books' probability is worth, after fee) +
+   residual. Reading: a residual near zero means the edge is the liquidity
+   premium and the levers are breadth and speed; a residual with t ≥ 2 means
+   there is selection skill beyond the books.
+
+### Results: desk studies (run 2026-10-17, offline)
+
+**1. Value per quote: not adopted.** The fill model is well calibrated on
+the holdout (predicted 0.29→0.88 by decile against actual 0.30→0.77; spread
+and price level do the work, open interest and hours a little). Ranking the
+daily cap by P(fill) × edge per dollar-hour ended the holdout half at
+$1,566 against $1,161 for edge-first, which clears the pre-registered 10%,
+but the gain does not survive inspection: most of it is the hours term
+preferring the 2-hour postings over the 5-hour ones (the known late-posting
+result, already running as `no_seller_late`), and within a single posting
+time the holdout half is the one stretch where edge-first ranking did badly
+(random order beat it, $1,064 to $885) while over the first half and the
+whole season edge-first beat random ($2,680 to $1,656). A ranking that wins
+only on the half it was not fit on, and loses on the other, is noise. The
+fill model itself is kept (`research/desk.py`) for the capacity study once
+real fills exist.
+
+**2. Inventory: no hedge.** Correlation of nightly profit per fill with the
+night's scoring surprise is −0.06 (178 nights); high-scoring nights made
+$0.76 per fill against $1.57 on low-scoring ones, a tilt but a weak one.
+Below the pre-registered −0.15 line: the per-game and per-team caps are
+enough. No game-total hedge.
+
+**3. Adaptive sizing: not adopted as the default, kept as the insurance
+option.** Fixed 30% cap: $500 → $1,849 at the full edge, $759 at half,
+**$190 with no edge** (74% drawdown). Shrunk-Kelly cap (10–70%, prior 500
+zero-edge fills): $1,330 at the full edge, $885 at half, **$635 with no
+edge** (31% drawdown). It gives up 28% of the upside for three times the
+capital preserved if the edge is not there, because it sits at the 10%
+floor for the first month while the running estimate is still near zero.
+The pre-registered rule (higher at full edge and safer with none) is not
+met, so the fixed cap with the written step-up schedule stays; the adaptive
+cap is the right choice for anyone who weights "the edge is gone" more
+heavily than the backtest does, and is documented for that.
+
+**4. Attribution: the premium is shared with the books.** On the 3,197
+fills with a book quote, our price sat on average only 0.14¢ above the
+books' probability; the 2.15¢ of profit is 2.01¢ residual (t 1.5): on
+these lines the over came in below *both* Kalshi's price and the books'.
+Reading: sportsbooks shade player props toward the over as well (they
+carry the same public), so "sold above the books" is a selection signal
+rather than the source of the edge; the source is the public's
+over-optimism, which both venues price in. Consequence: the book veto
+works by picking lines, not by arbitraging the books, and the gross edge
+against the books is itself positive but not yet significant (t 1.5).

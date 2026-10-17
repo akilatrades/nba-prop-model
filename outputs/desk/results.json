@@ -1,0 +1,159 @@
+{
+ "value_per_quote": {
+  "train_until": "2026-02-26",
+  "test_orders": 22762,
+  "coefficients": {
+   "spread": -1.439,
+   "level": 5.136,
+   "level_sq": -5.094,
+   "log_oi": 0.166,
+   "log_vol": 0.094,
+   "hours": 0.129
+  },
+  "calibration": [
+   {
+    "q": 0,
+    "predicted": 0.292,
+    "actual": 0.304,
+    "n": 2282
+   },
+   {
+    "q": 1,
+    "predicted": 0.402,
+    "actual": 0.453,
+    "n": 2271
+   },
+   {
+    "q": 2,
+    "predicted": 0.473,
+    "actual": 0.518,
+    "n": 2276
+   },
+   {
+    "q": 3,
+    "predicted": 0.536,
+    "actual": 0.562,
+    "n": 2277
+   },
+   {
+    "q": 4,
+    "predicted": 0.591,
+    "actual": 0.61,
+    "n": 2275
+   },
+   {
+    "q": 5,
+    "predicted": 0.653,
+    "actual": 0.653,
+    "n": 2277
+   },
+   {
+    "q": 6,
+    "predicted": 0.707,
+    "actual": 0.722,
+    "n": 2275
+   },
+   {
+    "q": 7,
+    "predicted": 0.756,
+    "actual": 0.728,
+    "n": 2276
+   },
+   {
+    "q": 8,
+    "predicted": 0.809,
+    "actual": 0.771,
+    "n": 2276
+   },
+   {
+    "q": 9,
+    "predicted": 0.876,
+    "actual": 0.766,
+    "n": 2277
+   }
+  ],
+  "rank by model edge (current)": {
+   "end": 1161,
+   "max_drawdown": 0.214,
+   "orders": 2750,
+   "fills": 863,
+   "profit_per_100_orders": 24.05
+  },
+  "rank by P(fill) x edge": {
+   "end": 1177,
+   "max_drawdown": 0.452,
+   "orders": 2561,
+   "fills": 1742,
+   "profit_per_100_orders": 26.42
+  },
+  "rank by P(fill) x edge per dollar-hour": {
+   "end": 1414,
+   "max_drawdown": 0.291,
+   "orders": 2804,
+   "fills": 979,
+   "profit_per_100_orders": 32.59
+  },
+  "random order (control)": {
+   "end": 1210,
+   "max_drawdown": 0.302,
+   "orders": 2644,
+   "fills": 1556,
+   "profit_per_100_orders": 26.86
+  }
+ },
+ "inventory": {
+  "nights": 178,
+  "corr_pnl_vs_scoring_surprise": -0.056,
+  "dollars_per_fill_per_extra_point_per_game": -0.027,
+  "pnl_per_fill_high_scoring_nights": 0.763,
+  "pnl_per_fill_low_scoring_nights": 1.571
+ },
+ "sizing": {
+  "fixed 30% cap": {
+   "end": 1849,
+   "max_drawdown": 0.442
+  },
+  "adaptive cap, prior 250 zero-edge fills": {
+   "end": 1326,
+   "max_drawdown": 0.267,
+   "cap_after_30_days": 0.1,
+   "cap_final": 0.38
+  },
+  "adaptive cap, prior 500 zero-edge fills": {
+   "end": 1328,
+   "max_drawdown": 0.267,
+   "cap_after_30_days": 0.1,
+   "cap_final": 0.38
+  },
+  "adaptive cap, prior 1000 zero-edge fills": {
+   "end": 1347,
+   "max_drawdown": 0.244,
+   "cap_after_30_days": 0.1,
+   "cap_final": 0.38
+  },
+  "stress edge halved: fixed 30%": {
+   "end": 759,
+   "max_drawdown": 0.453
+  },
+  "stress edge halved: adaptive": {
+   "end": 885,
+   "max_drawdown": 0.292
+  },
+  "stress no edge: fixed 30%": {
+   "end": 190,
+   "max_drawdown": 0.738
+  },
+  "stress no edge: adaptive": {
+   "end": 635,
+   "max_drawdown": 0.312
+  }
+ },
+ "attribution": {
+  "covered_fills": 3197,
+  "profit_cents_per_contract": 2.15,
+  "premium_cents": 0.14,
+  "residual_cents": 2.01,
+  "residual_t": 1.47,
+  "share_of_profit_from_premium": 0.07
+ }
+}
