@@ -13,6 +13,8 @@ import pandas as pd
 from kalshi.api import fetch_market, fetch_markets, fetch_trades
 from kalshi.paper_markets import (
     COLUMNS,
+    FLOOR_SUFFIX,
+    FLOORS,
     SERIES,
     check_fills,
     empty_ledger,
@@ -45,6 +47,12 @@ def main():
         ledger = pd.concat([ledger, posted], ignore_index=True)[COLUMNS]
         print(f"{series}: {len(markets)} open markets, {len(posted)} new orders")
         seen[series] = {"open": len(markets), "posted": int(len(posted))}
+        if series in FLOORS:
+            # The same markets, "no" at or above the floor only (RESEARCH_LOG.md, 2026-10-17).
+            label = series + FLOOR_SUFFIX
+            posted = post_orders(label, markets, ledger, now, min_price=FLOORS[series])
+            ledger = pd.concat([ledger, posted], ignore_index=True)[COLUMNS]
+            print(f"{label}: {len(posted)} new orders at or above {FLOORS[series]:.2f}")
         if series in MODEL_SERIES:
             # The same markets with the NFL model as veto (RESEARCH_LOG.md, 2026-10-16).
             if nfl_games is None:
@@ -59,7 +67,11 @@ def main():
             )
     ledger.to_csv(LEDGER, index=False)
     print("::notice::" + json.dumps(seen))
-    labels = list(SERIES) + [s + MODEL_SUFFIX for s in SERIES if s in MODEL_SERIES]
+    labels = (
+        list(SERIES)
+        + [s + MODEL_SUFFIX for s in SERIES if s in MODEL_SERIES]
+        + [s + FLOOR_SUFFIX for s in SERIES if s in FLOORS]
+    )
     cards = {s: scorecard(ledger, s) for s in labels}
     cards["updated_utc"] = now.isoformat(timespec="minutes")
     (LEDGER.parent / "scorecard.json").write_text(json.dumps(cards, indent=2) + "\n")

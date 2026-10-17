@@ -41,6 +41,10 @@ SERIES = [
     "KXNBA3D",  # NBA player triple-double (+4.5c, t 2.3, 509 fills)
 ]
 WINDOW_HOURS = (4, 10)
+# Price-floor variants (RESEARCH_LOG.md, 2026-10-17): the same series with
+# "no" orders only at or above this price, run beside the unfiltered control.
+FLOORS = {"KXITFMATCH": 0.30}
+FLOOR_SUFFIX = "+no30"
 EVENT_HOURS = 3  # orders are cancelled this long before expiration
 COLUMNS = [
     "series",
@@ -122,19 +126,29 @@ def no_orders(q):
 
 
 def post_orders(
-    series, markets, ledger, now, next_run_hours=3, start=START_BANKROLL, p_model=None
+    series,
+    markets,
+    ledger,
+    now,
+    next_run_hours=3,
+    start=START_BANKROLL,
+    p_model=None,
+    min_price=None,
 ):
     """New orders for one series.
 
     ``p_model``, when given, maps ticker to a model probability of "yes";
     markets without one are skipped, and an order is vetoed (recorded with
     status "vetoed", no capital) when the model's "no" probability minus the
-    order price and the maker fee is below zero.
+    order price and the maker fee is below zero. ``min_price`` drops orders
+    whose "no" price is below it (the price-floor variants).
     """
     q = quotes(markets, now)
     if q.empty:
         return empty_ledger()
     o = no_orders(q)
+    if min_price is not None:
+        o = o[o.price >= min_price - 1e-9]
     o["p_model"] = np.nan
     o["vetoed"] = False
     if p_model is not None:

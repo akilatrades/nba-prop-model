@@ -1380,3 +1380,54 @@ Reading across both runs: the breadth that exists is NBA (a fifth NBA
 market, same players and nights as the current edge). Most NFL player
 props on Kalshi are not quoted two-sided pre-game, so a resting order never
 fills there, whatever the edge would be.
+
+## 2026-10-17: Outside review of the repo, item by item
+
+A reviewer's five suggestions, checked against what the record already
+holds and, where new, tested the same day (offline, no live change).
+
+1. **Tennis: skip cheap "no".** New ledger. On the scan's own 2025-26 ITF
+   orders (2,409 "no" orders, 1,180 fills, April–August), "no" at 30¢ or
+   more made +6.4¢ per fill (t 2.7) against +1.7¢ (t 0.7) below 30¢; the
+   reviewer's 40¢ cut separates less (+5.0¢ vs +4.4¢). The live ledger's
+   first 64 fills lost everything below 30¢ (0 of 22). A second tennis
+   ledger, `KXITFMATCH+no30` (same rule, "no" price ≥ 0.30), runs from
+   today beside the unfiltered control, one $500 paper bankroll each,
+   judged on new fills only at the same 2026-10-30 date. Stated plainly:
+   the 30¢ line was chosen with both the historical and the first live
+   fills in view, which is why it gets a new ledger rather than replacing
+   the control. Not applied to NBA.
+2. **Sportsbook veto timing and matching.** Already as the reviewer asks:
+   `research/bookline_backtest.py` requests the historical odds snapshot at
+   the order's posting time (`end_ts`, five hours before tip for most),
+   never later, and matches events by both teams with a start within three
+   hours. The residual risk is player-name matching across feeds
+   (`normalize_name`); 1,647 of 21,373 fills had a book quote, so coverage,
+   not timing, is the weakness, and more books in the consensus is the
+   lever. Nothing to change.
+3. **Execution: cancel after 30 minutes / only post at a bigger edge.**
+   Tested now against the 2025-26 fills matched to their prints
+   (`outputs/execution/markouts.csv.gz`): the median fill arrives 105
+   minutes after posting. Per 100 eligible orders, hold to tip +170.8¢ (t
+   6.1); cancel if unfilled after 30 min +42.6¢; 60 min +71.4¢; 120 min
+   +105.5¢; 180 min +130.1¢. Early cancellation keeps the slightly better
+   fills (+3.6¢ each) and throws away two thirds of them. Hold stays. The
+   "only post at a comfortable edge" variant was the placement study's
+   `edge2` (edge ≥ 2¢): fewer orders, less profit per 100 eligible. The
+   1¢-inside placement remains the baseline, as the reviewer suggests.
+4. **Hindsight in the NBA model (who actually played).** Measured on
+   2026-10-15 and bounded: the maker test without the teammates-out
+   features (the only features that use the box score's "did not play")
+   made +3.8¢ (t 5.0) against +3.4¢ with them, so the head start is not
+   where the edge comes from. The model-free rule (+1.65¢, t 4.1) uses no
+   model at all and so no hindsight. The live trader reads the actual
+   injury report (`cancel_on_injury`), not the box score. Nothing to change.
+5. **Correlated exposure within a game.** Already in place: per-game cap
+   10% of bankroll, per-team cap, daily cap 30%, and the inventory study
+   (2026-10-17) measured nightly profit against the night's scoring
+   surprise at −0.06 (178 nights), below the pre-registered line for a
+   hedge. The staged 1%/30% start and the adaptive (shrunk-Kelly) cap are
+   the conservative-while-unproven options already documented.
+
+Net: one new ledger (tennis price floor), four items confirmed already
+handled or tested and declined.

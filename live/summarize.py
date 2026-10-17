@@ -12,6 +12,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from kalshi.paper_markets import FLOOR_SUFFIX, FLOORS
 from kalshi.paper_markets import SERIES as OTHER_SERIES
 from kalshi.paper_props import ALL_RULES
 from kalshi.risk import RiskLimits
@@ -158,7 +159,7 @@ def backtest_cents(ledger):
     p = Path("outputs/scan/table.csv")
     if p.exists():
         t = pd.read_csv(p).set_index("series")
-        key = ledger.replace("+model", "")
+        key = ledger.replace("+model", "").replace(FLOOR_SUFFIX, "")
         if key in t.index and pd.notna(t.at[key, "no_c"]):
             return round(float(t.at[key, "no_c"]), 2)
     return None
@@ -211,9 +212,11 @@ def live_status(folder):
 def main():
     now = datetime.now(UTC)
     ledgers, daily = [], []
-    other = list(OTHER_SERIES) + [
-        x + "+model" for x in OTHER_SERIES if x in MODEL_SERIES
-    ]
+    other = (
+        list(OTHER_SERIES)
+        + [x + "+model" for x in OTHER_SERIES if x in MODEL_SERIES]
+        + [x + FLOOR_SUFFIX for x in OTHER_SERIES if x in FLOORS]
+    )
     p = Path("outputs/paper_markets/orders.csv")
     if p.exists():
         rows, days = ledger_rows(pd.read_csv(p), "series", expected=other)
