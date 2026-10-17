@@ -14,12 +14,20 @@ def test_pilot_counts_filled_orders_marked_done(monkeypatch, tmp_path):
     ledger = pd.DataFrame(
         [
             {
-                "mode": "live", "status": "done", "cost": 9.0,
-                "day": "2026-10-18", "game_id": "G", "team": "HOU",
+                "mode": "live",
+                "status": "done",
+                "cost": 9.0,
+                "day": "2026-10-18",
+                "game_id": "G",
+                "team": "HOU",
             },
             {
-                "mode": "dry", "status": "dry", "cost": 100.0,
-                "day": "2026-10-18", "game_id": "G", "team": "HOU",
+                "mode": "dry",
+                "status": "dry",
+                "cost": 100.0,
+                "day": "2026-10-18",
+                "game_id": "G",
+                "team": "HOU",
             },
         ]
     )
@@ -53,8 +61,11 @@ def test_regular_mode_keeps_existing_exposure_semantics(monkeypatch, tmp_path):
     ledger = pd.DataFrame(
         [
             {
-                "status": "done", "cost": 9.0, "day": "2026-10-18",
-                "game_id": "G", "team": "HOU",
+                "status": "done",
+                "cost": 9.0,
+                "day": "2026-10-18",
+                "game_id": "G",
+                "team": "HOU",
             }
         ]
     )
