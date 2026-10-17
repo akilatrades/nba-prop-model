@@ -115,12 +115,15 @@ def order_profit(fills, settlements):
     return out
 
 
-def execution_report(ledger, fills, queue, settlements=None, trades=None, now=None):
+def execution_report(
+    ledger, fills, queue, settlements=None, trades=None, now=None, previous=None
+):
     """One row per real order (status placed/resting/done/filled/cancelled).
 
     ``trades``: optional ``fetch_trades(ticker, min_ts, max_ts)`` used to
     count the public volume that traded through each order (the capture
-    denominator); orders older than three days are not re-fetched.
+    denominator). Matured, fully observed values from ``previous`` are kept
+    once their print-fetch window has aged out of the three-day API lookback.
     """
     real = ledger[
         ledger.status.isin(["placed", "resting", "done", "filled", "cancelled"])
@@ -141,6 +144,10 @@ def execution_report(ledger, fills, queue, settlements=None, trades=None, now=No
     cols = [
         "order_id",
         "ticker",
+        "game_id",
+        "rule",
+        "status",
+        "side",
         "day",
         "player",
         "stat",
@@ -196,16 +203,35 @@ def execution_report(ledger, fills, queue, settlements=None, trades=None, now=No
     out["minutes_to_first_fill"] = (
         out.first_fill_utc - out.placed_utc
     ).dt.total_seconds() / 60
-    # capture: our fills against the public volume that traded through us
+    # Preserve finished observations across subsequent runs. Without this,
+    # the three-day trade-print lookback silently erased old capture data.
     out["qualifying_volume"] = pd.NA
+    out["qualifying_complete"] = False
+    if previous is not None and len(previous) and "order_id" in previous:
+        old = previous.copy()
+        old["order_id"] = old.order_id.astype(str)
+        old = old.drop_duplicates("order_id", keep="last").set_index("order_id")
+        if "qualifying_volume" in old:
+            out["qualifying_volume"] = out.order_id.map(old.qualifying_volume)
+        if "qualifying_complete" in old:
+            out["qualifying_complete"] = (
+                out.order_id.map(old.qualifying_complete)
+                .fillna(False).astype(str).str.lower().eq("true")
+            )
     if trades is not None and now is not None:
         now = pd.Timestamp(now)
         for i in out.index:
-            placed = out.at[i, "placed_utc"]
+            if out.at[i, "qualifying_complete"]:
+                continue
+            placed = out.at[i, "accept_utc"]
+            if pd.isna(placed):
+                placed = out.at[i, "placed_utc"]
             if pd.isna(placed) or now - placed > pd.Timedelta(days=3):
                 continue
             exp = out.at[i, "expiration_utc"]
             end = min(now, exp) if pd.notna(exp) else now
+            if end <= placed:
+                continue
             level = 1 - float(out.at[i, "price"])
             try:
                 prints = trades(
@@ -217,8 +243,14 @@ def execution_report(ledger, fills, queue, settlements=None, trades=None, now=No
             out.at[i, "qualifying_volume"] = qualifying_volume(
                 prints, level, int(placed.timestamp()), int(end.timestamp())
             )
+            # An order cancelled before tip has an unknown actual end time;
+            # never pretend its full tip-off print window is comparable.
+            out.at[i, "qualifying_complete"] = bool(
+                pd.notna(exp) and now >= exp and out.at[i, "status"] != "cancelled"
+            )
     qv = pd.to_numeric(out.qualifying_volume, errors="coerce")
-    out["capture"] = (out.filled / qv.where(qv > 0)).clip(upper=1.0)
+    # Do NOT cap an impossible >100% ratio. Surface it for data-quality review.
+    out["capture"] = out.filled / qv.where(qv > 0)
     # order-level realised profit from the order's own fills and the result
     prof = order_profit(fills, settlements)
     out["settled_contracts"] = out.order_id.map(lambda o: prof.get(o, (None, None))[0])
@@ -246,6 +278,37 @@ def summary(report):
         "mean_capture_of_qualifying_volume": round(float(report.capture.mean()), 3)
         if report.capture.notna().any()
         else None,
+        "completed_capture_orders": int(
+            report.qualifying_complete.astype(str).str.lower().eq("true").sum()
+        ) if "qualifying_complete" in report else 0,
+        "weighted_capture_of_completed_volume": (
+            round(float(
+                report.loc[
+                    report.qualifying_complete.astype(str).str.lower().eq("true")
+                    & (pd.to_numeric(report.qualifying_volume, errors="coerce") > 0)
+                    & (report.filled <= pd.to_numeric(
+                        report.qualifying_volume, errors="coerce") + 1e-9),
+                    "filled",
+                ].sum()
+                / pd.to_numeric(
+                    report.loc[
+                        report.qualifying_complete.astype(str).str.lower().eq("true")
+                        & (pd.to_numeric(report.qualifying_volume, errors="coerce") > 0)
+                        & (report.filled <= pd.to_numeric(
+                            report.qualifying_volume, errors="coerce") + 1e-9),
+                        "qualifying_volume",
+                    ],
+                    errors="coerce",
+                ).sum()
+            ), 3)
+            if "qualifying_complete" in report and (
+                report.qualifying_complete.astype(str).str.lower().eq("true")
+                & (pd.to_numeric(report.qualifying_volume, errors="coerce") > 0)
+                & (report.filled <= pd.to_numeric(
+                    report.qualifying_volume, errors="coerce") + 1e-9)
+            ).any()
+            else None
+        ),
         "median_signal_to_accept_seconds": round(
             float(report.signal_to_accept_seconds.median()), 1
         )

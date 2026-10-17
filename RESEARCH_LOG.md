@@ -1675,3 +1675,17 @@ the run's signal time, for the signal-to-acceptance delay. The 500-fill
 scorecard: capture of qualifying volume, fill probability by starting
 queue, cents per settled contract (game-clustered t), profit per eligible
 order including unfilled, minutes to first fill.
+
+
+## 2026-10-17: Forward-validation protocol frozen (measurement only)
+
+At the start of the forward cohort, the trading/research baseline is commit
+`1167400bc246ab324472eefc6a24bdb8e2cf7d52`. The experiment is
+specified in `docs/FORWARD_VALIDATION.md`: 30 days from first exchange-
+accepted real order AND 500 settled exchange buy fill events before a human
+review. No automated rule or capital changes. Retain old qualifying-volume
+observations beyond the API's three-day refetch horizon; distinguish partial
+and complete observations; calculate *volume-weighted* capture (not the
+simple average of per-order ratios). Exclude early-exit markets from the
+buy-and-hold payout proxy pending reconciled realized P&L. Flag missing data
+and game-level dependence explicitly.

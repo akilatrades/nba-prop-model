@@ -778,3 +778,36 @@ def test_execution_report_and_queue_log(tmp_path):
         and abs(s["mean_capture_of_qualifying_volume"] - 0.667) < 1e-9
     )
     assert abs(s["cents_per_settled_contract"] - 44.5) < 1e-6
+
+
+def test_execution_history_preserves_completed_volume_after_three_days():
+    """The 30-day scorecard must not lose data when the print API ages out."""
+    from live.execution import execution_report
+
+    now = pd.Timestamp("2026-11-01T12:00Z")
+    placed = now - pd.Timedelta(days=5)
+    exp = placed + pd.Timedelta(hours=4)
+    ledger = pd.DataFrame([{
+        "order_id": "old-order", "ticker": "KXNBAPTS-TEST",
+        "status": "done", "game_id": 2, "rule": "no_seller",
+        "side": "no", "day": "2026-10-27", "player": "p",
+        "stat": "points", "line": 20.5, "price": 0.55,
+        "contracts": 3, "edge": 0.04,
+        "run_utc": placed.isoformat(),
+        "accept_utc": placed.isoformat(),
+        "expiration_utc": exp.isoformat(),
+    }])
+    previous = pd.DataFrame([{
+        "order_id": "old-order", "qualifying_volume": 12.0,
+        "qualifying_complete": True,
+    }])
+
+    def should_not_fetch(*args):
+        raise AssertionError("Do not refetch finalized or aged-out data")
+
+    report = execution_report(
+        ledger, None, None, trades=should_not_fetch, now=now, previous=previous
+    )
+    assert report.qualifying_complete.tolist() == [True]
+    assert report.qualifying_volume.tolist() == [12.0]
+    assert report.game_id.tolist() == [2]
