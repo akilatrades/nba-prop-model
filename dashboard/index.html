@@ -637,18 +637,6 @@ function renderCharts(s, pf) {
   research(s);
 }
 let latestDashboard = null;
-let pageWidth = document.documentElement.clientWidth;
-let resizeTimer = null;
-window.addEventListener("resize", () => {
-  const nextWidth = document.documentElement.clientWidth;
-  if (Math.abs(nextWidth - pageWidth) < 2) return;
-  pageWidth = nextWidth;
-  clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(() => {
-    if (latestDashboard) renderCharts(latestDashboard.s, latestDashboard.pf);
-  }, 180);
-}, {passive: true});
-
 fetch("../outputs/dashboard/summary.json", {cache: "no-store"}).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }).then(s => {
   const pf = portfolio(s);
   latestDashboard = {s, pf};
@@ -662,6 +650,17 @@ fetch("../outputs/dashboard/summary.json", {cache: "no-store"}).then(r => { if (
   document.getElementById("forward-view").textContent = "No verified forward data could be loaded.";
   document.getElementById("system-view").textContent = "Source unavailable; do not infer live account status.";
 });
+let pageWidth = document.documentElement.clientWidth;
+let resizeTimer = null;
+window.addEventListener("resize", () => {
+  const nextWidth = document.documentElement.clientWidth;
+  if (Math.abs(nextWidth - pageWidth) < 2) return;
+  pageWidth = nextWidth;
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    if (latestDashboard) renderCharts(latestDashboard.s, latestDashboard.pf);
+  }, 180);
+}, {passive: true});
 </script>
 </body>
 </html>
