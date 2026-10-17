@@ -144,10 +144,18 @@ EXIT_COLUMNS = [
 
 
 def projection_age_hours(now, latest=None):
-    """Hours since the newest projection run, from the ladder file names
-    (outputs/projections/ladders/<UTC stamp>.csv), else the file's mtime."""
+    """Hours since the newest projection run: the stamp in latest_meta.json,
+    else the newest ladder file name (<UTC stamp>.csv); infinite if neither."""
     latest = Path(latest or LATEST)
     newest = None
+    meta = latest.parent / "latest_meta.json"
+    if meta.exists():  # written by live/nba_projections.py with the run
+        try:
+            newest = pd.Timestamp(json.loads(meta.read_text())["generated_utc"])
+            if newest.tzinfo is None:
+                newest = newest.tz_localize("UTC")
+        except (ValueError, KeyError, TypeError):
+            newest = None
     ladders = latest.parent / "ladders"
     if ladders.exists():
         for path in ladders.glob("*.csv"):
@@ -158,8 +166,7 @@ def projection_age_hours(now, latest=None):
             except ValueError:
                 continue
             newest = stamp if newest is None or stamp > newest else newest
-    if newest is None and latest.exists():
-        newest = pd.Timestamp(latest.stat().st_mtime, unit="s", tz="UTC")
+    # No file mtime fallback: a git checkout gives an old file a new mtime.
     if newest is None:
         return float("inf")
     return (pd.Timestamp(now) - newest).total_seconds() / 3600
@@ -501,15 +508,45 @@ def reconcile(ledger, client, market="nba"):
     ours = set(mine.order_id.dropna().astype(str))
     unknown = sorted(set(exchange) - ours)
     missing = sorted(ours - set(exchange))
+    # Positions and recent fills in this market's tickers that the ledger
+    # never placed an order in: an order that filled completely after a run
+    # crashed before writing the ledger is not resting any more, so the
+    # check above cannot see it; this one does.
+    known_tickers = set(
+        ledger.loc[
+            ledger.status.isin(["placed", "resting", "done", "cancelled", "filled"]),
+            "ticker",
+        ].dropna()
+    )
+    prefixes = MARKET_PREFIXES[market]
+    held = {
+        str(p.get("ticker"))
+        for p in client.positions()
+        if str(p.get("ticker", "")).startswith(prefixes)
+        and float(p.get("position", 0) or 0) != 0
+    }
+    recent_fills = {
+        str(f.get("ticker"))
+        for f in client.fills(
+            min_ts=int(pd.Timestamp.now(tz="UTC").timestamp()) - 3 * 86400
+        )
+        if str(f.get("ticker", "")).startswith(prefixes)
+    }
+    unknown_positions = sorted((held | recent_fills) - known_tickers)
     report = {
         "exchange_resting": len(exchange),
         "ledger_resting": len(ours),
         "on_exchange_not_in_ledger": unknown,
         "in_ledger_not_on_exchange": len(missing),
+        "positions_not_in_ledger": unknown_positions,
     }
     if unknown:
         print(
             f"::warning::{len(unknown)} resting orders on the exchange are not in the ledger: {unknown[:5]}"
+        )
+    if unknown_positions:
+        print(
+            f"::warning::{len(unknown_positions)} positions or fills in tickers the ledger never ordered: {unknown_positions[:5]}"
         )
     return report, exchange
 
@@ -537,7 +574,16 @@ def main():
     if limits.kill_file.exists():
         print("KILL file present: cancelling everything, placing nothing")
         if client.can_sign:
-            print(json.dumps(client.cancel_all(prefixes=STRATEGY_PREFIXES)))
+            ours = ledger.loc[
+                ledger.status.isin(["placed", "resting"]), "order_id"
+            ].dropna()
+            print(
+                json.dumps(
+                    client.cancel_all(
+                        prefixes=STRATEGY_PREFIXES, order_ids=ours.astype(str).tolist()
+                    )
+                )
+            )
         return
 
     cancelled = 0
@@ -609,7 +655,10 @@ def main():
             )
             candidates = candidates.iloc[0:0]
         else:
-            if pre_report["on_exchange_not_in_ledger"]:
+            if (
+                pre_report["on_exchange_not_in_ledger"]
+                or pre_report["positions_not_in_ledger"]
+            ):
                 print(
                     "::warning::Unreconciled orders on the exchange; placing nothing until they are in the ledger"
                 )

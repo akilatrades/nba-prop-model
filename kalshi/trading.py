@@ -90,7 +90,9 @@ class Order:
     price_cents: int  # price of the side bought or sold
     expiration_ts: int | None = None  # Unix seconds; None rests until cancelled
     post_only: bool = True
-    client_order_id: str = field(default_factory=lambda: str(uuid.uuid4()))
+    # Tagged so the kill switch can tell the strategy's orders from any other
+    # order in the account (Kalshi echoes client_order_id back on orders).
+    client_order_id: str = field(default_factory=lambda: f"smm-{uuid.uuid4()}")
     action: str = "buy"  # "sell" closes contracts we hold (the early exit)
 
     def validate(self):
@@ -266,12 +268,23 @@ class TradingClient:
         self.log.append(entry)
         return entry
 
-    def cancel_all(self, ticker=None, prefixes=None):
-        """Cancel resting orders; with ``prefixes``, only tickers that start with
-        one of them (the strategy's own markets), leaving any other order alone."""
+    def cancel_all(self, ticker=None, prefixes=None, order_ids=None):
+        """Cancel the strategy's resting orders and leave any other order alone.
+
+        An order is the strategy's if its id is in ``order_ids`` (the ledger)
+        or its client_order_id carries the strategy tag; ``prefixes`` further
+        restricts to those markets. With neither given, every resting order.
+        """
         cancelled = []
+        owned = set(order_ids or [])
         for o in self.orders("resting", ticker):
             if prefixes and not str(o.get("ticker", "")).startswith(tuple(prefixes)):
                 continue
+            if order_ids is not None:
+                mine = o.get("order_id") in owned or str(
+                    o.get("client_order_id", "")
+                ).startswith("smm-")
+                if not mine:
+                    continue
             cancelled.append(self.cancel(o["order_id"]))
         return cancelled

@@ -1579,3 +1579,33 @@ test (`tests/test_nba_trade.py`, `tests/test_books.py`).
 Full suite: 99 tests. Live behaviour on the server is unchanged until
 projections exist (opening night); until then the trader places nothing,
 which is also what the age check now guarantees.
+
+### Fifth review (same day): three edge cases, all closed
+
+1. **Filled-and-unrecorded orders.** Pre-trade reconciliation only compared
+   *resting* orders, so an order from a crashed run that had filled
+   completely was invisible to it. `reconcile()` now also reads the
+   account's positions and the last three days of fills in this market's
+   tickers; any ticker the ledger never ordered blocks new placements
+   (`positions_not_in_ledger` in `last_run.json`). Test: a ghost position →
+   zero placements.
+2. **Old book logs without `updated_utc`.** `attach_latest()` now treats a
+   log without the books' own update times as no book data (the model veto
+   takes over) instead of silently skipping the freshness check. The
+   committed `nfl_latest.csv` is in the old format until the next book run
+   regenerates it; until then NFL runs are model-veto only, by design. Test
+   added.
+3. **Model age from a stamp, never from mtime.** `live/nba_projections.py`
+   writes `outputs/projections/latest_meta.json` with `generated_utc`;
+   `projection_age_hours()` reads that, else the ladder file names, and
+   returns infinite (no new orders) if neither exists. The mtime fallback is
+   gone, since a checkout gives an old file a fresh mtime. Test: fresh
+   mtime with no stamp → infinite age.
+4. **Kill switch by ownership.** Orders now carry a client_order_id tagged
+   `smm-`; the kill switch cancels an order only if its id is in the ledger
+   or it carries the tag, and only in the strategy's markets. A manual NBA
+   order placed from a phone on the same account is left alone. Test added.
+
+103 tests. Agreed with the reviewer's closing line: the open question is
+now whether the edge survives live execution, not whether the code has an
+obvious defect, and that question is answered by fills, not by review.

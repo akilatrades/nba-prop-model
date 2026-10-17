@@ -57,7 +57,7 @@ class FakeClient:
         return []
 
     def positions(self):
-        return []
+        return getattr(self, "held", [])
 
     def cancel(self, order_id):
         self.cancelled = getattr(self, "cancelled", []) + [order_id]
@@ -604,3 +604,71 @@ def test_cancel_all_scoped_to_strategy_prefixes():
     c = Client()
     c.cancel_all(prefixes=nba_trade.STRATEGY_PREFIXES)
     assert c.cancelled == ["a", "b"]
+
+
+def test_filled_unrecorded_position_blocks_new_placements(tmp_path, monkeypatch):
+    """A crashed run's order filled completely: nothing is resting, but the
+    position exists in a ticker the ledger never ordered. Place nothing."""
+    now = pd.Timestamp("2026-10-21T20:00:00Z")
+    fake = FakeClient()
+    fake.held = [{"ticker": "KXNBAPTS-26OCT21AAABBB-GHOST-20", "position": -3}]
+    out = _wire(
+        tmp_path, monkeypatch, priced_frame(now + pd.Timedelta(hours=4)), fake, now
+    )
+    nba_trade.main()
+    assert fake.placed == []
+    summary = json.loads((out / "last_run.json").read_text())
+    assert summary["reconcile_before"]["positions_not_in_ledger"] == 1
+
+
+def test_projection_age_never_uses_mtime(tmp_path):
+    latest = tmp_path / "latest.csv"
+    latest.write_text("x\n")  # fresh mtime, no stamp, no ladders
+    assert nba_trade.projection_age_hours(
+        pd.Timestamp("2026-10-21T20:00Z"), latest
+    ) == float("inf")
+    (tmp_path / "latest_meta.json").write_text(
+        json.dumps({"generated_utc": "2026-10-21T17:30+00:00"})
+    )
+    age = nba_trade.projection_age_hours(pd.Timestamp("2026-10-21T20:00Z"), latest)
+    assert abs(age - 2.5) < 1e-6
+
+
+def test_kill_switch_spares_orders_the_strategy_did_not_place():
+    from kalshi.trading import TradingClient
+
+    class Client(TradingClient):
+        def __init__(self):
+            self.cancelled = []
+
+        def orders(self, status="resting", ticker=None):
+            return [
+                {
+                    "order_id": "ours-by-ledger",
+                    "ticker": "KXNBAPTS-X",
+                    "client_order_id": "abc",
+                },
+                {
+                    "order_id": "ours-by-tag",
+                    "ticker": "KXNBAREB-X",
+                    "client_order_id": "smm-123",
+                },
+                {
+                    "order_id": "manual",
+                    "ticker": "KXNBAPTS-Y",
+                    "client_order_id": "phone",
+                },
+                {
+                    "order_id": "other-market",
+                    "ticker": "KXBTC-Z",
+                    "client_order_id": "smm-9",
+                },
+            ]
+
+        def cancel(self, order_id):
+            self.cancelled.append(order_id)
+            return {"order_id": order_id}
+
+    c = Client()
+    c.cancel_all(prefixes=nba_trade.STRATEGY_PREFIXES, order_ids=["ours-by-ledger"])
+    assert c.cancelled == ["ours-by-ledger", "ours-by-tag"]

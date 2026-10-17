@@ -291,3 +291,32 @@ def test_consensus_carries_oldest_book_update_time():
     c = consensus(lines)
     assert "updated_utc" in c
     assert str(c.set_index("event_id").updated_utc["A"]).startswith("2026-10-21 10:00")
+
+
+def test_attach_latest_ignores_logs_without_book_update_times(tmp_path):
+    from kalshi.books import attach_latest
+
+    now = pd.Timestamp.now(tz="UTC")
+    old_format = pd.DataFrame(
+        {
+            "player_key": ["x y"],
+            "stat": ["points"],
+            "line": [20.5],
+            "p_book": [0.5],
+            "book_n": [2],
+            "snapshot_utc": [now.isoformat()],
+            "commence_utc": [(now + pd.Timedelta(hours=3)).isoformat()],
+        }
+    )
+    path = tmp_path / "nba_latest.csv"
+    old_format.to_csv(path, index=False)
+    priced = pd.DataFrame(
+        {
+            "player_key": ["x y"],
+            "stat": ["points"],
+            "line": [20.5],
+            "tip_utc": [(now + pd.Timedelta(hours=3)).isoformat()],
+        }
+    )
+    out = attach_latest(priced, path=path)
+    assert out.p_book.isna().all() and (out.book_n == 0).all()

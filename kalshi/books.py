@@ -328,7 +328,12 @@ def attach_latest(priced, path=LATEST, max_age_hours=4):
         if age > pd.Timedelta(hours=max_age_hours):
             print(f"Book lines are {age} old; ignored")
             return attach(priced, None)
-    if len(book) and "updated_utc" in book:
+    if len(book) and "updated_utc" not in book:
+        # An older log without the books' own update times cannot be checked
+        # for freshness: treat it as no book data (the model veto takes over).
+        print("Book lines carry no updated_utc; ignored")
+        return attach(priced, None)
+    if len(book):
         # The log's download time is not the books' quote time: drop lines
         # whose stalest contributing book last moved more than max_age ago.
         upd = pd.to_datetime(book.updated_utc, utc=True, errors="coerce")

@@ -16,6 +16,7 @@ Run from the repository root: python run_projections.py
 """
 
 from datetime import UTC, datetime, timedelta
+import json
 from pathlib import Path
 
 import pandas as pd
@@ -170,6 +171,9 @@ def main():
     path = folder / f"{now:%Y-%m-%dT%H%MZ}.csv"
     priced.round(4).to_csv(path, index=False)
     priced.round(4).to_csv(OUT / "latest.csv", index=False)
+    (OUT / "latest_meta.json").write_text(
+        json.dumps({"generated_utc": now.isoformat(timespec="minutes")}) + "\n"
+    )
     unpriced = matched.player_id.isna().sum()
     print(
         f"Priced {len(priced)} of {len(markets)} open markets for "
