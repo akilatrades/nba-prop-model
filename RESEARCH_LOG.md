@@ -1253,3 +1253,54 @@ rather than the source of the edge; the source is the public's
 over-optimism, which both venues price in. Consequence: the book veto
 works by picking lines, not by arbitraging the books, and the gross edge
 against the books is itself positive but not yet significant (t 1.5).
+
+## 2026-10-17: Model refresh study, fixed before it runs
+
+Prompted by the question of which of the standard quant toolkit the model
+uses. Stochastic calculus and differential equations are not tested: the
+contract is a binary held to settlement with no hedge, so there is no price
+process to solve. Four things that could plausibly help are tested offline
+against the frozen model (`research/model_refresh.py`), on the 2025-26
+holdout only, with the same walk-forward as the backtest (refit before each
+month on earlier games). Nothing is tuned on the holdout; every setting
+below is written here first.
+
+**Mean-model variants** (the spread layer is unchanged):
+
+1. `control`: the frozen Poisson regression.
+2. `gbm`: gradient-boosted trees with a Poisson loss on the same feature
+   matrix and the same season weights. Settings fixed now: 300 rounds,
+   learning rate 0.05, 15 leaves, 50 rows per leaf, L2 = 1.0. No tuning.
+3. `hier`: the Poisson regression plus a player random effect, Gamma-Poisson
+   partial pooling: each player's factor is (his actual + a) / (his expected
+   + a) over his training games in the latest two seasons, so a player with
+   little history stays at the regression and a player with a long
+   consistent residual moves off it. The prior strength `a` is chosen from
+   {10, 30, 100, 300} by log loss on the last training month only (never
+   the test month).
+4. `iso`: the control's probabilities passed through an isotonic
+   calibrator fitted, per stat, on every earlier out-of-sample prediction
+   (the 2021-22 to 2024-25 development predictions plus earlier holdout
+   months).
+
+**Judged on**, in order: (a) log loss over every player-game-line in the
+holdout; (b) the veto replayed on the season's 53,549 resting "no" orders,
+each variant's probability recomputing the edge and each order's
+place/skip, scored as profit per 100 eligible orders with one contract per
+order (unfilled orders count zero), with the difference from the control
+given a game-clustered t. A variant is adopted only if (a) improves and (b)
+improves with t ≥ 2; otherwise the control stays.
+
+**Portfolio allocation**: in the bankroll replay from the desk study
+(30% daily cap, 1% stake, 10% game cap), order the day's candidates by
+edge ÷ standard deviation of the contract (√(p(1−p)), with within-game
+correlation taken as the −0.06 measured in the inventory study, i.e. close
+to independent) instead of by edge. Judged on the whole season and on each
+half separately, against edge-first and random order. Adopted only if it
+beats edge-first on both halves by 10% or more, the same bar the EV-ranking
+study failed.
+
+Expected: small log-loss gains at most from `gbm` and `hier`; `iso` close
+to nothing because the control is already calibrated to within half a
+point per decile; the portfolio ordering close to random because the
+correlations are near zero.
