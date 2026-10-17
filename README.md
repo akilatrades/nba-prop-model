@@ -1,5 +1,7 @@
 # Sports market maker
 
+**Forward-validation protocol:** [30-day execution evidence and the 500-fill checkpoint](docs/FORWARD_VALIDATION.md). The live selection, sizing and risk rules are unchanged; reports never enable live trading or authorize a capital increase.
+
 [![tests](https://github.com/akilatrades/sports-market-maker/actions/workflows/tests.yml/badge.svg)](https://github.com/akilatrades/sports-market-maker/actions/workflows/tests.yml)
 
 A market-making strategy for Kalshi's sports markets, built from two

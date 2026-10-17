@@ -36,6 +36,7 @@ import pandas as pd
 from kalshi.api import fetch_market, fetch_trades, snapshot
 from kalshi.books import attach_latest
 from live.execution import execution_report, log_queue_positions, write_markdown
+from live.forward_validation import write_outputs as write_forward_validation
 from kalshi.paper_props import ALL_RULES, candidate_orders
 from kalshi.risk import Exposure, Rejected, RiskLimits, check, commit
 from kalshi.strategy import DAY_CAP, STAKE
@@ -848,19 +849,28 @@ def main():
                     if (OUT / "queue.csv").exists()
                     else None
                 )
+                actual_fills = pd.read_csv(FILLS) if FILLS.exists() else None
+                existing_report = (
+                    pd.read_csv(OUT / "execution.csv")
+                    if (OUT / "execution.csv").exists()
+                    else None
+                )
                 report = execution_report(
                     ledger,
-                    pd.read_csv(FILLS) if FILLS.exists() else None,
+                    actual_fills,
                     queue,
                     pd.read_csv(SETTLEMENTS) if SETTLEMENTS.exists() else None,
                     trades=fetch_trades,
                     now=now,
+                    previous=existing_report,
                 )
                 if len(report):
                     report.to_csv(OUT / "execution.csv", index=False)
                 summary_extra["execution"] = write_markdown(
                     report, OUT / "execution.md", now
                 )
+                forward = write_forward_validation(OUT, report, actual_fills, now)
+                summary_extra["forward_validation_status"] = forward["status"]
                 summary_extra["execution"]["queue_readings_added"] = added
             except Exception as error:  # noqa: BLE001 - reporting must not stop trading
                 print(f"Execution report failed: {error}")
