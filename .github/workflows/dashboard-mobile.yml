@@ -1,0 +1,25 @@
+name: Dashboard mobile smoke
+
+on:
+  pull_request:
+    paths:
+      - "dashboard/**"
+      - "tests/smoke_dashboard_mobile.py"
+      - ".github/workflows/dashboard-mobile.yml"
+  workflow_dispatch:
+
+jobs:
+  phone-viewport:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install headless Chromium
+        run: |
+          python -m pip install playwright==1.56.0
+          python -m playwright install --with-deps chromium
+      - name: Test mobile scrolling and responsive layout
+        run: python tests/smoke_dashboard_mobile.py
