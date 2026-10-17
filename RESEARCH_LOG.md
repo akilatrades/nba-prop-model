@@ -1346,3 +1346,37 @@ Consequence: the mean model is not the bottleneck. The edge is in which
 lines get quoted (the sportsbook veto) and in getting real fills, which is
 where the next effort goes. `control_matches_frozen_rule` = 1.0: the
 control's recomputed decisions reproduce the frozen ledger exactly.
+
+## 2026-10-17: Targeted scan of the series the second pass ran out of time on
+
+608 sports series (first-page volume $582M) were never scanned because their
+shards hit the five-hour budget. `research/scan_markets.py` now takes
+`--series` (and the workflow an input) to scan a named list. Two targeted
+runs today, same rules as the second pass (400-market sample, resting "no"
+one cent inside the ask, pass = t ≥ 2, both halves positive, "yes" side not
+also passing):
+
+**Goalscorer family.** EPL Goalscorer: 10 "no" fills in 400 markets
+(+6.1¢, t 0.4). UCL Goalscorer: 41 fills, −8.3¢. UEFA Nations League Goal:
+no two-sided quotes at all. EPL Corners: 39 fills, +10.9¢, second half
+negative. Reading: soccer player markets on Kalshi are one-sided or empty
+before kickoff; there is no crowd to rest against. Not a business today;
+re-scan if soccer liquidity grows.
+
+**Prop-like series.** 28 scanned. One pass: **KXNBA3D, NBA player
+triple-double: 509 fills, +4.47¢, t 2.25, first half +6.2¢, second half
++2.8¢, "yes" side −11.2¢ (t −2.5)**, the thesis shape exactly (fans buy the
+triple-double). Added to the paper ledger, judged 2026-12-15 or at 300
+fills like the other candidates. Near misses, not added: NBA blocks (216
+fills, +2.0¢, t 0.5, first half negative), WNBA assists (+1.8¢, t 0.4),
+UCL both-teams-to-score (+1.4¢, t 0.4). Negative or flat: WNBA points
+(−3.4¢) and rebounds (−4.0¢), NFL receptions (−1.1¢, 120 fills), MLB
+hits+runs+RBIs (−2.0¢), golf head-to-head (−0.1¢), LoL games (−3.2¢). No
+two-sided quotes before kickoff (0 fills in 400 markets): NFL rushing
+attempts, fantasy points, longest rush, first team touchdown, NHL saves;
+the receiving-yards escalators and ladders returned no settled markets.
+
+Reading across both runs: the breadth that exists is NBA (a fifth NBA
+market, same players and nights as the current edge). Most NFL player
+props on Kalshi are not quoted two-sided pre-game, so a resting order never
+fills there, whatever the edge would be.

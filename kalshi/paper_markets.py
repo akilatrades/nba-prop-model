@@ -37,6 +37,8 @@ SERIES = [
     "KXNBAFTM",  # NBA player free throws made
     "KXNCAAMENTION",  # NCAA broadcast mentions (the one non-sports candidate)
     "KXNCAAMB1HSPREAD",  # college basketball first-half spread (from November)
+    # Targeted scan of series the second pass ran out of time on, 2026-10-17.
+    "KXNBA3D",  # NBA player triple-double (+4.5c, t 2.3, 509 fills)
 ]
 WINDOW_HOURS = (4, 10)
 EVENT_HOURS = 3  # orders are cancelled this long before expiration
