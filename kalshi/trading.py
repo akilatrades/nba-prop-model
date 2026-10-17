@@ -266,8 +266,12 @@ class TradingClient:
         self.log.append(entry)
         return entry
 
-    def cancel_all(self, ticker=None):
+    def cancel_all(self, ticker=None, prefixes=None):
+        """Cancel resting orders; with ``prefixes``, only tickers that start with
+        one of them (the strategy's own markets), leaving any other order alone."""
         cancelled = []
         for o in self.orders("resting", ticker):
+            if prefixes and not str(o.get("ticker", "")).startswith(tuple(prefixes)):
+                continue
             cancelled.append(self.cancel(o["order_id"]))
         return cancelled

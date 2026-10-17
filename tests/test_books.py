@@ -247,3 +247,47 @@ def test_nfl_priced_frame_from_open_markets():
     assert out.stat.tolist() == ["receiving_yards", "skill_tds"]
     assert out.line.tolist() == [74.5, 0.5]
     assert out.p_model.round(2).tolist()[0] == 0.38 and pd.isna(out.p_model.iloc[1])
+
+
+def test_attach_latest_drops_lines_stale_at_the_books(tmp_path, monkeypatch):
+    from kalshi.books import attach_latest
+
+    now = pd.Timestamp.now(tz="UTC")
+    book = pd.DataFrame(
+        {
+            "player_key": ["fresh guy", "stale guy"],
+            "stat": ["points", "points"],
+            "line": [20.5, 20.5],
+            "p_book": [0.5, 0.5],
+            "book_n": [2, 2],
+            "snapshot_utc": [now.isoformat()] * 2,  # downloaded just now...
+            "updated_utc": [
+                (now - pd.Timedelta(minutes=30)).isoformat(),
+                (
+                    now - pd.Timedelta(hours=9)
+                ).isoformat(),  # ...but this book last moved 9 h ago
+            ],
+            "commence_utc": [(now + pd.Timedelta(hours=3)).isoformat()] * 2,
+        }
+    )
+    path = tmp_path / "nba_latest.csv"
+    book.to_csv(path, index=False)
+    priced = pd.DataFrame(
+        {
+            "player_key": ["fresh guy", "stale guy"],
+            "stat": ["points", "points"],
+            "line": [20.5, 20.5],
+            "tip_utc": [(now + pd.Timedelta(hours=3)).isoformat()] * 2,
+        }
+    )
+    out = attach_latest(priced, path=path, max_age_hours=4)
+    assert out.p_book.notna().tolist() == [True, False]
+
+
+def test_consensus_carries_oldest_book_update_time():
+    lines = _two_games()
+    lines["snapshot_utc"] = ["2026-10-21T10:00:00Z"] * 4 + ["2026-10-21T12:00:00Z"] * 4
+    lines.loc[lines.book == "fd", "snapshot_utc"] = "2026-10-21T13:00:00Z"
+    c = consensus(lines)
+    assert "updated_utc" in c
+    assert str(c.set_index("event_id").updated_utc["A"]).startswith("2026-10-21 10:00")

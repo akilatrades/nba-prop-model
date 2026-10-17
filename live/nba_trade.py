@@ -50,6 +50,10 @@ SETTLEMENTS = OUT / "settlements.csv"
 EXITS = OUT / "exits.csv"
 MARKET_DIRS = {"nba": Path("outputs/live"), "nfl": Path("outputs/live/nfl")}
 MARKET_PREFIXES = {"nba": ("KXNBA",), "nfl": ("KXNFL",)}
+STRATEGY_PREFIXES = tuple(p for v in MARKET_PREFIXES.values() for p in v)
+# Newest projection file allowed to drive new orders. Projections run every
+# three hours from 12:30 to 21:30 UTC; the trader runs until 04:59 UTC.
+MAX_MODEL_AGE_HOURS = 9.0
 
 
 def configure(market):
@@ -137,6 +141,28 @@ EXIT_COLUMNS = [
     "result",
     "hold_profit_per_contract",
 ]
+
+
+def projection_age_hours(now, latest=None):
+    """Hours since the newest projection run, from the ladder file names
+    (outputs/projections/ladders/<UTC stamp>.csv), else the file's mtime."""
+    latest = Path(latest or LATEST)
+    newest = None
+    ladders = latest.parent / "ladders"
+    if ladders.exists():
+        for path in ladders.glob("*.csv"):
+            try:
+                stamp = pd.Timestamp(
+                    datetime.strptime(path.stem, "%Y-%m-%dT%H%MZ").replace(tzinfo=UTC)
+                )
+            except ValueError:
+                continue
+            newest = stamp if newest is None or stamp > newest else newest
+    if newest is None and latest.exists():
+        newest = pd.Timestamp(latest.stat().st_mtime, unit="s", tz="UTC")
+    if newest is None:
+        return float("inf")
+    return (pd.Timestamp(now) - newest).total_seconds() / 3600
 
 
 def eastern_day(ts):
@@ -236,21 +262,28 @@ def drop_fresh_injury_news(candidates, now, hours=6):
     try:
         report = injuries()
     except (OSError, ValueError) as error:
-        print(f"Injury report unavailable ({error}); no injury filter this run")
-        return candidates
+        # No report means no way to tell stale probabilities from fresh ones:
+        # place nothing this run rather than trade blind.
+        print(f"::warning::Injury report unavailable ({error}); no new orders this run")
+        return candidates.iloc[0:0]
     if report.empty or "updated" not in report:
         return candidates
     updated = pd.to_datetime(report.updated, utc=True, errors="coerce")
     recent = report[updated >= pd.Timestamp(now) - pd.Timedelta(hours=hours)]
     flagged = set(recent.player_id.dropna().astype("int64"))
     listed = set(report.player_id.dropna().astype("int64"))
-    keep = ~candidates.player_id.astype("int64").isin(
-        flagged
-        | (listed & set(report.loc[report.out, "player_id"].dropna().astype("int64")))
-    )
+    out_ids = set(report.loc[report.out, "player_id"].dropna().astype("int64"))
+    keep = ~candidates.player_id.astype("int64").isin(flagged | (listed & out_ids))
+    # A teammate newly Out changes everyone's minutes on that team: skip the
+    # whole team until the next projection run has priced it in.
+    if "team" in candidates and "team" in report:
+        fresh_out_teams = set(recent.loc[recent.out, "team"].dropna())
+        keep &= ~candidates.team.isin(fresh_out_teams)
     dropped = int((~keep).sum())
     if dropped:
-        print(f"Injury filter: {dropped} candidates dropped (fresh or Out status)")
+        print(
+            f"Injury filter: {dropped} candidates dropped (fresh, Out, or teammate Out)"
+        )
     return candidates[keep]
 
 
@@ -281,22 +314,36 @@ def cancel_on_injury(ledger, client, now, report=None):
         rep.get("status", pd.Series("", index=rep.index)).fillna("").str.lower()
     )
     rep = rep.sort_values("updated").drop_duplicates("player_id", keep="last")
+    rep["is_out"] = rep.get("out", False).astype(bool) | rep.status_l.isin(
+        {"out", "doubtful"}
+    )
+    # Latest time a teammate was ruled Out, per team: an order placed before
+    # that was priced with him playing.
+    team_out_at = (
+        rep[rep.is_out & rep.updated.notna()].groupby("team").updated.max().to_dict()
+        if "team" in rep
+        else {}
+    )
     rep = rep.set_index("player_id")
     resting = ledger.status.isin(["placed", "resting", "dry"])
     cancelled = 0
     for i in ledger.index[resting]:
         pid = ledger.at[i, "player_id"]
-        if pd.isna(pid) or int(pid) not in rep.index:
-            continue
-        entry = rep.loc[int(pid)]
         placed = pd.to_datetime(ledger.at[i, "run_utc"], utc=True, errors="coerce")
-        out = bool(entry.get("out", False)) or entry.status_l in {"out", "doubtful"}
-        changed = (
-            pd.notna(entry.updated) and pd.notna(placed) and entry.updated > placed
-        )
-        if not (out or changed):
+        reason = None
+        if pd.notna(pid) and int(pid) in rep.index:
+            entry = rep.loc[int(pid)]
+            changed = (
+                pd.notna(entry.updated) and pd.notna(placed) and entry.updated > placed
+            )
+            if entry.is_out or changed:
+                reason = "injury: " + (entry.status_l or "entry changed")
+        team = ledger.at[i, "team"] if "team" in ledger else None
+        if reason is None and isinstance(team, str) and team in team_out_at:
+            if pd.notna(placed) and team_out_at[team] > placed:
+                reason = "injury: teammate out"
+        if reason is None:
             continue
-        reason = "injury: " + (entry.status_l or "entry changed")
         try:
             client.cancel(str(ledger.at[i, "order_id"]))
         except TradingError as error:
@@ -490,10 +537,11 @@ def main():
     if limits.kill_file.exists():
         print("KILL file present: cancelling everything, placing nothing")
         if client.can_sign:
-            print(json.dumps(client.cancel_all()))
+            print(json.dumps(client.cancel_all(prefixes=STRATEGY_PREFIXES)))
         return
 
     cancelled = 0
+    stale_model = False
     if market == "nfl":
         from live.nfl_trade import candidates as nfl_candidates
 
@@ -510,6 +558,13 @@ def main():
         priced["hours_to_tip"] = (
             priced.tip_utc - pd.Timestamp(now)
         ).dt.total_seconds() / 3600
+        age = projection_age_hours(now)
+        stale_model = age > MAX_MODEL_AGE_HOURS
+        if stale_model:
+            print(
+                f"::warning::Projections are {age:.1f} h old (limit {MAX_MODEL_AGE_HOURS}); "
+                "no new orders this run"
+            )
         priced = refresh_quotes(priced, now)
         priced = attach_latest(priced)
         ledger, cancelled = cancel_on_injury(ledger, client, now)
@@ -517,19 +572,50 @@ def main():
             ledger.to_csv(ORDERS, index=False)
     candidates = candidate_orders(priced, rule)
     candidates = candidates[candidates.hours_to_tip >= MIN_HOURS_TO_TIP]
-    if candidates.empty:
-        print("No candidate orders in the window")
-        return
-    if market == "nba":
+    if market == "nba" and stale_model:
+        candidates = candidates.iloc[0:0]
+    if market == "nba" and not candidates.empty:
         candidates = drop_fresh_injury_news(candidates, now)
-    candidates = candidates.sort_values("edge", ascending=False)
-    # Skip markets we already have an order in (any status but rejected).
+    if not candidates.empty:
+        candidates = candidates.sort_values("edge", ascending=False)
+    # Skip markets we already have an order in. Live mode counts only real
+    # orders: a dry-run row from an earlier run must not block the live order.
+    real = ["placed", "resting", "done", "cancelled", "filled"]
     have = (
-        set(ledger.loc[~ledger.status.isin(["rejected"]), "ticker"])
+        set(
+            ledger.loc[
+                ledger.status.isin(real)
+                if mode == "live"
+                else ~ledger.status.isin(["rejected"]),
+                "ticker",
+            ]
+        )
         if len(ledger)
         else set()
     )
     candidates = candidates[~candidates.ticker.isin(have)]
+
+    # Reconcile with the exchange BEFORE placing anything: resting orders the
+    # ledger does not know about (a run that placed and then crashed) mean the
+    # exposure below would be understated, so nothing new goes out until they
+    # are accounted for.
+    pre_report = None
+    if client.can_sign:
+        try:
+            pre_report, _ = reconcile(ledger, client, market)
+        except TradingError as error:
+            print(
+                f"::warning::Could not read exchange orders ({error}); placing nothing"
+            )
+            candidates = candidates.iloc[0:0]
+        else:
+            if pre_report["on_exchange_not_in_ledger"]:
+                print(
+                    "::warning::Unreconciled orders on the exchange; placing nothing until they are in the ledger"
+                )
+                candidates = candidates.iloc[0:0]
+    if candidates.empty:
+        print("No candidate orders to place")
 
     # Sizing from the real balance, same fractions as the paper rule.
     try:
@@ -541,6 +627,10 @@ def main():
     except TradingError as error:
         print(f"Could not read balance: {error}")
         return
+    if pre_report is not None:
+        summary_extra["reconcile_before"] = {
+            k: (v if not isinstance(v, list) else len(v)) for k, v in pre_report.items()
+        }
     today = eastern_day(now)
     exposure = exposure_from(ledger, today, other_open_exposure(market))
     rows, placed = [], 0
@@ -632,11 +722,8 @@ def main():
             if len(settled):
                 settled.to_csv(SETTLEMENTS, index=False)
             report, exchange = reconcile(ledger, client, market)
-            summary_extra = {
-                "reconcile": {
-                    k: (v if not isinstance(v, list) else len(v))
-                    for k, v in report.items()
-                }
+            summary_extra["reconcile"] = {
+                k: (v if not isinstance(v, list) else len(v)) for k, v in report.items()
             }
             # Early exits on "no" positions that have moved our way.
             exits = (

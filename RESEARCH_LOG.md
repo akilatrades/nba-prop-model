@@ -1537,3 +1537,45 @@ player or driver markets (NBA props, NBA triple-double, NASCAR top-10,
 World Cup score-or-assist, UFC method); game-winner and spread markets
 are flat as a class. The scan is finished; no further breadth work until
 the live ledger has real fills.
+
+### Fourth review (same day): live-trader safety, five items, all changed
+
+These concern the trading engine rather than the edge. Each was verified
+against `live/nba_trade.py` as it stood, then fixed with an adversarial
+test (`tests/test_nba_trade.py`, `tests/test_books.py`).
+
+1. **Reconcile before placing (was: after).** A run that placed orders and
+   crashed before writing the ledger left orders the next run's exposure
+   count could not see. Now the exchange's resting orders are compared with
+   the ledger *before* candidates are sized; any order on the exchange that
+   the ledger does not know, or a failure to read the exchange, means
+   nothing new is placed that run. Test: a stranger order on the exchange
+   → zero placements, recorded in `last_run.json` under `reconcile_before`.
+2. **Dry-run rows no longer block live orders.** The "already have an
+   order in this market" check counted rows of any status including
+   `dry`, so a dry run earlier in the day would have suppressed the live
+   order for the same market after the switch. In live mode only real
+   statuses count; in dry mode the old behaviour stands so dry logs are
+   not duplicated. Tested both ways.
+3. **Teammate injuries.** The pre-order filter now skips every candidate on
+   a team where a player was newly ruled Out in the last six hours, and
+   the cancel pass pulls resting orders on a team placed before a teammate
+   was ruled Out (orders placed after are kept: they were priced with him
+   out). If the injury feed cannot be read, nothing new is placed, instead
+   of proceeding without the check. Tested.
+4. **Book freshness at the books, not at download.** `consensus()` now
+   carries `updated_utc`, the oldest contributing book's own last-update
+   time, through the log; `attach_latest()` drops lines whose books last
+   moved more than four hours ago even if the file was downloaded a minute
+   ago. Tested with a fresh and a nine-hour-old line in a just-written
+   file.
+5. **Model age and kill-switch scope.** New orders need a projection run
+   within `MAX_MODEL_AGE_HOURS` = 9 (projections every three hours to
+   21:30 UTC, trader until 04:59 UTC), read from the ladder file names the
+   projections workflow commits; older, or none, places nothing. The kill
+   switch cancels only tickers with the strategy's prefixes (`KXNBA`,
+   `KXNFL`), not other orders in the account. Both tested.
+
+Full suite: 99 tests. Live behaviour on the server is unchanged until
+projections exist (opening night); until then the trader places nothing,
+which is also what the age check now guarantees.

@@ -102,6 +102,7 @@ def test_trader_places_sized_orders_and_reconciles(tmp_path, monkeypatch):
     priced.to_csv(latest, index=False)
     monkeypatch.setattr(nba_trade, "LATEST", latest)
     monkeypatch.setattr(nba_trade, "refresh_quotes", lambda frame, now: frame)
+    monkeypatch.setattr(nba_trade, "projection_age_hours", lambda now, latest=None: 1.0)
     monkeypatch.setattr(
         nba_trade,
         "injuries",
@@ -117,7 +118,7 @@ def test_trader_places_sized_orders_and_reconciles(tmp_path, monkeypatch):
             ]
         ),
     )
-    fake = FakeClient(resting_unknown=True)
+    fake = FakeClient()
     monkeypatch.setattr(nba_trade, "TradingClient", lambda dry_run: fake)
     monkeypatch.setenv("TRADE_MODE", "live")
 
@@ -141,7 +142,7 @@ def test_trader_places_sized_orders_and_reconciles(tmp_path, monkeypatch):
         )  # 1% of $250 or $5 cap
     summary = json.loads((out / "last_run.json").read_text())
     assert summary["placed"] == 2
-    assert summary["reconcile"]["on_exchange_not_in_ledger"] == 1  # the stranger
+    assert summary["reconcile"]["on_exchange_not_in_ledger"] == 0
     st = pd.read_csv(out / "settlements.csv")
     assert (
         round(float(st.profit.iloc[0]), 2) == -3.02
@@ -168,6 +169,7 @@ def test_orders_per_game_cap(tmp_path, monkeypatch):
     priced.to_csv(latest, index=False)
     monkeypatch.setattr(nba_trade, "LATEST", latest)
     monkeypatch.setattr(nba_trade, "refresh_quotes", lambda frame, now: frame)
+    monkeypatch.setattr(nba_trade, "projection_age_hours", lambda now, latest=None: 1.0)
     monkeypatch.setattr(
         nba_trade,
         "injuries",
@@ -408,3 +410,197 @@ def test_nfl_market_dry_run(tmp_path, monkeypatch):
     assert ledger.status.iloc[0] == "dry" and ledger.game_id.iloc[0] == "26OCT18CHIATL"
     summary = json.loads((tmp_path / "nfl" / "last_run.json").read_text())
     assert summary["market"] == "nfl" and summary["placed"] == 1
+
+
+def _wire(tmp_path, monkeypatch, priced, fake, now, mode="live", report=None):
+    out = tmp_path / "live"
+    for name, path in [
+        ("OUT", out),
+        ("ORDERS", out / "orders.csv"),
+        ("FILLS", out / "fills.csv"),
+        ("SETTLEMENTS", out / "settlements.csv"),
+        ("EXITS", out / "exits.csv"),
+    ]:
+        monkeypatch.setattr(nba_trade, name, path)
+    latest = tmp_path / "latest.csv"
+    priced.to_csv(latest, index=False)
+    monkeypatch.setattr(nba_trade, "LATEST", latest)
+    monkeypatch.setattr(nba_trade, "refresh_quotes", lambda frame, now: frame)
+    monkeypatch.setattr(nba_trade, "projection_age_hours", lambda now, latest=None: 1.0)
+    empty = pd.DataFrame(
+        columns=["team", "player_id", "player", "status", "comment", "updated", "out"]
+    )
+    monkeypatch.setattr(
+        nba_trade, "injuries", lambda: empty if report is None else report
+    )
+    monkeypatch.setattr(nba_trade, "TradingClient", lambda dry_run: fake)
+    monkeypatch.setenv("TRADE_MODE", mode)
+
+    class FixedNow:
+        @staticmethod
+        def now(tz):
+            return now.to_pydatetime()
+
+    monkeypatch.setattr(nba_trade, "datetime", FixedNow)
+    return out
+
+
+def test_unknown_exchange_orders_block_new_placements(tmp_path, monkeypatch):
+    """A previous run placed and crashed before writing the ledger: the next
+    run must see the stranger on the exchange and place nothing."""
+    now = pd.Timestamp("2026-10-21T20:00:00Z")
+    fake = FakeClient(resting_unknown=True)
+    out = _wire(
+        tmp_path, monkeypatch, priced_frame(now + pd.Timedelta(hours=4)), fake, now
+    )
+    nba_trade.main()
+    assert fake.placed == []
+    summary = json.loads((out / "last_run.json").read_text())
+    assert summary["placed"] == 0
+    assert summary["reconcile_before"]["on_exchange_not_in_ledger"] == 1
+
+
+def test_dry_run_rows_do_not_block_live_orders(tmp_path, monkeypatch):
+    now = pd.Timestamp("2026-10-21T20:00:00Z")
+    priced = priced_frame(now + pd.Timedelta(hours=4))
+    fake = FakeClient()
+    out = _wire(tmp_path, monkeypatch, priced, fake, now)
+    out.mkdir(parents=True)
+    dry = pd.DataFrame(
+        [
+            {"ticker": t, "status": "dry", "run_utc": "2026-10-21T15:00+00:00"}
+            for t in priced.ticker
+        ]
+    )
+    for column in nba_trade.ORDER_COLUMNS:
+        if column not in dry:
+            dry[column] = pd.NA
+    dry[nba_trade.ORDER_COLUMNS].to_csv(out / "orders.csv", index=False)
+    nba_trade.main()
+    assert len(fake.placed) == 2  # the dry rows did not count as "already in"
+    # and in dry mode the same rows DO stop a second dry log of the same markets
+    fake2 = FakeClient()
+    fake2.can_sign = False
+    _wire(tmp_path, monkeypatch, priced, fake2, now, mode="dry")
+    nba_trade.main()
+    ledger = pd.read_csv(out / "orders.csv")
+    assert (ledger.status == "dry").sum() == 3  # the original three, none added
+
+
+def test_injury_feed_failure_places_nothing(tmp_path, monkeypatch):
+    now = pd.Timestamp("2026-10-21T20:00:00Z")
+    fake = FakeClient()
+    _wire(tmp_path, monkeypatch, priced_frame(now + pd.Timedelta(hours=4)), fake, now)
+
+    def broken():
+        raise OSError("espn down")
+
+    monkeypatch.setattr(nba_trade, "injuries", broken)
+    nba_trade.main()
+    assert fake.placed == []
+
+
+def test_stale_projections_place_nothing(tmp_path, monkeypatch):
+    now = pd.Timestamp("2026-10-21T20:00:00Z")
+    fake = FakeClient()
+    _wire(tmp_path, monkeypatch, priced_frame(now + pd.Timedelta(hours=4)), fake, now)
+    monkeypatch.setattr(
+        nba_trade, "projection_age_hours", lambda now, latest=None: 12.0
+    )
+    nba_trade.main()
+    assert fake.placed == []
+
+
+def test_projection_age_from_ladder_names(tmp_path):
+    latest = tmp_path / "latest.csv"
+    latest.write_text("x\n")
+    (tmp_path / "ladders").mkdir()
+    (tmp_path / "ladders" / "2026-10-21T1830Z.csv").write_text("x\n")
+    (tmp_path / "ladders" / "2026-10-21T1530Z.csv").write_text("x\n")
+    age = nba_trade.projection_age_hours(pd.Timestamp("2026-10-21T20:00Z"), latest)
+    assert abs(age - 1.5) < 1e-6
+
+
+def test_teammate_out_drops_candidates_and_cancels_resting():
+    now = pd.Timestamp("2026-10-21T22:00Z")
+    report = pd.DataFrame(
+        [
+            {
+                "team": "AAA",
+                "player_id": 99,
+                "player": "star",
+                "status": "Out",
+                "comment": "",
+                "updated": "2026-10-21T21:00Z",
+                "out": True,
+            }
+        ]
+    )
+    nba_trade.injuries = lambda: report
+    cands = pd.DataFrame(
+        {"player_id": [10, 20], "team": ["AAA", "BBB"], "edge": [0.1, 0.1]}
+    )
+    kept = nba_trade.drop_fresh_injury_news(cands, now)
+    assert set(kept.team) == {
+        "BBB"
+    }  # the star's teammate is skipped, not the other game
+    ledger = pd.DataFrame(
+        [
+            {
+                "ticker": "A",
+                "player_id": 10,
+                "team": "AAA",
+                "order_id": "o1",
+                "status": "resting",
+                "run_utc": "2026-10-21T20:00+00:00",
+                "rejected_reason": "",
+            },
+            {
+                "ticker": "B",
+                "player_id": 20,
+                "team": "BBB",
+                "order_id": "o2",
+                "status": "resting",
+                "run_utc": "2026-10-21T20:00+00:00",
+                "rejected_reason": "",
+            },
+            {
+                "ticker": "C",
+                "player_id": 11,
+                "team": "AAA",
+                "order_id": "o3",
+                "status": "resting",
+                "run_utc": "2026-10-21T21:30+00:00",
+                "rejected_reason": "",
+            },
+        ]
+    )
+    fake = FakeClient()
+    out, n = nba_trade.cancel_on_injury(ledger, fake, now, report)
+    # A was placed before the star was ruled out: cancelled. C was placed after
+    # (already priced with him out): kept. B is another team: kept.
+    assert n == 1 and fake.cancelled == ["o1"]
+    assert out.set_index("ticker").rejected_reason["A"] == "injury: teammate out"
+
+
+def test_cancel_all_scoped_to_strategy_prefixes():
+    from kalshi.trading import TradingClient
+
+    class Client(TradingClient):
+        def __init__(self):
+            self.cancelled = []
+
+        def orders(self, status="resting", ticker=None):
+            return [
+                {"order_id": "a", "ticker": "KXNBAPTS-X"},
+                {"order_id": "b", "ticker": "KXNFLRECYDS-X"},
+                {"order_id": "c", "ticker": "KXBTC-SOMETHING"},
+            ]
+
+        def cancel(self, order_id):
+            self.cancelled.append(order_id)
+            return {"order_id": order_id}
+
+    c = Client()
+    c.cancel_all(prefixes=nba_trade.STRATEGY_PREFIXES)
+    assert c.cancelled == ["a", "b"]

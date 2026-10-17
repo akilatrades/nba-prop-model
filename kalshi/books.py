@@ -242,6 +242,10 @@ def consensus(lines):
     wide = q.pivot_table(
         index=keys, columns="side", values="p_raw", aggfunc="first"
     ).reset_index()
+    if "snapshot_utc" in q:  # each book's own last update, carried per book row
+        stamp = pd.to_datetime(q.snapshot_utc, utc=True, errors="coerce")
+        upd = q.assign(updated_utc=stamp).groupby(keys).updated_utc.min()
+        wide = wide.merge(upd.reset_index(), on=keys, how="left")
     if "over" not in wide or "under" not in wide:
         return pd.DataFrame(columns=["player_key", "stat", "line", "p_book", "book_n"])
     both = wide.dropna(subset=["over", "under"]).copy()
@@ -249,11 +253,12 @@ def consensus(lines):
     group = ["player_key", "stat", "line"]
     if "event_id" in both:  # never average one player's line across two games
         group = ["event_id", "commence_utc"] + group
-    out = (
-        both.groupby(group)
-        .agg(p_book=("p_over", "mean"), book_n=("p_over", "size"))
-        .reset_index()
-    )
+    agg = {"p_book": ("p_over", "mean"), "book_n": ("p_over", "size")}
+    if "updated_utc" in both:
+        # The OLDEST contributing book's own update time: the consensus is only
+        # as fresh as its stalest member.
+        agg["updated_utc"] = ("updated_utc", "min")
+    out = both.groupby(group).agg(**agg).reset_index()
     out["book_n"] = out.book_n.astype(int)
     return out
 
@@ -317,13 +322,22 @@ def attach_latest(priced, path=LATEST, max_age_hours=4):
     if not path.exists() or priced.empty:
         return attach(priced, None)
     book = pd.read_csv(path)
+    now = pd.Timestamp.now(tz="UTC")
     if len(book) and "snapshot_utc" in book:
-        age = pd.Timestamp.now(tz="UTC") - pd.to_datetime(
-            book.snapshot_utc.iloc[0], utc=True
-        )
+        age = now - pd.to_datetime(book.snapshot_utc.iloc[0], utc=True)
         if age > pd.Timedelta(hours=max_age_hours):
             print(f"Book lines are {age} old; ignored")
             return attach(priced, None)
+    if len(book) and "updated_utc" in book:
+        # The log's download time is not the books' quote time: drop lines
+        # whose stalest contributing book last moved more than max_age ago.
+        upd = pd.to_datetime(book.updated_utc, utc=True, errors="coerce")
+        fresh = upd.notna() & (now - upd <= pd.Timedelta(hours=max_age_hours))
+        if (~fresh).any():
+            print(
+                f"Book lines: {int((~fresh).sum())} of {len(book)} dropped as stale at the books"
+            )
+        book = book[fresh]
     out = attach(priced, book)
     print(f"Book lines: {int(out.p_book.notna().sum())} of {len(out)} markets covered")
     return out
