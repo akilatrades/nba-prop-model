@@ -68,6 +68,57 @@ def test_dashboard_inline_javascript_parses(tmp_path):
     assert result.returncode == 0, result.stderr
 
 
+
+def test_overview_never_invents_live_profit_when_no_exchange_data(tmp_path):
+    if not shutil.which("node"):
+        pytest.skip("Node.js is not installed in this environment")
+    harness = tmp_path / "smoke.cjs"
+    harness.write_text(
+        """
+const fs = require("fs");
+const vm = require("vm");
+const html = fs.readFileSync(process.argv[2], "utf8");
+const source = html.match(/<script>([\\s\\S]*?)<\\/script>/)[1];
+const bootstrap = source.split('fetch("../outputs/dashboard/summary.json"')[0];
+const nodes = {};
+const document = {
+  getElementById(id) {
+    return nodes[id] || (nodes[id] = {innerHTML: "", style: {}});
+  }
+};
+const exercise = \`
+overview({live: {}, live_nfl: {}, limits: {max_open: 150}});
+if (!nodes["hero-metrics"].innerHTML.includes("—") ||
+    !nodes["forward-view"].innerHTML.includes("Not started")) {
+  throw new Error("Missing data was not represented honestly");
+}
+overview({
+  live: {forward_validation: {
+    status: "collecting", eligible_real_orders: 8,
+    settled_buy_fill_events: 2, elapsed_days: 3,
+    capture_volume_weighted: 0.32, qualifying_contracts: 25,
+    settled_contracts: 3, cents_per_settled_contract: -2.5
+  }},
+  live_nfl: {},
+  limits: {max_open: 150, max_order: 5, max_per_game: 25}
+});
+if (!nodes["hero-metrics"].innerHTML.includes("32%") ||
+    !nodes["forward-view"].innerHTML.includes("2 / 500")) {
+  throw new Error("Forward evidence not displayed correctly");
+}
+\`;
+vm.runInNewContext(bootstrap + exercise, {document, console});
+"""
+    )
+    result = subprocess.run(
+        ["node", str(harness), str(DASHBOARD)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+
+
 def test_live_summary_uses_published_validation_not_fake_zeros(tmp_path):
     assert "forward_validation" not in live_status(tmp_path)
     expected = {
