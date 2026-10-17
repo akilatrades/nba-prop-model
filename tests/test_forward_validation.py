@@ -47,12 +47,27 @@ def _report():
 def _fills():
     return pd.DataFrame(
         [
-            {"order_id": "a", "ticker": "AAA", "action": "buy",
-             "side": "no", "fill_id": "1"},
-            {"order_id": "a", "ticker": "AAA", "action": "buy",
-             "side": "no", "fill_id": "1"},  # deduplicated
-            {"order_id": "b", "ticker": "BBB", "action": "buy",
-             "side": "no", "fill_id": "2"},
+            {
+                "order_id": "a",
+                "ticker": "AAA",
+                "action": "buy",
+                "side": "no",
+                "fill_id": "1",
+            },
+            {
+                "order_id": "a",
+                "ticker": "AAA",
+                "action": "buy",
+                "side": "no",
+                "fill_id": "1",
+            },  # deduplicated
+            {
+                "order_id": "b",
+                "ticker": "BBB",
+                "action": "buy",
+                "side": "no",
+                "fill_id": "2",
+            },
         ]
     )
 
@@ -83,8 +98,11 @@ def test_incomplete_or_impossible_volume_is_not_counted_as_good_capture():
 def test_exit_trades_are_not_misrepresented_as_hold_to_settlement_profit():
     f = _fills()
     f.loc[len(f)] = {
-        "order_id": "exit", "ticker": "AAA", "action": "sell",
-        "side": "no", "fill_id": "3"
+        "order_id": "exit",
+        "ticker": "AAA",
+        "action": "sell",
+        "side": "no",
+        "fill_id": "3",
     }
     result = scorecard(_report(), f, NOW)
     assert result["exited_market_orders_excluded"] == 1
@@ -100,14 +118,25 @@ def test_no_live_orders_writes_valid_empty_outputs(tmp_path):
 
 
 def test_checkpoint_never_auto_changes_rules_or_money():
-    r = pd.concat([_report().iloc[:1].assign(
-        order_id=f"id-{i}", ticker=f"T{i}", game_id=i
-    ) for i in range(500)], ignore_index=True)
-    f = pd.DataFrame([
-        {"order_id": f"id-{i}", "ticker": f"T{i}",
-         "action": "buy", "side": "no", "fill_id": f"fill-{i}"}
-        for i in range(500)
-    ])
+    r = pd.concat(
+        [
+            _report().iloc[:1].assign(order_id=f"id-{i}", ticker=f"T{i}", game_id=i)
+            for i in range(500)
+        ],
+        ignore_index=True,
+    )
+    f = pd.DataFrame(
+        [
+            {
+                "order_id": f"id-{i}",
+                "ticker": f"T{i}",
+                "action": "buy",
+                "side": "no",
+                "fill_id": f"fill-{i}",
+            }
+            for i in range(500)
+        ]
+    )
     result = scorecard(r, f, NOW)
     assert result["status"] == "checkpoint_ready_for_human_review"
     assert result["automatic_trade_changes"] is False

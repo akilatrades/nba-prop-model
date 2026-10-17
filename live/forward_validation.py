@@ -151,8 +151,11 @@ def scorecard(report, fills=None, now=None):
     )
     eligible_known = matured & ~has_exit & ~unknown_outcome
     profit_per_eligible = (
-        round(float(d.loc[eligible_known, "settled_profit"].fillna(0).sum())
-              / int(eligible_known.sum()), 4)
+        round(
+            float(d.loc[eligible_known, "settled_profit"].fillna(0).sum())
+            / int(eligible_known.sum()),
+            4,
+        )
         if eligible_known.sum()
         else None
     )
@@ -175,22 +178,26 @@ def scorecard(report, fills=None, now=None):
             "orders": int(scope.sum()),
             "fill_probability": (
                 round(float((d.loc[scope, "filled"] > 0).mean()), 3)
-                if scope.any() else None
+                if scope.any()
+                else None
             ),
         }
 
     enough_time = elapsed_days >= REVIEW_DAYS
     enough_fills = fill_events >= CHECKPOINT_FILL_EVENTS
     complete_enough = (
-        capture_coverage is not None and capture_coverage >= MIN_DATA_COVERAGE
-        and pnl_coverage is not None and pnl_coverage >= MIN_DATA_COVERAGE
+        capture_coverage is not None
+        and capture_coverage >= MIN_DATA_COVERAGE
+        and pnl_coverage is not None
+        and pnl_coverage >= MIN_DATA_COVERAGE
         and not impossible_volume.any()
         and not has_exit.any()
     )
     status = (
-        "checkpoint_ready_for_human_review" if enough_time and enough_fills
-        and complete_enough
-        else "data_incomplete" if enough_time and enough_fills
+        "checkpoint_ready_for_human_review"
+        if enough_time and enough_fills and complete_enough
+        else "data_incomplete"
+        if enough_time and enough_fills
         else "collecting"
     )
     base.update(
@@ -207,22 +214,26 @@ def scorecard(report, fills=None, now=None):
         game_clustered_t=t_stat,
         independent_games=games,
         max_settlement_day_drawdown_dollars=round(drawdown, 2)
-        if drawdown is not None else None,
+        if drawdown is not None
+        else None,
         profit_per_matured_eligible_order_dollars=profit_per_eligible,
         capture_volume_weighted=pooled_capture,
         capture_contracts=round(capture_numerator, 3),
         qualifying_contracts=round(capture_denominator, 3),
         mature_volume_coverage=round(capture_coverage, 3)
-        if capture_coverage is not None else None,
+        if capture_coverage is not None
+        else None,
         mature_profit_coverage=round(pnl_coverage, 3)
-        if pnl_coverage is not None else None,
+        if pnl_coverage is not None
+        else None,
         impossible_capture_rows=int(impossible_volume.sum()),
         missing_settlement_orders=int(unknown_outcome.sum()),
         exited_market_orders_excluded=int(has_exit.sum()),
         queue_fill_probability=queue_buckets,
         flow_assumption=0.50,
         flow_below_25pct_flag=(pooled_capture < 0.25)
-        if pooled_capture is not None else None,
+        if pooled_capture is not None
+        else None,
         notes=(
             "No capital or rule changes are automatic. P&L excludes markets "
             "with sell fills; reconcile exits before treating totals as "

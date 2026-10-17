@@ -216,7 +216,10 @@ def execution_report(
         if "qualifying_complete" in old:
             out["qualifying_complete"] = (
                 out.order_id.map(old.qualifying_complete)
-                .fillna(False).astype(str).str.lower().eq("true")
+                .fillna(False)
+                .astype(str)
+                .str.lower()
+                .eq("true")
             )
     if trades is not None and now is not None:
         now = pd.Timestamp(now)
@@ -280,32 +283,53 @@ def summary(report):
         else None,
         "completed_capture_orders": int(
             report.qualifying_complete.astype(str).str.lower().eq("true").sum()
-        ) if "qualifying_complete" in report else 0,
+        )
+        if "qualifying_complete" in report
+        else 0,
         "weighted_capture_of_completed_volume": (
-            round(float(
-                report.loc[
-                    report.qualifying_complete.astype(str).str.lower().eq("true")
-                    & (pd.to_numeric(report.qualifying_volume, errors="coerce") > 0)
-                    & (report.filled <= pd.to_numeric(
-                        report.qualifying_volume, errors="coerce") + 1e-9),
-                    "filled",
-                ].sum()
-                / pd.to_numeric(
+            round(
+                float(
                     report.loc[
                         report.qualifying_complete.astype(str).str.lower().eq("true")
                         & (pd.to_numeric(report.qualifying_volume, errors="coerce") > 0)
-                        & (report.filled <= pd.to_numeric(
-                            report.qualifying_volume, errors="coerce") + 1e-9),
-                        "qualifying_volume",
-                    ],
-                    errors="coerce",
-                ).sum()
-            ), 3)
-            if "qualifying_complete" in report and (
+                        & (
+                            report.filled
+                            <= pd.to_numeric(report.qualifying_volume, errors="coerce")
+                            + 1e-9
+                        ),
+                        "filled",
+                    ].sum()
+                    / pd.to_numeric(
+                        report.loc[
+                            report.qualifying_complete.astype(str)
+                            .str.lower()
+                            .eq("true")
+                            & (
+                                pd.to_numeric(report.qualifying_volume, errors="coerce")
+                                > 0
+                            )
+                            & (
+                                report.filled
+                                <= pd.to_numeric(
+                                    report.qualifying_volume, errors="coerce"
+                                )
+                                + 1e-9
+                            ),
+                            "qualifying_volume",
+                        ],
+                        errors="coerce",
+                    ).sum()
+                ),
+                3,
+            )
+            if "qualifying_complete" in report
+            and (
                 report.qualifying_complete.astype(str).str.lower().eq("true")
                 & (pd.to_numeric(report.qualifying_volume, errors="coerce") > 0)
-                & (report.filled <= pd.to_numeric(
-                    report.qualifying_volume, errors="coerce") + 1e-9)
+                & (
+                    report.filled
+                    <= pd.to_numeric(report.qualifying_volume, errors="coerce") + 1e-9
+                )
             ).any()
             else None
         ),
