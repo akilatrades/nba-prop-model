@@ -233,6 +233,13 @@ class TradingClient:
             if not cursor:
                 return out
 
+    def queue_position(self, order_id):
+        """Contracts resting ahead of this order at its price (Kalshi's
+        GET /portfolio/orders/{id}/queue_position, ``queue_position_fp``)."""
+        page = self._request("GET", f"/portfolio/orders/{order_id}/queue_position")
+        value = page.get("queue_position_fp", page.get("queue_position"))
+        return float(value) if value is not None else None
+
     def positions(self):
         return self._request("GET", "/portfolio/positions", {"limit": 200}).get(
             "market_positions", []

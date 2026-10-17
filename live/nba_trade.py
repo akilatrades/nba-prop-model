@@ -35,6 +35,7 @@ import pandas as pd
 
 from kalshi.api import fetch_market, snapshot
 from kalshi.books import attach_latest
+from live.execution import execution_report, log_queue_positions, write_markdown
 from kalshi.paper_props import ALL_RULES, candidate_orders
 from kalshi.risk import Exposure, Rejected, RiskLimits, check, commit
 from kalshi.strategy import DAY_CAP, STAKE
@@ -802,6 +803,28 @@ def main():
             exits = score_exits(exits)
             exits.to_csv(EXITS, index=False)
             summary_extra["exits_placed"] = int(len(new_exits))
+            # Execution quality: queue positions and the per-order report.
+            try:
+                added = log_queue_positions(client, ledger, now, OUT / "queue.csv")
+                queue = (
+                    pd.read_csv(OUT / "queue.csv")
+                    if (OUT / "queue.csv").exists()
+                    else None
+                )
+                report = execution_report(
+                    ledger,
+                    pd.read_csv(FILLS) if FILLS.exists() else None,
+                    queue,
+                    pd.read_csv(SETTLEMENTS) if SETTLEMENTS.exists() else None,
+                )
+                if len(report):
+                    report.to_csv(OUT / "execution.csv", index=False)
+                summary_extra["execution"] = write_markdown(
+                    report, OUT / "execution.md", now
+                )
+                summary_extra["execution"]["queue_readings_added"] = added
+            except Exception as error:  # noqa: BLE001 - reporting must not stop trading
+                print(f"Execution report failed: {error}")
             resting = set(exchange)
             placed_mask = ledger.status.isin(["placed", "resting"])
             ledger.loc[placed_mask & ~ledger.order_id.isin(resting), "status"] = "done"

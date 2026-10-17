@@ -672,3 +672,65 @@ def test_kill_switch_spares_orders_the_strategy_did_not_place():
     c = Client()
     c.cancel_all(prefixes=nba_trade.STRATEGY_PREFIXES, order_ids=["ours-by-ledger"])
     assert c.cancelled == ["ours-by-ledger", "ours-by-tag"]
+
+
+def test_execution_report_and_queue_log(tmp_path):
+    from live.execution import execution_report, log_queue_positions, summary
+
+    now = pd.Timestamp("2026-10-21T20:00Z")
+    ledger = pd.DataFrame(
+        [
+            {
+                "order_id": "o1",
+                "ticker": "KXNBAPTS-A",
+                "day": "2026-10-21",
+                "player": "p",
+                "stat": "points",
+                "line": 19.5,
+                "price": 0.55,
+                "contracts": 9,
+                "edge": 0.03,
+                "status": "resting",
+                "run_utc": "2026-10-21T19:00+00:00",
+            },
+            {
+                "order_id": "",
+                "ticker": "KXNBAPTS-B",
+                "day": "2026-10-21",
+                "player": "q",
+                "stat": "points",
+                "line": 19.5,
+                "price": 0.55,
+                "contracts": 9,
+                "edge": 0.03,
+                "status": "dry",
+                "run_utc": "2026-10-21T19:00+00:00",
+            },
+        ]
+    )
+
+    class Q:
+        def queue_position(self, order_id):
+            return 40.0
+
+    path = tmp_path / "queue.csv"
+    assert log_queue_positions(Q(), ledger, now, path) == 1  # the dry row is skipped
+    assert log_queue_positions(Q(), ledger, now + pd.Timedelta(minutes=5), path) == 0
+    assert log_queue_positions(Q(), ledger, now + pd.Timedelta(minutes=20), path) == 1
+    fills = pd.DataFrame(
+        [
+            {
+                "trade_id": "t",
+                "ticker": "KXNBAPTS-A",
+                "created_time": "2026-10-21T20:45:00Z",
+                "count": 4,
+            }
+        ]
+    )
+    rep = execution_report(ledger, fills, pd.read_csv(path))
+    assert len(rep) == 1
+    r = rep.iloc[0]
+    assert r.queue_ahead_at_start == 40.0 and r.filled == 4
+    assert abs(r.minutes_to_first_fill - 105) < 1e-6
+    s = summary(rep)
+    assert s["fill_rate"] == 1.0 and abs(s["mean_fill_share"] - 4 / 9) < 1e-6

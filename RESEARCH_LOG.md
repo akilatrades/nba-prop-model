@@ -1609,3 +1609,38 @@ which is also what the age check now guarantees.
 103 tests. Agreed with the reviewer's closing line: the open question is
 now whether the edge survives live execution, not whether the code has an
 obvious defect, and that question is answered by fills, not by review.
+
+## 2026-10-17: Execution accuracy, measured on every real order
+
+Prompted by an outside note on Kalshi's queue-position endpoint. Two
+corrections to that note first: the trader does not run on GitHub Actions
+every 15 minutes, it runs on the DigitalOcean server every minute (the
+Actions workflow is the dry-run mirror), and that server is already paid
+for; and a websocket feed would not make a resting order fill sooner, as
+the note itself says, so it is not built.
+
+What is built (`live/execution.py`, wired into `live/nba_trade.py`):
+
+- **Queue position log.** Every 15 minutes, for each resting order, Kalshi's
+  `GET /portfolio/orders/{id}/queue_position` (contracts ahead of us at our
+  price) is appended to `<market>/queue.csv`. The first reading after
+  placement is the order's starting queue.
+- **Per-order execution report** (`execution.csv`, `execution.md`): minutes
+  from signal to placement, starting queue, minutes to first fill,
+  contracts filled against ordered, settled profit where known.
+
+Pre-registered readings, judged at the 500-fill checkpoint:
+
+1. *Fill capture.* The paper simulator counts an order filled when a print
+   trades through its price. The real fill share on orders whose price
+   traded (from the trade prints) is the capture rate; the backtest
+   assumed 50% (`FLOW`). Below 25% the per-100-orders profit halves and the
+   stake plan is re-run with the measured rate before any step-up.
+2. *Queue and fills.* Fill probability by starting queue (0, 1–20, 21–100,
+   100+ contracts ahead). If orders behind 100+ contracts rarely fill, the
+   1¢ improvement is re-examined for those lines only (a pre-registered
+   second placement study, not a live change).
+3. *Profit of real fills.* Settled profit per real fill against the
+   backtest's 2.9¢, game-clustered t, the same test as the paper ledgers.
+
+No live rule changes from this; it is measurement.
