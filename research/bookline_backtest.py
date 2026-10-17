@@ -54,9 +54,14 @@ def load_fills():
 
 def sample_games(fills, n=GAMES, seed=SEED):
     """``n`` games spread over the season's months in proportion to their games."""
+    # One snapshot per game, requested at the game's EARLIEST posting time, so
+    # no order is vetoed with a quote from after it was posted (a reviewer
+    # caught the earlier version taking an arbitrary order's posting time).
+    earliest = fills.groupby("game_id").end_ts.min()
     games = fills.drop_duplicates("game_id")[
-        ["game_id", "tip_utc", "month", "home", "away", "end_ts"]
+        ["game_id", "tip_utc", "month", "home", "away"]
     ]
+    games["end_ts"] = games.game_id.map(earliest)
     games = games.sort_values("game_id").reset_index(drop=True)
     rng = np.random.default_rng(seed)
     share = games.month.value_counts(normalize=True).sort_index()

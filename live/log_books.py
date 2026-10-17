@@ -30,17 +30,10 @@ def main(sport="nba"):
     lines, usage = props(api_key(), sport=sport)
     table = consensus(lines)
     table["snapshot_utc"] = now.isoformat(timespec="minutes")
-    if len(lines):
-        starts = lines.drop_duplicates("event_id").set_index("event_id").commence_utc
-        games = lines.drop_duplicates(["player_key", "stat"])[
-            ["player_key", "stat", "event_id", "home", "away"]
-        ]
-        games["commence_utc"] = games.event_id.map(starts)
-        table = table.merge(
-            games.drop_duplicates(["player_key", "stat"]),
-            on=["player_key", "stat"],
-            how="left",
-        )
+    if len(lines) and "event_id" in table:
+        # consensus() already keeps event_id and commence_utc per line; add teams.
+        teams = lines.drop_duplicates("event_id")[["event_id", "home", "away"]]
+        table = table.merge(teams, on="event_id", how="left")
     OUT.mkdir(parents=True, exist_ok=True)
     table.to_csv(OUT / SPORTS[sport][2], index=False)
     day = OUT / f"{sport}_{now:%Y-%m-%d}.csv.gz"

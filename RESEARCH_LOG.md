@@ -1431,3 +1431,63 @@ holds and, where new, tested the same day (offline, no live change).
 
 Net: one new ledger (tennis price floor), four items confirmed already
 handled or tested and declined.
+
+### Second review (same day): two points stood up, both fixed
+
+The reviewer re-read the repo and pushed back on items 2, 4 and 5 above.
+Checked against the code and data:
+
+**2a. Per-order snapshot timing in the sportsbook backtest: the reviewer
+was right.** `sample_games` took one `end_ts` per game from an arbitrary
+order, and 634 of the 1,013 games have both 5-hour and 2-hour postings. In
+38 of the 151 sampled games the snapshot was requested after the game's
+earliest posting (up to 176 minutes after). Per order, 53 of the 3,197
+covered fills were vetoed with a quote newer than their own posting.
+Re-scored on the 3,144 fills whose snapshot predates their posting: kept
++3.90¢ (t 2.43), removed +0.38¢, kept-minus-removed +3.52¢ — against +3.81
+/ +0.38 / +3.44 as reported. The lookahead rows themselves were −1.5¢, so
+the error worked against the result, not for it. Fixed:
+`sample_games` now requests the snapshot at each game's earliest posting.
+The committed `book_lines.csv.gz` is from the old run; a refetch costs
+~12,000 credits and is deferred, since the per-order re-score above
+settles the question. Coverage numbers corrected: 4,862 sampled fills in
+151 games, 3,197 with a book quote (65.8%), 1,647 kept by the veto.
+
+**2b. Live consensus ignored the event: the reviewer was right, and this
+one mattered.** `consensus()` grouped by (book, player, stat, line) with no
+event key, and `attach()` matched on (player, stat, line) only. The book
+log looks 36 hours ahead, so a player on a back-to-back had both games'
+lines in the file and the first one won. Fixed: `consensus()` groups by
+event (`event_id`, `commence_utc`) as well, `log_books.py` keeps those
+columns, and `attach()` matches on the Eastern game day when both sides
+carry a time (falls back to the old match otherwise). Unit-checked on a
+two-game case. The NBA book log is empty until the season starts, so no
+live decision was affected; the NFL log was one game per player.
+
+**4. Closing lines in the model features: correct as stated, left as a
+known limit.** `implied_points` and `team_spread` come from the closing
+line, which a 5-hours-before order could not see. The move from opening to
+close is small for NBA sides and totals and enters only through the model
+veto (the model-free rule, +1.65¢, uses no line). Recorded; a point-in-time
+line history would be needed to remove it, and we do not have one.
+
+**5. Within-game correlation measured directly, as asked.** On the 20,641
+model-veto fills, standardised against the market-implied probability:
+intraclass correlation within a game +0.029 (21 fills per game on
+average, variance inflation 1.57×), within a team-game +0.032, within a
+player-game +0.067 (4.9 fills), within a night +0.018 (113 fills,
+inflation 3.05×). Small per pair, material in aggregate, which is exactly
+what clustering is for: the headline t is 9.7 if fills were independent,
+6.1 clustered by game, 6.5 clustered by night. The −0.06 figure in the
+inventory study was a different quantity (nightly profit against the
+night's scoring surprise) and is no longer cited as evidence of
+independent positions. The live limits ($25 per game, $15 per team, 6
+orders per game, $75 per night) already bound the within-game and
+within-night exposure; the paper props ledger has only the daily cap and
+is a measurement tool, not a sizing tool, so it stays as is. The $25
+per-game live cap equals the replay's 10% at the $250 start and binds
+harder as the bankroll grows, which is the conservative side.
+
+Net from the two reviews: two code fixes (snapshot timing, event-aware
+book matching), two corrections to how results were described (coverage
+numbers, the correlation claim), no change to any rule or result.

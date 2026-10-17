@@ -231,22 +231,33 @@ def consensus(lines):
     q["p_raw"] = implied(q.odds)
     q["side"] = q.side.str.lower()
     keys = ["book", "player_key", "stat", "line"]
+    if "event_id" in q:
+        keys = ["event_id", "commence_utc"] + keys
     # One quote per book, line and side (alternate and main markets overlap).
     q = q.drop_duplicates(keys + ["side"])
     wide = q.pivot_table(
-        index=keys, columns="side", values="p_raw", aggfunc="first"
+        index=keys, columns="side", values="p_raw", aggfunc="first", dropna=False
     ).reset_index()
     if "over" not in wide or "under" not in wide:
         return pd.DataFrame(columns=["player_key", "stat", "line", "p_book", "book_n"])
     both = wide.dropna(subset=["over", "under"]).copy()
     both["p_over"] = both.over / (both.over + both.under)
+    group = ["player_key", "stat", "line"]
+    if "event_id" in both:  # never average one player's line across two games
+        group = ["event_id", "commence_utc"] + group
     out = (
-        both.groupby(["player_key", "stat", "line"])
+        both.groupby(group, dropna=False)
         .agg(p_book=("p_over", "mean"), book_n=("p_over", "size"))
         .reset_index()
     )
     out["book_n"] = out.book_n.astype(int)
     return out
+
+
+def game_day(times):
+    """Eastern calendar day of a UTC time, the key that ties a line to its game."""
+    t = pd.to_datetime(times, utc=True, errors="coerce")
+    return t.dt.tz_convert("America/New_York").dt.strftime("%Y-%m-%d")
 
 
 def attach(priced, book):
@@ -266,12 +277,18 @@ def attach(priced, book):
         return p
     b = book.copy()
     b["line"] = pd.to_numeric(b.line, errors="coerce").round(1)
-    b = b.drop_duplicates(["player_key", "stat", "line"])
+    keys = ["player_key", "stat", "line"]
+    # Match the line to its game, not just its player: a player with games on
+    # consecutive days has both in a 36-hour book log.
+    if "commence_utc" in b and "tip_utc" in p and b.commence_utc.notna().any():
+        b["game_day"] = game_day(b.commence_utc)
+        p["game_day"] = game_day(p.tip_utc)
+        keys = ["game_day"] + keys
+    b = b.drop_duplicates(keys)
     p = p.drop(columns=["p_book", "book_n"], errors="ignore").merge(
-        b[["player_key", "stat", "line", "p_book", "book_n"]],
-        on=["player_key", "stat", "line"],
-        how="left",
+        b[keys + ["p_book", "book_n"]], on=keys, how="left"
     )
+    p = p.drop(columns=["game_day"], errors="ignore")
     p["book_n"] = p.book_n.fillna(0).astype(int)
     return p
 
