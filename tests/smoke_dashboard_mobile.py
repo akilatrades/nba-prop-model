@@ -61,7 +61,7 @@ def main():
                     # A phone's URL bar changing height must NOT reload the page
                     # or jump the user back to the top.
                     page.evaluate(
-                        "() => { window.__scrollMarker = true; window.scrollTo(0, 650); }"
+                        "() => { window.__scrollMarker = true; window.scrollTo({top: 650, behavior: 'instant'}); }"
                     )
                     before = page.evaluate("window.scrollY")
                     assert before >= 200, f"{width}px: page did not scroll"
