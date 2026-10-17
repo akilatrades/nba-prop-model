@@ -1,15 +1,15 @@
 """Authenticated Kalshi trading client, with a dry-run mode.
 
-Kalshi signs each request with an RSA key pair: the headers carry the key id,
-a millisecond timestamp and a base64 RSA-PSS (SHA-256) signature over
+Kalshi signs each request with RSA or Ed25519: headers carry the key id,
+a millisecond timestamp and a base64 signature over
 ``timestamp + METHOD + path`` (the path from ``/trade-api/v2`` on, without
 the query string). Credentials come from the environment:
 
     KALSHI_KEY_ID        the API key id from the Kalshi account page
-    KALSHI_PRIVATE_KEY   the private key in PEM form (the whole file)
+    KALSHI_PRIVATE_KEY   a PEM key or unencrypted PKCS#8 base64 body
     KALSHI_ENV           "demo" (default) or "prod"
 
-In dry-run mode (``TradingClient(dry_run=True)``, the default) orders are
+V2 order writes use /portfolio/events/orders with a YES-side bid/ask book.\nIn dry-run mode (``TradingClient(dry_run=True)``, the default) orders are
 built, validated and logged but not sent; reads still go to the exchange.
 Nothing in this module decides what to trade; see ``live/nba_trade.py``.
 """
@@ -108,21 +108,32 @@ class Order:
             raise TradingError(f"expiration {self.expiration_ts} is in the past")
 
     def body(self):
+        """V2 single-YES-book order. Preserve original outcome/action semantics.
+
+        Buying NO == asking/selling YES at 1 - NO price; selling NO ==
+        bidding/buying YES at 1 - NO price. V2 prices use dollar strings.
+        """
         self.validate()
+        if self.side == "yes":
+            book_side = "bid" if self.action == "buy" else "ask"
+            yes_cents = self.price_cents
+        else:
+            book_side = "ask" if self.action == "buy" else "bid"
+            yes_cents = 100 - self.price_cents
         body = {
             "ticker": self.ticker,
             "client_order_id": self.client_order_id,
-            "action": self.action,
-            "side": self.side,
-            "type": "limit",
-            "count": self.count,
+            "side": book_side,
+            "count": f"{self.count:.2f}",
+            "price": f"{yes_cents / 100:.4f}",
+            "time_in_force": "good_till_canceled",
+            "self_trade_prevention_type": "taker_at_cross",
             "post_only": self.post_only,
-            f"{self.side}_price": self.price_cents,
+            "cancel_order_on_pause": True,
         }
         if self.expiration_ts is not None:
-            body["expiration_ts"] = int(self.expiration_ts)
+            body["expiration_time"] = int(self.expiration_ts)
         return body
-
 
 class TradingClient:
     def __init__(
@@ -138,6 +149,7 @@ class TradingClient:
         self.private_key = load_private_key(pem) if pem else None
         self.timeout = timeout
         self.log = []  # every would-be or actual write, for the ledger
+        self._order_ticker_by_id = {}  # needed by V2 cancel auto-routing
 
     # --- plumbing -------------------------------------------------------------
 
@@ -197,7 +209,11 @@ class TradingClient:
             if cursor:
                 params["cursor"] = cursor
             page = self._request("GET", "/portfolio/orders", params)
-            out.extend(page.get("orders", []))
+            new_orders = page.get("orders", [])
+            for order in new_orders:
+                if order.get("order_id") and order.get("ticker"):
+                    self._order_ticker_by_id[order["order_id"]] = order["ticker"]
+            out.extend(new_orders)
             cursor = page.get("cursor") or ""
             if not cursor:
                 return out
@@ -248,30 +264,60 @@ class TradingClient:
     # --- writes ----------------------------------------------------------------
 
     def place(self, order):
-        """Place one order. In dry-run mode, validate and log it instead."""
+        """Submit V2 single-book order; dry mode only validates and logs."""
         body = order.body()
-        entry = {**body, "op": "place", "dry_run": self.dry_run, "env": self.env}
+        entry = {
+            **body, "op": "place", "dry_run": self.dry_run, "env": self.env,
+            "action": order.action, "outcome_side": order.side,
+        }
         if self.dry_run:
             entry["order_id"] = "dry-run"
             self.log.append(entry)
             return entry
-        result = self._request("POST", "/portfolio/orders", body=body)
-        entry["order_id"] = (result.get("order") or {}).get("order_id")
-        entry["status"] = (result.get("order") or {}).get("status")
+        if self.env == "prod" and os.environ.get("ALLOW_PRODUCTION_TRADING") != "YES":
+            raise TradingError(
+                "production order placement disabled: explicit ALLOW_PRODUCTION_TRADING=YES required"
+            )
+        result = self._request("POST", "/portfolio/events/orders", body=body)
+        order_id = result.get("order_id")
+        if not order_id:
+            raise TradingError(
+                "V2 placement returned no order ID; reconcile exchange before retrying"
+            )
+        entry["order_id"] = order_id
+        entry["status"] = "placed"
+        entry["fill_count"] = result.get("fill_count", "0.00")
+        entry["remaining_count"] = result.get("remaining_count")
+        self._order_ticker_by_id[order_id] = order.ticker
         self.log.append(entry)
         return entry
 
-    def cancel(self, order_id):
+    def cancel(self, order_id, ticker=None):
+        """Cancel a resting order using V2; market ticker is required for routing."""
         entry = {
-            "op": "cancel",
-            "dry_run": self.dry_run,
-            "env": self.env,
+            "op": "cancel", "dry_run": self.dry_run, "env": self.env,
             "order_id": order_id,
         }
         if self.dry_run or order_id == "dry-run":
             self.log.append(entry)
             return entry
-        self._request("DELETE", f"/portfolio/orders/{order_id}")
+        ticker = ticker or self._order_ticker_by_id.get(order_id)
+        if not ticker:
+            # Reconcile the current resting book instead of guessing the shard.
+            for resting in self.orders("resting"):
+                if resting.get("order_id") == order_id:
+                    ticker = resting.get("ticker")
+                    break
+        if not ticker:
+            raise TradingError(
+                f"cannot route V2 cancellation for {order_id}; verify the order's ticker"
+            )
+        result = self._request(
+            "DELETE", f"/portfolio/events/orders/{order_id}",
+            params={"market_ticker": ticker},
+        )
+        entry["ticker"] = ticker
+        entry["reduced_by"] = result.get("reduced_by")
         self.log.append(entry)
         return entry
 
