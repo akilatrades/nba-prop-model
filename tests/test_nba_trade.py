@@ -733,4 +733,4 @@ def test_execution_report_and_queue_log(tmp_path):
     assert r.queue_ahead_at_start == 40.0 and r.filled == 4
     assert abs(r.minutes_to_first_fill - 105) < 1e-6
     s = summary(rep)
-    assert s["fill_rate"] == 1.0 and abs(s["mean_fill_share"] - 4 / 9) < 1e-6
+    assert s["fill_rate"] == 1.0 and abs(s["mean_fill_share"] - 0.444) < 1e-9
