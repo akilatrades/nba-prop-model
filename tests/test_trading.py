@@ -206,24 +206,20 @@ def test_v2_cancel_fail_closed_without_ticker(monkeypatch):
 def test_production_writes_require_explicit_opt_in(monkeypatch):
     monkeypatch.delenv("ALLOW_PRODUCTION_TRADING", raising=False)
     client = TradingClient(dry_run=False, env="prod")
-    monkeypatch.setattr(
-        client, "_request",
-        lambda *args, **kwargs: (_ for _ in ()).throw(
-            AssertionError("Must not contact production for a blocked order")
-        ),
-    )
+    def forbidden_request(*args, **kwargs):
+        raise AssertionError("Must not contact production for a blocked order")
+
+    monkeypatch.setattr(client, "_request", forbidden_request)
     with pytest.raises(TradingError, match="production order placement disabled"):
         client.place(Order("TEST", "yes", 1, 10))
 
 
 def test_v2_dry_run_does_not_send_order(monkeypatch):
     client = TradingClient(dry_run=True, env="demo")
-    monkeypatch.setattr(
-        client, "_request",
-        lambda *args, **kwargs: (_ for _ in ()).throw(
-            AssertionError("Dry run must not contact exchange")
-        ),
-    )
+    def forbidden_request(*args, **kwargs):
+        raise AssertionError("Dry run must not contact exchange")
+
+    monkeypatch.setattr(client, "_request", forbidden_request)
     result = client.place(Order("TEST", "no", 1, 40))
     assert result["order_id"] == "dry-run"
     assert result["outcome_side"] == "no" and result["action"] == "buy"
