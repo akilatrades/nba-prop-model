@@ -1,5 +1,5 @@
 {
- "updated_utc": "2026-10-17T00:21+00:00",
+ "updated_utc": "2026-10-17T00:35+00:00",
  "paper": {
   "ledgers": [
    {
@@ -184,8 +184,8 @@
    },
    {
     "ledger": "KXITFMATCH",
-    "orders": 65,
-    "open": 2,
+    "orders": 73,
+    "open": 10,
     "fill_rate": 0.8412698412698413,
     "fills": 53,
     "contracts": 920,
@@ -222,9 +222,9 @@
    },
    {
     "ledger": "KXLIGAMXSPREAD",
-    "orders": 12,
-    "open": 12,
-    "fill_rate": null,
+    "orders": 24,
+    "open": 15,
+    "fill_rate": 0.0,
     "fills": 0,
     "contracts": 0,
     "profit": 0.0,
@@ -241,9 +241,9 @@
    },
    {
     "ledger": "KXNASCARRACE",
-    "orders": 17,
-    "open": 17,
-    "fill_rate": null,
+    "orders": 29,
+    "open": 22,
+    "fill_rate": 0.0,
     "fills": 0,
     "contracts": 0,
     "profit": 0.0,

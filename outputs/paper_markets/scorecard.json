@@ -1,8 +1,8 @@
 {
   "KXITFMATCH": {
-    "orders": 65,
+    "orders": 73,
     "vetoed": 0,
-    "open": 2,
+    "open": 10,
     "fill_rate": 0.8412698412698413,
     "fills_settled": 53,
     "bankroll": 423.08,
@@ -11,18 +11,18 @@
     "profit_dollars": -76.92
   },
   "KXNASCARRACE": {
-    "orders": 17,
+    "orders": 29,
     "vetoed": 0,
-    "open": 17,
-    "fill_rate": null,
+    "open": 22,
+    "fill_rate": 0.0,
     "fills_settled": 0,
     "bankroll": 500.0
   },
   "KXLIGAMXSPREAD": {
-    "orders": 12,
+    "orders": 24,
     "vetoed": 0,
-    "open": 12,
-    "fill_rate": null,
+    "open": 15,
+    "fill_rate": 0.0,
     "fills_settled": 0,
     "bankroll": 500.0
   },
@@ -117,5 +117,5 @@
     "fills_settled": 0,
     "bankroll": 500.0
   },
-  "updated_utc": "2026-10-16T22:50+00:00"
+  "updated_utc": "2026-10-17T00:35+00:00"
 }
