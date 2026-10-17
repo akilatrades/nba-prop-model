@@ -3,6 +3,11 @@ name: market scan
 # Second pass (2026-10-16): every category, series not scanned before, 400-market samples.
 on:
   workflow_dispatch:
+    inputs:
+      series:
+        description: "Comma-separated series to scan (empty = every unscanned series)"
+        required: false
+        default: ""
 permissions:
   contents: write
 concurrency:
@@ -18,7 +23,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: python -m research.scan_markets list --skip-done
+      - run: python -m research.scan_markets list --skip-done --series "${{ inputs.series }}"
       - uses: actions/upload-artifact@v4
         with:
           name: scan-series

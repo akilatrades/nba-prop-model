@@ -65,7 +65,14 @@ def all_series(category=None):
             return out
 
 
-def list_stage(skip_done=False):
+def list_stage(skip_done=False, only=None):
+    if only:  # a named list of series, e.g. the ones an earlier pass ran out of time on
+        OUT.mkdir(parents=True, exist_ok=True)
+        (OUT / "series.json").write_text(
+            json.dumps({"all": [], "selected": only}, indent=1) + "\n"
+        )
+        annotate("notice", f"{len(only)} series requested by name: {only}")
+        return
     series = all_series()
     done = set()
     if skip_done and (OUT / "results.json").exists():
@@ -389,11 +396,12 @@ def main():
     parser.add_argument("--minutes", type=float, default=300)
     parser.add_argument("--sample", type=int, default=SAMPLE)
     parser.add_argument("--skip-done", action="store_true")
+    parser.add_argument("--series", default="", help="comma-separated series to scan")
     args = parser.parse_args()
     SAMPLE = args.sample
     OUT.mkdir(parents=True, exist_ok=True)
     if args.stage == "list":
-        list_stage(args.skip_done)
+        list_stage(args.skip_done, [t for t in args.series.split(",") if t.strip()])
     elif args.stage == "scan":
         scan_stage(args.shard, args.shards, args.minutes)
     else:
