@@ -171,6 +171,14 @@ def live_status(folder):
     p = folder / "last_run.json"
     if p.exists():
         live = json.loads(p.read_text())
+    # Public dashboard: read the frozen evidence report, not the raw account files.
+    # Missing observations stay missing (never turn into a zero).
+    p = folder / "forward_validation.json"
+    if p.exists():
+        try:
+            live["forward_validation"] = json.loads(p.read_text())
+        except (OSError, ValueError):
+            live["forward_validation_error"] = "Validation report unreadable"
     p = folder / "orders.csv"
     if p.exists():
         o = pd.read_csv(p)
