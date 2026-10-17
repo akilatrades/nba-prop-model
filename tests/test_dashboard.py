@@ -106,7 +106,7 @@ if (!nodes["hero-metrics"].innerHTML.includes("32%") ||
   throw new Error("Forward evidence not displayed correctly");
 }
 `;
-vm.runInNewContext(bootstrap + exercise, {document, console});
+vm.runInNewContext(bootstrap + exercise, {document, nodes, console});
 """
     )
     result = subprocess.run(
