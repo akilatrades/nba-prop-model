@@ -11,3 +11,4 @@ data/hoopr/
 /data/pbp/
 /outputs/ingame/snapshots.parquet
 /data/books/
+/outputs/model_refresh/*.parquet

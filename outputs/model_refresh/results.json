@@ -1,0 +1,205 @@
+{
+ "holdout": "2025-26",
+ "player_game_lines": 535731,
+ "orders_priced": 53549,
+ "priors_chosen": {
+  "2025-10/points": 100,
+  "2025-10/rebounds": 100,
+  "2025-10/assists": 30,
+  "2025-10/threes": 300,
+  "2025-11/points": 10,
+  "2025-11/rebounds": 300,
+  "2025-11/assists": 300,
+  "2025-11/threes": 100,
+  "2025-12/points": 300,
+  "2025-12/rebounds": 300,
+  "2025-12/assists": 300,
+  "2025-12/threes": 300,
+  "2026-01/points": 300,
+  "2026-01/rebounds": 300,
+  "2026-01/assists": 300,
+  "2026-01/threes": 300,
+  "2026-02/points": 300,
+  "2026-02/rebounds": 300,
+  "2026-02/assists": 300,
+  "2026-02/threes": 300,
+  "2026-03/points": 300,
+  "2026-03/rebounds": 300,
+  "2026-03/assists": 300,
+  "2026-03/threes": 100,
+  "2026-04/points": 300,
+  "2026-04/rebounds": 300,
+  "2026-04/assists": 300,
+  "2026-04/threes": 300,
+  "2026-05/points": 300,
+  "2026-05/rebounds": 300,
+  "2026-05/assists": 300,
+  "2026-05/threes": 300,
+  "2026-06/points": 100,
+  "2026-06/rebounds": 10,
+  "2026-06/assists": 300,
+  "2026-06/threes": 30
+ },
+ "log_loss": [
+  {
+   "variant": "control",
+   "log_loss": 0.3038,
+   "vs_control": 0.0,
+   "t_vs_control": null,
+   "brier": 0.09648
+  },
+  {
+   "variant": "gbm",
+   "log_loss": 0.30247,
+   "vs_control": -0.00134,
+   "t_vs_control": -5.81,
+   "brier": 0.09606
+  },
+  {
+   "variant": "hier",
+   "log_loss": 0.30413,
+   "vs_control": 0.00033,
+   "t_vs_control": 3.05,
+   "brier": 0.09661
+  },
+  {
+   "variant": "iso",
+   "log_loss": 0.30387,
+   "vs_control": 7e-05,
+   "t_vs_control": 1.78,
+   "brier": 0.0965
+  }
+ ],
+ "veto": [
+  {
+   "variant": "control",
+   "orders_quoted": 53549,
+   "placed": 35404,
+   "fills": 20641,
+   "profit_per_100_orders": 112.9,
+   "t": 6.07,
+   "cents_per_fill": 2.93,
+   "diff_per_100_orders": 0.0,
+   "t_diff": null
+  },
+  {
+   "variant": "gbm",
+   "orders_quoted": 53549,
+   "placed": 34303,
+   "fills": 19787,
+   "profit_per_100_orders": 107.9,
+   "t": 5.83,
+   "cents_per_fill": 2.92,
+   "diff_per_100_orders": -5.0,
+   "t_diff": -0.58
+  },
+  {
+   "variant": "hier",
+   "orders_quoted": 53549,
+   "placed": 33602,
+   "fills": 19459,
+   "profit_per_100_orders": 122.4,
+   "t": 6.84,
+   "cents_per_fill": 3.37,
+   "diff_per_100_orders": 9.5,
+   "t_diff": 1.62
+  },
+  {
+   "variant": "iso",
+   "orders_quoted": 53549,
+   "placed": 35224,
+   "fills": 20560,
+   "profit_per_100_orders": 113.2,
+   "t": 6.09,
+   "cents_per_fill": 2.95,
+   "diff_per_100_orders": 0.3,
+   "t_diff": 0.12
+  }
+ ],
+ "portfolio": [
+  {
+   "period": "whole season",
+   "ordering": "edge-first",
+   "end": 1849,
+   "max_drawdown": 0.442,
+   "orders": 6190,
+   "fills": 2107,
+   "profit_per_100_orders": 21.79
+  },
+  {
+   "period": "whole season",
+   "ordering": "edge / sd",
+   "end": 1569,
+   "max_drawdown": 0.458,
+   "orders": 6319,
+   "fills": 2190,
+   "profit_per_100_orders": 16.92
+  },
+  {
+   "period": "whole season",
+   "ordering": "random",
+   "end": 3222,
+   "max_drawdown": 0.263,
+   "orders": 5724,
+   "fills": 3033,
+   "profit_per_100_orders": 47.56
+  },
+  {
+   "period": "first half",
+   "ordering": "edge-first",
+   "end": 907,
+   "max_drawdown": 0.277,
+   "orders": 3060,
+   "fills": 1067,
+   "profit_per_100_orders": 13.3
+  },
+  {
+   "period": "first half",
+   "ordering": "edge / sd",
+   "end": 1130,
+   "max_drawdown": 0.198,
+   "orders": 3079,
+   "fills": 1086,
+   "profit_per_100_orders": 20.45
+  },
+  {
+   "period": "first half",
+   "ordering": "random",
+   "end": 1660,
+   "max_drawdown": 0.176,
+   "orders": 2946,
+   "fills": 1399,
+   "profit_per_100_orders": 39.37
+  },
+  {
+   "period": "second half",
+   "ordering": "edge-first",
+   "end": 1161,
+   "max_drawdown": 0.214,
+   "orders": 2750,
+   "fills": 863,
+   "profit_per_100_orders": 24.05
+  },
+  {
+   "period": "second half",
+   "ordering": "edge / sd",
+   "end": 783,
+   "max_drawdown": 0.337,
+   "orders": 2655,
+   "fills": 846,
+   "profit_per_100_orders": 10.67
+  },
+  {
+   "period": "second half",
+   "ordering": "random",
+   "end": 1210,
+   "max_drawdown": 0.302,
+   "orders": 2644,
+   "fills": 1556,
+   "profit_per_100_orders": 26.86
+  }
+ ],
+ "agreement": {
+  "control_matches_frozen_rule": 1.0
+ }
+}

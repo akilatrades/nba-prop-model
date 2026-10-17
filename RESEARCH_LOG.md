@@ -1304,3 +1304,45 @@ Expected: small log-loss gains at most from `gbm` and `hier`; `iso` close
 to nothing because the control is already calibrated to within half a
 point per decile; the portfolio ordering close to random because the
 correlations are near zero.
+
+### Results: model refresh (run 2026-10-17, offline; `outputs/model_refresh/`)
+
+535,731 player-game-lines and all 53,549 resting orders of 2025-26
+re-priced by each variant. **Nothing adopted; the frozen model stays.**
+
+| Variant | Log loss (vs control, t) | Veto: profit per 100 quoted orders (diff vs control, t) |
+|---|---|---|
+| control | 0.30380 | +112.9¢ |
+| gbm | 0.30247 (−0.0013, t −5.8) | +107.9¢ (−5.0, t −0.6) |
+| hier | 0.30413 (+0.0003, t 3.1) | +122.4¢ (+9.5, t 1.6) |
+| iso | 0.30387 (+0.0001, t 1.8) | +113.2¢ (+0.3, t 0.1) |
+
+- **Gradient boosting** is the better forecaster (0.4% lower log loss, a
+  clear t of −5.8 over 536k lines) and makes *less* money as a veto. The
+  two judgments disagree, so the pre-registered rule (both must improve)
+  says no. Reading: the veto's job is to skip the lines where the public
+  is right, and a sharper mean does not change which lines those are; the
+  trees mostly reshuffle probabilities inside the band the veto already
+  keeps.
+- **Hierarchical player factor** goes the other way: slightly worse log
+  loss (the nested selection picked the strongest prior, 300, in 27 of 36
+  stat-months, i.e. the data asked for almost no player effect beyond the
+  regression's own shrunk rates) and a +9.5¢ veto gain at t 1.6, short of
+  the bar. Noted as the one candidate worth a second look next season with
+  fresh orders; not adopted now.
+- **Isotonic calibration** does nothing, as expected: the control is
+  already calibrated.
+- **Portfolio ordering (edge ÷ sd)**: $1,569 against $1,849 for edge-first
+  over the season, and it loses the second half ($783 vs $1,161). Fails the
+  bar. A side finding: random order, across six seeds, ends anywhere from
+  $722 to $3,541 from the same orders, so the $500 compounding replay is
+  far too path-dependent to rank orderings on; the per-100-orders metric
+  (edge-first +21.8¢, edge/sd +16.9¢) is the one to read, and it also says
+  no. Orders in the top edge quintile (cheap "no", average price 9.5¢) fill
+  only 36% of the time against 70% in the middle quintile; a fill-aware
+  ordering was the desk study's EV-ranking variant and was not robust.
+
+Consequence: the mean model is not the bottleneck. The edge is in which
+lines get quoted (the sportsbook veto) and in getting real fills, which is
+where the next effort goes. `control_matches_frozen_rule` = 1.0: the
+control's recomputed decisions reproduce the frozen ledger exactly.

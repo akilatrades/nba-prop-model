@@ -209,6 +209,7 @@ def isotonic(lines, order_p, orders):
     lines["p_iso"] = lines.p_control
     op = orders.merge(order_p, on="ticker", how="inner")
     op["p_iso"] = op.p_control
+    op["month"] = op.month.astype(str)
     for stat in STATS:
         for month in sorted(lines.month.unique()):
             prior_h = lines[(lines.stat == stat) & (lines.month < month)]
@@ -226,7 +227,8 @@ def isotonic(lines, order_p, orders):
             here = (lines.stat == stat) & (lines.month == month)
             lines.loc[here, "p_iso"] = iso.predict(lines.loc[here, "p_control"])
             h2 = (op.stat == stat) & (op.month == month)
-            op.loc[h2, "p_iso"] = iso.predict(op.loc[h2, "p_control"])
+            if h2.any():
+                op.loc[h2, "p_iso"] = iso.predict(op.loc[h2, "p_control"])
     return lines, op
 
 
