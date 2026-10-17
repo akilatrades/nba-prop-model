@@ -1,5 +1,5 @@
 {
- "updated_utc": "2026-10-17T13:48+00:00",
+ "updated_utc": "2026-10-17T15:17+00:00",
  "paper": {
   "ledgers": [
    {
@@ -165,6 +165,24 @@
     "backtest_cents": 4.47
    },
    {
+    "ledger": "KXNASCARTOP10",
+    "orders": 0,
+    "open": 0,
+    "fill_rate": null,
+    "fills": 0,
+    "contracts": 0,
+    "profit": 0.0,
+    "cents_per_contract": null,
+    "se_cents": null,
+    "t": null,
+    "hit_rate": null,
+    "max_drawdown": 0.0,
+    "days": 0,
+    "bankroll": 500.0,
+    "group": "other markets (model-free unless +model)",
+    "backtest_cents": 14.09
+   },
+   {
     "ledger": "KXNFLANYTD+model",
     "orders": 0,
     "open": 0,
@@ -199,6 +217,24 @@
     "bankroll": 500.0,
     "group": "other markets (model-free unless +model)",
     "backtest_cents": 4.82
+   },
+   {
+    "ledger": "KXITFMATCH+no30",
+    "orders": 0,
+    "open": 0,
+    "fill_rate": null,
+    "fills": 0,
+    "contracts": 0,
+    "profit": 0.0,
+    "cents_per_contract": null,
+    "se_cents": null,
+    "t": null,
+    "hit_rate": null,
+    "max_drawdown": 0.0,
+    "days": 0,
+    "bankroll": 500.0,
+    "group": "other markets (model-free unless +model)",
+    "backtest_cents": 4.62
    },
    {
     "ledger": "KXITFMATCH",
@@ -629,19 +665,19 @@
    "passes": true
   },
   {
+   "series": "KXWNBA1QWINNER",
+   "fills": 306,
+   "cents": 6.46,
+   "t": 2.16,
+   "se": 2.99,
+   "passes": true
+  },
+  {
    "series": "KXNCAAWBGAME",
    "fills": 2236,
    "cents": 2.87,
    "t": 2.1,
    "se": 1.36,
-   "passes": true
-  },
-  {
-   "series": "KXAHLGAME",
-   "fills": 487,
-   "cents": 6.26,
-   "t": 2.05,
-   "se": 3.06,
    "passes": true
   }
  ]
