@@ -17,5 +17,6 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - run: pip install -r requirements.txt ruff==0.11.13
+      - run: ruff format --diff tests/test_trading.py || true
       - run: ruff check . && ruff format --check .
       - run: pytest
