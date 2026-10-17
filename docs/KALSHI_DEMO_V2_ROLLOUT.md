@@ -40,6 +40,25 @@ exchange-pause cancellation. The existing limits in `kalshi/risk.py` are
 unchanged. Production *placement* requires an additional explicit
 `ALLOW_PRODUCTION_TRADING=YES` flag (never use that flag for demo).
 
+## Matching market-data and execution venues
+
+The live NBA quote refresher and NFL candidate scanner both use
+`kalshi.api.fetch_markets` / `kalshi.api.snapshot`. Those API reads now
+select the Demo market host whenever `KALSHI_ENV=demo` and use public
+production prices when `KALSHI_ENV=prod` (or unset, for research).
+The trader refuses to start if the data and execution hosts disagree.
+
+This prevents production quotes from being used to size/place demo orders.
+**It does not guarantee** that Demo has the same tickers, model coverage,
+liquidity or price opportunities as production. The NFL model still depends
+on projections built from research data; check exact ticker/line matching
+and `p_model` availability with Demo data before enabling submissions.
+
+On 2026-10-17 the VPS dry-run reported zero markets 2–6 hours before
+kickoff, so zero candidates were expected during that Saturday scan.
+The service initially recorded a fallback $250 bankroll, but a later
+systemd service run showed the authenticated $2,500 Demo balance.
+
 ## Deployment gates
 
 1. Check the pull-request tests and review V2 request/response conversions,

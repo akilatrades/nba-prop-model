@@ -8,6 +8,7 @@ the /historical endpoints, which still serve their hourly bid/ask candles.
 """
 
 import json
+import os
 import threading
 import time
 import urllib.error
@@ -19,6 +20,24 @@ import numpy as np
 import pandas as pd
 
 BASE_URL = "https://external-api.kalshi.com/trade-api/v2"
+DEMO_BASE_URL = "https://demo-api.kalshi.co/trade-api/v2"
+
+
+def market_data_base_url():
+    """Use the same Kalshi venue as the trader when KALSHI_ENV is explicit.
+
+    Unconfigured research tasks retain historical production-market behavior.
+    The demo environment has its own markets and order books; production
+    quotes must not be used to decide prices for demo orders.
+    """
+    env = os.environ.get("KALSHI_ENV", "prod").strip().lower()
+    if env == "demo":
+        return DEMO_BASE_URL
+    if env == "prod":
+        return BASE_URL
+    raise ValueError(f"Invalid KALSHI_ENV {env!r}; expected demo or prod")
+
+
 # Kalshi series -> the model's stat name.
 FIELDS = [
     "ticker",
@@ -61,7 +80,7 @@ LIMITER = RateLimiter(10)
 
 
 def get_json(path, params, retries=6):
-    url = f"{BASE_URL}{path}?{urllib.parse.urlencode(params)}"
+    url = f"{market_data_base_url()}{path}?{urllib.parse.urlencode(params)}"
     for attempt in range(retries):
         LIMITER.wait()
         try:

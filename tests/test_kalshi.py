@@ -114,3 +114,62 @@ def test_parse_reads_player_from_old_title_format():
     )
     frame = parse(settled_frame([old], "KXNBAPTS"))
     assert frame.player.iloc[0] == "Anthony Edwards"
+
+
+def test_live_market_data_uses_demo_url_when_configured(monkeypatch):
+    """Market prices and order execution must use the same demo venue."""
+    monkeypatch.setenv("KALSHI_ENV", "demo")
+    assert api.market_data_base_url() == "https://demo-api.kalshi.co/trade-api/v2"
+
+    urls = []
+
+    class Reply:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, tb):
+            return False
+
+        def read(self):
+            return b'{"markets": []}'
+
+    def fake_open(url, timeout=30):
+        urls.append(url)
+        return Reply()
+
+    monkeypatch.setattr(api.urllib.request, "urlopen", fake_open)
+    monkeypatch.setattr(api.LIMITER, "wait", lambda: None)
+    result = api.fetch_markets("KXNFLRECYDS", status="open")
+    assert result == []
+    assert len(urls) == 1
+    assert urls[0].startswith("https://demo-api.kalshi.co/trade-api/v2/markets?")
+
+
+def test_research_defaults_to_production_data_when_env_unset(monkeypatch):
+    monkeypatch.delenv("KALSHI_ENV", raising=False)
+    assert api.market_data_base_url() == (
+        "https://external-api.kalshi.com/trade-api/v2"
+    )
+    monkeypatch.setenv("KALSHI_ENV", "prod")
+    assert api.market_data_base_url() == (
+        "https://external-api.kalshi.com/trade-api/v2"
+    )
+    monkeypatch.setenv("KALSHI_ENV", "typo")
+    with pytest.raises(ValueError, match="Invalid KALSHI_ENV"):
+        api.market_data_base_url()
+
+
+def test_trading_refuses_mismatched_market_and_execution_venues(monkeypatch):
+    """Never post demo orders using production-market quote snapshots."""
+    from live import nba_trade
+    from kalshi.trading import TradingError
+
+    class FakeClient:
+        base = "https://demo-api.kalshi.co"
+
+    monkeypatch.setenv("KALSHI_ENV", "prod")
+    monkeypatch.setenv("TRADE_MODE", "dry")
+    monkeypatch.setenv("TRADE_MARKET", "nba")
+    monkeypatch.setattr(nba_trade, "TradingClient", lambda dry_run: FakeClient())
+    with pytest.raises(TradingError, match="different venues"):
+        nba_trade.main()
