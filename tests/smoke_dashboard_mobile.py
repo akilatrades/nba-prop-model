@@ -3,7 +3,6 @@
 Run explicitly after installing Playwright/Chromium; not part of regular pytest.
 """
 
-import os
 import threading
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
