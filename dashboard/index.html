@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sports Market Maker | Quantitative Research & Execution</title>
-<meta name="description" content="Backtest-report style view of the Kalshi sports-prop market maker: key statistics, cumulative profit against the backtest benchmark, daily profit, profit per fill, monthly heatmap, drawdown periods, rolling edge, strategies and live risk.">
+<title>Sports props | Testing the edge</title>
+<meta name="description" content="My sports props trading research: what the backtests showed, what paper trading shows, and what actually fills on Kalshi.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
@@ -87,9 +87,9 @@ footer { padding-top: 18px; margin-top: 10px; border-top: 2px solid var(--ink); 
 @media (max-width: 600px) { .howto { grid-template-columns: 1fr; gap: 2px 0; } .howto dd { margin-bottom: 8px; } }
 @media (max-width: 600px) { .expo .row { grid-template-columns: 1fr 60px; } .expo .row span:first-child { grid-column: 1 / -1; } .util .row { grid-template-columns: 1fr 100px; } .util .row .lab { grid-column: 1 / -1; } }
 
-/* A calm research terminal with an explicit live/paper evidence boundary. */
-html{scroll-behavior:smooth} 
-body{max-width:1260px;padding:0 28px 80px;background:radial-gradient(ellipse 900px 470px at 90% -120px,#17314b 0%,transparent 75%),var(--paper);color:var(--ink);line-height:1.55;}
+/* Keep exchange fills, paper trades and backtest results separate. */
+html{scroll-behavior:smooth;scroll-padding-top:12px;overflow-x:clip}
+body{width:100%;max-width:1260px;min-width:0;overflow-x:clip;padding:0 28px 80px;background:radial-gradient(ellipse 900px 470px at 90% -120px,#17314b 0%,transparent 75%),var(--paper);color:var(--ink);line-height:1.55;}
 a{color:#a4ccff;text-underline-offset:3px} a:hover{color:#deecff}
 :focus-visible{outline:2px solid #8dbefe;outline-offset:3px}
 .sitebar{display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid var(--rule);padding:21px 0}
@@ -128,7 +128,16 @@ section.chart-panel{background:#101e30;border:1px solid var(--rule);border-radiu
 .stats{grid-template-columns:repeat(4,minmax(0,1fr));gap:0 22px}.stats div{border-bottom:1px solid #2a3a4e;padding:10px 0}.stats-details .stats{padding-bottom:15px}
 .two{gap:16px}.two>div{min-width:0;background:#101e30;border:1px solid var(--rule);border-radius:14px;padding:20px}.two>div h2{font-size:18px}
 table{font-size:13px}th{color:#b1c4dc;font-size:12px;padding:11px;background:#152338;border-bottom:1px solid #456078}td{padding:10px 11px;border-bottom:1px solid #2b3c52}td.lbl{min-width:210px}tr:hover td{background:#1b2b3f}
-.scroll{border:1px solid var(--rule);border-radius:11px;overflow:auto}
+.scroll{border:1px solid var(--rule);border-radius:11px;max-width:100%;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;touch-action:pan-x pan-y}
+.heat-scroll{padding:12px;scrollbar-gutter:stable}
+.heat{min-width:max-content}
+.heat .r{min-width:0}
+#cumulative,#daily,#hist,#underwater,#rolling,#forest,#scan,#research{min-width:0;max-width:100%}
+svg{max-width:100%;touch-action:pan-y}
+.two,.two>div,.panel-grid,.panel,.section-heading,.metric-grid,.metric-card,.primer,.fwd-row{min-width:0}
+.fwd-row strong,.fwd-row span{min-width:0;overflow-wrap:anywhere}
+.report-head h1{overflow-wrap:break-word}
+body,section,.two,.panel,.metric-grid{overflow-wrap:break-word}
 .axis{fill:#8fa4bf}.grid line{stroke:#283a50}.zero{stroke:#536781}
 .pill{border:1px solid #344d63;background:#20334a;color:#d0e1f4}.pill.live{border-color:#277567;background:#185548;color:#c0f6e0}
 .util .bar,.expo .bar{background:#253950;border-radius:20px;overflow:hidden}.util .bar i,.expo .bar i{border-radius:20px}
@@ -137,6 +146,20 @@ footer{margin-top:44px;border-top:1px solid var(--rule);line-height:1.8}
 @media(max-width:1050px){.metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.panel-grid{grid-template-columns:1fr}}
 @media(max-width:700px){body{padding:0 15px 50px}.sitebar{flex-direction:column;align-items:flex-start}.toplinks{gap:10px 16px}.report-head{padding:35px 0 12px}.report-head .meta{width:100%}.panel{padding:18px}.metric-grid{gap:10px}.metric-card{padding:17px;min-height:146px}.section-heading{display:block}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.quick-guide dl{grid-template-columns:1fr;gap:3px}.quick-guide dd{margin-bottom:10px}.two>div{padding:16px}section.chart-panel{padding:18px}}
 @media(max-width:395px){.metric-grid,.stats{grid-template-columns:1fr}}
+@media(max-width:700px){
+  .sitebar{gap:14px}
+  .toplinks{width:100%;max-width:100%;display:flex;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;padding-bottom:9px;scrollbar-width:thin;touch-action:pan-x pan-y}
+  .toplinks a{flex:0 0 auto;padding:6px 3px;min-height:36px;display:inline-flex;align-items:center}
+  .report-head h1{font-size:clamp(30px,9vw,44px)}
+  .metric-value{font-size:clamp(24px,7.3vw,34px)}
+  .primer{padding:13px;gap:10px}
+  .primer p{line-height:1.5}
+  .fwd-row{gap:10px}
+  .fwd-row strong{max-width:55%}
+  .heat-scroll{padding:8px}
+  .stage{margin-top:6px}
+  .tt{display:none!important}
+}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
 </style>
@@ -231,7 +254,7 @@ footer{margin-top:44px;border-top:1px solid var(--rule);line-height:1.8}
 <section>
   <h2>Monthly profit by ledger</h2>
   <p class="desc">Dollars per month; green positive, red negative, darker is larger. Dashed cells are months with no settlement.</p>
-  <div id="heat"></div>
+  <div class="scroll heat-scroll" id="heat" role="region" tabindex="0" aria-label="Monthly paper profit by ledger; swipe sideways to see more months"></div>
 </section>
 
 <section>
