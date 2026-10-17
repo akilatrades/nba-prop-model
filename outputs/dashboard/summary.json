@@ -1,5 +1,5 @@
 {
- "updated_utc": "2026-10-17T12:28+00:00",
+ "updated_utc": "2026-10-17T13:01+00:00",
  "paper": {
   "ledgers": [
    {
@@ -145,6 +145,24 @@
     "bankroll": 500.0,
     "group": "other markets (model-free unless +model)",
     "backtest_cents": 16.35
+   },
+   {
+    "ledger": "KXNBA3D",
+    "orders": 0,
+    "open": 0,
+    "fill_rate": null,
+    "fills": 0,
+    "contracts": 0,
+    "profit": 0.0,
+    "cents_per_contract": null,
+    "se_cents": null,
+    "t": null,
+    "hit_rate": null,
+    "max_drawdown": 0.0,
+    "days": 0,
+    "bankroll": 500.0,
+    "group": "other markets (model-free unless +model)",
+    "backtest_cents": 4.47
    },
    {
     "ledger": "KXNFLANYTD+model",
@@ -587,6 +605,14 @@
    "passes": true
   },
   {
+   "series": "KXNBA3D",
+   "fills": 509,
+   "cents": 4.47,
+   "t": 2.25,
+   "se": 1.98,
+   "passes": true
+  },
+  {
    "series": "KXNFLANYTD",
    "fills": 2255,
    "cents": 2.98,
@@ -617,14 +643,6 @@
    "t": 2.05,
    "se": 3.06,
    "passes": true
-  },
-  {
-   "series": "KXLIGUE1GAME",
-   "fills": 1008,
-   "cents": 2.76,
-   "t": 1.99,
-   "se": 1.39,
-   "passes": false
   }
  ]
 }
