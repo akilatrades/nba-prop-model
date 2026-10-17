@@ -157,3 +157,19 @@ def test_research_defaults_to_production_data_when_env_unset(monkeypatch):
     monkeypatch.setenv("KALSHI_ENV", "typo")
     with pytest.raises(ValueError, match="Invalid KALSHI_ENV"):
         api.market_data_base_url()
+
+
+def test_trading_refuses_mismatched_market_and_execution_venues(monkeypatch):
+    """Never post demo orders using production-market quote snapshots."""
+    from live import nba_trade
+    from kalshi.trading import TradingError
+
+    class FakeClient:
+        base = "https://demo-api.kalshi.co"
+
+    monkeypatch.setenv("KALSHI_ENV", "prod")
+    monkeypatch.setenv("TRADE_MODE", "dry")
+    monkeypatch.setenv("TRADE_MARKET", "nba")
+    monkeypatch.setattr(nba_trade, "TradingClient", lambda dry_run: FakeClient())
+    with pytest.raises(TradingError, match="different venues"):
+        nba_trade.main()
