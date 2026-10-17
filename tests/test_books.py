@@ -120,6 +120,7 @@ def test_attach_matches_exact_lines():
             "player": ["Victor Wembanyama", "Victor Wembanyama", "Someone Else"],
             "stat": ["points", "points", "assists"],
             "line": [24.5, 34.5, 4.5],
+            "tip_utc": [EVENT["commence_time"]] * 3,
         }
     )
     out = attach(priced, consensus(parse_event(EVENT)))
@@ -127,6 +128,57 @@ def test_attach_matches_exact_lines():
     assert out.book_n.tolist()[0] == 2
     empty = attach(priced, None)
     assert empty.p_book.isna().all() and (empty.book_n == 0).all()
+
+
+def _two_games():
+    rows = []
+    for event, (start, over, under) in {
+        "A": ("2026-10-21T23:00:00Z", -120, 100),
+        "B": ("2026-10-22T23:00:00Z", -200, 170),
+    }.items():
+        for book in ("dk", "fd"):
+            for side, odds in (("Over", over), ("Under", under)):
+                rows.append(
+                    {
+                        "event_id": event,
+                        "commence_utc": start,
+                        "book": book,
+                        "player_key": "x y",
+                        "stat": "points",
+                        "line": 24.5,
+                        "side": side,
+                        "odds": odds,
+                    }
+                )
+    return pd.DataFrame(rows)
+
+
+def test_consensus_keeps_games_apart_and_only_observed_rows():
+    """A player on a back-to-back: one row per game, no cartesian blow-up."""
+    c = consensus(_two_games())
+    assert len(c) == 2 and sorted(c.event_id) == ["A", "B"]
+    assert (c.book_n == 2).all()
+    a, b = c.set_index("event_id").p_book.loc[["A", "B"]]
+    assert a < b  # B's over is the shorter price
+
+
+def test_attach_matches_the_line_to_its_game():
+    c = consensus(_two_games())
+    priced = pd.DataFrame(
+        {
+            "player_key": ["x y", "x y"],
+            "stat": ["points", "points"],
+            "line": [24.5, 24.5],
+            "tip_utc": ["2026-10-22T23:30:00Z", "2026-10-21T23:30:00Z"],
+        }
+    )
+    out = attach(priced, c)
+    by_day = c.set_index("event_id").p_book
+    assert np.isclose(out.p_book.iloc[0], by_day["B"])
+    assert np.isclose(out.p_book.iloc[1], by_day["A"])
+    # Without a tip time the game cannot be identified: attach nothing.
+    blind = attach(priced.drop(columns="tip_utc"), c)
+    assert blind.p_book.isna().all() and (blind.book_n == 0).all()
 
 
 def test_find_event_by_teams_and_time():

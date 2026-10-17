@@ -1491,3 +1491,20 @@ harder as the bankroll grows, which is the conservative side.
 Net from the two reviews: two code fixes (snapshot timing, event-aware
 book matching), two corrections to how results were described (coverage
 numbers, the correlation claim), no change to any rule or result.
+
+### Third review (same day): one real bug, fixed, with tests
+
+`consensus()` had been given `dropna=False` on its pivot; with a
+multi-level index that builds the cartesian product of every key level (16
+rows from 4 real ones in a two-game check, unbounded on a full slate). The
+rows were discarded downstream so no probability was wrong, but the table
+could have grown enough to fail the book-log workflow. Fixed: default
+`dropna`, with missing event keys filled before the pivot instead. Also,
+as the reviewer asked: `attach()` no longer falls back to player-only
+matching when the book table carries game times and the priced frame has
+no tip time; it attaches nothing. Two regression tests committed
+(`tests/test_books.py`: games kept apart with only observed rows; the line
+attached to its own game, and nothing attached without a tip time). The
+reviewer's remaining point stands as written: +3.90¢ is a per-order
+sensitivity check on the old snapshots, not a full rerun with
+earliest-posting snapshots, which is deferred for its credit cost.
