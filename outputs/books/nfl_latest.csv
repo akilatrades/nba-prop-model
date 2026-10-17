@@ -1,338 +1,344 @@
-player_key,stat,line,p_book,book_n,snapshot_utc,event_id,home,away,commence_utc
-alvin kamara,receiving_yards,10.5,0.5063197809142617,1,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-alvin kamara,receiving_yards,11.5,0.5003393051031487,3,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-alvin kamara,receiving_yards,12.5,0.5,1,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-ashton jeanty,receiving_yards,25.5,0.5095026713250022,3,2026-10-17T12:40+00:00,45b2690b350ed45145c7a716b18e8e66,Las Vegas Raiders,Buffalo Bills,2026-10-18T20:25:00Z
-ashton jeanty,receiving_yards,26.5,0.4928464993192271,2,2026-10-17T12:40+00:00,45b2690b350ed45145c7a716b18e8e66,Las Vegas Raiders,Buffalo Bills,2026-10-18T20:25:00Z
-bhayshul tuten,receiving_yards,9.5,0.4946649594536918,3,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-bhayshul tuten,receiving_yards,10.5,0.5017055915108061,2,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-bijan robinson,receiving_yards,28.5,0.5012558270374537,4,2026-10-17T12:40+00:00,7c312fdf24fb35f58b0e07c2932cc997,Atlanta Falcons,Chicago Bears,2026-10-18T17:00:00Z
-bijan robinson,receiving_yards,29.5,0.5021058838394474,1,2026-10-17T12:40+00:00,7c312fdf24fb35f58b0e07c2932cc997,Atlanta Falcons,Chicago Bears,2026-10-18T17:00:00Z
-blake corum,receiving_yards,6.5,0.5,2,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-blake corum,receiving_yards,7.5,0.48312935577086524,2,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-blake corum,receiving_yards,8.5,0.48987854251012153,1,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-bo melton,receiving_yards,13.5,0.5077637299220038,2,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-bo melton,receiving_yards,14.5,0.5025116540749075,2,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-bo melton,receiving_yards,15.5,0.4554079696394686,1,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-braelon allen,receiving_yards,14.5,0.5055591959707837,3,2026-10-17T12:40+00:00,0b0b582b32b09ab6ff6664ffae0c9653,New England Patriots,New York Jets,2026-10-18T17:00:00Z
-braelon allen,receiving_yards,15.5,0.5,2,2026-10-17T12:40+00:00,0b0b582b32b09ab6ff6664ffae0c9653,New England Patriots,New York Jets,2026-10-18T17:00:00Z
-brenton strange,receiving_yards,35.5,0.4969864995178399,1,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-brenton strange,receiving_yards,36.5,0.5021058838394474,1,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-brenton strange,receiving_yards,37.5,0.5,2,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-brenton strange,receiving_yards,38.5,0.5,1,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-brian thomas,receiving_yards,16.5,0.4920127795527157,1,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-brian thomas,receiving_yards,17.5,0.5005300653040454,2,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-brian thomas,receiving_yards,18.5,0.5,2,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-brock bowers,receiving_yards,79.5,0.5113285272914521,2,2026-10-17T12:40+00:00,45b2690b350ed45145c7a716b18e8e66,Las Vegas Raiders,Buffalo Bills,2026-10-18T20:25:00Z
-brock bowers,receiving_yards,80.5,0.495260663507109,2,2026-10-17T12:40+00:00,45b2690b350ed45145c7a716b18e8e66,Las Vegas Raiders,Buffalo Bills,2026-10-18T20:25:00Z
-brock bowers,receiving_yards,81.5,0.50150675024108,2,2026-10-17T12:40+00:00,45b2690b350ed45145c7a716b18e8e66,Las Vegas Raiders,Buffalo Bills,2026-10-18T20:25:00Z
-bryce lance,receiving_yards,11.5,0.4969864995178399,1,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-bryce lance,receiving_yards,12.5,0.5,1,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-bryce lance,receiving_yards,13.5,0.5,2,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-bucky irving,receiving_yards,10.5,0.503826508880664,3,2026-10-17T12:40+00:00,27f3994841ce8081c0b7349cf3d1e3d7,Tampa Bay Buccaneers,Pittsburgh Steelers,2026-10-18T17:00:00Z
-bucky irving,receiving_yards,12.5,0.4939310568053083,1,2026-10-17T12:40+00:00,27f3994841ce8081c0b7349cf3d1e3d7,Tampa Bay Buccaneers,Pittsburgh Steelers,2026-10-18T17:00:00Z
-cade otton,receiving_yards,29.5,0.4954764776839566,2,2026-10-17T12:40+00:00,27f3994841ce8081c0b7349cf3d1e3d7,Tampa Bay Buccaneers,Pittsburgh Steelers,2026-10-18T17:00:00Z
-cade otton,receiving_yards,30.5,0.4960573080397098,4,2026-10-17T12:40+00:00,27f3994841ce8081c0b7349cf3d1e3d7,Tampa Bay Buccaneers,Pittsburgh Steelers,2026-10-18T17:00:00Z
-calvin ridley,receiving_yards,11.5,0.5129461808766415,1,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-calvin ridley,receiving_yards,12.5,0.5054804128013801,3,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-calvin ridley,receiving_yards,14.5,0.5,1,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-cam skattebo,receiving_yards,9.5,0.5115178421846206,1,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-cam skattebo,receiving_yards,11.5,0.5005089576547231,2,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-cam skattebo,receiving_yards,12.5,0.5071033951799087,2,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-carnell tate,receiving_yards,50.5,0.5094786729857821,1,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-carnell tate,receiving_yards,53.5,0.5015476681799422,2,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-carnell tate,receiving_yards,54.5,0.497893850042123,2,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-ceedee lamb,receiving_yards,80.5,0.5054797523151954,3,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-ceedee lamb,receiving_yards,81.5,0.5,1,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-ceedee lamb,receiving_yards,82.5,0.4959548561951377,1,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-charlie kolar,receiving_yards,21.5,0.5047355967866057,3,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-charlie kolar,receiving_yards,23.5,0.4969655284026542,2,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-chris godwin,receiving_yards,26.5,0.5,3,2026-10-17T12:40+00:00,27f3994841ce8081c0b7349cf3d1e3d7,Tampa Bay Buccaneers,Pittsburgh Steelers,2026-10-18T17:00:00Z
-chris godwin,receiving_yards,27.5,0.5011503531235524,2,2026-10-17T12:40+00:00,27f3994841ce8081c0b7349cf3d1e3d7,Tampa Bay Buccaneers,Pittsburgh Steelers,2026-10-18T17:00:00Z
-chris olave,receiving_yards,79.5,0.5002368614529942,4,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-chris olave,receiving_yards,82.5,0.5,1,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-christian watson,receiving_yards,71.5,0.5,1,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-christian watson,receiving_yards,74.5,0.4992980387201842,3,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-christian watson,receiving_yards,75.5,0.5,1,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-chuba hubbard,receiving_yards,15.5,0.5,1,2026-10-17T12:40+00:00,caca2d752fe1a1779029082e95332fcc,Philadelphia Eagles,Carolina Panthers,2026-10-18T17:00:00Z
-chuba hubbard,receiving_yards,16.5,0.49915778025228424,3,2026-10-17T12:40+00:00,caca2d752fe1a1779029082e95332fcc,Philadelphia Eagles,Carolina Panthers,2026-10-18T17:00:00Z
-chuba hubbard,receiving_yards,17.5,0.5,1,2026-10-17T12:40+00:00,caca2d752fe1a1779029082e95332fcc,Philadelphia Eagles,Carolina Panthers,2026-10-18T17:00:00Z
-colby parkinson,receiving_yards,13.5,0.49789340636191276,3,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-colby parkinson,receiving_yards,14.5,0.5101214574898786,1,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-colby parkinson,receiving_yards,15.5,0.4787564076536568,2,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-cole kmet,receiving_yards,8.5,0.4978941161605526,1,2026-10-17T12:40+00:00,7c312fdf24fb35f58b0e07c2932cc997,Atlanta Falcons,Chicago Bears,2026-10-18T17:00:00Z
-cole kmet,receiving_yards,9.5,0.5,2,2026-10-17T12:40+00:00,7c312fdf24fb35f58b0e07c2932cc997,Atlanta Falcons,Chicago Bears,2026-10-18T17:00:00Z
-cole kmet,receiving_yards,10.5,0.4899455042326291,2,2026-10-17T12:40+00:00,7c312fdf24fb35f58b0e07c2932cc997,Atlanta Falcons,Chicago Bears,2026-10-18T17:00:00Z
-colston loveland,receiving_yards,36.5,0.49899549983928,3,2026-10-17T12:40+00:00,7c312fdf24fb35f58b0e07c2932cc997,Atlanta Falcons,Chicago Bears,2026-10-18T17:00:00Z
-colston loveland,receiving_yards,37.5,0.5,1,2026-10-17T12:40+00:00,7c312fdf24fb35f58b0e07c2932cc997,Atlanta Falcons,Chicago Bears,2026-10-18T17:00:00Z
-colston loveland,receiving_yards,38.5,0.4978941161605526,1,2026-10-17T12:40+00:00,7c312fdf24fb35f58b0e07c2932cc997,Atlanta Falcons,Chicago Bears,2026-10-18T17:00:00Z
-cyrus allen,receiving_yards,12.5,0.49789340636191276,3,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-cyrus allen,receiving_yards,13.5,0.48987854251012153,1,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-cyrus allen,receiving_yards,15.5,0.4920127795527157,1,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-dallas goedert,receiving_yards,33.5,0.5021058838394474,1,2026-10-17T12:40+00:00,caca2d752fe1a1779029082e95332fcc,Philadelphia Eagles,Carolina Panthers,2026-10-18T17:00:00Z
-dallas goedert,receiving_yards,34.5,0.5027244154032968,3,2026-10-17T12:40+00:00,caca2d752fe1a1779029082e95332fcc,Philadelphia Eagles,Carolina Panthers,2026-10-18T17:00:00Z
-dalton kincaid,receiving_yards,47.5,0.5,1,2026-10-17T12:40+00:00,45b2690b350ed45145c7a716b18e8e66,Las Vegas Raiders,Buffalo Bills,2026-10-18T20:25:00Z
-dalton kincaid,receiving_yards,49.5,0.5,2,2026-10-17T12:40+00:00,45b2690b350ed45145c7a716b18e8e66,Las Vegas Raiders,Buffalo Bills,2026-10-18T20:25:00Z
-dalton kincaid,receiving_yards,50.5,0.5082034454470877,1,2026-10-17T12:40+00:00,45b2690b350ed45145c7a716b18e8e66,Las Vegas Raiders,Buffalo Bills,2026-10-18T20:25:00Z
-dalton kincaid,receiving_yards,52.5,0.495787700084246,1,2026-10-17T12:40+00:00,45b2690b350ed45145c7a716b18e8e66,Las Vegas Raiders,Buffalo Bills,2026-10-18T20:25:00Z
-dalton schultz,receiving_yards,29.5,0.5030135004821601,1,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-dalton schultz,receiving_yards,30.5,0.49898204603723895,3,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-dalton schultz,receiving_yards,31.5,0.4928711096627016,1,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-dameon pierce,receiving_yards,10.5,0.5135431598402107,2,2026-10-17T12:40+00:00,caca2d752fe1a1779029082e95332fcc,Philadelphia Eagles,Carolina Panthers,2026-10-18T17:00:00Z
-dameon pierce,receiving_yards,11.5,0.49396377402094577,3,2026-10-17T12:40+00:00,caca2d752fe1a1779029082e95332fcc,Philadelphia Eagles,Carolina Panthers,2026-10-18T17:00:00Z
-dandre swift,receiving_yards,15.5,0.5062478396019995,3,2026-10-17T12:40+00:00,7c312fdf24fb35f58b0e07c2932cc997,Atlanta Falcons,Chicago Bears,2026-10-18T17:00:00Z
-dandre swift,receiving_yards,16.5,0.5030344715973458,2,2026-10-17T12:40+00:00,7c312fdf24fb35f58b0e07c2932cc997,Atlanta Falcons,Chicago Bears,2026-10-18T17:00:00Z
-darnell mooney,receiving_yards,18.5,0.5,1,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-darnell mooney,receiving_yards,19.5,0.5010283129173327,4,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-darnell washington,receiving_yards,21.5,0.49954619167864367,2,2026-10-17T12:40+00:00,27f3994841ce8081c0b7349cf3d1e3d7,Tampa Bay Buccaneers,Pittsburgh Steelers,2026-10-18T17:00:00Z
-darnell washington,receiving_yards,22.5,0.5,2,2026-10-17T12:40+00:00,27f3994841ce8081c0b7349cf3d1e3d7,Tampa Bay Buccaneers,Pittsburgh Steelers,2026-10-18T17:00:00Z
-darnell washington,receiving_yards,23.5,0.5,1,2026-10-17T12:40+00:00,27f3994841ce8081c0b7349cf3d1e3d7,Tampa Bay Buccaneers,Pittsburgh Steelers,2026-10-18T17:00:00Z
-darren waller,receiving_yards,28.5,0.4936802190857384,1,2026-10-17T12:40+00:00,caca2d752fe1a1779029082e95332fcc,Philadelphia Eagles,Carolina Panthers,2026-10-18T17:00:00Z
-darren waller,receiving_yards,29.5,0.49874417296254625,4,2026-10-17T12:40+00:00,caca2d752fe1a1779029082e95332fcc,Philadelphia Eagles,Carolina Panthers,2026-10-18T17:00:00Z
-darren waller,receiving_yards,30.5,0.46753246753246747,1,2026-10-17T12:40+00:00,caca2d752fe1a1779029082e95332fcc,Philadelphia Eagles,Carolina Panthers,2026-10-18T17:00:00Z
-davante adams,receiving_yards,57.5,0.5,2,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-davante adams,receiving_yards,58.5,0.5015971923031538,2,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-davante adams,receiving_yards,59.5,0.5,1,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-davis allen,receiving_yards,6.5,0.5008757489157398,3,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-davis allen,receiving_yards,7.5,0.5025116540749075,2,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-denzel boston,receiving_yards,50.5,0.49824454230999066,3,2026-10-17T12:40+00:00,e86227938fd3cf008fc5648fb5128344,Cleveland Browns,Baltimore Ravens,2026-10-18T17:00:00Z
-denzel boston,receiving_yards,51.5,0.5,3,2026-10-17T12:40+00:00,e86227938fd3cf008fc5648fb5128344,Cleveland Browns,Baltimore Ravens,2026-10-18T17:00:00Z
-derrick henry,receiving_yards,5.5,0.5050233081498151,1,2026-10-17T12:40+00:00,e86227938fd3cf008fc5648fb5128344,Cleveland Browns,Baltimore Ravens,2026-10-18T17:00:00Z
-derrick henry,receiving_yards,6.5,0.5017199152425769,3,2026-10-17T12:40+00:00,e86227938fd3cf008fc5648fb5128344,Cleveland Browns,Baltimore Ravens,2026-10-18T17:00:00Z
-derrick henry,receiving_yards,7.5,0.5136188400938653,1,2026-10-17T12:40+00:00,e86227938fd3cf008fc5648fb5128344,Cleveland Browns,Baltimore Ravens,2026-10-18T17:00:00Z
-devaughn vele,receiving_yards,40.5,0.4954128440366972,1,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-devaughn vele,receiving_yards,41.5,0.5,1,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-devaughn vele,receiving_yards,43.5,0.4993573427366898,3,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-devaughn vele,receiving_yards,45.5,0.5,1,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-devonta smith,receiving_yards,56.5,0.5,1,2026-10-17T12:40+00:00,caca2d752fe1a1779029082e95332fcc,Philadelphia Eagles,Carolina Panthers,2026-10-18T17:00:00Z
-devonta smith,receiving_yards,57.5,0.495787700084246,1,2026-10-17T12:40+00:00,caca2d752fe1a1779029082e95332fcc,Philadelphia Eagles,Carolina Panthers,2026-10-18T17:00:00Z
-devonta smith,receiving_yards,58.5,0.5050233081498151,1,2026-10-17T12:40+00:00,caca2d752fe1a1779029082e95332fcc,Philadelphia Eagles,Carolina Panthers,2026-10-18T17:00:00Z
-dj moore,receiving_yards,49.5,0.501300305049833,4,2026-10-17T12:40+00:00,45b2690b350ed45145c7a716b18e8e66,Las Vegas Raiders,Buffalo Bills,2026-10-18T20:25:00Z
-dk metcalf,receiving_yards,50.5,0.5,2,2026-10-17T12:40+00:00,27f3994841ce8081c0b7349cf3d1e3d7,Tampa Bay Buccaneers,Pittsburgh Steelers,2026-10-18T17:00:00Z
-dk metcalf,receiving_yards,51.5,0.5051290468179394,2,2026-10-17T12:40+00:00,27f3994841ce8081c0b7349cf3d1e3d7,Tampa Bay Buccaneers,Pittsburgh Steelers,2026-10-18T17:00:00Z
-dk metcalf,receiving_yards,52.5,0.5,1,2026-10-17T12:40+00:00,27f3994841ce8081c0b7349cf3d1e3d7,Tampa Bay Buccaneers,Pittsburgh Steelers,2026-10-18T17:00:00Z
-dontayvion wicks,receiving_yards,29.5,0.495787700084246,1,2026-10-17T12:40+00:00,caca2d752fe1a1779029082e95332fcc,Philadelphia Eagles,Carolina Panthers,2026-10-18T17:00:00Z
-dontayvion wicks,receiving_yards,30.5,0.5003393051031487,3,2026-10-17T12:40+00:00,caca2d752fe1a1779029082e95332fcc,Philadelphia Eagles,Carolina Panthers,2026-10-18T17:00:00Z
-drake london,receiving_yards,87.5,0.5203045685279188,1,2026-10-17T12:40+00:00,7c312fdf24fb35f58b0e07c2932cc997,Atlanta Falcons,Chicago Bears,2026-10-18T17:00:00Z
-drake london,receiving_yards,89.5,0.50150675024108,2,2026-10-17T12:40+00:00,7c312fdf24fb35f58b0e07c2932cc997,Atlanta Falcons,Chicago Bears,2026-10-18T17:00:00Z
-drake london,receiving_yards,90.5,0.5,1,2026-10-17T12:40+00:00,7c312fdf24fb35f58b0e07c2932cc997,Atlanta Falcons,Chicago Bears,2026-10-18T17:00:00Z
-drake london,receiving_yards,92.5,0.4978941161605526,1,2026-10-17T12:40+00:00,7c312fdf24fb35f58b0e07c2932cc997,Atlanta Falcons,Chicago Bears,2026-10-18T17:00:00Z
-elic ayomanor,receiving_yards,13.5,0.5149941897514713,1,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-elic ayomanor,receiving_yards,15.5,0.5006659270015473,4,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-elic ayomanor,receiving_yards,16.5,0.4915711395819285,1,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-elijah higgins,receiving_yards,11.5,0.49733759318423854,3,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-elijah higgins,receiving_yards,12.5,0.5,1,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-elijah higgins,receiving_yards,14.5,0.4936802190857384,1,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-emeka egbuka,receiving_yards,36.5,0.5040474603306571,3,2026-10-17T12:40+00:00,27f3994841ce8081c0b7349cf3d1e3d7,Tampa Bay Buccaneers,Pittsburgh Steelers,2026-10-18T17:00:00Z
-emeka egbuka,receiving_yards,37.5,0.5004538083213563,2,2026-10-17T12:40+00:00,27f3994841ce8081c0b7349cf3d1e3d7,Tampa Bay Buccaneers,Pittsburgh Steelers,2026-10-18T17:00:00Z
-emmett johnson,receiving_yards,6.5,0.5,3,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-emmett johnson,receiving_yards,7.5,0.4852289512555391,1,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-garrett wilson,receiving_yards,72.5,0.50075337512054,4,2026-10-17T12:40+00:00,0b0b582b32b09ab6ff6664ffae0c9653,New England Patriots,New York Jets,2026-10-18T17:00:00Z
-garrett wilson,receiving_yards,74.5,0.5042122999157539,1,2026-10-17T12:40+00:00,0b0b582b32b09ab6ff6664ffae0c9653,New England Patriots,New York Jets,2026-10-18T17:00:00Z
-george pickens,receiving_yards,67.5,0.5025798728638653,2,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-george pickens,receiving_yards,69.5,0.49849324975891995,2,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-george pickens,receiving_yards,71.5,0.5,1,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-germie bernard,receiving_yards,40.5,0.5030135004821601,1,2026-10-17T12:40+00:00,27f3994841ce8081c0b7349cf3d1e3d7,Tampa Bay Buccaneers,Pittsburgh Steelers,2026-10-18T17:00:00Z
-germie bernard,receiving_yards,41.5,0.5015476681799422,2,2026-10-17T12:40+00:00,27f3994841ce8081c0b7349cf3d1e3d7,Tampa Bay Buccaneers,Pittsburgh Steelers,2026-10-18T17:00:00Z
-germie bernard,receiving_yards,42.5,0.497893850042123,2,2026-10-17T12:40+00:00,27f3994841ce8081c0b7349cf3d1e3d7,Tampa Bay Buccaneers,Pittsburgh Steelers,2026-10-18T17:00:00Z
-gunnar helm,receiving_yards,15.5,0.5061256031363088,2,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-gunnar helm,receiving_yards,16.5,0.5094197437829691,1,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-gunnar helm,receiving_yards,17.5,0.4969046636401156,1,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-gunnar helm,receiving_yards,18.5,0.5,1,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-harold fannin,receiving_yards,33.5,0.5,1,2026-10-17T12:40+00:00,e86227938fd3cf008fc5648fb5128344,Cleveland Browns,Baltimore Ravens,2026-10-18T17:00:00Z
-harold fannin,receiving_yards,35.5,0.4992980387201842,3,2026-10-17T12:40+00:00,e86227938fd3cf008fc5648fb5128344,Cleveland Browns,Baltimore Ravens,2026-10-18T17:00:00Z
-harold fannin,receiving_yards,37.5,0.4939310568053083,1,2026-10-17T12:40+00:00,e86227938fd3cf008fc5648fb5128344,Cleveland Browns,Baltimore Ravens,2026-10-18T17:00:00Z
-hunter henry,receiving_yards,29.5,0.5,1,2026-10-17T12:40+00:00,0b0b582b32b09ab6ff6664ffae0c9653,New England Patriots,New York Jets,2026-10-18T17:00:00Z
-hunter henry,receiving_yards,32.5,0.4979637210526518,3,2026-10-17T12:40+00:00,0b0b582b32b09ab6ff6664ffae0c9653,New England Patriots,New York Jets,2026-10-18T17:00:00Z
-isaiah likely,receiving_yards,51.5,0.5,2,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-isaiah likely,receiving_yards,53.5,0.4958781869974137,2,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-jahan dotson,receiving_yards,23.5,0.5004819929474826,4,2026-10-17T12:40+00:00,7c312fdf24fb35f58b0e07c2932cc997,Atlanta Falcons,Chicago Bears,2026-10-18T17:00:00Z
-jahan dotson,receiving_yards,24.5,0.5,1,2026-10-17T12:40+00:00,7c312fdf24fb35f58b0e07c2932cc997,Atlanta Falcons,Chicago Bears,2026-10-18T17:00:00Z
-jake ferguson,receiving_yards,24.5,0.5,1,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-jake ferguson,receiving_yards,25.5,0.49580866355144454,3,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-jake ferguson,receiving_yards,26.5,0.5008337197665114,2,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-jakobi lane,receiving_yards,9.5,0.5105400733589106,1,2026-10-17T12:40+00:00,e86227938fd3cf008fc5648fb5128344,Cleveland Browns,Baltimore Ravens,2026-10-18T17:00:00Z
-jakobi lane,receiving_yards,10.5,0.5,1,2026-10-17T12:40+00:00,e86227938fd3cf008fc5648fb5128344,Cleveland Browns,Baltimore Ravens,2026-10-18T17:00:00Z
-jakobi meyers,receiving_yards,32.5,0.5060662282294904,3,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-jakobi meyers,receiving_yards,34.5,0.5,2,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-jalen brooks,receiving_yards,19.5,0.5075723828198468,2,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-jalen brooks,receiving_yards,20.5,0.5,2,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-jalen brooks,receiving_yards,21.5,0.495787700084246,1,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-jalen coker,receiving_yards,55.5,0.5,2,2026-10-17T12:40+00:00,caca2d752fe1a1779029082e95332fcc,Philadelphia Eagles,Carolina Panthers,2026-10-18T17:00:00Z
-jalen coker,receiving_yards,56.5,0.5020225719024312,2,2026-10-17T12:40+00:00,caca2d752fe1a1779029082e95332fcc,Philadelphia Eagles,Carolina Panthers,2026-10-18T17:00:00Z
-jalen coker,receiving_yards,57.5,0.5063197809142617,1,2026-10-17T12:40+00:00,caca2d752fe1a1779029082e95332fcc,Philadelphia Eagles,Carolina Panthers,2026-10-18T17:00:00Z
-jalen nailor,receiving_yards,22.5,0.49095295536791317,1,2026-10-17T12:40+00:00,45b2690b350ed45145c7a716b18e8e66,Las Vegas Raiders,Buffalo Bills,2026-10-18T20:25:00Z
-jalen nailor,receiving_yards,23.5,0.5042122999157539,1,2026-10-17T12:40+00:00,45b2690b350ed45145c7a716b18e8e66,Las Vegas Raiders,Buffalo Bills,2026-10-18T20:25:00Z
-jalen royals,receiving_yards,24.5,0.5,2,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-jalen royals,receiving_yards,25.5,0.49926112498638253,3,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-james cook,receiving_yards,7.5,0.50563430071318,4,2026-10-17T12:40+00:00,45b2690b350ed45145c7a716b18e8e66,Las Vegas Raiders,Buffalo Bills,2026-10-18T20:25:00Z
-james cook,receiving_yards,9.5,0.4969864995178399,1,2026-10-17T12:40+00:00,45b2690b350ed45145c7a716b18e8e66,Las Vegas Raiders,Buffalo Bills,2026-10-18T20:25:00Z
-javonte williams,receiving_yards,13.5,0.5001545460535038,4,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-javonte williams,receiving_yards,15.5,0.4949766918501849,1,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-jaylen warren,receiving_yards,27.5,0.49698322792503663,2,2026-10-17T12:40+00:00,27f3994841ce8081c0b7349cf3d1e3d7,Tampa Bay Buccaneers,Pittsburgh Steelers,2026-10-18T17:00:00Z
-jaylen warren,receiving_yards,28.5,0.5041385817876138,3,2026-10-17T12:40+00:00,27f3994841ce8081c0b7349cf3d1e3d7,Tampa Bay Buccaneers,Pittsburgh Steelers,2026-10-18T17:00:00Z
-jonathan taylor,receiving_yards,17.5,0.5,2,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-jonathan taylor,receiving_yards,18.5,0.5001412823732919,3,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-josh cameron,receiving_yards,14.5,0.5030381568425082,2,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-josh cameron,receiving_yards,15.5,0.4992980387201842,3,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-josh downs,receiving_yards,48.5,0.5055833983952279,4,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-josh downs,receiving_yards,49.5,0.5,1,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-justice hill,receiving_yards,9.5,0.500538711736777,4,2026-10-17T12:40+00:00,e86227938fd3cf008fc5648fb5128344,Cleveland Browns,Baltimore Ravens,2026-10-18T17:00:00Z
-justice hill,receiving_yards,10.5,0.5063197809142617,1,2026-10-17T12:40+00:00,e86227938fd3cf008fc5648fb5128344,Cleveland Browns,Baltimore Ravens,2026-10-18T17:00:00Z
-juwan johnson,receiving_yards,39.5,0.5047355967866057,3,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-juwan johnson,receiving_yards,40.5,0.4969864995178399,1,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-juwan johnson,receiving_yards,41.5,0.495787700084246,1,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-kalif raymond,receiving_yards,24.5,0.5060689431946916,1,2026-10-17T12:40+00:00,7c312fdf24fb35f58b0e07c2932cc997,Atlanta Falcons,Chicago Bears,2026-10-18T17:00:00Z
-kalif raymond,receiving_yards,25.5,0.495260663507109,2,2026-10-17T12:40+00:00,7c312fdf24fb35f58b0e07c2932cc997,Atlanta Falcons,Chicago Bears,2026-10-18T17:00:00Z
-kalif raymond,receiving_yards,26.5,0.4884488448844884,3,2026-10-17T12:40+00:00,7c312fdf24fb35f58b0e07c2932cc997,Atlanta Falcons,Chicago Bears,2026-10-18T17:00:00Z
-kavontae turpin,receiving_yards,5.5,0.5041612533748835,3,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-kayshon boutte,receiving_yards,22.5,0.5030135004821601,1,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-kayshon boutte,receiving_yards,23.5,0.49095295536791317,1,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-kayshon boutte,receiving_yards,24.5,0.49789340636191276,3,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-kayshon boutte,receiving_yards,25.5,0.46753246753246747,1,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-kc concepcion,receiving_yards,39.5,0.5,2,2026-10-17T12:40+00:00,e86227938fd3cf008fc5648fb5128344,Cleveland Browns,Baltimore Ravens,2026-10-18T17:00:00Z
-kc concepcion,receiving_yards,41.5,0.5015269309441416,2,2026-10-17T12:40+00:00,e86227938fd3cf008fc5648fb5128344,Cleveland Browns,Baltimore Ravens,2026-10-18T17:00:00Z
-keaton mitchell,receiving_yards,13.5,0.5101214574898786,1,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-keaton mitchell,receiving_yards,14.5,0.5123152709359606,1,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-keaton mitchell,receiving_yards,15.5,0.4971652194325132,3,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-keenan allen,receiving_yards,41.5,0.5132822283784296,1,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-keenan allen,receiving_yards,42.5,0.5090470446320868,1,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-keenan allen,receiving_yards,43.5,0.5164392569455861,1,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-keenan allen,receiving_yards,44.5,0.5,1,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-keenan allen,receiving_yards,45.5,0.5,1,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-kendrick bourne,receiving_yards,31.5,0.5025116540749075,2,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-kendrick bourne,receiving_yards,32.5,0.5,2,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-kendrick bourne,receiving_yards,33.5,0.5,1,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-kenneth walker,receiving_yards,20.5,0.49950272679886054,3,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-kenneth walker,receiving_yards,21.5,0.48893805309734506,1,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-kenneth walker,receiving_yards,22.5,0.5019008382878085,2,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-kenyon sadiq,receiving_yards,19.5,0.5007019612798158,3,2026-10-17T12:40+00:00,0b0b582b32b09ab6ff6664ffae0c9653,New England Patriots,New York Jets,2026-10-18T17:00:00Z
-kenyon sadiq,receiving_yards,20.5,0.4653465346534653,1,2026-10-17T12:40+00:00,0b0b582b32b09ab6ff6664ffae0c9653,New England Patriots,New York Jets,2026-10-18T17:00:00Z
-kenyon sadiq,receiving_yards,21.5,0.5030135004821601,1,2026-10-17T12:40+00:00,0b0b582b32b09ab6ff6664ffae0c9653,New England Patriots,New York Jets,2026-10-18T17:00:00Z
-kimani vidal,receiving_yards,7.5,0.5101214574898786,1,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-kimani vidal,receiving_yards,8.5,0.4992980387201842,3,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-kyle pitts,receiving_yards,28.5,0.5027983224694144,4,2026-10-17T12:40+00:00,7c312fdf24fb35f58b0e07c2932cc997,Atlanta Falcons,Chicago Bears,2026-10-18T17:00:00Z
-kyle pitts,receiving_yards,30.5,0.5042122999157539,1,2026-10-17T12:40+00:00,7c312fdf24fb35f58b0e07c2932cc997,Atlanta Falcons,Chicago Bears,2026-10-18T17:00:00Z
-kyren williams,receiving_yards,19.5,0.49845233182005777,2,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-kyren williams,receiving_yards,20.5,0.4936802190857384,1,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-kyren williams,receiving_yards,21.5,0.49493927125506076,2,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-ladd mcconkey,receiving_yards,40.5,0.495787700084246,1,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-ladd mcconkey,receiving_yards,41.5,0.5013806101394281,3,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-ladd mcconkey,receiving_yards,44.5,0.5,1,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-laquon treadwell,receiving_yards,26.5,0.49991799355355787,5,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-luther burden,receiving_yards,49.5,0.5031240152144948,3,2026-10-17T12:40+00:00,7c312fdf24fb35f58b0e07c2932cc997,Atlanta Falcons,Chicago Bears,2026-10-18T17:00:00Z
-luther burden,receiving_yards,50.5,0.5040451438048622,1,2026-10-17T12:40+00:00,7c312fdf24fb35f58b0e07c2932cc997,Atlanta Falcons,Chicago Bears,2026-10-18T17:00:00Z
-luther burden,receiving_yards,51.5,0.5,1,2026-10-17T12:40+00:00,7c312fdf24fb35f58b0e07c2932cc997,Atlanta Falcons,Chicago Bears,2026-10-18T17:00:00Z
-makai lemon,receiving_yards,16.5,0.4970593316960816,2,2026-10-17T12:40+00:00,caca2d752fe1a1779029082e95332fcc,Philadelphia Eagles,Carolina Panthers,2026-10-18T17:00:00Z
-makai lemon,receiving_yards,17.5,0.5,2,2026-10-17T12:40+00:00,caca2d752fe1a1779029082e95332fcc,Philadelphia Eagles,Carolina Panthers,2026-10-18T17:00:00Z
-malachi fields,receiving_yards,22.5,0.5,2,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-malachi fields,receiving_yards,24.5,0.5063197809142617,1,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-malachi fields,receiving_yards,25.5,0.4934325210139807,2,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-malik nabers,receiving_yards,71.5,0.5025798728638653,2,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-malik nabers,receiving_yards,72.5,0.499600400188802,3,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-mark andrews,receiving_yards,27.5,0.5,2,2026-10-17T12:40+00:00,e86227938fd3cf008fc5648fb5128344,Cleveland Browns,Baltimore Ravens,2026-10-18T17:00:00Z
-mark andrews,receiving_yards,28.5,0.5101214574898786,1,2026-10-17T12:40+00:00,e86227938fd3cf008fc5648fb5128344,Cleveland Browns,Baltimore Ravens,2026-10-18T17:00:00Z
-mark andrews,receiving_yards,29.5,0.49733323797090645,2,2026-10-17T12:40+00:00,e86227938fd3cf008fc5648fb5128344,Cleveland Browns,Baltimore Ravens,2026-10-18T17:00:00Z
-marshawn lloyd,receiving_yards,10.5,0.5084288604180714,1,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-marshawn lloyd,receiving_yards,11.5,0.5061083009789887,3,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-marshawn lloyd,receiving_yards,12.5,0.4869204764971024,1,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-marvin harrison,receiving_yards,21.5,0.5002996998583984,4,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-marvin harrison,receiving_yards,22.5,0.5,1,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-matthew golden,receiving_yards,64.5,0.5,1,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-matthew golden,receiving_yards,65.5,0.5018239572010937,4,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-michael mayer,receiving_yards,26.5,0.5086650118856779,3,2026-10-17T12:40+00:00,45b2690b350ed45145c7a716b18e8e66,Las Vegas Raiders,Buffalo Bills,2026-10-18T20:25:00Z
-michael mayer,receiving_yards,27.5,0.5025116540749075,2,2026-10-17T12:40+00:00,45b2690b350ed45145c7a716b18e8e66,Las Vegas Raiders,Buffalo Bills,2026-10-18T20:25:00Z
-michael wilson,receiving_yards,57.5,0.5030135004821601,1,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-michael wilson,receiving_yards,58.5,0.5041017227235438,2,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-michael wilson,receiving_yards,60.5,0.495787700084246,1,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-michael wilson,receiving_yards,61.5,0.5,1,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-nate boerkircher,receiving_yards,4.5,0.5021058838394474,1,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-nate boerkircher,receiving_yards,5.5,0.49874417296254625,4,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-nico collins,receiving_yards,71.5,0.5,1,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-nico collins,receiving_yards,72.5,0.5,3,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-nico collins,receiving_yards,73.5,0.5,1,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-noah fant,receiving_yards,9.5,0.5105400733589106,1,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-noah fant,receiving_yards,10.5,0.5,1,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-noah fant,receiving_yards,11.5,0.49828008475742314,3,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-noah gray,receiving_yards,12.5,0.5008337197665114,2,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-noah gray,receiving_yards,13.5,0.5,3,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-omar cooper,receiving_yards,15.5,0.4971903798606428,3,2026-10-17T12:40+00:00,0b0b582b32b09ab6ff6664ffae0c9653,New England Patriots,New York Jets,2026-10-18T17:00:00Z
-omar cooper,receiving_yards,16.5,0.48893805309734506,1,2026-10-17T12:40+00:00,0b0b582b32b09ab6ff6664ffae0c9653,New England Patriots,New York Jets,2026-10-18T17:00:00Z
-omar cooper,receiving_yards,17.5,0.5,1,2026-10-17T12:40+00:00,0b0b582b32b09ab6ff6664ffae0c9653,New England Patriots,New York Jets,2026-10-18T17:00:00Z
-omarion hampton,receiving_yards,4.5,0.5101214574898786,1,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-omarion hampton,receiving_yards,6.5,0.49705179456920734,4,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-oronde gadsden,receiving_yards,13.5,0.5041295747029845,3,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-oronde gadsden,receiving_yards,14.5,0.5101214574898786,1,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-oronde gadsden,receiving_yards,15.5,0.5,1,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-parker washington,receiving_yards,62.5,0.5005264709598618,4,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-parker washington,receiving_yards,63.5,0.4876847290640395,1,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-pat freiermuth,receiving_yards,35.5,0.5025798728638653,2,2026-10-17T12:40+00:00,27f3994841ce8081c0b7349cf3d1e3d7,Tampa Bay Buccaneers,Pittsburgh Steelers,2026-10-18T17:00:00Z
-pat freiermuth,receiving_yards,36.5,0.5031110937988073,3,2026-10-17T12:40+00:00,27f3994841ce8081c0b7349cf3d1e3d7,Tampa Bay Buccaneers,Pittsburgh Steelers,2026-10-18T17:00:00Z
-pierre strong,receiving_yards,11.5,0.49845233182005777,2,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-pierre strong,receiving_yards,12.5,0.5105400733589106,1,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-puka nacua,receiving_yards,92.5,0.5,1,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-puka nacua,receiving_yards,93.5,0.5042122999157539,1,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-puka nacua,receiving_yards,94.5,0.5015476681799422,2,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-puka nacua,receiving_yards,95.5,0.5030135004821601,1,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-quentin johnston,receiving_yards,34.5,0.5021065936380872,3,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-quentin johnston,receiving_yards,36.5,0.5025798728638653,2,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-rashod bateman,receiving_yards,19.5,0.5,3,2026-10-17T12:40+00:00,e86227938fd3cf008fc5648fb5128344,Cleveland Browns,Baltimore Ravens,2026-10-18T17:00:00Z
-rashod bateman,receiving_yards,20.5,0.4969864995178399,1,2026-10-17T12:40+00:00,e86227938fd3cf008fc5648fb5128344,Cleveland Browns,Baltimore Ravens,2026-10-18T17:00:00Z
-rashod bateman,receiving_yards,21.5,0.5063197809142617,1,2026-10-17T12:40+00:00,e86227938fd3cf008fc5648fb5128344,Cleveland Browns,Baltimore Ravens,2026-10-18T17:00:00Z
-rhamondre stevenson,receiving_yards,19.5,0.49832556395006167,3,2026-10-17T12:40+00:00,0b0b582b32b09ab6ff6664ffae0c9653,New England Patriots,New York Jets,2026-10-18T17:00:00Z
-rhamondre stevenson,receiving_yards,20.5,0.45454545454545453,1,2026-10-17T12:40+00:00,0b0b582b32b09ab6ff6664ffae0c9653,New England Patriots,New York Jets,2026-10-18T17:00:00Z
-rico dowdle,receiving_yards,7.5,0.5030254788377485,5,2026-10-17T12:40+00:00,27f3994841ce8081c0b7349cf3d1e3d7,Tampa Bay Buccaneers,Pittsburgh Steelers,2026-10-18T17:00:00Z
-rome odunze,receiving_yards,41.5,0.5041385817876138,3,2026-10-17T12:40+00:00,7c312fdf24fb35f58b0e07c2932cc997,Atlanta Falcons,Chicago Bears,2026-10-18T17:00:00Z
-rome odunze,receiving_yards,43.5,0.5040451438048622,1,2026-10-17T12:40+00:00,7c312fdf24fb35f58b0e07c2932cc997,Atlanta Falcons,Chicago Bears,2026-10-18T17:00:00Z
-rome odunze,receiving_yards,44.5,0.5,1,2026-10-17T12:40+00:00,7c312fdf24fb35f58b0e07c2932cc997,Atlanta Falcons,Chicago Bears,2026-10-18T17:00:00Z
-ryan flournoy,receiving_yards,30.5,0.5,1,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-ryan flournoy,receiving_yards,31.5,0.49845233182005777,2,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-ryan flournoy,receiving_yards,32.5,0.502106149957877,2,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-ted hurst,receiving_yards,11.5,0.5005710820314558,4,2026-10-17T12:40+00:00,27f3994841ce8081c0b7349cf3d1e3d7,Tampa Bay Buccaneers,Pittsburgh Steelers,2026-10-18T17:00:00Z
-ted hurst,receiving_yards,12.5,0.48987854251012153,1,2026-10-17T12:40+00:00,27f3994841ce8081c0b7349cf3d1e3d7,Tampa Bay Buccaneers,Pittsburgh Steelers,2026-10-18T17:00:00Z
-tetairoa mcmillan,receiving_yards,62.5,0.49179655455291227,1,2026-10-17T12:40+00:00,caca2d752fe1a1779029082e95332fcc,Philadelphia Eagles,Carolina Panthers,2026-10-18T17:00:00Z
-tetairoa mcmillan,receiving_yards,64.5,0.5014040999719179,3,2026-10-17T12:40+00:00,caca2d752fe1a1779029082e95332fcc,Philadelphia Eagles,Carolina Panthers,2026-10-18T17:00:00Z
-tetairoa mcmillan,receiving_yards,65.5,0.5030135004821601,1,2026-10-17T12:40+00:00,caca2d752fe1a1779029082e95332fcc,Philadelphia Eagles,Carolina Panthers,2026-10-18T17:00:00Z
-theo johnson,receiving_yards,7.5,0.5051597457277305,1,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-theo johnson,receiving_yards,8.5,0.48893805309734506,1,2026-10-17T12:40+00:00,1cf74afd313e9fd300e1462012b174cb,New York Giants,New Orleans Saints,2026-10-18T17:00:00Z
-tony pollard,receiving_yards,8.5,0.5050607287449393,2,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-tony pollard,receiving_yards,9.5,0.5052700366794554,2,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-tony pollard,receiving_yards,10.5,0.5149941897514713,1,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-travis kelce,receiving_yards,51.5,0.4969046636401156,1,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-travis kelce,receiving_yards,52.5,0.5014040999719179,3,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-travis kelce,receiving_yards,53.5,0.5,1,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-tre tucker,receiving_yards,38.5,0.501733740066444,3,2026-10-17T12:40+00:00,45b2690b350ed45145c7a716b18e8e66,Las Vegas Raiders,Buffalo Bills,2026-10-18T20:25:00Z
-tre tucker,receiving_yards,39.5,0.5030135004821601,1,2026-10-17T12:40+00:00,45b2690b350ed45145c7a716b18e8e66,Las Vegas Raiders,Buffalo Bills,2026-10-18T20:25:00Z
-tre tucker,receiving_yards,41.5,0.5,1,2026-10-17T12:40+00:00,45b2690b350ed45145c7a716b18e8e66,Las Vegas Raiders,Buffalo Bills,2026-10-18T20:25:00Z
-trey mcbride,receiving_yards,63.5,0.503612900198957,2,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-trey mcbride,receiving_yards,64.5,0.5,2,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-trey mcbride,receiving_yards,66.5,0.5,1,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-tucker kraft,receiving_yards,48.5,0.5321336425516516,2,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-tucker kraft,receiving_yards,49.5,0.5,2,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-tucker kraft,receiving_yards,50.5,0.495787700084246,1,2026-10-17T12:40+00:00,82fd5a159fa130e67abab93a9537f70b,Green Bay Packers,Dallas Cowboys,2026-10-19T00:20:00Z
-ty johnson,receiving_yards,13.5,0.5,1,2026-10-17T12:40+00:00,45b2690b350ed45145c7a716b18e8e66,Las Vegas Raiders,Buffalo Bills,2026-10-18T20:25:00Z
-ty johnson,receiving_yards,15.5,0.503826508880664,3,2026-10-17T12:40+00:00,45b2690b350ed45145c7a716b18e8e66,Las Vegas Raiders,Buffalo Bills,2026-10-18T20:25:00Z
-ty johnson,receiving_yards,17.5,0.48893805309734506,1,2026-10-17T12:40+00:00,45b2690b350ed45145c7a716b18e8e66,Las Vegas Raiders,Buffalo Bills,2026-10-18T20:25:00Z
-tyjae spears,receiving_yards,14.5,0.5102580936358787,1,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-tyler higbee,receiving_yards,31.5,0.5090470446320868,1,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-tyler higbee,receiving_yards,32.5,0.5015476681799422,2,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-tyler higbee,receiving_yards,34.5,0.5004538083213563,2,2026-10-17T12:40+00:00,3729ac6d2a66b642850caf2044cdc658,Los Angeles Rams,Arizona Cardinals,2026-10-18T20:05:00Z
-tyler warren,receiving_yards,48.5,0.5,3,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-tyler warren,receiving_yards,49.5,0.5037884527958782,1,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-tyler warren,receiving_yards,50.5,0.5,1,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-wandale robinson,receiving_yards,36.5,0.5,1,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-wandale robinson,receiving_yards,38.5,0.5041017227235438,2,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-wandale robinson,receiving_yards,39.5,0.5,1,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-wandale robinson,receiving_yards,40.5,0.5065893516078018,1,2026-10-17T12:40+00:00,84aa9e190e625d7e9cd67e1f157a45b4,Indianapolis Colts,Tennessee Titans,2026-10-18T17:00:00Z
-woody marks,receiving_yards,14.5,0.500127270660726,4,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-woody marks,receiving_yards,15.5,0.5101214574898786,1,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-xavier hutchinson,receiving_yards,13.5,0.5,1,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-xavier hutchinson,receiving_yards,14.5,0.5027344818156959,3,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-xavier hutchinson,receiving_yards,17.5,0.4928711096627016,1,2026-10-17T12:40+00:00,57418b2cf5aca558b3c98eafac1e264a,Jacksonville Jaguars,Houston Texans,2026-10-18T13:30:00Z
-xavier worthy,receiving_yards,48.5,0.5082196284727931,2,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-xavier worthy,receiving_yards,49.5,0.49738493723849375,2,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-xavier worthy,receiving_yards,51.5,0.4949766918501849,1,2026-10-17T12:40+00:00,20fefae8c296247460ba5773caa42218,Kansas City Chiefs,Los Angeles Chargers,2026-10-18T20:25:00Z
-zachariah branch,receiving_yards,10.5,0.4980031948881789,4,2026-10-17T12:40+00:00,7c312fdf24fb35f58b0e07c2932cc997,Atlanta Falcons,Chicago Bears,2026-10-18T17:00:00Z
-zachariah branch,receiving_yards,12.5,0.5021058838394474,1,2026-10-17T12:40+00:00,7c312fdf24fb35f58b0e07c2932cc997,Atlanta Falcons,Chicago Bears,2026-10-18T17:00:00Z
-zay flowers,receiving_yards,57.5,0.4969864995178399,1,2026-10-17T12:40+00:00,e86227938fd3cf008fc5648fb5128344,Cleveland Browns,Baltimore Ravens,2026-10-18T17:00:00Z
-zay flowers,receiving_yards,58.5,0.5020813654707242,4,2026-10-17T12:40+00:00,e86227938fd3cf008fc5648fb5128344,Cleveland Browns,Baltimore Ravens,2026-10-18T17:00:00Z
+event_id,commence_utc,player_key,stat,line,p_book,book_n,updated_utc,snapshot_utc,home,away
+0b0b582b32b09ab6ff6664ffae0c9653,2026-10-18T17:00:00Z,a j brown,receiving_yards,49.5,0.4969046636401156,1,2026-10-17 15:33:43+00:00,2026-10-17T15:34+00:00,New England Patriots,New York Jets
+0b0b582b32b09ab6ff6664ffae0c9653,2026-10-18T17:00:00Z,a j brown,receiving_yards,50.5,0.5,1,2026-10-17 15:34:15+00:00,2026-10-17T15:34+00:00,New England Patriots,New York Jets
+0b0b582b32b09ab6ff6664ffae0c9653,2026-10-18T17:00:00Z,braelon allen,receiving_yards,14.5,0.5015476681799422,2,2026-10-17 15:33:43+00:00,2026-10-17T15:34+00:00,New England Patriots,New York Jets
+0b0b582b32b09ab6ff6664ffae0c9653,2026-10-18T17:00:00Z,braelon allen,receiving_yards,15.5,0.5010045001607201,3,2026-10-17 15:32:58+00:00,2026-10-17T15:34+00:00,New England Patriots,New York Jets
+0b0b582b32b09ab6ff6664ffae0c9653,2026-10-18T17:00:00Z,demario douglas,receiving_yards,21.5,0.498595900028082,3,2026-10-17 15:33:43+00:00,2026-10-17T15:34+00:00,New England Patriots,New York Jets
+0b0b582b32b09ab6ff6664ffae0c9653,2026-10-18T17:00:00Z,eli raridon,receiving_yards,11.5,0.5,1,2026-10-17 15:34:15+00:00,2026-10-17T15:34+00:00,New England Patriots,New York Jets
+0b0b582b32b09ab6ff6664ffae0c9653,2026-10-18T17:00:00Z,garrett wilson,receiving_yards,72.5,0.5,2,2026-10-17 15:33:43+00:00,2026-10-17T15:34+00:00,New England Patriots,New York Jets
+0b0b582b32b09ab6ff6664ffae0c9653,2026-10-18T17:00:00Z,garrett wilson,receiving_yards,73.5,0.5,2,2026-10-17 15:32:58+00:00,2026-10-17T15:34+00:00,New England Patriots,New York Jets
+0b0b582b32b09ab6ff6664ffae0c9653,2026-10-18T17:00:00Z,garrett wilson,receiving_yards,75.5,0.5021058838394474,1,2026-10-17 15:34:16+00:00,2026-10-17T15:34+00:00,New England Patriots,New York Jets
+0b0b582b32b09ab6ff6664ffae0c9653,2026-10-18T17:00:00Z,hunter henry,receiving_yards,29.5,0.5015476681799422,2,2026-10-17 15:33:43+00:00,2026-10-17T15:34+00:00,New England Patriots,New York Jets
+0b0b582b32b09ab6ff6664ffae0c9653,2026-10-18T17:00:00Z,hunter henry,receiving_yards,30.5,0.4969864995178399,1,2026-10-17 15:32:58+00:00,2026-10-17T15:34+00:00,New England Patriots,New York Jets
+0b0b582b32b09ab6ff6664ffae0c9653,2026-10-18T17:00:00Z,hunter henry,receiving_yards,31.5,0.495787700084246,1,2026-10-17 15:34:16+00:00,2026-10-17T15:34+00:00,New England Patriots,New York Jets
+0b0b582b32b09ab6ff6664ffae0c9653,2026-10-18T17:00:00Z,kenyon sadiq,receiving_yards,19.5,0.5028096201393571,3,2026-10-17 15:33:43+00:00,2026-10-17T15:34+00:00,New England Patriots,New York Jets
+0b0b582b32b09ab6ff6664ffae0c9653,2026-10-18T17:00:00Z,kenyon sadiq,receiving_yards,20.5,0.4806506954243015,2,2026-10-17 15:32:58+00:00,2026-10-17T15:34+00:00,New England Patriots,New York Jets
+0b0b582b32b09ab6ff6664ffae0c9653,2026-10-18T17:00:00Z,mason taylor,receiving_yards,13.5,0.5010317787866282,3,2026-10-17 15:33:43+00:00,2026-10-17T15:34+00:00,New England Patriots,New York Jets
+0b0b582b32b09ab6ff6664ffae0c9653,2026-10-18T17:00:00Z,omar cooper,receiving_yards,14.5,0.48945992664108945,1,2026-10-17 15:34:16+00:00,2026-10-17T15:34+00:00,New England Patriots,New York Jets
+0b0b582b32b09ab6ff6664ffae0c9653,2026-10-18T17:00:00Z,omar cooper,receiving_yards,15.5,0.5,2,2026-10-17 15:33:43+00:00,2026-10-17T15:34+00:00,New England Patriots,New York Jets
+0b0b582b32b09ab6ff6664ffae0c9653,2026-10-18T17:00:00Z,omar cooper,receiving_yards,16.5,0.4920127795527157,1,2026-10-17 15:32:58+00:00,2026-10-17T15:34+00:00,New England Patriots,New York Jets
+0b0b582b32b09ab6ff6664ffae0c9653,2026-10-18T17:00:00Z,omar cooper,receiving_yards,17.5,0.5090470446320868,1,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,New England Patriots,New York Jets
+0b0b582b32b09ab6ff6664ffae0c9653,2026-10-18T17:00:00Z,rhamondre stevenson,receiving_yards,19.5,0.49832556395006167,3,2026-10-17 15:32:58+00:00,2026-10-17T15:34+00:00,New England Patriots,New York Jets
+0b0b582b32b09ab6ff6664ffae0c9653,2026-10-18T17:00:00Z,rhamondre stevenson,receiving_yards,20.5,0.490521327014218,1,2026-10-17 15:33:54+00:00,2026-10-17T15:34+00:00,New England Patriots,New York Jets
+0b0b582b32b09ab6ff6664ffae0c9653,2026-10-18T17:00:00Z,romeo doubs,receiving_yards,30.5,0.501733740066444,3,2026-10-17 15:33:43+00:00,2026-10-17T15:34+00:00,New England Patriots,New York Jets
+0b0b582b32b09ab6ff6664ffae0c9653,2026-10-18T17:00:00Z,tim patrick,receiving_yards,12.5,0.5,2,2026-10-17 15:33:43+00:00,2026-10-17T15:34+00:00,New England Patriots,New York Jets
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,alvin kamara,receiving_yards,10.5,0.5063197809142617,1,2026-10-17 15:34:27+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,alvin kamara,receiving_yards,11.5,0.5003393051031487,3,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,alvin kamara,receiving_yards,12.5,0.5,1,2026-10-17 15:34:26+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,bryce lance,receiving_yards,11.5,0.4969864995178399,1,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,bryce lance,receiving_yards,12.5,0.5,1,2026-10-17 15:34:27+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,bryce lance,receiving_yards,13.5,0.5,2,2026-10-17 15:34:09+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,cam skattebo,receiving_yards,9.5,0.5115178421846206,1,2026-10-17 15:34:27+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,cam skattebo,receiving_yards,11.5,0.5003393051031487,3,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,cam skattebo,receiving_yards,12.5,0.5090470446320868,1,2026-10-17 15:34:26+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,chris olave,receiving_yards,79.5,0.5002368614529942,4,2026-10-17 15:34:09+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,chris olave,receiving_yards,82.5,0.5,1,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,darnell mooney,receiving_yards,18.5,0.5,1,2026-10-17 15:34:26+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,darnell mooney,receiving_yards,19.5,0.5010283129173327,4,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,devaughn vele,receiving_yards,40.5,0.5,1,2026-10-17 15:33:56+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,devaughn vele,receiving_yards,41.5,0.5,1,2026-10-17 15:34:09+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,devaughn vele,receiving_yards,43.5,0.4993573427366898,3,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,devaughn vele,receiving_yards,45.5,0.5,1,2026-10-17 15:34:26+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,isaiah likely,receiving_yards,51.5,0.5,2,2026-10-17 15:34:09+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,isaiah likely,receiving_yards,53.5,0.4958781869974137,2,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,juwan johnson,receiving_yards,39.5,0.5047355967866057,3,2026-10-17 15:34:09+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,juwan johnson,receiving_yards,40.5,0.4969864995178399,1,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,juwan johnson,receiving_yards,41.5,0.495787700084246,1,2026-10-17 15:34:27+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,malachi fields,receiving_yards,22.5,0.5,2,2026-10-17 15:34:09+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,malachi fields,receiving_yards,24.5,0.5063197809142617,1,2026-10-17 15:34:27+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,malachi fields,receiving_yards,25.5,0.4934325210139807,2,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,malik nabers,receiving_yards,71.5,0.5025798728638653,2,2026-10-17 15:34:09+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,malik nabers,receiving_yards,72.5,0.499600400188802,3,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,noah fant,receiving_yards,9.5,0.5105400733589106,1,2026-10-17 15:34:27+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,noah fant,receiving_yards,10.5,0.5025798728638653,2,2026-10-17 15:34:09+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,noah fant,receiving_yards,11.5,0.5,2,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,theo johnson,receiving_yards,7.5,0.5030953363598845,1,2026-10-17 15:34:30+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+1cf74afd313e9fd300e1462012b174cb,2026-10-18T17:00:00Z,theo johnson,receiving_yards,8.5,0.48893805309734506,1,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,New York Giants,New Orleans Saints
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,charlie kolar,receiving_yards,21.5,0.5047355967866057,3,2026-10-17 15:34:05+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,charlie kolar,receiving_yards,23.5,0.4969655284026542,2,2026-10-17 15:32:25+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,cyrus allen,receiving_yards,11.5,0.5063197809142617,1,2026-10-17 15:34:30+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,cyrus allen,receiving_yards,12.5,0.5,2,2026-10-17 15:34:13+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,cyrus allen,receiving_yards,13.5,0.49493927125506076,2,2026-10-17 15:32:25+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,emmett johnson,receiving_yards,6.5,0.5,3,2026-10-17 15:34:05+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,emmett johnson,receiving_yards,7.5,0.4852289512555391,1,2026-10-17 15:34:30+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,jalen royals,receiving_yards,24.5,0.5,2,2026-10-17 15:34:13+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,jalen royals,receiving_yards,25.5,0.49926112498638253,3,2026-10-17 15:32:25+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,keaton mitchell,receiving_yards,13.5,0.5101214574898786,1,2026-10-17 15:34:05+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,keaton mitchell,receiving_yards,15.5,0.49658397814245225,4,2026-10-17 15:32:25+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,kenneth walker,receiving_yards,20.5,0.49950272679886054,3,2026-10-17 15:34:13+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,kenneth walker,receiving_yards,21.5,0.4965751765065495,2,2026-10-17 15:32:25+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,kenneth walker,receiving_yards,22.5,0.5101214574898786,1,2026-10-17 15:34:05+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,kimani vidal,receiving_yards,7.5,0.5101214574898786,1,2026-10-17 15:34:05+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,kimani vidal,receiving_yards,8.5,0.4992980387201842,3,2026-10-17 15:34:13+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,ladd mcconkey,receiving_yards,40.5,0.5063197809142617,1,2026-10-17 15:34:30+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,ladd mcconkey,receiving_yards,41.5,0.5006924736834794,3,2026-10-17 15:32:25+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,ladd mcconkey,receiving_yards,44.5,0.5,1,2026-10-17 15:34:05+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,noah gray,receiving_yards,13.5,0.50150675024108,2,2026-10-17 15:32:25+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,noah gray,receiving_yards,14.5,0.4961586010740147,3,2026-10-17 15:34:13+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,omarion hampton,receiving_yards,4.5,0.5101214574898786,1,2026-10-17 15:34:05+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,omarion hampton,receiving_yards,6.5,0.49705179456920734,4,2026-10-17 15:32:25+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,oronde gadsden,receiving_yards,13.5,0.5051480423890102,4,2026-10-17 15:32:25+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,oronde gadsden,receiving_yards,14.5,0.5101214574898786,1,2026-10-17 15:34:05+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,quentin johnston,receiving_yards,33.5,0.5042122999157539,1,2026-10-17 15:34:30+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,quentin johnston,receiving_yards,34.5,0.5,2,2026-10-17 15:32:25+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,quentin johnston,receiving_yards,36.5,0.5025798728638653,2,2026-10-17 15:34:13+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,travis kelce,receiving_yards,51.5,0.4969046636401156,1,2026-10-17 15:34:38+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,travis kelce,receiving_yards,52.5,0.500399599811198,3,2026-10-17 15:32:25+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,travis kelce,receiving_yards,53.5,0.5,1,2026-10-17 15:34:13+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,xavier worthy,receiving_yards,48.5,0.5051290468179394,2,2026-10-17 15:34:13+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,xavier worthy,receiving_yards,49.5,0.497893850042123,2,2026-10-17 15:34:05+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+20fefae8c296247460ba5773caa42218,2026-10-18T20:25:00Z,xavier worthy,receiving_yards,50.5,0.5050233081498151,1,2026-10-17 15:32:25+00:00,2026-10-17T15:34+00:00,Kansas City Chiefs,Los Angeles Chargers
+27f3994841ce8081c0b7349cf3d1e3d7,2026-10-18T17:00:00Z,bucky irving,receiving_yards,10.5,0.503826508880664,3,2026-10-17 15:33:41+00:00,2026-10-17T15:34+00:00,Tampa Bay Buccaneers,Pittsburgh Steelers
+27f3994841ce8081c0b7349cf3d1e3d7,2026-10-18T17:00:00Z,bucky irving,receiving_yards,12.5,0.4939310568053083,1,2026-10-17 15:34:52+00:00,2026-10-17T15:34+00:00,Tampa Bay Buccaneers,Pittsburgh Steelers
+27f3994841ce8081c0b7349cf3d1e3d7,2026-10-18T17:00:00Z,cade otton,receiving_yards,29.5,0.4954764776839566,2,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Tampa Bay Buccaneers,Pittsburgh Steelers
+27f3994841ce8081c0b7349cf3d1e3d7,2026-10-18T17:00:00Z,cade otton,receiving_yards,30.5,0.4960573080397098,4,2026-10-17 15:33:41+00:00,2026-10-17T15:34+00:00,Tampa Bay Buccaneers,Pittsburgh Steelers
+27f3994841ce8081c0b7349cf3d1e3d7,2026-10-18T17:00:00Z,chris godwin,receiving_yards,26.5,0.5,3,2026-10-17 15:33:41+00:00,2026-10-17T15:34+00:00,Tampa Bay Buccaneers,Pittsburgh Steelers
+27f3994841ce8081c0b7349cf3d1e3d7,2026-10-18T17:00:00Z,chris godwin,receiving_yards,27.5,0.49432845546796167,2,2026-10-17 15:34:08+00:00,2026-10-17T15:34+00:00,Tampa Bay Buccaneers,Pittsburgh Steelers
+27f3994841ce8081c0b7349cf3d1e3d7,2026-10-18T17:00:00Z,darnell washington,receiving_yards,21.5,0.4942788195498842,2,2026-10-17 15:34:08+00:00,2026-10-17T15:34+00:00,Tampa Bay Buccaneers,Pittsburgh Steelers
+27f3994841ce8081c0b7349cf3d1e3d7,2026-10-18T17:00:00Z,darnell washington,receiving_yards,22.5,0.5,2,2026-10-17 15:33:41+00:00,2026-10-17T15:34+00:00,Tampa Bay Buccaneers,Pittsburgh Steelers
+27f3994841ce8081c0b7349cf3d1e3d7,2026-10-18T17:00:00Z,darnell washington,receiving_yards,23.5,0.5,1,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Tampa Bay Buccaneers,Pittsburgh Steelers
+27f3994841ce8081c0b7349cf3d1e3d7,2026-10-18T17:00:00Z,dk metcalf,receiving_yards,50.5,0.49865161873171254,3,2026-10-17 15:33:41+00:00,2026-10-17T15:34+00:00,Tampa Bay Buccaneers,Pittsburgh Steelers
+27f3994841ce8081c0b7349cf3d1e3d7,2026-10-18T17:00:00Z,dk metcalf,receiving_yards,51.5,0.5,1,2026-10-17 15:34:08+00:00,2026-10-17T15:34+00:00,Tampa Bay Buccaneers,Pittsburgh Steelers
+27f3994841ce8081c0b7349cf3d1e3d7,2026-10-18T17:00:00Z,dk metcalf,receiving_yards,52.5,0.5,1,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Tampa Bay Buccaneers,Pittsburgh Steelers
+27f3994841ce8081c0b7349cf3d1e3d7,2026-10-18T17:00:00Z,emeka egbuka,receiving_yards,36.5,0.5040474603306571,3,2026-10-17 15:33:41+00:00,2026-10-17T15:34+00:00,Tampa Bay Buccaneers,Pittsburgh Steelers
+27f3994841ce8081c0b7349cf3d1e3d7,2026-10-18T17:00:00Z,emeka egbuka,receiving_yards,37.5,0.5004538083213563,2,2026-10-17 15:34:08+00:00,2026-10-17T15:34+00:00,Tampa Bay Buccaneers,Pittsburgh Steelers
+27f3994841ce8081c0b7349cf3d1e3d7,2026-10-18T17:00:00Z,germie bernard,receiving_yards,41.5,0.5020362789473481,3,2026-10-17 15:33:41+00:00,2026-10-17T15:34+00:00,Tampa Bay Buccaneers,Pittsburgh Steelers
+27f3994841ce8081c0b7349cf3d1e3d7,2026-10-18T17:00:00Z,germie bernard,receiving_yards,42.5,0.502106149957877,2,2026-10-17 15:34:08+00:00,2026-10-17T15:34+00:00,Tampa Bay Buccaneers,Pittsburgh Steelers
+27f3994841ce8081c0b7349cf3d1e3d7,2026-10-18T17:00:00Z,jaylen warren,receiving_yards,27.5,0.49698322792503663,2,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Tampa Bay Buccaneers,Pittsburgh Steelers
+27f3994841ce8081c0b7349cf3d1e3d7,2026-10-18T17:00:00Z,jaylen warren,receiving_yards,28.5,0.5041385817876138,3,2026-10-17 15:33:41+00:00,2026-10-17T15:34+00:00,Tampa Bay Buccaneers,Pittsburgh Steelers
+27f3994841ce8081c0b7349cf3d1e3d7,2026-10-18T17:00:00Z,pat freiermuth,receiving_yards,35.5,0.5025798728638653,2,2026-10-17 15:33:41+00:00,2026-10-17T15:34+00:00,Tampa Bay Buccaneers,Pittsburgh Steelers
+27f3994841ce8081c0b7349cf3d1e3d7,2026-10-18T17:00:00Z,pat freiermuth,receiving_yards,36.5,0.498595900028082,3,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Tampa Bay Buccaneers,Pittsburgh Steelers
+27f3994841ce8081c0b7349cf3d1e3d7,2026-10-18T17:00:00Z,rico dowdle,receiving_yards,6.5,0.5010179153094463,1,2026-10-17 15:34:52+00:00,2026-10-17T15:34+00:00,Tampa Bay Buccaneers,Pittsburgh Steelers
+27f3994841ce8081c0b7349cf3d1e3d7,2026-10-18T17:00:00Z,rico dowdle,receiving_yards,7.5,0.49962674281829406,4,2026-10-17 15:33:41+00:00,2026-10-17T15:34+00:00,Tampa Bay Buccaneers,Pittsburgh Steelers
+27f3994841ce8081c0b7349cf3d1e3d7,2026-10-18T17:00:00Z,ted hurst,receiving_yards,11.5,0.5005710820314558,4,2026-10-17 15:33:41+00:00,2026-10-17T15:34+00:00,Tampa Bay Buccaneers,Pittsburgh Steelers
+27f3994841ce8081c0b7349cf3d1e3d7,2026-10-18T17:00:00Z,ted hurst,receiving_yards,12.5,0.48987854251012153,1,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Tampa Bay Buccaneers,Pittsburgh Steelers
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,blake corum,receiving_yards,6.5,0.5,2,2026-10-17 15:34:12+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,blake corum,receiving_yards,7.5,0.48312935577086524,2,2026-10-17 15:32:57+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,blake corum,receiving_yards,8.5,0.48987854251012153,1,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,colby parkinson,receiving_yards,13.5,0.504529535381934,3,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,colby parkinson,receiving_yards,14.5,0.5101214574898786,1,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,colby parkinson,receiving_yards,15.5,0.4812545796913262,2,2026-10-17 15:32:57+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,davante adams,receiving_yards,57.5,0.5,2,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,davante adams,receiving_yards,58.5,0.4995944958829694,2,2026-10-17 15:32:57+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,davante adams,receiving_yards,59.5,0.5,1,2026-10-17 15:34:36+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,davis allen,receiving_yards,6.5,0.5014101868073448,4,2026-10-17 15:32:57+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,davis allen,receiving_yards,7.5,0.5,1,2026-10-17 15:34:12+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,elijah higgins,receiving_yards,11.5,0.49600638977635786,2,2026-10-17 15:32:57+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,elijah higgins,receiving_yards,12.5,0.5,2,2026-10-17 15:34:12+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,elijah higgins,receiving_yards,13.5,0.5021058838394474,1,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,jalen brooks,receiving_yards,19.5,0.5075723828198468,2,2026-10-17 15:32:57+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,jalen brooks,receiving_yards,20.5,0.5,2,2026-10-17 15:34:12+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,jalen brooks,receiving_yards,21.5,0.495787700084246,1,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,kendrick bourne,receiving_yards,31.5,0.5025116540749075,2,2026-10-17 15:32:57+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,kendrick bourne,receiving_yards,32.5,0.5,2,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,kendrick bourne,receiving_yards,33.5,0.5102580936358787,1,2026-10-17 15:34:36+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,kyren williams,receiving_yards,19.5,0.49845233182005777,2,2026-10-17 15:34:12+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,kyren williams,receiving_yards,20.5,0.4936802190857384,1,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,kyren williams,receiving_yards,21.5,0.4944303136003376,2,2026-10-17 15:32:57+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,michael wilson,receiving_yards,57.5,0.5030135004821601,1,2026-10-17 15:32:57+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,michael wilson,receiving_yards,58.5,0.5041017227235438,2,2026-10-17 15:34:12+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,michael wilson,receiving_yards,60.5,0.495787700084246,1,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,michael wilson,receiving_yards,61.5,0.5,1,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,puka nacua,receiving_yards,92.5,0.5,1,2026-10-17 15:34:12+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,puka nacua,receiving_yards,93.5,0.5042122999157539,1,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,puka nacua,receiving_yards,94.5,0.5015476681799422,2,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,puka nacua,receiving_yards,95.5,0.4989820846905538,1,2026-10-17 15:32:57+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,trey mcbride,receiving_yards,63.5,0.503612900198957,2,2026-10-17 15:32:57+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,trey mcbride,receiving_yards,64.5,0.5,2,2026-10-17 15:34:12+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,trey mcbride,receiving_yards,66.5,0.5,1,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,tyler higbee,receiving_yards,31.5,0.5090470446320868,1,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,tyler higbee,receiving_yards,32.5,0.5015476681799422,2,2026-10-17 15:34:12+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+3729ac6d2a66b642850caf2044cdc658,2026-10-18T20:05:00Z,tyler higbee,receiving_yards,34.5,0.4989470580802763,2,2026-10-17 15:32:57+00:00,2026-10-17T15:34+00:00,Los Angeles Rams,Arizona Cardinals
+45b2690b350ed45145c7a716b18e8e66,2026-10-18T20:25:00Z,ashton jeanty,receiving_yards,25.5,0.5101875540545991,3,2026-10-17 15:34:05+00:00,2026-10-17T15:34+00:00,Las Vegas Raiders,Buffalo Bills
+45b2690b350ed45145c7a716b18e8e66,2026-10-18T20:25:00Z,ashton jeanty,receiving_yards,26.5,0.4928464993192271,2,2026-10-17 15:34:07+00:00,2026-10-17T15:34+00:00,Las Vegas Raiders,Buffalo Bills
+45b2690b350ed45145c7a716b18e8e66,2026-10-18T20:25:00Z,brock bowers,receiving_yards,79.5,0.5113285272914521,2,2026-10-17 15:34:10+00:00,2026-10-17T15:34+00:00,Las Vegas Raiders,Buffalo Bills
+45b2690b350ed45145c7a716b18e8e66,2026-10-18T20:25:00Z,brock bowers,receiving_yards,80.5,0.4977064220183486,2,2026-10-17 15:33:57+00:00,2026-10-17T15:34+00:00,Las Vegas Raiders,Buffalo Bills
+45b2690b350ed45145c7a716b18e8e66,2026-10-18T20:25:00Z,brock bowers,receiving_yards,81.5,0.50150675024108,2,2026-10-17 15:34:05+00:00,2026-10-17T15:34+00:00,Las Vegas Raiders,Buffalo Bills
+45b2690b350ed45145c7a716b18e8e66,2026-10-18T20:25:00Z,dalton kincaid,receiving_yards,47.5,0.5031598904571308,2,2026-10-17 15:34:07+00:00,2026-10-17T15:34+00:00,Las Vegas Raiders,Buffalo Bills
+45b2690b350ed45145c7a716b18e8e66,2026-10-18T20:25:00Z,dalton kincaid,receiving_yards,48.5,0.4969864995178399,1,2026-10-17 15:34:52+00:00,2026-10-17T15:34+00:00,Las Vegas Raiders,Buffalo Bills
+45b2690b350ed45145c7a716b18e8e66,2026-10-18T20:25:00Z,dalton kincaid,receiving_yards,49.5,0.5,1,2026-10-17 15:34:05+00:00,2026-10-17T15:34+00:00,Las Vegas Raiders,Buffalo Bills
+45b2690b350ed45145c7a716b18e8e66,2026-10-18T20:25:00Z,dalton kincaid,receiving_yards,50.5,0.5082034454470877,1,2026-10-17 15:34:30+00:00,2026-10-17T15:34+00:00,Las Vegas Raiders,Buffalo Bills
+45b2690b350ed45145c7a716b18e8e66,2026-10-18T20:25:00Z,dj moore,receiving_yards,49.5,0.4992980387201842,3,2026-10-17 15:34:07+00:00,2026-10-17T15:34+00:00,Las Vegas Raiders,Buffalo Bills
+45b2690b350ed45145c7a716b18e8e66,2026-10-18T20:25:00Z,dj moore,receiving_yards,52.5,0.5,1,2026-10-17 15:34:52+00:00,2026-10-17T15:34+00:00,Las Vegas Raiders,Buffalo Bills
+45b2690b350ed45145c7a716b18e8e66,2026-10-18T20:25:00Z,jalen nailor,receiving_yards,22.5,0.4954764776839566,2,2026-10-17 15:34:05+00:00,2026-10-17T15:34+00:00,Las Vegas Raiders,Buffalo Bills
+45b2690b350ed45145c7a716b18e8e66,2026-10-18T20:25:00Z,jalen nailor,receiving_yards,23.5,0.5042122999157539,1,2026-10-17 15:34:07+00:00,2026-10-17T15:34+00:00,Las Vegas Raiders,Buffalo Bills
+45b2690b350ed45145c7a716b18e8e66,2026-10-18T20:25:00Z,james cook,receiving_yards,7.5,0.509552805042495,4,2026-10-17 15:34:05+00:00,2026-10-17T15:34+00:00,Las Vegas Raiders,Buffalo Bills
+45b2690b350ed45145c7a716b18e8e66,2026-10-18T20:25:00Z,james cook,receiving_yards,9.5,0.4969864995178399,1,2026-10-17 15:34:52+00:00,2026-10-17T15:34+00:00,Las Vegas Raiders,Buffalo Bills
+45b2690b350ed45145c7a716b18e8e66,2026-10-18T20:25:00Z,michael mayer,receiving_yards,26.5,0.5086650118856779,3,2026-10-17 15:34:05+00:00,2026-10-17T15:34+00:00,Las Vegas Raiders,Buffalo Bills
+45b2690b350ed45145c7a716b18e8e66,2026-10-18T20:25:00Z,michael mayer,receiving_yards,27.5,0.5025116540749075,2,2026-10-17 15:34:10+00:00,2026-10-17T15:34+00:00,Las Vegas Raiders,Buffalo Bills
+45b2690b350ed45145c7a716b18e8e66,2026-10-18T20:25:00Z,tre tucker,receiving_yards,38.5,0.501733740066444,3,2026-10-17 15:34:07+00:00,2026-10-17T15:34+00:00,Las Vegas Raiders,Buffalo Bills
+45b2690b350ed45145c7a716b18e8e66,2026-10-18T20:25:00Z,tre tucker,receiving_yards,39.5,0.5030135004821601,1,2026-10-17 15:34:52+00:00,2026-10-17T15:34+00:00,Las Vegas Raiders,Buffalo Bills
+45b2690b350ed45145c7a716b18e8e66,2026-10-18T20:25:00Z,tre tucker,receiving_yards,41.5,0.5,1,2026-10-17 15:34:05+00:00,2026-10-17T15:34+00:00,Las Vegas Raiders,Buffalo Bills
+45b2690b350ed45145c7a716b18e8e66,2026-10-18T20:25:00Z,ty johnson,receiving_yards,13.5,0.5,1,2026-10-17 15:34:05+00:00,2026-10-17T15:34+00:00,Las Vegas Raiders,Buffalo Bills
+45b2690b350ed45145c7a716b18e8e66,2026-10-18T20:25:00Z,ty johnson,receiving_yards,15.5,0.5025798728638653,2,2026-10-17 15:34:10+00:00,2026-10-17T15:34+00:00,Las Vegas Raiders,Buffalo Bills
+45b2690b350ed45145c7a716b18e8e66,2026-10-18T20:25:00Z,ty johnson,receiving_yards,16.5,0.4915711395819285,1,2026-10-17 15:34:07+00:00,2026-10-17T15:34+00:00,Las Vegas Raiders,Buffalo Bills
+45b2690b350ed45145c7a716b18e8e66,2026-10-18T20:25:00Z,ty johnson,receiving_yards,17.5,0.48893805309734506,1,2026-10-17 15:34:52+00:00,2026-10-17T15:34+00:00,Las Vegas Raiders,Buffalo Bills
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,bhayshul tuten,receiving_yards,9.5,0.4946649594536918,3,2026-10-17 15:33:42+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,bhayshul tuten,receiving_yards,10.5,0.5017055915108061,2,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,brenton strange,receiving_yards,35.5,0.5,1,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,brenton strange,receiving_yards,37.5,0.5,2,2026-10-17 15:33:42+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,brenton strange,receiving_yards,38.5,0.5,2,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,brian thomas,receiving_yards,16.5,0.4949766918501849,1,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,brian thomas,receiving_yards,17.5,0.5005300653040454,2,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,brian thomas,receiving_yards,18.5,0.5,2,2026-10-17 15:33:42+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,dalton schultz,receiving_yards,29.5,0.5010179153094463,1,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,dalton schultz,receiving_yards,30.5,0.49898204603723895,3,2026-10-17 15:33:42+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,dalton schultz,receiving_yards,31.5,0.4928711096627016,1,2026-10-17 15:34:26+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,jakobi meyers,receiving_yards,32.5,0.5077406642794289,3,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,jakobi meyers,receiving_yards,34.5,0.5,2,2026-10-17 15:33:42+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,jaylin noel,receiving_yards,17.5,0.5123152709359606,1,2026-10-17 15:33:42+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,jaylin noel,receiving_yards,18.5,0.5,1,2026-10-17 15:34:33+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,josh cameron,receiving_yards,14.5,0.5045517710902162,2,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,josh cameron,receiving_yards,15.5,0.4992980387201842,3,2026-10-17 15:33:42+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,kayshon boutte,receiving_yards,20.5,0.4959548561951377,1,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,kayshon boutte,receiving_yards,23.5,0.4976959148436804,3,2026-10-17 15:33:42+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,kayshon boutte,receiving_yards,24.5,0.5,1,2026-10-17 15:34:33+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,kayshon boutte,receiving_yards,25.5,0.48215878679750224,1,2026-10-17 15:34:18+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,marvin harrison,receiving_yards,21.5,0.5007985961515768,4,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,marvin harrison,receiving_yards,22.5,0.5082034454470877,1,2026-10-17 15:33:42+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,nate boerkircher,receiving_yards,4.5,0.5021058838394474,1,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,nate boerkircher,receiving_yards,5.5,0.4980031948881789,4,2026-10-17 15:33:42+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,nico collins,receiving_yards,71.5,0.5030135004821601,1,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,nico collins,receiving_yards,72.5,0.5,3,2026-10-17 15:33:42+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,nico collins,receiving_yards,73.5,0.5,1,2026-10-17 15:34:26+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,parker washington,receiving_yards,62.5,0.49977309583932183,4,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,parker washington,receiving_yards,63.5,0.4876847290640395,1,2026-10-17 15:33:42+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,woody marks,receiving_yards,14.5,0.500127270660726,4,2026-10-17 15:33:42+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,woody marks,receiving_yards,15.5,0.5101214574898786,1,2026-10-17 15:34:26+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,xavier hutchinson,receiving_yards,13.5,0.5,1,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,xavier hutchinson,receiving_yards,14.5,0.5027344818156959,3,2026-10-17 15:33:42+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+57418b2cf5aca558b3c98eafac1e264a,2026-10-18T13:30:00Z,xavier hutchinson,receiving_yards,17.5,0.4928711096627016,1,2026-10-17 15:34:26+00:00,2026-10-17T15:34+00:00,Jacksonville Jaguars,Houston Texans
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,bijan robinson,receiving_yards,28.5,0.5,3,2026-10-17 15:32:25+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,bijan robinson,receiving_yards,29.5,0.5,1,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,bijan robinson,receiving_yards,30.5,0.5021058838394474,1,2026-10-17 15:34:29+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,cole kmet,receiving_yards,8.5,0.4978941161605526,1,2026-10-17 15:34:29+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,cole kmet,receiving_yards,9.5,0.5,2,2026-10-17 15:33:41+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,cole kmet,receiving_yards,10.5,0.4899455042326291,2,2026-10-17 15:32:25+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,colston loveland,receiving_yards,36.5,0.49899549983928,3,2026-10-17 15:32:25+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,colston loveland,receiving_yards,37.5,0.5,1,2026-10-17 15:33:41+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,colston loveland,receiving_yards,39.5,0.495787700084246,1,2026-10-17 15:34:29+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,dandre swift,receiving_yards,15.5,0.5015476681799422,2,2026-10-17 15:33:41+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,dandre swift,receiving_yards,16.5,0.49991638742681,3,2026-10-17 15:32:25+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,drake london,receiving_yards,87.5,0.5203045685279188,1,2026-10-17 15:32:25+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,drake london,receiving_yards,89.5,0.50150675024108,2,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,drake london,receiving_yards,90.5,0.5,1,2026-10-17 15:33:41+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,drake london,receiving_yards,92.5,0.495787700084246,1,2026-10-17 15:34:29+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,jahan dotson,receiving_yards,23.5,0.5006426572633101,3,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,jahan dotson,receiving_yards,24.5,0.497893850042123,2,2026-10-17 15:32:25+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,kalif raymond,receiving_yards,24.5,0.5060689431946916,1,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,kalif raymond,receiving_yards,25.5,0.5094786729857821,1,2026-10-17 15:34:42+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,kalif raymond,receiving_yards,26.5,0.49344384876788416,4,2026-10-17 15:32:25+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,kyle pitts,receiving_yards,28.5,0.5022822201274528,4,2026-10-17 15:32:25+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,kyle pitts,receiving_yards,31.5,0.4978941161605526,1,2026-10-17 15:34:29+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,luther burden,receiving_yards,49.5,0.5203045685279188,1,2026-10-17 15:32:25+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,luther burden,receiving_yards,50.5,0.4988626814453003,2,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,luther burden,receiving_yards,51.5,0.5,2,2026-10-17 15:33:41+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,rome odunze,receiving_yards,41.5,0.5,1,2026-10-17 15:34:20+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,rome odunze,receiving_yards,43.5,0.5006464199884716,3,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,rome odunze,receiving_yards,44.5,0.5,1,2026-10-17 15:32:25+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,zachariah branch,receiving_yards,9.5,0.5,1,2026-10-17 15:34:20+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,zachariah branch,receiving_yards,10.5,0.49733759318423854,3,2026-10-17 15:32:25+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+7c312fdf24fb35f58b0e07c2932cc997,2026-10-18T17:00:00Z,zachariah branch,receiving_yards,12.5,0.5021058838394474,1,2026-10-17 15:34:29+00:00,2026-10-17T15:34+00:00,Atlanta Falcons,Chicago Bears
+82fd5a159fa130e67abab93a9537f70b,2026-10-19T00:20:00Z,bo melton,receiving_yards,13.5,0.5046352400815419,4,2026-10-17 15:33:50+00:00,2026-10-17T15:34+00:00,Green Bay Packers,Dallas Cowboys
+82fd5a159fa130e67abab93a9537f70b,2026-10-19T00:20:00Z,bo melton,receiving_yards,15.5,0.4554079696394686,1,2026-10-17 15:34:52+00:00,2026-10-17T15:34+00:00,Green Bay Packers,Dallas Cowboys
+82fd5a159fa130e67abab93a9537f70b,2026-10-19T00:20:00Z,ceedee lamb,receiving_yards,80.5,0.5054797523151954,3,2026-10-17 15:33:50+00:00,2026-10-17T15:34+00:00,Green Bay Packers,Dallas Cowboys
+82fd5a159fa130e67abab93a9537f70b,2026-10-19T00:20:00Z,ceedee lamb,receiving_yards,81.5,0.5025116540749075,2,2026-10-17 15:34:27+00:00,2026-10-17T15:34+00:00,Green Bay Packers,Dallas Cowboys
+82fd5a159fa130e67abab93a9537f70b,2026-10-19T00:20:00Z,christian watson,receiving_yards,71.5,0.5010179153094463,1,2026-10-17 15:34:27+00:00,2026-10-17T15:34+00:00,Green Bay Packers,Dallas Cowboys
+82fd5a159fa130e67abab93a9537f70b,2026-10-19T00:20:00Z,christian watson,receiving_yards,74.5,0.4992980387201842,3,2026-10-17 15:33:50+00:00,2026-10-17T15:34+00:00,Green Bay Packers,Dallas Cowboys
+82fd5a159fa130e67abab93a9537f70b,2026-10-19T00:20:00Z,christian watson,receiving_yards,75.5,0.5,1,2026-10-17 15:34:52+00:00,2026-10-17T15:34+00:00,Green Bay Packers,Dallas Cowboys
+82fd5a159fa130e67abab93a9537f70b,2026-10-19T00:20:00Z,george pickens,receiving_yards,67.5,0.5025798728638653,2,2026-10-17 15:33:50+00:00,2026-10-17T15:34+00:00,Green Bay Packers,Dallas Cowboys
+82fd5a159fa130e67abab93a9537f70b,2026-10-19T00:20:00Z,george pickens,receiving_yards,69.5,0.49849324975891995,2,2026-10-17 15:34:07+00:00,2026-10-17T15:34+00:00,Green Bay Packers,Dallas Cowboys
+82fd5a159fa130e67abab93a9537f70b,2026-10-19T00:20:00Z,george pickens,receiving_yards,71.5,0.5,1,2026-10-17 15:34:52+00:00,2026-10-17T15:34+00:00,Green Bay Packers,Dallas Cowboys
+82fd5a159fa130e67abab93a9537f70b,2026-10-19T00:20:00Z,jake ferguson,receiving_yards,24.5,0.5,1,2026-10-17 15:34:11+00:00,2026-10-17T15:34+00:00,Green Bay Packers,Dallas Cowboys
+82fd5a159fa130e67abab93a9537f70b,2026-10-19T00:20:00Z,jake ferguson,receiving_yards,25.5,0.49580866355144454,3,2026-10-17 15:33:50+00:00,2026-10-17T15:34+00:00,Green Bay Packers,Dallas Cowboys
+82fd5a159fa130e67abab93a9537f70b,2026-10-19T00:20:00Z,jake ferguson,receiving_yards,26.5,0.5008337197665114,2,2026-10-17 15:34:07+00:00,2026-10-17T15:34+00:00,Green Bay Packers,Dallas Cowboys
+82fd5a159fa130e67abab93a9537f70b,2026-10-19T00:20:00Z,javonte williams,receiving_yards,13.5,0.5001545460535038,4,2026-10-17 15:33:50+00:00,2026-10-17T15:34+00:00,Green Bay Packers,Dallas Cowboys
+82fd5a159fa130e67abab93a9537f70b,2026-10-19T00:20:00Z,javonte williams,receiving_yards,15.5,0.4949766918501849,1,2026-10-17 15:34:27+00:00,2026-10-17T15:34+00:00,Green Bay Packers,Dallas Cowboys
+82fd5a159fa130e67abab93a9537f70b,2026-10-19T00:20:00Z,kavontae turpin,receiving_yards,5.5,0.5041612533748835,3,2026-10-17 15:33:50+00:00,2026-10-17T15:34+00:00,Green Bay Packers,Dallas Cowboys
+82fd5a159fa130e67abab93a9537f70b,2026-10-19T00:20:00Z,marshawn lloyd,receiving_yards,10.5,0.5084288604180714,1,2026-10-17 15:34:07+00:00,2026-10-17T15:34+00:00,Green Bay Packers,Dallas Cowboys
+82fd5a159fa130e67abab93a9537f70b,2026-10-19T00:20:00Z,marshawn lloyd,receiving_yards,11.5,0.5050937344058697,3,2026-10-17 15:33:50+00:00,2026-10-17T15:34+00:00,Green Bay Packers,Dallas Cowboys
+82fd5a159fa130e67abab93a9537f70b,2026-10-19T00:20:00Z,marshawn lloyd,receiving_yards,12.5,0.4869204764971024,1,2026-10-17 15:34:27+00:00,2026-10-17T15:34+00:00,Green Bay Packers,Dallas Cowboys
+82fd5a159fa130e67abab93a9537f70b,2026-10-19T00:20:00Z,matthew golden,receiving_yards,64.5,0.5,1,2026-10-17 15:34:52+00:00,2026-10-17T15:34+00:00,Green Bay Packers,Dallas Cowboys
+82fd5a159fa130e67abab93a9537f70b,2026-10-19T00:20:00Z,matthew golden,receiving_yards,65.5,0.5025773323216338,4,2026-10-17 15:33:50+00:00,2026-10-17T15:34+00:00,Green Bay Packers,Dallas Cowboys
+82fd5a159fa130e67abab93a9537f70b,2026-10-19T00:20:00Z,pierre strong,receiving_yards,11.5,0.49845233182005777,2,2026-10-17 15:33:50+00:00,2026-10-17T15:34+00:00,Green Bay Packers,Dallas Cowboys
+82fd5a159fa130e67abab93a9537f70b,2026-10-19T00:20:00Z,pierre strong,receiving_yards,12.5,0.5105400733589106,1,2026-10-17 15:34:07+00:00,2026-10-17T15:34+00:00,Green Bay Packers,Dallas Cowboys
+82fd5a159fa130e67abab93a9537f70b,2026-10-19T00:20:00Z,ryan flournoy,receiving_yards,30.5,0.5,1,2026-10-17 15:34:52+00:00,2026-10-17T15:34+00:00,Green Bay Packers,Dallas Cowboys
+82fd5a159fa130e67abab93a9537f70b,2026-10-19T00:20:00Z,ryan flournoy,receiving_yards,31.5,0.49845233182005777,2,2026-10-17 15:33:50+00:00,2026-10-17T15:34+00:00,Green Bay Packers,Dallas Cowboys
+82fd5a159fa130e67abab93a9537f70b,2026-10-19T00:20:00Z,ryan flournoy,receiving_yards,32.5,0.502106149957877,2,2026-10-17 15:34:07+00:00,2026-10-17T15:34+00:00,Green Bay Packers,Dallas Cowboys
+82fd5a159fa130e67abab93a9537f70b,2026-10-19T00:20:00Z,tucker kraft,receiving_yards,48.5,0.5445920303605313,1,2026-10-17 15:34:52+00:00,2026-10-17T15:34+00:00,Green Bay Packers,Dallas Cowboys
+82fd5a159fa130e67abab93a9537f70b,2026-10-19T00:20:00Z,tucker kraft,receiving_yards,49.5,0.5010045001607201,3,2026-10-17 15:33:50+00:00,2026-10-17T15:34+00:00,Green Bay Packers,Dallas Cowboys
+82fd5a159fa130e67abab93a9537f70b,2026-10-19T00:20:00Z,tucker kraft,receiving_yards,50.5,0.495787700084246,1,2026-10-17 15:34:07+00:00,2026-10-17T15:34+00:00,Green Bay Packers,Dallas Cowboys
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,calvin ridley,receiving_yards,12.5,0.5055131227089208,4,2026-10-17 15:33:42+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,calvin ridley,receiving_yards,14.5,0.5,1,2026-10-17 15:34:09+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,carnell tate,receiving_yards,52.5,0.4877487937273824,1,2026-10-17 15:34:12+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,carnell tate,receiving_yards,53.5,0.5015476681799422,2,2026-10-17 15:34:09+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,carnell tate,receiving_yards,54.5,0.497893850042123,2,2026-10-17 15:33:42+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,elic ayomanor,receiving_yards,14.5,0.4962115472041218,1,2026-10-17 15:34:12+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,elic ayomanor,receiving_yards,15.5,0.5006659270015473,4,2026-10-17 15:33:58+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,elic ayomanor,receiving_yards,16.5,0.4915711395819285,1,2026-10-17 15:33:42+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,gunnar helm,receiving_yards,15.5,0.5,1,2026-10-17 15:34:13+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,gunnar helm,receiving_yards,16.5,0.5059821873076839,3,2026-10-17 15:33:42+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,gunnar helm,receiving_yards,18.5,0.5,1,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,jonathan taylor,receiving_yards,17.5,0.5,2,2026-10-17 15:34:09+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,jonathan taylor,receiving_yards,18.5,0.500450920164079,3,2026-10-17 15:33:42+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,josh downs,receiving_yards,48.5,0.5061817135950112,3,2026-10-17 15:33:42+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,josh downs,receiving_yards,49.5,0.49335888581078513,2,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,keenan allen,receiving_yards,42.5,0.5090470446320868,1,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,keenan allen,receiving_yards,43.5,0.49341064839219817,1,2026-10-17 15:34:12+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,keenan allen,receiving_yards,44.5,0.5,1,2026-10-17 15:33:42+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,keenan allen,receiving_yards,45.5,0.5,2,2026-10-17 15:34:09+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,laquon treadwell,receiving_yards,26.5,0.5002825534806907,5,2026-10-17 15:33:42+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,tony pollard,receiving_yards,8.5,0.5050607287449393,2,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,tony pollard,receiving_yards,9.5,0.5052700366794554,2,2026-10-17 15:33:42+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,tony pollard,receiving_yards,11.5,0.490521327014218,1,2026-10-17 15:34:12+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,tyjae spears,receiving_yards,14.5,0.5102580936358787,1,2026-10-17 15:34:09+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,tyler warren,receiving_yards,48.5,0.5,3,2026-10-17 15:33:42+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,tyler warren,receiving_yards,50.5,0.5,1,2026-10-17 15:34:13+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,tyler warren,receiving_yards,52.5,0.4831207801950488,1,2026-10-17 15:34:12+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,wandale robinson,receiving_yards,36.5,0.5,1,2026-10-17 15:34:13+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,wandale robinson,receiving_yards,38.5,0.5041017227235438,2,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,wandale robinson,receiving_yards,39.5,0.5,1,2026-10-17 15:33:42+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+84aa9e190e625d7e9cd67e1f157a45b4,2026-10-18T17:00:00Z,wandale robinson,receiving_yards,41.5,0.4895038167938931,1,2026-10-17 15:34:12+00:00,2026-10-17T15:34+00:00,Indianapolis Colts,Tennessee Titans
+caca2d752fe1a1779029082e95332fcc,2026-10-18T17:00:00Z,chuba hubbard,receiving_yards,15.5,0.5115313653136531,2,2026-10-17 15:34:05+00:00,2026-10-17T15:34+00:00,Philadelphia Eagles,Carolina Panthers
+caca2d752fe1a1779029082e95332fcc,2026-10-18T17:00:00Z,chuba hubbard,receiving_yards,16.5,0.49915778025228424,3,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Philadelphia Eagles,Carolina Panthers
+caca2d752fe1a1779029082e95332fcc,2026-10-18T17:00:00Z,chuba hubbard,receiving_yards,17.5,0.5,1,2026-10-17 15:34:31+00:00,2026-10-17T15:34+00:00,Philadelphia Eagles,Carolina Panthers
+caca2d752fe1a1779029082e95332fcc,2026-10-18T17:00:00Z,dallas goedert,receiving_yards,33.5,0.4936802190857384,1,2026-10-17 15:34:13+00:00,2026-10-17T15:34+00:00,Philadelphia Eagles,Carolina Panthers
+caca2d752fe1a1779029082e95332fcc,2026-10-18T17:00:00Z,dallas goedert,receiving_yards,34.5,0.5027244154032968,3,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Philadelphia Eagles,Carolina Panthers
+caca2d752fe1a1779029082e95332fcc,2026-10-18T17:00:00Z,dameon pierce,receiving_yards,10.5,0.5123152709359606,1,2026-10-17 15:34:31+00:00,2026-10-17T15:34+00:00,Philadelphia Eagles,Carolina Panthers
+caca2d752fe1a1779029082e95332fcc,2026-10-18T17:00:00Z,dameon pierce,receiving_yards,11.5,0.4944636611487992,3,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Philadelphia Eagles,Carolina Panthers
+caca2d752fe1a1779029082e95332fcc,2026-10-18T17:00:00Z,darren waller,receiving_yards,28.5,0.4936802190857384,1,2026-10-17 15:34:13+00:00,2026-10-17T15:34+00:00,Philadelphia Eagles,Carolina Panthers
+caca2d752fe1a1779029082e95332fcc,2026-10-18T17:00:00Z,darren waller,receiving_yards,29.5,0.49924662487946,4,2026-10-17 15:34:05+00:00,2026-10-17T15:34+00:00,Philadelphia Eagles,Carolina Panthers
+caca2d752fe1a1779029082e95332fcc,2026-10-18T17:00:00Z,devonta smith,receiving_yards,56.5,0.503826508880664,3,2026-10-17 15:34:13+00:00,2026-10-17T15:34+00:00,Philadelphia Eagles,Carolina Panthers
+caca2d752fe1a1779029082e95332fcc,2026-10-18T17:00:00Z,devonta smith,receiving_yards,59.5,0.4949766918501849,1,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Philadelphia Eagles,Carolina Panthers
+caca2d752fe1a1779029082e95332fcc,2026-10-18T17:00:00Z,dontayvion wicks,receiving_yards,29.5,0.495787700084246,1,2026-10-17 15:34:13+00:00,2026-10-17T15:34+00:00,Philadelphia Eagles,Carolina Panthers
+caca2d752fe1a1779029082e95332fcc,2026-10-18T17:00:00Z,dontayvion wicks,receiving_yards,30.5,0.5016744360499383,3,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Philadelphia Eagles,Carolina Panthers
+caca2d752fe1a1779029082e95332fcc,2026-10-18T17:00:00Z,jalen coker,receiving_yards,55.5,0.5,2,2026-10-17 15:34:31+00:00,2026-10-17T15:34+00:00,Philadelphia Eagles,Carolina Panthers
+caca2d752fe1a1779029082e95332fcc,2026-10-18T17:00:00Z,jalen coker,receiving_yards,56.5,0.5025116540749075,2,2026-10-17 15:34:05+00:00,2026-10-17T15:34+00:00,Philadelphia Eagles,Carolina Panthers
+caca2d752fe1a1779029082e95332fcc,2026-10-18T17:00:00Z,jalen coker,receiving_yards,57.5,0.5063197809142617,1,2026-10-17 15:34:13+00:00,2026-10-17T15:34+00:00,Philadelphia Eagles,Carolina Panthers
+caca2d752fe1a1779029082e95332fcc,2026-10-18T17:00:00Z,makai lemon,receiving_yards,16.5,0.4949766918501849,1,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Philadelphia Eagles,Carolina Panthers
+caca2d752fe1a1779029082e95332fcc,2026-10-18T17:00:00Z,makai lemon,receiving_yards,17.5,0.498595900028082,3,2026-10-17 15:34:13+00:00,2026-10-17T15:34+00:00,Philadelphia Eagles,Carolina Panthers
+caca2d752fe1a1779029082e95332fcc,2026-10-18T17:00:00Z,tetairoa mcmillan,receiving_yards,62.5,0.5,1,2026-10-17 15:34:31+00:00,2026-10-17T15:34+00:00,Philadelphia Eagles,Carolina Panthers
+caca2d752fe1a1779029082e95332fcc,2026-10-18T17:00:00Z,tetairoa mcmillan,receiving_yards,64.5,0.5014040999719179,3,2026-10-17 15:34:05+00:00,2026-10-17T15:34+00:00,Philadelphia Eagles,Carolina Panthers
+caca2d752fe1a1779029082e95332fcc,2026-10-18T17:00:00Z,tetairoa mcmillan,receiving_yards,65.5,0.5040451438048622,1,2026-10-17 15:34:06+00:00,2026-10-17T15:34+00:00,Philadelphia Eagles,Carolina Panthers
+e86227938fd3cf008fc5648fb5128344,2026-10-18T17:00:00Z,denzel boston,receiving_yards,50.5,0.4954363423661547,3,2026-10-17 15:33:56+00:00,2026-10-17T15:34+00:00,Cleveland Browns,Baltimore Ravens
+e86227938fd3cf008fc5648fb5128344,2026-10-18T17:00:00Z,denzel boston,receiving_yards,51.5,0.5,3,2026-10-17 15:32:30+00:00,2026-10-17T15:34+00:00,Cleveland Browns,Baltimore Ravens
+e86227938fd3cf008fc5648fb5128344,2026-10-18T17:00:00Z,derrick henry,receiving_yards,5.5,0.5050233081498151,1,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,Cleveland Browns,Baltimore Ravens
+e86227938fd3cf008fc5648fb5128344,2026-10-18T17:00:00Z,derrick henry,receiving_yards,6.5,0.5017199152425769,3,2026-10-17 15:32:30+00:00,2026-10-17T15:34+00:00,Cleveland Browns,Baltimore Ravens
+e86227938fd3cf008fc5648fb5128344,2026-10-18T17:00:00Z,derrick henry,receiving_yards,7.5,0.5157232704402516,1,2026-10-17 15:34:07+00:00,2026-10-17T15:34+00:00,Cleveland Browns,Baltimore Ravens
+e86227938fd3cf008fc5648fb5128344,2026-10-18T17:00:00Z,harold fannin,receiving_yards,33.5,0.5,1,2026-10-17 15:34:36+00:00,2026-10-17T15:34+00:00,Cleveland Browns,Baltimore Ravens
+e86227938fd3cf008fc5648fb5128344,2026-10-18T17:00:00Z,harold fannin,receiving_yards,35.5,0.4992980387201842,3,2026-10-17 15:32:30+00:00,2026-10-17T15:34+00:00,Cleveland Browns,Baltimore Ravens
+e86227938fd3cf008fc5648fb5128344,2026-10-18T17:00:00Z,harold fannin,receiving_yards,37.5,0.4939310568053083,1,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,Cleveland Browns,Baltimore Ravens
+e86227938fd3cf008fc5648fb5128344,2026-10-18T17:00:00Z,jakobi lane,receiving_yards,9.5,0.5021058838394474,1,2026-10-17 15:34:07+00:00,2026-10-17T15:34+00:00,Cleveland Browns,Baltimore Ravens
+e86227938fd3cf008fc5648fb5128344,2026-10-18T17:00:00Z,jakobi lane,receiving_yards,10.5,0.5,2,2026-10-17 15:32:30+00:00,2026-10-17T15:34+00:00,Cleveland Browns,Baltimore Ravens
+e86227938fd3cf008fc5648fb5128344,2026-10-18T17:00:00Z,justice hill,receiving_yards,9.5,0.500538711736777,4,2026-10-17 15:32:30+00:00,2026-10-17T15:34+00:00,Cleveland Browns,Baltimore Ravens
+e86227938fd3cf008fc5648fb5128344,2026-10-18T17:00:00Z,justice hill,receiving_yards,10.5,0.5063197809142617,1,2026-10-17 15:34:07+00:00,2026-10-17T15:34+00:00,Cleveland Browns,Baltimore Ravens
+e86227938fd3cf008fc5648fb5128344,2026-10-18T17:00:00Z,kc concepcion,receiving_yards,39.5,0.5,2,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,Cleveland Browns,Baltimore Ravens
+e86227938fd3cf008fc5648fb5128344,2026-10-18T17:00:00Z,kc concepcion,receiving_yards,41.5,0.5015269309441416,2,2026-10-17 15:32:30+00:00,2026-10-17T15:34+00:00,Cleveland Browns,Baltimore Ravens
+e86227938fd3cf008fc5648fb5128344,2026-10-18T17:00:00Z,mark andrews,receiving_yards,27.5,0.5,2,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,Cleveland Browns,Baltimore Ravens
+e86227938fd3cf008fc5648fb5128344,2026-10-18T17:00:00Z,mark andrews,receiving_yards,28.5,0.5050607287449393,2,2026-10-17 15:34:07+00:00,2026-10-17T15:34+00:00,Cleveland Browns,Baltimore Ravens
+e86227938fd3cf008fc5648fb5128344,2026-10-18T17:00:00Z,mark andrews,receiving_yards,29.5,0.5030953363598845,1,2026-10-17 15:32:30+00:00,2026-10-17T15:34+00:00,Cleveland Browns,Baltimore Ravens
+e86227938fd3cf008fc5648fb5128344,2026-10-18T17:00:00Z,rashod bateman,receiving_yards,19.5,0.5,3,2026-10-17 15:32:30+00:00,2026-10-17T15:34+00:00,Cleveland Browns,Baltimore Ravens
+e86227938fd3cf008fc5648fb5128344,2026-10-18T17:00:00Z,rashod bateman,receiving_yards,20.5,0.4969864995178399,1,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,Cleveland Browns,Baltimore Ravens
+e86227938fd3cf008fc5648fb5128344,2026-10-18T17:00:00Z,rashod bateman,receiving_yards,21.5,0.5063197809142617,1,2026-10-17 15:34:07+00:00,2026-10-17T15:34+00:00,Cleveland Browns,Baltimore Ravens
+e86227938fd3cf008fc5648fb5128344,2026-10-18T17:00:00Z,zay flowers,receiving_yards,57.5,0.4969864995178399,1,2026-10-17 15:33:39+00:00,2026-10-17T15:34+00:00,Cleveland Browns,Baltimore Ravens
+e86227938fd3cf008fc5648fb5128344,2026-10-18T17:00:00Z,zay flowers,receiving_yards,58.5,0.5,4,2026-10-17 15:32:30+00:00,2026-10-17T15:34+00:00,Cleveland Browns,Baltimore Ravens
