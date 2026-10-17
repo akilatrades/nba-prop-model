@@ -1,5 +1,8 @@
 """Fail-closed controls for the small Kalshi Demo validation pilot."""
 
+import subprocess
+from pathlib import Path
+
 import pandas as pd
 import pytest
 
@@ -71,3 +74,9 @@ def test_regular_mode_keeps_existing_exposure_semantics(monkeypatch, tmp_path):
     )
     exposure = nba_trade.exposure_from(ledger, "2026-10-18")
     assert exposure.open_total == 0.0
+
+
+@pytest.mark.parametrize("name", ["activate_demo_pilot.sh", "stop_demo_pilot.sh"])
+def test_pilot_shell_scripts_parse(name):
+    script = Path(__file__).resolve().parents[1] / "ops" / name
+    subprocess.run(["bash", "-n", str(script)], check=True)
