@@ -169,25 +169,24 @@ footer{margin-top:44px;border-top:1px solid var(--rule);line-height:1.8}
 <div class="sitebar">
   <a href="#top" class="brand"><span class="brand-mark" aria-hidden="true">∿</span><span>SPORTS / MARKET MAKER</span></a>
   <nav class="toplinks" aria-label="Dashboard sections">
-    <a href="#overview">Overview</a><a href="#forward">Live evidence</a><a href="#paper">Paper performance</a>
+    <a href="#overview">Overview</a><a href="#forward">Real fills</a><a href="#paper">Paper results</a>
     <a href="#strategies">Strategies</a><a href="#risk">Risk</a><a href="#research-section">Research</a>
   </nav>
 </div>
 <header class="report-head" id="top">
   <div>
-    <div class="kicker">QUANTITATIVE RESEARCH · EXECUTION INTELLIGENCE</div>
-    <h1>Know the edge.<br>Prove the execution.</h1>
-    <p>A sports market-making strategy tracked from hypothesis to actual exchange results.
-    This dashboard separates <strong>real executions</strong>, <strong>simulated results</strong>
-    and <strong>historical research</strong> so they can be understood without mixing them.</p>
+    <div class="kicker">MY SPORTS PROPS RESEARCH</div>
+    <h1>Does the edge<br>actually hold up?</h1>
+    <p>I'm testing whether what looks good in the data can actually get filled on Kalshi and make money after fees.
+    Backtests, paper trades and exchange fills are separate here. They aren't the same thing.</p>
   </div>
   <div class="meta" id="stamp" aria-live="polite">Loading published data…</div>
 </header>
 <section id="overview">
   <div class="section-heading">
-    <div><div class="eyebrow">01 / Executive overview</div><h2>Where we stand</h2>
-      <p class="desc">The essential numbers. A dash means no verified observation — never an assumed zero.</p></div>
-    <span class="stage">Evidence first</span>
+    <div><div class="eyebrow">01 / Quick look</div><h2>Where things stand</h2>
+      <p class="desc">If I can't verify a number, I leave it blank instead of calling it zero.</p></div>
+    <span class="stage">No guessing</span>
   </div>
   <div class="metric-grid" id="hero-metrics" aria-live="polite">
     <article class="metric-card"><span class="metric-label">Live realized P&amp;L</span><div class="metric-value">—</div><span class="metric-caption">Awaiting verified settlement data</span></article>
@@ -197,25 +196,25 @@ footer{margin-top:44px;border-top:1px solid var(--rule);line-height:1.8}
   </div>
   <div class="primer">
     <div class="primer-mark" aria-hidden="true">i</div>
-    <div><strong>The strategy in plain language</strong>
-      <p>We offer to buy “NO” on selected player predictions, aiming to earn a small edge when others pay too much for “YES.” An order must actually trade and settle before a real profit exists. Backtests are hypotheses, not promises.</p>
+    <div><strong>What I'm trying to do</strong>
+      <p>Buy “NO” on player props when the “YES” side looks overpriced. Posting an order isn't the same as getting filled, and a fill isn't profit until I know how it settled.</p>
     </div>
   </div>
 </section>
 <section id="forward">
   <div class="section-heading">
-    <div><div class="eyebrow">02 / Forward validation</div><h2>Can the historical edge survive real trading?</h2>
-      <p class="desc">Pre-registered evidence: at least 30 calendar days and 500 unique settled real buy fills, with sufficiently complete data.</p></div>
+    <div><div class="eyebrow">02 / Real orders</div><h2>What has actually filled?</h2>
+      <p class="desc">My checkpoint is 30 days and 500 settled exchange fills, with enough data to trust the result.</p></div>
     <a href="../docs/FORWARD_VALIDATION.md" style="font-size:12px">Read the evaluation protocol ↗</a>
   </div>
   <div class="panel-grid">
-    <article class="panel"><h3>Execution evidence</h3><p class="desc">Actual exchange data against historical expectations.</p>
+    <article class="panel"><h3>Real fills vs. the backtest</h3><p class="desc">Exchange results, not modeled fills.</p>
       <div id="forward-view" aria-live="polite">Loading forward validation…</div></article>
-    <article class="panel"><h3>System &amp; risk pulse</h3><p class="desc">Most recently published observations, not direct account telemetry.</p>
+    <article class="panel"><h3>Bot status and risk</h3><p class="desc">Last data saved to GitHub. Not a live feed from the account.</p>
       <div id="system-view" aria-live="polite">Loading system status…</div></article>
   </div>
   <details class="quick-guide">
-    <summary>New to quantitative trading? Four terms explained</summary>
+    <summary>What these numbers mean</summary>
     <dl>
       <dt>Order</dt><dd>An instruction to buy or sell. An order might never execute.</dd>
       <dt>Fill</dt><dd>Some or all of an order has actually executed on the exchange.</dd>
@@ -226,15 +225,15 @@ footer{margin-top:44px;border-top:1px solid var(--rule);line-height:1.8}
 </section>
 <section class="chart-panel" id="paper">
   <div class="section-heading">
-    <div><div class="eyebrow">03 / Paper portfolio</div><h2>Cumulative simulated profit</h2>
-      <p class="desc">Combined paper ledgers versus a backtest-derived reference. This is <strong>not</strong> the brokerage account balance.</p></div>
-    <span class="stage">Simulated · not cash</span>
+    <div><div class="eyebrow">03 / Paper trading</div><h2>Paper P&amp;L over time</h2>
+      <p class="desc">These results come from simulated fills. This is <strong>not</strong> the Kalshi account balance.</p></div>
+    <span class="stage">Paper only</span>
   </div>
-  <div class="evidence-note"><strong>Keep the data sources separate.</strong> Paper fills are inferred from public trade prints; only actual exchange-confirmed fills count toward the real-money validation checkpoint.</div>
+  <div class="evidence-note"><strong>Important:</strong> Paper fills are estimates based on public trades. Only fills confirmed by the exchange count toward the forward test.</div>
   <div id="cumulative"></div>
   <div class="legend"><span style="--c:var(--algo)"><i></i>Simulated portfolio</span>
     <span style="--c:var(--bench)"><i></i>Historical benchmark applied to paper fills</span></div>
-  <details class="stats-details"><summary>Show detailed simulated portfolio statistics</summary><div class="stats" id="stats"></div></details>
+  <details class="stats-details"><summary>More paper-trading stats</summary><div class="stats" id="stats"></div></details>
 </section>
 <section>
   <div class="two">
@@ -281,13 +280,13 @@ footer{margin-top:44px;border-top:1px solid var(--rule);line-height:1.8}
 </section>
 
 <section id="strategies">
-  <div class="eyebrow">04 / Strategy research</div>
-  <h2>Strategy-by-strategy performance</h2>
-  <p class="desc">One $500 paper bankroll per ledger. Fills come from Kalshi's public trade prints with price priority; positions settle on Kalshi's result.</p>
-  <p class="desc">Start with the main metrics. The full institutional-style diagnostics are available in the expandable report below. All rows here are <strong>paper simulations</strong>.</p>
+  <div class="eyebrow">04 / The strategies</div>
+  <h2>What's working on paper?</h2>
+  <p class="desc">Each strategy starts with a separate $500 paper bankroll. Simulated fills use public Kalshi trades, not my actual account.</p>
+  <p class="desc">The main numbers come first. Open the details if you want the full breakdown.</p>
   <div class="scroll"><table id="strategy-summary"></table></div>
   <details class="stats-details">
-    <summary>Advanced diagnostics: standard errors, t-statistics, bankroll and drawdowns</summary>
+    <summary>Full stats: sample size, drawdowns and more</summary>
     <div class="scroll" style="margin-bottom:16px"><table id="ledgers"></table></div>
   </details>
   <div id="idle"></div>
@@ -300,14 +299,14 @@ footer{margin-top:44px;border-top:1px solid var(--rule);line-height:1.8}
 </section>
 
 <section id="risk">
-  <div class="eyebrow">05 / Risk and operations</div>
-  <h2>Published trader status</h2>
-  <p class="desc">The trader's last pass for each market and its exposure against the risk limits in kalshi/risk.py.</p>
+  <div class="eyebrow">05 / The bot</div>
+  <h2>Last reported trading run</h2>
+  <p class="desc">These are the latest saved logs and risk numbers, not a real-time view of Kalshi.</p>
   <div class="two" id="live"></div>
 </section>
 
 <section id="research-section">
-  <div class="eyebrow">06 / Historical research</div>
+  <div class="eyebrow">06 / Backtest notes</div>
   <div class="two">
     <div>
       <h2>Market scan</h2>
@@ -322,7 +321,7 @@ footer{margin-top:44px;border-top:1px solid var(--rule);line-height:1.8}
   </div>
 </section>
 
-<footer><strong>Data transparency:</strong> this page displays published repository snapshots, not a direct account terminal. <a href="../outputs/dashboard/summary.json">Summary JSON</a> · <a href="../docs/FORWARD_VALIDATION.md">Forward validation rules</a> · <a href="https://github.com/akilatrades/sports-market-maker">Source code</a>. Simulated fills, backtests and exchange-confirmed results are distinct; none guarantee future returns.</footer>
+<footer><strong>About the numbers:</strong> This page reads saved GitHub reports, not the Kalshi account itself. <a href="../outputs/dashboard/summary.json">Summary JSON</a> · <a href="../docs/FORWARD_VALIDATION.md">Forward validation rules</a> · <a href="https://github.com/akilatrades/sports-market-maker">Source code</a>. Simulated fills, backtests and exchange-confirmed results are distinct; none guarantee future returns.</footer>
 <div class="tt" id="tt"></div>
 
 <script>
@@ -542,7 +541,7 @@ function util(label, value, limit, hot) {
 }
 function liveBlock(live, label, limits) {
   const today = live.realized_by_day ? Object.values(live.realized_by_day).slice(-1)[0] : 0;
-  let html = `<div><h2 style="font-size:16px">${esc(label)} ${live.run_utc ? `<span class="pill ${live.mode === "live" ? "live" : ""}">${esc(live.mode)}</span> <span class="pill">${esc(live.env || "")}</span>` : `<span class="pill">waiting for markets</span>`}</h2>`;
+  let html = `<div><h2 style="font-size:16px">${esc(label)} ${live.run_utc ? `<span class="pill ${live.mode === "live" ? "live" : ""}">${esc(live.mode)}</span> <span class="pill">${esc(live.env || "")}</span>` : `<span class="pill">no published run</span>`}</h2>`;
   if (!live.run_utc) { html += `<p class="note">No trader pass in the published snapshot. The DigitalOcean live process runs separately; GitHub Actions is a dry-run mirror.</p></div>`; return html; }
   html += `<dl class="kv"><dt>Last pass</dt><dd>${esc(live.run_utc.slice(0, 16).replace("T", " "))} UTC</dd><dt>Rule</dt><dd>${esc(name("NBA " + live.rule).replace("NBA props, ", ""))}</dd><dt>Bankroll</dt><dd>${money(live.bankroll)}</dd><dt>Candidates → placed</dt><dd>${live.candidates ?? "—"} → ${live.placed ?? "—"}${live.rejected ? ` <span class="muted">(${live.rejected} rejected)</span>` : ""}</dd>${live.injury_cancels ? `<dt>Injury cancels</dt><dd>${live.injury_cancels}</dd>` : ""}${live.exits?.orders ? `<dt>Early exits</dt><dd>${live.exits.orders} orders, expected ${money(live.exits.expected_gain)}${live.exits.scored ? `; holding would have made ${money(live.exits.hold_would_have_made)}` : ""}</dd>` : ""}</dl>`;
   html += `<div class="util">${util("Open exposure", live.open_exposure || 0, limits.max_open, true)}${util("Today's loss vs stop", Math.max(0, -(today || 0)), limits.daily_loss_stop, true)}</div>`;
