@@ -142,53 +142,77 @@ footer{margin-top:44px;border-top:1px solid var(--rule);line-height:1.8}
 </style>
 </head>
 <body>
-<div class="report-head">
-  <div>
-    <h1>Sports market maker</h1>
-    <p>Resting "no" orders on Kalshi player props, sold to the fans buying "yes"; the sportsbooks and a stat model decide which lines. Paper ledgers and a dry-run trader; no real money until the live switch is thrown.</p>
-  </div>
-  <div class="meta" id="stamp">Loading…</div>
+
+<div class="sitebar">
+  <a href="#top" class="brand"><span class="brand-mark" aria-hidden="true">∿</span><span>SPORTS / MARKET MAKER</span></a>
+  <nav class="toplinks" aria-label="Dashboard sections">
+    <a href="#overview">Overview</a><a href="#forward">Live evidence</a><a href="#paper">Paper performance</a>
+    <a href="#strategies">Strategies</a><a href="#risk">Risk</a><a href="#research-section">Research</a>
+  </nav>
 </div>
-
-<section class="guide">
-  <h2>What you are looking at</h2>
-  <p class="desc">A plain-language guide for anyone who has not seen a trading report before.</p>
-  <div class="guide-body">
-    <p><strong>The idea in one sentence.</strong> On Kalshi, people bet "yes" on things like "LeBron scores 25+ points" because it is fun to root for. That enthusiasm pushes the "yes" price a little above its fair value. This project sits on the other side: it quietly offers to sell those "yes" tickets at slightly too high a price, takes the few cents of overpayment each time, and lets a model and the sportsbooks' odds decide which tickets are safe to sell. It is the same job a market maker does in any market, applied to sports props.</p>
-    <p><strong>Paper and dry run.</strong> Nothing here is real money yet. "Paper" ledgers are pretend $500 accounts that follow the rules exactly and are scored against what actually happened. The "dry run" trader builds real orders but does not send them. Both exist to find out whether last season's result repeats before any real money is risked.</p>
-    <details>
-      <summary>How to read each section</summary>
-      <dl class="howto">
-        <dt>Key statistics</dt><dd>The scoreboard. <em>Fills</em> are orders that actually traded. <em>Profit per contract</em> is the average cents made or lost on each ticket sold; a few cents is normal for this kind of strategy, and the sign matters more than the size. <em>Max drawdown</em> is the largest fall from a previous high, the number that tells you how bad the worst stretch was.</dd>
-        <dt>Cumulative profit</dt><dd>Running total of money made, day by day. The grey line is the benchmark: what the same tickets <em>should</em> have made if last season's results repeated exactly. Blue above grey means we are doing better than expected; blue below grey means worse.</dd>
-        <dt>Daily profit</dt><dd>Each day's result as a bar. Blue days made money, grey days lost. Expect plenty of grey; a good strategy here wins a little more often than it loses, not every day.</dd>
-        <dt>Profit per fill</dt><dd>A histogram: how many tickets made or lost each amount. A healthy picture is a hump centred just right of zero, with the losses on the left no bigger than the wins on the right.</dd>
-        <dt>Monthly profit by ledger</dt><dd>A calendar grid. Each row is one strategy, each column a month; green cells made money, red lost, darker is bigger.</dd>
-        <dt>Drawdown</dt><dd>How far below its best-ever level the account is at each moment. It sits at zero when a new high is set and dips below between highs. The shaded stretches are the three worst dips.</dd>
-        <dt>Rolling edge</dt><dd>The average cents per ticket over the last 7 and 30 days, so you can see whether the edge is holding up, fading, or growing, against the dashed line of what last season suggested.</dd>
-        <dt>Edge by ledger</dt><dd>One dot per strategy with a bar showing the range of uncertainty (two standard errors). If the bar sits entirely right of zero, that strategy has shown a real edge; entirely left, it is losing; crossing zero, we cannot tell yet. Hollow dots are last season's backtests for comparison.</dd>
-        <dt>Strategies</dt><dd>One row per rule being tested. <em>t</em> is a confidence score: above 2 (or below −2) is the usual bar for "probably not luck". <em>Hit</em> is how often the ticket we sold paid us. <em>Backtest ¢</em> is what last season said this rule should make; compare it with the live ¢ beside it.</dd>
-        <dt>Where the contracts went</dt><dd>Which strategies have actually been trading, by share of tickets.</dd>
-        <dt>Live trader</dt><dd>The automated trader's last pass: what it found, what it would have placed, and how much of its risk budget it is using.</dd>
-        <dt>Market scan and sportsbook-line veto</dt><dd>Research results. The scan asked, for hundreds of Kalshi markets, "would selling 'yes' tickets have paid last season?"; the veto test asked whether using the sportsbooks' odds to pick tickets beats our own model. Both use the same dot-and-bar style as the edge chart.</dd>
-      </dl>
-    </details>
+<header class="report-head" id="top">
+  <div>
+    <div class="kicker">QUANTITATIVE RESEARCH · EXECUTION INTELLIGENCE</div>
+    <h1>Know the edge.<br>Prove the execution.</h1>
+    <p>A sports market-making strategy tracked from hypothesis to actual exchange results.
+    This dashboard separates <strong>real executions</strong>, <strong>simulated results</strong>
+    and <strong>historical research</strong> so they can be understood without mixing them.</p>
+  </div>
+  <div class="meta" id="stamp" aria-live="polite">Loading published data…</div>
+</header>
+<section id="overview">
+  <div class="section-heading">
+    <div><div class="eyebrow">01 / Executive overview</div><h2>Where we stand</h2>
+      <p class="desc">The essential numbers. A dash means no verified observation — never an assumed zero.</p></div>
+    <span class="stage">Evidence first</span>
+  </div>
+  <div class="metric-grid" id="hero-metrics" aria-live="polite">
+    <article class="metric-card"><span class="metric-label">Live realized P&amp;L</span><div class="metric-value">—</div><span class="metric-caption">Awaiting verified settlement data</span></article>
+    <article class="metric-card"><span class="metric-label">Settled NO contracts</span><div class="metric-value">—</div><span class="metric-caption">Awaiting actual filled contracts</span></article>
+    <article class="metric-card"><span class="metric-label">Volume capture</span><div class="metric-value">—</div><span class="metric-caption">Historical assumed share: 50%</span></article>
+    <article class="metric-card"><span class="metric-label">Settled fill events</span><div class="metric-value">— / 500</div><span class="metric-caption">Research evaluation checkpoint</span></article>
+  </div>
+  <div class="primer">
+    <div class="primer-mark" aria-hidden="true">i</div>
+    <div><strong>The strategy in plain language</strong>
+      <p>We offer to buy “NO” on selected player predictions, aiming to earn a small edge when others pay too much for “YES.” An order must actually trade and settle before a real profit exists. Backtests are hypotheses, not promises.</p>
+    </div>
   </div>
 </section>
-
-<section>
-  <h2>Key statistics</h2>
-  <p class="desc">All paper ledgers together, treated as one portfolio. Standard errors are clustered by game.</p>
-  <div class="stats" id="stats"></div>
+<section id="forward">
+  <div class="section-heading">
+    <div><div class="eyebrow">02 / Forward validation</div><h2>Can the historical edge survive real trading?</h2>
+      <p class="desc">Pre-registered evidence: at least 30 calendar days and 500 unique settled real buy fills, with sufficiently complete data.</p></div>
+    <a href="../docs/FORWARD_VALIDATION.md" style="font-size:12px">Read the evaluation protocol ↗</a>
+  </div>
+  <div class="panel-grid">
+    <article class="panel"><h3>Execution evidence</h3><p class="desc">Actual exchange data against historical expectations.</p>
+      <div id="forward-view" aria-live="polite">Loading forward validation…</div></article>
+    <article class="panel"><h3>System &amp; risk pulse</h3><p class="desc">Most recently published observations, not direct account telemetry.</p>
+      <div id="system-view" aria-live="polite">Loading system status…</div></article>
+  </div>
+  <details class="quick-guide">
+    <summary>New to quantitative trading? Four terms explained</summary>
+    <dl>
+      <dt>Order</dt><dd>An instruction to buy or sell. An order might never execute.</dd>
+      <dt>Fill</dt><dd>Some or all of an order has actually executed on the exchange.</dd>
+      <dt>Volume capture</dt><dd>The share of qualifying public market volume our orders received. Different from the fraction of our own order filled.</dd>
+      <dt>Drawdown</dt><dd>A decline from a previous cumulative profit peak. It helps describe the losing stretches.</dd>
+    </dl>
+  </details>
 </section>
-
-<section>
-  <h2>Cumulative profit</h2>
-  <p class="desc">Portfolio paper profit in dollars, with the benchmark in grey: what the same filled contracts would have made at each ledger's backtest edge. Blue below grey means real fills are doing worse than last season's replay said.</p>
+<section class="chart-panel" id="paper">
+  <div class="section-heading">
+    <div><div class="eyebrow">03 / Paper portfolio</div><h2>Cumulative simulated profit</h2>
+      <p class="desc">Combined paper ledgers versus a backtest-derived reference. This is <strong>not</strong> the brokerage account balance.</p></div>
+    <span class="stage">Simulated · not cash</span>
+  </div>
+  <div class="evidence-note"><strong>Keep the data sources separate.</strong> Paper fills are inferred from public trade prints; only actual exchange-confirmed fills count toward the real-money validation checkpoint.</div>
   <div id="cumulative"></div>
-  <div class="legend"><span style="--c:var(--algo)"><i></i>Paper ledgers</span><span style="--c:var(--bench)"><i></i>Benchmark: fills × backtest edge</span></div>
+  <div class="legend"><span style="--c:var(--algo)"><i></i>Simulated portfolio</span>
+    <span style="--c:var(--bench)"><i></i>Historical benchmark applied to paper fills</span></div>
+  <details class="stats-details"><summary>Show detailed simulated portfolio statistics</summary><div class="stats" id="stats"></div></details>
 </section>
-
 <section>
   <div class="two">
     <div>
@@ -233,8 +257,9 @@ footer{margin-top:44px;border-top:1px solid var(--rule);line-height:1.8}
   </div>
 </section>
 
-<section>
-  <h2>Strategies</h2>
+<section id="strategies">
+  <div class="eyebrow">04 / Strategy research</div>
+  <h2>Strategy-by-strategy performance</h2>
   <p class="desc">One $500 paper bankroll per ledger. Fills come from Kalshi's public trade prints with price priority; positions settle on Kalshi's result.</p>
   <div class="scroll"><table id="ledgers"></table></div>
   <div id="idle"></div>
@@ -246,13 +271,15 @@ footer{margin-top:44px;border-top:1px solid var(--rule);line-height:1.8}
   <div class="expo" id="expo"></div>
 </section>
 
-<section>
-  <h2>Live trader</h2>
+<section id="risk">
+  <div class="eyebrow">05 / Risk and operations</div>
+  <h2>Published trader status</h2>
   <p class="desc">The trader's last pass for each market and its exposure against the risk limits in kalshi/risk.py.</p>
   <div class="two" id="live"></div>
 </section>
 
-<section>
+<section id="research-section">
+  <div class="eyebrow">06 / Historical research</div>
   <div class="two">
     <div>
       <h2>Market scan</h2>
@@ -267,7 +294,7 @@ footer{margin-top:44px;border-top:1px solid var(--rule);line-height:1.8}
   </div>
 </section>
 
-<footer>Data: <a href="../outputs/dashboard/summary.json">summary.json</a>, rebuilt by every scheduled job. Code and every pre-registration: <a href="https://github.com/akilatrades/sports-market-maker">akilatrades/sports-market-maker</a>. The layout follows the QuantConnect backtest report: key statistics, cumulative returns against a benchmark, daily returns, return per trade, monthly heatmap, drawdown periods, rolling statistics.</footer>
+<footer><strong>Data transparency:</strong> this page displays published repository snapshots, not a direct account terminal. <a href="../outputs/dashboard/summary.json">Summary JSON</a> · <a href="../docs/FORWARD_VALIDATION.md">Forward validation rules</a> · <a href="https://github.com/akilatrades/sports-market-maker">Source code</a>. Simulated fills, backtests and exchange-confirmed results are distinct; none guarantee future returns.</footer>
 <div class="tt" id="tt"></div>
 
 <script>
