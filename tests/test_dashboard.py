@@ -68,7 +68,6 @@ def test_dashboard_inline_javascript_parses(tmp_path):
     assert result.returncode == 0, result.stderr
 
 
-
 def test_overview_never_invents_live_profit_when_no_exchange_data(tmp_path):
     if not shutil.which("node"):
         pytest.skip("Node.js is not installed in this environment")
@@ -86,7 +85,7 @@ const document = {
     return nodes[id] || (nodes[id] = {innerHTML: "", style: {}});
   }
 };
-const exercise = \`
+const exercise = `
 overview({live: {}, live_nfl: {}, limits: {max_open: 150}});
 if (!nodes["hero-metrics"].innerHTML.includes("—") ||
     !nodes["forward-view"].innerHTML.includes("Not started")) {
@@ -106,7 +105,7 @@ if (!nodes["hero-metrics"].innerHTML.includes("32%") ||
     !nodes["forward-view"].innerHTML.includes("2 / 500")) {
   throw new Error("Forward evidence not displayed correctly");
 }
-\`;
+`;
 vm.runInNewContext(bootstrap + exercise, {document, console});
 """
     )
