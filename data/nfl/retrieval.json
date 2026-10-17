@@ -1,5 +1,5 @@
 {
-  "retrieved": "2026-10-16",
+  "retrieved": "2026-10-17",
   "seasons": [
     2012,
     2026
@@ -16,11 +16,11 @@
   "rows": {
     "games": 3935,
     "player_week": 81943,
-    "injuries": 23469
+    "injuries": 23474
   },
   "sha256": {
-    "games.csv": "4691a8e1b7959bc934561462fc85bea76a599deab3d3f5c44fc7ffe615f21c8c",
+    "games.csv": "7672f3b589f9941eeef41e7a3f236b22187bccab1a64f376065c2b31be9c5e35",
     "player_week.csv.gz": "9bab138ab8dcba7ce32a0c6701821f608029b15cd9d8ea23af9209840757c6b1",
-    "injuries.csv.gz": "b1b64961ba37afa28be206d48a76f06a55a893b5ed2311d949527d80592c0c92"
+    "injuries.csv.gz": "3d5d2167e8ee35aa4c5254652fa2264f4c4d0bcea0a378eb852879a8ae21e05b"
   }
 }
