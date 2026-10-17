@@ -1,14 +1,14 @@
 {
   "KXITFMATCH": {
-    "orders": 104,
+    "orders": 106,
     "vetoed": 0,
-    "open": 33,
-    "fill_rate": 0.8450704225352113,
-    "fills_settled": 60,
-    "bankroll": 424.79,
-    "cents_per_contract": -2.66,
+    "open": 31,
+    "fill_rate": 0.8533333333333334,
+    "fills_settled": 64,
+    "bankroll": 421.9,
+    "cents_per_contract": -2.5,
     "t": -1.32,
-    "profit_dollars": -75.21
+    "profit_dollars": -78.1
   },
   "KXNASCARRACE": {
     "orders": 29,
@@ -30,9 +30,9 @@
     "profit_dollars": -2.01
   },
   "KXLALIGASPREAD": {
-    "orders": 8,
+    "orders": 12,
     "vetoed": 0,
-    "open": 4,
+    "open": 8,
     "fill_rate": 0.5,
     "fills_settled": 2,
     "bankroll": 501.8,
@@ -120,5 +120,5 @@
     "fills_settled": 0,
     "bankroll": 500.0
   },
-  "updated_utc": "2026-10-17T06:30+00:00"
+  "updated_utc": "2026-10-17T09:24+00:00"
 }
