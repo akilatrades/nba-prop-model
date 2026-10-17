@@ -1644,3 +1644,34 @@ Pre-registered readings, judged at the 500-fill checkpoint:
    backtest's 2.9¢, game-clustered t, the same test as the paper ledgers.
 
 No live rule changes from this; it is measurement.
+
+### Execution measurement, corrected after review (same day)
+
+Four measurement defects in the first version, all real, all fixed and
+tested against the current fill shape:
+
+1. **Capture, not fill share.** The report had filled ÷ ordered, which is
+   not the 50% capture assumption the backtest makes. It now also fetches
+   the public prints for each order after placement and counts the
+   *qualifying volume* (takers buying "yes" at or above our level); capture
+   = our fills ÷ that volume, capped at 1. Fill share of the order is kept
+   as a separate column.
+2. **Current fill fields.** Kalshi fills carry `count_fp`,
+   `no_price_dollars` / `yes_price_dollars`, `fee_cost` (dollars),
+   `order_id` and `fill_id`; the legacy `count` / cents fields may be
+   absent. `normalize_fills()` maps either shape to one, applied at
+   ingestion. The test uses the current shape.
+3. **Starting queue at placement.** Each accepted order's queue position is
+   read immediately after the exchange accepts it (`queue_ahead_at_place`
+   in the ledger); the 15-minute sweep remains for the path afterwards.
+4. **Order-level profit.** Realised profit is now computed from the order's
+   own buy fills and the market result (`(payout − price) × contracts −
+   fee`), not from the account's per-ticker settlement, so entries and
+   exits in the same market do not mix. `cents_per_settled_contract` is the
+   number to set against the backtest's 2.9¢.
+
+Also recorded per order: `accept_utc` (exchange acceptance time) against
+the run's signal time, for the signal-to-acceptance delay. The 500-fill
+scorecard: capture of qualifying volume, fill probability by starting
+queue, cents per settled contract (game-clustered t), profit per eligible
+order including unfilled, minutes to first fill.

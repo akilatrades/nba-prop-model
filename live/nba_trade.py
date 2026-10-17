@@ -33,7 +33,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from kalshi.api import fetch_market, snapshot
+from kalshi.api import fetch_market, fetch_trades, snapshot
 from kalshi.books import attach_latest
 from live.execution import execution_report, log_queue_positions, write_markdown
 from kalshi.paper_props import ALL_RULES, candidate_orders
@@ -119,6 +119,8 @@ ORDER_COLUMNS = [
     "p_book",
     "edge",
     "expiration_utc",
+    "accept_utc",
+    "queue_ahead_at_place",
     "order_id",
     "client_order_id",
     "status",
@@ -240,6 +242,32 @@ def refresh_quotes(priced, now):
     merged = merged.merge(quotes, on="ticker", how="inner")
     print(f"Quotes refreshed: {len(merged)} of {len(priced)} priced markets still open")
     return merged
+
+
+def normalize_fills(frame):
+    """Kalshi fills in one shape whatever the API version: ``count`` from
+    ``count_fp``, prices in cents from ``*_price_dollars``, ``fee_cost`` in
+    dollars, ``trade_id`` from ``fill_id``."""
+    f = pd.DataFrame(frame).copy()
+    if f.empty:
+        return f
+    if "count" not in f or f["count"].isna().all():
+        f["count"] = pd.to_numeric(f.get("count_fp"), errors="coerce")
+    f["count"] = pd.to_numeric(f["count"], errors="coerce")
+    for side in ("yes", "no"):
+        cents, dollars = f"{side}_price", f"{side}_price_dollars"
+        if cents not in f or f[cents].isna().all():
+            if dollars in f:
+                f[cents] = (pd.to_numeric(f[dollars], errors="coerce") * 100).round(4)
+    if "fee_cost" in f:
+        f["fee_cost"] = pd.to_numeric(f.fee_cost, errors="coerce").fillna(0.0)
+    else:
+        f["fee_cost"] = 0.0
+    if "trade_id" not in f and "fill_id" in f:
+        f["trade_id"] = f.fill_id
+    if "ticker" not in f and "market_ticker" in f:
+        f["ticker"] = f.market_ticker
+    return f
 
 
 def settlement_frame(raw):
@@ -727,11 +755,20 @@ def main():
                 expiration_ts=int(pd.Timestamp(r.tip_utc).timestamp()),
             )
             result = client.place(order)
+            accepted = datetime.now(UTC)
+            ahead = None
+            if mode == "live" and client.can_sign and result.get("order_id"):
+                try:  # the order's starting queue, read the moment it is accepted
+                    ahead = client.queue_position(str(result["order_id"]))
+                except Exception as error:  # noqa: BLE001 - measurement only
+                    print(f"queue position at placement failed: {error}")
             row.update(
                 order_id=result.get("order_id"),
                 client_order_id=order.client_order_id,
                 status="placed" if mode == "live" else "dry",
                 rejected_reason="",
+                accept_utc=accepted.isoformat(timespec="seconds"),
+                queue_ahead_at_place=ahead,
             )
             commit(exposure, row["cost"], day, row["game_id"], team=r.team)
             placed += 1
@@ -751,7 +788,7 @@ def main():
     if client.can_sign:
         try:
             fills = only_market(
-                pd.DataFrame(client.fills(min_ts=int(now.timestamp()) - 3 * 86400)),
+                normalize_fills(client.fills(min_ts=int(now.timestamp()) - 3 * 86400)),
                 market,
             )
             if len(fills):
@@ -816,6 +853,8 @@ def main():
                     pd.read_csv(FILLS) if FILLS.exists() else None,
                     queue,
                     pd.read_csv(SETTLEMENTS) if SETTLEMENTS.exists() else None,
+                    trades=fetch_trades,
+                    now=now,
                 )
                 if len(report):
                     report.to_csv(OUT / "execution.csv", index=False)

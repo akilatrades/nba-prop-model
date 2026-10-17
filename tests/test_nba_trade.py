@@ -717,20 +717,64 @@ def test_execution_report_and_queue_log(tmp_path):
     assert log_queue_positions(Q(), ledger, now, path) == 1  # the dry row is skipped
     assert log_queue_positions(Q(), ledger, now + pd.Timedelta(minutes=5), path) == 0
     assert log_queue_positions(Q(), ledger, now + pd.Timedelta(minutes=20), path) == 1
-    fills = pd.DataFrame(
-        [
-            {
-                "trade_id": "t",
-                "ticker": "KXNBAPTS-A",
-                "created_time": "2026-10-21T20:45:00Z",
-                "count": 4,
-            }
-        ]
+    # fills as the current API returns them: count_fp, *_price_dollars, fee_cost
+    raw = [
+        {
+            "fill_id": "f1",
+            "order_id": "o1",
+            "ticker": "KXNBAPTS-A",
+            "side": "no",
+            "action": "buy",
+            "created_time": "2026-10-21T20:45:00Z",
+            "count_fp": "4.00",
+            "no_price_dollars": "0.55",
+            "yes_price_dollars": "0.45",
+            "fee_cost": "0.02",
+        }
+    ]
+    fills = nba_trade.normalize_fills(raw)
+    assert fills["count"].iloc[0] == 4 and fills.no_price.iloc[0] == 55
+    prints = [
+        {
+            "created_time": "2026-10-21T20:30:00Z",
+            "yes_price": 0.45,
+            "count": 6,
+            "taker_outcome_side": "yes",
+        },
+        {
+            "created_time": "2026-10-21T20:50:00Z",
+            "yes_price": 0.44,
+            "count": 9,
+            "taker_outcome_side": "yes",
+        },  # below our level
+        {
+            "created_time": "2026-10-21T21:00:00Z",
+            "yes_price": 0.46,
+            "count": 2,
+            "taker_outcome_side": "no",
+        },  # wrong side
+    ]
+    settlements = pd.DataFrame(
+        [{"ticker": "KXNBAPTS-A", "market_result": "no", "profit": 1.0}]
     )
-    rep = execution_report(ledger, fills, pd.read_csv(path))
+    rep = execution_report(
+        ledger,
+        fills,
+        pd.read_csv(path),
+        settlements,
+        trades=lambda t, a, b: prints,
+        now=now + pd.Timedelta(hours=3),
+    )
     assert len(rep) == 1
     r = rep.iloc[0]
     assert r.queue_ahead_at_start == 40.0 and r.filled == 4
     assert abs(r.minutes_to_first_fill - 105) < 1e-6
+    assert float(r.qualifying_volume) == 6 and abs(r.capture - 4 / 6) < 1e-9
+    # 4 contracts of "no" at 0.55 that settled no: 4 x 0.45 - 0.02 fee
+    assert abs(r.settled_profit - (4 * 0.45 - 0.02)) < 1e-9
     s = summary(rep)
-    assert s["fill_rate"] == 1.0 and abs(s["mean_fill_share"] - 0.444) < 1e-9
+    assert (
+        s["fill_rate"] == 1.0
+        and abs(s["mean_capture_of_qualifying_volume"] - 0.667) < 1e-9
+    )
+    assert abs(s["cents_per_settled_contract"] - 44.5) < 1e-6
