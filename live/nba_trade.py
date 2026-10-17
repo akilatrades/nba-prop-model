@@ -87,7 +87,13 @@ def other_open_exposure(market):
         if path.exists():
             o = pd.read_csv(path)
             if len(o):
-                live = o[o.status.isin(["placed", "resting", "filled"])]
+                if os.environ.get("DEMO_PILOT") == "1" and "mode" in o:
+                    live = o[
+                        o.status.isin(["placed", "resting", "filled", "done"])
+                        & o["mode"].eq("live")
+                    ]
+                else:
+                    live = o[o.status.isin(["placed", "resting", "filled"])]
                 total += float(
                     pd.to_numeric(live.cost, errors="coerce").fillna(0).sum()
                 )
@@ -194,11 +200,20 @@ def exposure_from(ledger, today, extra_open=0.0):
     ``extra_open`` adds what other markets' ledgers have open in the same
     account, so the open-exposure cap holds across markets.
     """
-    live = (
-        ledger[ledger.status.isin(["placed", "resting", "filled"])]
-        if len(ledger)
-        else ledger
-    )
+    if os.environ.get("DEMO_PILOT") == "1" and len(ledger):
+        # "done" can be an exchange-filled order with no resting remainder.
+        # Keep all accepted orders charged against the pilot budget even
+        # after they stop resting; conservative until explicit settlement.
+        live = ledger[
+            ledger.status.isin(["placed", "resting", "filled", "done"])
+            & ledger["mode"].eq("live")
+        ]
+    else:
+        live = (
+            ledger[ledger.status.isin(["placed", "resting", "filled"])]
+            if len(ledger)
+            else ledger
+        )
     by_day = live.groupby("day").cost.sum().to_dict() if len(live) else {}
     by_game = live.groupby("game_id").cost.sum().to_dict() if len(live) else {}
     realized = 0.0
@@ -602,6 +617,20 @@ def main():
             )
     OUT.mkdir(parents=True, exist_ok=True)
     limits = RiskLimits()
+    pilot = os.environ.get("DEMO_PILOT") == "1"
+    if pilot:
+        if client.env != "demo":
+            raise TradingError("DEMO_PILOT refuses non-demo exchange")
+        # Conservative observation-only rollout: do not trade large volumes
+        # before real exchange fill capture and post-settlement P&L are known.
+        limits.max_order = 2.0
+        limits.max_night = 10.0
+        limits.max_open = 10.0
+        limits.max_per_game = 3.0
+        limits.max_per_team = 3.0
+        limits.daily_loss_stop = 5.0
+        limits.max_orders_per_run = 1
+        limits.max_orders_per_game = 2
     ledger = (
         pd.read_csv(ORDERS) if ORDERS.exists() else pd.DataFrame(columns=ORDER_COLUMNS)
     )
@@ -837,12 +866,19 @@ def main():
             quotes = priced.rename(
                 columns={"yes_bid_dollars": "yes_bid", "yes_ask_dollars": "yes_ask"}
             )[["ticker", "yes_bid", "yes_ask", "tip_utc"]]
-            wanted = exit_orders(
-                client.positions(),
-                quotes,
-                entry_prices(pd.read_csv(FILLS) if FILLS.exists() else None),
-                resting_sells,
-                now,
+            # The first demo pilot measures hold-to-settlement economics.
+            # Do not open additional early-exit orders until fills and
+            # position netting have been validated on V2.
+            wanted = (
+                []
+                if pilot
+                else exit_orders(
+                    client.positions(),
+                    quotes,
+                    entry_prices(pd.read_csv(FILLS) if FILLS.exists() else None),
+                    resting_sells,
+                    now,
+                )
             )
             new_exits = place_exits(client, wanted, now, mode)
             exits = pd.concat([exits, new_exits], ignore_index=True)[EXIT_COLUMNS]
@@ -898,6 +934,10 @@ def main():
         "env": client.env,
         "rule": rule,
         "market": market,
+        "demo_pilot": pilot,
+        "pilot_order_cap": limits.max_order if pilot else None,
+        "pilot_day_cap": limits.max_night if pilot else None,
+        "pilot_total_cap": limits.max_open if pilot else None,
         "bankroll": round(bank, 2),
         "injury_cancels": cancelled,
         "candidates": len(candidates),
