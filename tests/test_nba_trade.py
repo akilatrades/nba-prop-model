@@ -394,6 +394,7 @@ def test_nfl_market_dry_run(tmp_path, monkeypatch):
     )
     monkeypatch.setenv("TRADE_MARKET", "nfl")
     monkeypatch.setenv("TRADE_MODE", "dry")
+    monkeypatch.setenv("KALSHI_ENV", "demo")
     monkeypatch.setenv("DRY_BANKROLL", "250")
 
     class FixedNow:
