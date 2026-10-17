@@ -507,7 +507,7 @@ function util(label, value, limit, hot) {
 function liveBlock(live, label, limits) {
   const today = live.realized_by_day ? Object.values(live.realized_by_day).slice(-1)[0] : 0;
   let html = `<div><h2 style="font-size:16px">${esc(label)} ${live.run_utc ? `<span class="pill ${live.mode === "live" ? "live" : ""}">${esc(live.mode)}</span> <span class="pill">${esc(live.env || "")}</span>` : `<span class="pill">waiting for markets</span>`}</h2>`;
-  if (!live.run_utc) { html += `<p class="note">No pass logged yet. The trader runs every minute on the server and every 15 minutes on GitHub; it starts logging when these markets list.</p></div>`; return html; }
+  if (!live.run_utc) { html += `<p class="note">No trader pass in the published snapshot. The DigitalOcean live process runs separately; GitHub Actions is a dry-run mirror.</p></div>`; return html; }
   html += `<dl class="kv"><dt>Last pass</dt><dd>${esc(live.run_utc.slice(0, 16).replace("T", " "))} UTC</dd><dt>Rule</dt><dd>${esc(name("NBA " + live.rule).replace("NBA props, ", ""))}</dd><dt>Bankroll</dt><dd>${money(live.bankroll)}</dd><dt>Candidates → placed</dt><dd>${live.candidates ?? "—"} → ${live.placed ?? "—"}${live.rejected ? ` <span class="muted">(${live.rejected} rejected)</span>` : ""}</dd>${live.injury_cancels ? `<dt>Injury cancels</dt><dd>${live.injury_cancels}</dd>` : ""}${live.exits?.orders ? `<dt>Early exits</dt><dd>${live.exits.orders} orders, expected ${money(live.exits.expected_gain)}${live.exits.scored ? `; holding would have made ${money(live.exits.hold_would_have_made)}` : ""}</dd>` : ""}</dl>`;
   html += `<div class="util">${util("Open exposure", live.open_exposure || 0, limits.max_open, true)}${util("Today's loss vs stop", Math.max(0, -(today || 0)), limits.daily_loss_stop, true)}</div>`;
   if (live.rejections && Object.keys(live.rejections).length) html += `<p class="note">Rejections: ${Object.entries(live.rejections).map(([k, v]) => `${esc(k)} (${v})`).join("; ")}</p>`;
@@ -522,10 +522,61 @@ function research(s) {
   el.insertAdjacentHTML("beforeend", `<p class="note">${b.games} games sampled from 2025-26 with the books' lines as they stood when each order was posted; an exact-line quote for ${Math.round(100 * b.coverage)}% of fills. Kept minus removed ${cents(b.difference?.cents)}, t ${b.difference?.t}. ${b.pass ? "Passed the pre-registered test (at least 1¢ better, t ≥ 2, 2,000+ covered fills); the live trader runs this rule from opening night." : "Did not pass the pre-registered test."}</p>`);
 }
 
+function overview(snapshot){
+ const live=snapshot.live||{}, nfl=snapshot.live_nfl||{}, f=live.forward_validation||{};
+ const observed=Number(f.eligible_real_orders||0)>0;
+ const realizedParts=[live.realized_total,nfl.realized_total].filter(v=>typeof v==="number");
+ const realized=realizedParts.length?realizedParts.reduce((sum,n)=>sum+n,0):null;
+ const contracts=observed&&Number(f.settled_contracts)>0?Number(f.settled_contracts):null;
+ const capture=observed&&f.capture_volume_weighted!=null&&Number(f.qualifying_contracts)>0?f.capture_volume_weighted:null;
+ const events=observed?Number(f.settled_buy_fill_events||0):null;
+ const card=(label,value,caption,tone="")=>`<article class="metric-card"><span class="metric-label">${esc(label)}</span><div class="metric-value ${tone}">${esc(value)}</div><span class="metric-caption">${esc(caption)}</span></article>`;
+ document.getElementById("hero-metrics").innerHTML=[
+  card("Live realized account P&L",realized==null?"—":money(realized),realized==null?"Not present in the published settlement logs":"Published NBA + NFL settlement records",realized>0?"positive":realized<0?"negative":""),
+  card("Settled NO contracts",contracts==null?"—":contracts.toLocaleString(),contracts==null?"Awaiting exchange-settled real buy fills":"NBA exchange-confirmed NO contracts"),
+  card("Volume-weighted capture",capture==null?"—":pct(capture),capture==null?"No complete eligible execution window":"Compared with a 50% historical assumption"),
+  card("Settled fill events",events==null?"— / 500":events.toLocaleString()+" / 500",events==null?"Forward checkpoint has not started":"Requires 30 days and 500 settled fills")
+ ].join("");
+ const row=(label,value)=>`<div class="fwd-row"><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`;
+ const count=Number(f.settled_buy_fill_events||0),days=Number(f.elapsed_days||0);
+ const pc=Math.min(100,100*count/500),pd=Math.min(100,100*days/30);
+ const states={
+  awaiting_live_orders:"Awaiting first exchange-accepted order",
+  collecting:"Collecting forward execution results",
+  data_incomplete:"Sample collected · evidence coverage insufficient",
+  checkpoint_ready_for_human_review:"Checkpoint reached · manual review required",
+  missing_acceptance_timestamps:"Data incomplete · acceptance timestamps missing"
+ };
+ const state=states[f.status]||(observed?"Forward status not available":"Awaiting first exchange-accepted order");
+ const tone=f.status==="checkpoint_ready_for_human_review"?"ok":f.status==="data_incomplete"?"warn":"";
+ const ready=observed;
+ const proof=document.getElementById("forward-view");
+ proof.innerHTML=`<div class="proof-status ${tone}">${esc(ready?state:"No real NBA validation cohort published yet. This is an evidence status, not a failed strategy.")}</div>`+
+ `<div class="progress-labels"><span>Real, settled fill events</span><strong>${esc(ready?count.toLocaleString()+" / 500":"Not started")}</strong></div>`+
+ `<div class="progress-track" role="progressbar" aria-label="Settlement-fill checkpoint" aria-valuemin="0" aria-valuemax="500" aria-valuenow="${Math.min(500,count)}"><span style="width:${pc}%"></span></div>`+
+ `<div class="progress-labels" style="margin-top:17px"><span>Observation period</span><strong>${esc(ready?days.toFixed(1)+" / 30 days":"Not started")}</strong></div>`+
+ `<div class="progress-track" role="progressbar" aria-label="Observation-day checkpoint" aria-valuemin="0" aria-valuemax="30" aria-valuenow="${Math.min(30,days)}"><span style="width:${pd}%"></span></div>`+
+ `<div style="margin-top:19px">${row("Real profit / settled contract",f.cents_per_settled_contract==null?"—":cents(f.cents_per_settled_contract))}${row("Historical modeled reference","+2.9¢ / contract")}${row("Eligible volume observation coverage",f.mature_volume_coverage==null?"—":pct(f.mature_volume_coverage))}${row("Independent games",f.independent_games==null?"—":String(f.independent_games))}${row("Capital allocation","No automatic increases")}</div>`+
+ `<p class="note">NBA NO buy-fill cohort only. Early exits require reconciled accounting, and historical profit does not establish a tradable edge.</p>`;
+ const statusLine=(name,item)=>`<div class="fwd-row"><span>${esc(name)} trader · ${esc(item.run_utc?String(item.mode||"unknown").toUpperCase():"NO LOG")}</span><strong>${esc(item.run_utc?String(item.run_utc).slice(0,16).replace("T"," ")+" UTC":"Not published")}</strong></div>`;
+ const exposure=Number(live.open_exposure||0)+Number(nfl.open_exposure||0),limit=Number(snapshot.limits?.max_open||0);
+ const usage=limit?Math.min(100,100*exposure/limit):0;
+ const errors=[live.forward_validation_error,nfl.forward_validation_error].filter(Boolean).join(" · ");
+ document.getElementById("system-view").innerHTML=
+ `<div class="proof-status"><strong>Snapshot, not live account access.</strong> GitHub's published files may lag the DigitalOcean trader. Check the exchange directly before risk decisions.</div>`+
+ statusLine("NBA",live)+statusLine("NFL",nfl)+row("Reported open exposure",limit?money(exposure)+" / "+money(limit):money(exposure))+
+ `<div class="progress-track" aria-label="Reported exposure against configured maximum"><span style="width:${usage}%"></span></div>`+
+ row("Maximum order size",snapshot.limits?.max_order==null?"—":money(snapshot.limits.max_order))+
+ row("Maximum game exposure",snapshot.limits?.max_per_game==null?"—":money(snapshot.limits.max_per_game))+
+ (errors?`<p class="note">${esc(errors)}</p>`:"")+
+ `<p class="note">Published risk data is not authoritative for emergency actions. Live execution occurs on a separate DigitalOcean process; GitHub Actions is a dry-run mirror.</p>`;
+}
+
 fetch("../outputs/dashboard/summary.json", {cache: "no-store"}).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }).then(s => {
   const pf = portfolio(s);
-  document.getElementById("stamp").innerHTML = `<strong>Paper and dry run</strong><br>${esc(s.updated_utc.slice(0, 16).replace("T", " "))} UTC<br>${pf.days.length ? `${pf.days[0]} to ${pf.days[pf.days.length - 1]}` : "no settlements yet"}`;
+  document.getElementById("stamp").innerHTML = `<strong>Published data snapshot</strong><br>${esc(s.updated_utc.slice(0, 16).replace("T", " "))} UTC<br><span style="color:var(--ink-3)">Repository logs · not a direct exchange feed</span>`;
   stats(s, pf);
+  overview(s);
   lines(document.getElementById("cumulative"), pf.days, [
     {label: "Benchmark (backtest edge)", v: pf.bench, color: "var(--bench)", width: 2},
     {label: "Paper ledgers", v: pf.eq, color: "var(--algo)", width: 2.5},
@@ -553,7 +604,11 @@ fetch("../outputs/dashboard/summary.json", {cache: "no-store"}).then(r => { if (
   forest(document.getElementById("scan"), (s.scan_top || []).map(r => ({label: name(r.series), est: r.cents, se: r.se, color: r.passes ? "var(--algo)" : "var(--bench)", hollow: !r.passes, sub: `${r.fills.toLocaleString()} fills, t ${r.t}${r.passes ? ", passed" : ""}`})), {labelW: 220});
   research(s);
   let tmr; window.addEventListener("resize", () => { clearTimeout(tmr); tmr = setTimeout(() => location.reload(), 400); });
-}).catch(e => { document.getElementById("stamp").textContent = "Could not load summary.json (" + e.message + ")"; });
+}).catch(e => {
+  document.getElementById("stamp").textContent = "Could not load the published data (" + e.message + ")";
+  document.getElementById("forward-view").textContent = "No verified forward data could be loaded.";
+  document.getElementById("system-view").textContent = "Source unavailable; do not infer live account status.";
+});
 </script>
 </body>
 </html>
