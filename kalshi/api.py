@@ -37,6 +37,7 @@ def market_data_base_url():
         return BASE_URL
     raise ValueError(f"Invalid KALSHI_ENV {env!r}; expected demo or prod")
 
+
 # Kalshi series -> the model's stat name.
 FIELDS = [
     "ticker",
