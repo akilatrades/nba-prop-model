@@ -787,20 +787,37 @@ def test_execution_history_preserves_completed_volume_after_three_days():
     now = pd.Timestamp("2026-11-01T12:00Z")
     placed = now - pd.Timedelta(days=5)
     exp = placed + pd.Timedelta(hours=4)
-    ledger = pd.DataFrame([{
-        "order_id": "old-order", "ticker": "KXNBAPTS-TEST",
-        "status": "done", "game_id": 2, "rule": "no_seller",
-        "side": "no", "day": "2026-10-27", "player": "p",
-        "stat": "points", "line": 20.5, "price": 0.55,
-        "contracts": 3, "edge": 0.04,
-        "run_utc": placed.isoformat(),
-        "accept_utc": placed.isoformat(),
-        "expiration_utc": exp.isoformat(),
-    }])
-    previous = pd.DataFrame([{
-        "order_id": "old-order", "qualifying_volume": 12.0,
-        "qualifying_complete": True,
-    }])
+    ledger = pd.DataFrame(
+        [
+            {
+                "order_id": "old-order",
+                "ticker": "KXNBAPTS-TEST",
+                "status": "done",
+                "game_id": 2,
+                "rule": "no_seller",
+                "side": "no",
+                "day": "2026-10-27",
+                "player": "p",
+                "stat": "points",
+                "line": 20.5,
+                "price": 0.55,
+                "contracts": 3,
+                "edge": 0.04,
+                "run_utc": placed.isoformat(),
+                "accept_utc": placed.isoformat(),
+                "expiration_utc": exp.isoformat(),
+            }
+        ]
+    )
+    previous = pd.DataFrame(
+        [
+            {
+                "order_id": "old-order",
+                "qualifying_volume": 12.0,
+                "qualifying_complete": True,
+            }
+        ]
+    )
 
     def should_not_fetch(*args):
         raise AssertionError("Do not refetch finalized or aged-out data")
