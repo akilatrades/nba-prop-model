@@ -1,7 +1,7 @@
 # Forward validation — frozen research rules
 
 Established 2026-10-17, before this season's NBA forward sample. The baseline
-trader/research code is commit \`1167400bc246ab324472eefc6a24bdb8e2cf7d52\`.
+trader/research code is commit `1167400bc246ab324472eefc6a24bdb8e2cf7d52`.
 The changes introduced with this plan concern **measurement only**, not
 trade selection, quote prices, cancel rules, capital allocation, or live mode.
 
@@ -61,7 +61,7 @@ losses, zero qualifying volume, or successful capture.
 - Evaluate net P&L, queue-depth effects, missing-data fraction, game/night
   concentration, and fill-selection effects. A positive backtest or positive
   first week is **not** enough to scale.
-- A checkpoint may be declared \`data_incomplete\` until >=95% of matured
+- A checkpoint may be declared `data_incomplete` until >=95% of matured
   windows have complete trade-volume observations and >=95% of unexited
   matured orders have known profitability (unfilled orders count as known
   zero P&L). Orders involving early exits require reconciled realized
@@ -73,16 +73,16 @@ losses, zero qualifying volume, or successful capture.
 
 The existing DigitalOcean process keeps trading exactly as configured.
 The trader writes:
-\`outputs/live/{orders.csv,fills.csv,queue.csv,execution.csv,
-execution.md,forward_validation.json,forward_validation.md}\`
-(and corresponding files under \`outputs/live/nfl/\`).
+`outputs/live/{orders.csv,fills.csv,queue.csv,execution.csv,
+execution.md,forward_validation.json,forward_validation.md}`
+(and corresponding files under `outputs/live/nfl/`).
 
 Read-only manual report regeneration:
 
-\`\`\`sh
+```sh
 python -m live.forward_validation --folder outputs/live
 python -m live.forward_validation --folder outputs/live/nfl
-\`\`\`
+```
 
 This command **does not submit/cancel orders, change secrets or alter strategy
 parameters**. Check that execution reporting preserves matured qualifying
