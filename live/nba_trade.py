@@ -33,7 +33,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from kalshi.api import fetch_market, fetch_trades, snapshot
+from kalshi.api import fetch_market, fetch_trades, market_data_base_url, snapshot
 from kalshi.books import attach_latest
 from live.execution import execution_report, log_queue_positions, write_markdown
 from live.forward_validation import write_outputs as write_forward_validation
@@ -592,6 +592,14 @@ def main():
         configure(market)
     summary_extra = {}
     client = TradingClient(dry_run=(mode != "live"))
+    if getattr(client, "base", None):
+        data_url = market_data_base_url()
+        execution_url = f"{client.base}/trade-api/v2"
+        if data_url != execution_url:
+            raise TradingError(
+                "Trading stopped: market-data API and order-execution API "
+                f"are different venues ({data_url} != {execution_url})"
+            )
     OUT.mkdir(parents=True, exist_ok=True)
     limits = RiskLimits()
     ledger = (
