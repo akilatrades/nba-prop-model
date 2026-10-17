@@ -866,12 +866,19 @@ def main():
             quotes = priced.rename(
                 columns={"yes_bid_dollars": "yes_bid", "yes_ask_dollars": "yes_ask"}
             )[["ticker", "yes_bid", "yes_ask", "tip_utc"]]
-            wanted = exit_orders(
-                client.positions(),
-                quotes,
-                entry_prices(pd.read_csv(FILLS) if FILLS.exists() else None),
-                resting_sells,
-                now,
+            # The first demo pilot measures hold-to-settlement economics.
+            # Do not open additional early-exit orders until fills and
+            # position netting have been validated on V2.
+            wanted = (
+                []
+                if pilot
+                else exit_orders(
+                    client.positions(),
+                    quotes,
+                    entry_prices(pd.read_csv(FILLS) if FILLS.exists() else None),
+                    resting_sells,
+                    now,
+                )
             )
             new_exits = place_exits(client, wanted, now, mode)
             exits = pd.concat([exits, new_exits], ignore_index=True)[EXIT_COLUMNS]
