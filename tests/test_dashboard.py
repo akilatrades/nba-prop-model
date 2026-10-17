@@ -33,9 +33,18 @@ def test_dashboard_has_unique_essential_sections_and_education():
     parser.feed(page)
     assert len(parser.ids) == len(set(parser.ids))
     for section in (
-        "overview", "forward", "paper", "strategies", "risk",
-        "research-section", "hero-metrics", "forward-view", "system-view",
-        "cumulative", "stats", "live",
+        "overview",
+        "forward",
+        "paper",
+        "strategies",
+        "risk",
+        "research-section",
+        "hero-metrics",
+        "forward-view",
+        "system-view",
+        "cumulative",
+        "stats",
+        "live",
     ):
         assert section in parser.ids
     for label in ("Simulated", "Volume capture", "Drawdown", "500"):
@@ -52,7 +61,9 @@ def test_dashboard_inline_javascript_parses(tmp_path):
     script.write_text(scripts[0])
     result = subprocess.run(
         ["node", "--check", str(script)],
-        capture_output=True, text=True, check=False,
+        capture_output=True,
+        text=True,
+        check=False,
     )
     assert result.returncode == 0, result.stderr
 
