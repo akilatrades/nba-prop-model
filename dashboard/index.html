@@ -239,7 +239,7 @@ footer{margin-top:44px;border-top:1px solid var(--rule);line-height:1.8}
   <div class="two">
     <div>
       <h2>Daily profit</h2>
-      <p class="desc">Profitable days in blue, losing days in grey.</p>
+      <p class="desc">Green days made money on paper. Red days lost money.</p>
       <div id="daily"></div>
     </div>
     <div>
@@ -294,7 +294,7 @@ footer{margin-top:44px;border-top:1px solid var(--rule);line-height:1.8}
 
 <section>
   <h2>Where the contracts went</h2>
-  <p class="desc">Share of settled contracts by ledger, the equivalent of the report's asset allocation.</p>
+  <p class="desc">Which paper strategies account for the fills.</p>
   <div class="expo" id="expo"></div>
 </section>
 
@@ -310,12 +310,12 @@ footer{margin-top:44px;border-top:1px solid var(--rule);line-height:1.8}
   <div class="two">
     <div>
       <h2>Market scan</h2>
-      <p class="desc">2025-26, model-free "no" seller, top 15 series by t; cents per contract with ±2 standard errors. Filled markers passed; about one series in forty passes by chance.</p>
+      <p class="desc">Last season's numbers by market. A strong backtest isn't a guarantee.</p>
       <div id="scan"></div>
     </div>
     <div>
       <h2>Sportsbook-line veto</h2>
-      <p class="desc">Historical test on 2025-26 fills: selling "no" only where Kalshi's "yes" ask sits above the books' probability.</p>
+      <p class="desc">What happened when I compared Kalshi prices against sportsbook lines last season.</p>
       <div id="research"></div>
     </div>
   </div>
@@ -487,7 +487,7 @@ function heatmap(s) {
   const el = document.getElementById("heat");
   const months = [...new Set(s.paper.daily.map(d => d.day.slice(0, 7)))].sort();
   const ledgers = s.paper.ledgers.filter(l => l.fills > 0).map(l => l.ledger);
-  if (!months.length) { el.innerHTML = `<p class="note">No settled month yet.</p>`; return; }
+  if (!months.length) { el.innerHTML = `<p class="note">No paper settlements yet.</p>`; return; }
   const cell = {}; let mx = 1;
   for (const d of s.paper.daily) { const k = d.ledger + "|" + d.day.slice(0, 7); cell[k] = (cell[k] || 0) + d.profit; }
   for (const v of Object.values(cell)) mx = Math.max(mx, Math.abs(v));
@@ -567,51 +567,49 @@ function overview(snapshot){
  const events=observed?Number(f.settled_buy_fill_events||0):null;
  const card=(label,value,caption,tone="")=>`<article class="metric-card"><span class="metric-label">${esc(label)}</span><div class="metric-value ${tone}">${esc(value)}</div><span class="metric-caption">${esc(caption)}</span></article>`;
  document.getElementById("hero-metrics").innerHTML=[
-  card("Live realized account P&L",realized==null?"—":money(realized),realized==null?"Not present in the published settlement logs":"Published NBA + NFL settlement records",realized>0?"positive":realized<0?"negative":""),
+  card("Confirmed settled P&L",realized==null?"—":money(realized),realized==null?"No verified settlement results in the published logs":"NBA + NFL settlement results in saved logs",realized>0?"positive":realized<0?"negative":""),
   card("Settled NO contracts",contracts==null?"—":contracts.toLocaleString(),contracts==null?"Awaiting exchange-settled real buy fills":"NBA exchange-confirmed NO contracts"),
-  card("Volume-weighted capture",capture==null?"—":pct(capture),capture==null?"No complete eligible execution window":"Compared with a 50% historical assumption"),
-  card("Settled fill events",events==null?"— / 500":events.toLocaleString()+" / 500",events==null?"Forward checkpoint has not started":"Requires 30 days and 500 settled fills")
+  card("Share of volume filled",capture==null?"—":pct(capture),capture==null?"No complete eligible execution window":"Compared with a 50% historical assumption"),
+  card("Verified fill events",events==null?"— / 500":events.toLocaleString()+" / 500",events==null?"No qualifying exchange fills published yet":"Requires 30 days and 500 settled fills")
  ].join("");
  const row=(label,value)=>`<div class="fwd-row"><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`;
  const count=Number(f.settled_buy_fill_events||0),days=Number(f.elapsed_days||0);
  const pc=Math.min(100,100*count/500),pd=Math.min(100,100*days/30);
  const states={
-  awaiting_live_orders:"Awaiting first exchange-accepted order",
-  collecting:"Collecting forward execution results",
-  data_incomplete:"Sample collected · evidence coverage insufficient",
-  checkpoint_ready_for_human_review:"Checkpoint reached · manual review required",
-  missing_acceptance_timestamps:"Data incomplete · acceptance timestamps missing"
+  awaiting_live_orders:"Still waiting on the first recorded exchange order",
+  collecting:"Collecting exchange fills and settlements",
+  data_incomplete:"Not enough reliable data yet",
+  checkpoint_ready_for_human_review:"Enough data collected — needs review",
+  missing_acceptance_timestamps:"Missing order timestamps — can't score this yet"
  };
- const state=states[f.status]||(observed?"Forward status not available":"Awaiting first exchange-accepted order");
+ const state=states[f.status]||(observed?"No forward status published":"Waiting for the first recorded exchange order");
  const tone=f.status==="checkpoint_ready_for_human_review"?"ok":f.status==="data_incomplete"?"warn":"";
  const ready=observed;
  const proof=document.getElementById("forward-view");
- proof.innerHTML=`<div class="proof-status ${tone}">${esc(ready?state:"No real NBA validation cohort published yet. This is an evidence status, not a failed strategy.")}</div>`+
+ proof.innerHTML=`<div class="proof-status ${tone}">${esc(ready?state:"No NBA exchange fills in the published report yet. That doesn't tell me whether the strategy works.")}</div>`+
  `<div class="progress-labels"><span>Real, settled fill events</span><strong>${esc(ready?count.toLocaleString()+" / 500":"Not started")}</strong></div>`+
  `<div class="progress-track" role="progressbar" aria-label="Settlement-fill checkpoint" aria-valuemin="0" aria-valuemax="500" aria-valuenow="${Math.min(500,count)}"><span style="width:${pc}%"></span></div>`+
  `<div class="progress-labels" style="margin-top:17px"><span>Observation period</span><strong>${esc(ready?days.toFixed(1)+" / 30 days":"Not started")}</strong></div>`+
  `<div class="progress-track" role="progressbar" aria-label="Observation-day checkpoint" aria-valuemin="0" aria-valuemax="30" aria-valuenow="${Math.min(30,days)}"><span style="width:${pd}%"></span></div>`+
- `<div style="margin-top:19px">${row("Real profit / settled contract",f.cents_per_settled_contract==null?"—":cents(f.cents_per_settled_contract))}${row("Historical modeled reference","+2.9¢ / contract")}${row("Eligible volume observation coverage",f.mature_volume_coverage==null?"—":pct(f.mature_volume_coverage))}${row("Independent games",f.independent_games==null?"—":String(f.independent_games))}${row("Capital allocation","No automatic increases")}</div>`+
- `<p class="note">NBA NO buy-fill cohort only. Early exits require reconciled accounting, and historical profit does not establish a tradable edge.</p>`;
+ `<div style="margin-top:19px">${row("Real profit / settled contract",f.cents_per_settled_contract==null?"—":cents(f.cents_per_settled_contract))}${row("Backtest estimate (not a fill)","+2.9¢ / contract")}${row("Volume data recorded",f.mature_volume_coverage==null?"—":pct(f.mature_volume_coverage))}${row("Independent games",f.independent_games==null?"—":String(f.independent_games))}${row("Sizing","No automatic increases")}</div>`+
+ `<p class="note">This checkpoint tracks NBA NO buys only. I'll judge the edge from actual fills after fees and settlement, not the backtest.</p>`;
  const statusLine=(name,item)=>`<div class="fwd-row"><span>${esc(name)} trader · ${esc(item.run_utc?String(item.mode||"unknown").toUpperCase():"NO LOG")}</span><strong>${esc(item.run_utc?String(item.run_utc).slice(0,16).replace("T"," ")+" UTC":"Not published")}</strong></div>`;
  const exposure=Number(live.open_exposure||0)+Number(nfl.open_exposure||0),limit=Number(snapshot.limits?.max_open||0);
  const usage=limit?Math.min(100,100*exposure/limit):0;
  const errors=[live.forward_validation_error,nfl.forward_validation_error].filter(Boolean).join(" · ");
  document.getElementById("system-view").innerHTML=
- `<div class="proof-status"><strong>Snapshot, not live account access.</strong> GitHub's published files may lag the DigitalOcean trader. Check the exchange directly before risk decisions.</div>`+
+ `<div class="proof-status"><strong>Not a live account feed.</strong> GitHub can lag the bot on DigitalOcean. For current orders, check Kalshi Demo directly.</div>`+
  statusLine("NBA",live)+statusLine("NFL",nfl)+row("Reported open exposure",limit?money(exposure)+" / "+money(limit):money(exposure))+
  `<div class="progress-track" aria-label="Reported exposure against configured maximum"><span style="width:${usage}%"></span></div>`+
  row("Maximum order size",snapshot.limits?.max_order==null?"—":money(snapshot.limits.max_order))+
  row("Maximum game exposure",snapshot.limits?.max_per_game==null?"—":money(snapshot.limits.max_per_game))+
  (errors?`<p class="note">${esc(errors)}</p>`:"")+
- `<p class="note">Published risk data is not authoritative for emergency actions. Live execution occurs on a separate DigitalOcean process; GitHub Actions is a dry-run mirror.</p>`;
+ `<p class="note">These numbers are saved reports, not the emergency stop. The actual bot runs on DigitalOcean; GitHub Actions only simulates a trading pass.</p>`;
 }
 
-fetch("../outputs/dashboard/summary.json", {cache: "no-store"}).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }).then(s => {
-  const pf = portfolio(s);
-  document.getElementById("stamp").innerHTML = `<strong>Published data snapshot</strong><br>${esc(s.updated_utc.slice(0, 16).replace("T", " "))} UTC<br><span style="color:var(--ink-3)">Repository logs · not a direct exchange feed</span>`;
-  stats(s, pf);
-  overview(s);
+// Rebuild SVGs only if the screen WIDTH changes. Mobile address bars
+// change viewport height during normal scrolling; never reload the page.
+function renderCharts(s, pf) {
   lines(document.getElementById("cumulative"), pf.days, [
     {label: "Benchmark (backtest edge)", v: pf.bench, color: "var(--bench)", width: 2},
     {label: "Paper ledgers", v: pf.eq, color: "var(--algo)", width: 2.5},
@@ -635,10 +633,30 @@ fetch("../outputs/dashboard/summary.json", {cache: "no-store"}).then(r => { if (
   forest(document.getElementById("forest"), [...live5, ...refs], {empty: "No ledger has five fills yet."});
   const eqs = {}; for (const l of s.paper.ledgers.filter(l => l.fills > 0)) { let c = 0; const by = Object.fromEntries(s.paper.daily.filter(d => d.ledger === l.ledger).map(d => [d.day, d.profit])); eqs[l.ledger] = pf.days.map(d => (c += by[d] || 0)); }
   ledgerTable(s, eqs); exposure(s);
-  document.getElementById("live").innerHTML = liveBlock(s.live || {}, "NBA props", s.limits || {}) + liveBlock(s.live_nfl || {}, "NFL props", s.limits || {});
   forest(document.getElementById("scan"), (s.scan_top || []).map(r => ({label: name(r.series), est: r.cents, se: r.se, color: r.passes ? "var(--algo)" : "var(--bench)", hollow: !r.passes, sub: `${r.fills.toLocaleString()} fills, t ${r.t}${r.passes ? ", passed" : ""}`})), {labelW: 220});
   research(s);
-  let tmr; window.addEventListener("resize", () => { clearTimeout(tmr); tmr = setTimeout(() => location.reload(), 400); });
+}
+let latestDashboard = null;
+let pageWidth = document.documentElement.clientWidth;
+let resizeTimer = null;
+window.addEventListener("resize", () => {
+  const nextWidth = document.documentElement.clientWidth;
+  if (Math.abs(nextWidth - pageWidth) < 2) return;
+  pageWidth = nextWidth;
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    if (latestDashboard) renderCharts(latestDashboard.s, latestDashboard.pf);
+  }, 180);
+}, {passive: true});
+
+fetch("../outputs/dashboard/summary.json", {cache: "no-store"}).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }).then(s => {
+  const pf = portfolio(s);
+  latestDashboard = {s, pf};
+  document.getElementById("stamp").innerHTML = `<strong>Last GitHub update</strong><br>${esc(s.updated_utc.slice(0, 16).replace("T", " "))} UTC<br><span style="color:var(--ink-3)">Saved reports, not the live Kalshi account</span>`;
+  stats(s, pf);
+  overview(s);
+  renderCharts(s, pf);
+  document.getElementById("live").innerHTML = liveBlock(s.live || {}, "NBA props", s.limits || {}) + liveBlock(s.live_nfl || {}, "NFL props", s.limits || {});
 }).catch(e => {
   document.getElementById("stamp").textContent = "Could not load the published data (" + e.message + ")";
   document.getElementById("forward-view").textContent = "No verified forward data could be loaded.";
