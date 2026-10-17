@@ -206,6 +206,7 @@ def test_v2_cancel_fail_closed_without_ticker(monkeypatch):
 def test_production_writes_require_explicit_opt_in(monkeypatch):
     monkeypatch.delenv("ALLOW_PRODUCTION_TRADING", raising=False)
     client = TradingClient(dry_run=False, env="prod")
+
     def forbidden_request(*args, **kwargs):
         raise AssertionError("Must not contact production for a blocked order")
 
@@ -216,6 +217,7 @@ def test_production_writes_require_explicit_opt_in(monkeypatch):
 
 def test_v2_dry_run_does_not_send_order(monkeypatch):
     client = TradingClient(dry_run=True, env="demo")
+
     def forbidden_request(*args, **kwargs):
         raise AssertionError("Dry run must not contact exchange")
 
